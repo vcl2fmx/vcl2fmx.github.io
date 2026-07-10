@@ -1,0 +1,1 @@
+{"input_file":"contracts\\winapi_messages\\37_sendmessage_cm_focuschanged.pas","expected_status":"converted","expected_output_patterns":["CM_FOCUSCHANGED","Use FMX control events"],"expected_report_patterns":["Windows messaging","CM_FOCUSCHANGED"],"forbidden_output_patterns":[],"forbidden_report_patterns":[]}

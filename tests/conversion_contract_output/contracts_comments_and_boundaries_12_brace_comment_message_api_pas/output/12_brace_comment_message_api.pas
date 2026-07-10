@@ -1,0 +1,12 @@
+unit ContractBraceCommentMessageAPI;
+interface
+uses FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Types, System.Classes, System.SysUtils,
+  System.Variants;
+type TContractBraceCommentMessageAPI = class public procedure Run; end;
+implementation
+procedure TContractBraceCommentMessageAPI.Run;
+begin
+  { SendMessage(Handle, WM_CLOSE, 0, 0); }
+  Writeln('brace comment only');
+end;
+end.

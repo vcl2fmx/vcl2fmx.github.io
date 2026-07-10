@@ -1,0 +1,20 @@
+{
+  "input_file": "contracts\\graphics\\07_canvas_polygon_clock_hand_style.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractCanvasPolygonClockHandStyle",
+    "Canvas\\.Fill\\.Color",
+    "Canvas\\.FillPolygon",
+    "FillAndStrokeEllipse|Canvas\\.FillEllipse|Canvas\\.DrawEllipse"
+  ],
+  "expected_report_patterns": [
+    "VCL/GDI drawing APIs",
+    "Graphics or GDI usage",
+    "verify that the generated FMX Canvas code still matches the intended behavior"
+  ],
+  "forbidden_output_patterns": [
+    "Canvas\\.Polygon",
+    "Canvas\\.Ellipse\\("
+  ],
+  "forbidden_report_patterns": []
+}

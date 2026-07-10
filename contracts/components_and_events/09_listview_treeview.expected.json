@@ -1,0 +1,23 @@
+{
+  "input_file": "contracts\\components_and_events\\09_listview_treeview.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [
+    "FMX.Forms"
+  ],
+  "expected_units_absent": [
+    "Vcl.Forms",
+    "Vcl.ComCtrls"
+  ],
+  "expected_output_patterns": [
+    "ListView1: TListView",
+    "TreeView1: TTreeView"
+  ],
+  "forbidden_output_patterns": [
+    "Vcl\\.Forms",
+    "Vcl\\.ComCtrls"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

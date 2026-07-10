@@ -1,0 +1,126 @@
+﻿VCL2FMXConverter V3 Regression Guards
+=====================================
+
+Generated: 2026-06-25 19:28:37
+Project root: C:\New Delphi Projects\VCL2FMXConverterV5
+
+Summary: 0 blocker(s), 0 warning(s), 41 pass item(s), 0 info item(s)
+
+Mapper
+------
+[PASS] EnsureBestMatch exists
+  EnsureBestMatch is present for side-effecting mapper lookup.
+[PASS] FindBestMatch exists
+  FindBestMatch is present for pure/cached mapper lookup.
+[PASS] EnsureBestMatch mutates the mapper cache/database
+  EnsureBestMatch still owns the mutation path for derived matches.
+[PASS] FindBestMatch remains pure/cached
+  FindBestMatch still uses the derived cache without mutating the mapping database or logging issues.
+
+DFM parser
+----------
+[PASS] DFM parser uses EnsureBestMatch
+  DFM parsing still routes component resolution through EnsureBestMatch.
+[PASS] DFM parser avoids FindBestMatch for component resolution
+  DFM parsing does not call FindBestMatch directly for component resolution.
+[PASS] DFM parser uses shared encoding and size guard
+  DFM loading uses the shared text reader and large-file guard.
+
+Data-aware
+----------
+[PASS] Normalized component-class helper exists
+  NormalizeComponentClassName is present.
+[PASS] ComponentMatchesClass helper exists
+  ComponentMatchesClass is present for normalized/ancestry-aware matching.
+[PASS] Mapper-backed ancestry lookup exists
+  Data-aware matching still walks mapper inventory ancestry.
+[PASS] Substring-based ComponentClass.Contains checks are gone
+  The old substring-based ComponentClass.Contains pattern is absent.
+
+Integration
+-----------
+[PASS] Unsupported-routine review helper exists
+  MarkUnsupportedPascalRoutinesForReview is present.
+[PASS] Unsupported-routine depth tracks plain end tokens
+  Unsupported-routine depth tracking still includes plain end token handling.
+[PASS] ApplyAutomaticFixes invokes unsupported-routine review pass
+  ApplyAutomaticFixes still invokes MarkUnsupportedPascalRoutinesForReview.
+[PASS] ApplyAutomaticFixes invokes canvas-geometry helper
+  ApplyAutomaticFixes still invokes RewriteCanvasGeometryLine.
+[PASS] ApplyAutomaticFixes restores safe signatures after review tagging
+  ApplyAutomaticFixes still invokes RestoreNonUnsupportedManualReviewSignatures.
+[PASS] Multi-form LiveBindings warning remains in place
+  Integration warns when a Pascal unit contains multiple form/frame/datamodule declarations.
+[PASS] Implementation-section safeguard remains active
+  FixImplementationSection reports missing implementation sections and unexpected first implementation statements.
+
+File scan
+---------
+[PASS] Streaming directory enumeration remains in place
+  FileManager still uses FindFirst/FindNext/FindClose for scanning.
+[PASS] Deterministic file ordering remains in place
+  FileManager still sorts the collected file list deterministically.
+[PASS] SaveConvertedFile reports success or failure
+  SaveConvertedFile returns Boolean status so callers can report failed saves.
+
+Engine
+------
+[PASS] Engine uses FileCount instead of rescanning for totals
+  Engine still uses FileManager.FileCount for total-file reporting.
+[PASS] Engine rebuilds services when context changes
+  Engine conversion uses RebuildServicesForContext instead of directly swapping FContext.
+[PASS] Engine services are not double-created
+  Engine constructor does not recreate services after RebuildServicesForContext.
+[PASS] Failed conversion saves are explicitly reported
+  Engine reports skipped Pascal/DFM saves instead of leaving empty else paths.
+[PASS] Conversion log is surfaced in reports
+  Text and HTML reports include the captured conversion log.
+
+Encoding
+--------
+[PASS] Encoding helpers are centralized
+  Shared encoding helpers live in Converter.Core.Types and local duplicate UTF8 helpers are absent.
+
+Project generator
+-----------------
+[PASS] Project files use shared encoding reader
+  DPR, DPROJ, and DEPLOYPROJ reads use the shared encoding reader.
+
+Uses clause
+-----------
+[PASS] cla color detection avoids substring matching
+  Uses-clause detection no longer treats every class declaration as a cla color constant.
+[PASS] message constants are matched case-sensitively
+  Message-family detection remains case-sensitive and broad API names are context-gated.
+[PASS] GetMessage is not a generic Winapi.Messages trigger
+  GetMessage is present only inside context-gated message API analysis.
+[PASS] Winapi.Messages issue text says added
+  The Winapi.Messages warning describes added units accurately.
+
+WinAPI
+------
+[PASS] message API conversion is context-gated
+  Broad message API names are checked for likely WinAPI context before conversion.
+[PASS] message API guard is applied before conversion
+  Message API matches are skipped unless the line looks like WinAPI message code.
+[PASS] comment continuation boundary does not fall through
+  Boundary lines exit before WinAPI pattern matching.
+[PASS] comment-only continuation lines are preserved
+  Comment-only lines inside continuation blocks are still prefixed.
+[PASS] PlatformIfdefs stores converted text
+  PlatformIfdefs records the converted line.
+
+Reporting
+---------
+[PASS] Text report includes next-step guidance
+  Text report still includes Recommended next step.
+[PASS] Report includes distinct-files needing attention metric
+  Reporting includes Distinct files needing attention.
+[PASS] Report includes files-with-errors metric
+  Reporting still includes Files with conversion errors.
+
+UI summary
+----------
+[PASS] Main form status wording matches report outcomes
+  Main form summary text still aligns with the current report status wording.
+

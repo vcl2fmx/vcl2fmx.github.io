@@ -1,0 +1,70 @@
+{
+  "pack_name": "QuickReport_MappingPack_v2",
+  "pack_id": "quickreport.mapping.v2",
+  "vendor": "QuickReport",
+  "version": "2.0.0",
+  "description": "Detection pack for QuickReport components. QuickReport forms and report bands are report definitions, not ordinary FMX forms, so this pack reports them and avoids unsafe automatic conversion.",
+  "mode": "detection",
+  "rules": [
+    {
+      "vcl_class": "TQuickRep",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "QuickReport reports need report-engine migration or manual preservation outside normal FMX form conversion."
+    },
+    {
+      "vcl_class": "TQRBand",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Report bands belong to report layout and should not be converted as FMX controls."
+    },
+    {
+      "vcl_class": "TQRSubDetail",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Subdetail report sections require report-specific migration."
+    },
+    {
+      "vcl_class": "TQRLabel",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "QuickReport labels should remain in report definitions or be migrated by a report-specific workflow."
+    },
+    {
+      "vcl_class": "TQRDBText",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Data-bound report fields require report-engine migration."
+    },
+    {
+      "vcl_class": "TQRExpr",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Report expressions require formula and dataset review."
+    },
+    {
+      "vcl_class": "TQRMemo",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Report memo content belongs to the report definition."
+    },
+    {
+      "vcl_class": "TQRImage",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Report images need report-layout and asset review."
+    },
+    {
+      "vcl_class": "TQRShape",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Report shapes should be handled by report migration."
+    },
+    {
+      "vcl_class": "TQRPreview",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "QuickReport preview UI requires manual replacement or report-engine support."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\winapi_messages\\18_getmessage_with_message_variable.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["GetMessage pump API"],
+  "expected_units_added": [],
+  "expected_units_absent": [],
+  "expected_output_patterns": ["GetMessage|Message pump calls not needed|Original:"],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": ["GetMessage|Windows messaging|Message pump"],
+  "forbidden_report_patterns": []
+}

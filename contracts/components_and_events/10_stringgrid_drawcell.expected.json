@@ -1,0 +1,26 @@
+{
+  "input_file": "contracts\\components_and_events\\10_stringgrid_drawcell.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [
+    "FMX.Forms"
+  ],
+  "expected_units_absent": [
+    "Vcl.Forms",
+    "Vcl.Grids",
+    "Vcl.Graphics"
+  ],
+  "expected_output_patterns": [
+    "StringGrid1: TStringGrid",
+    "procedure StringGrid1DrawCell",
+    "Canvas.TextOut"
+  ],
+  "forbidden_output_patterns": [
+    "Vcl\\.Forms",
+    "Vcl\\.Grids",
+    "Vcl\\.Graphics"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

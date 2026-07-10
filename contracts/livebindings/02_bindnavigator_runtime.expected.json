@@ -1,0 +1,16 @@
+{
+  "input_file": "contracts\\livebindings\\02_bindnavigator_runtime.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractBindNavigatorRuntime",
+    "BindNavigator1: TBindNavigator",
+    "BindNavigator1\\.Enabled := True",
+    "Fmx\\.Bind\\.Navigator"
+  ],
+  "forbidden_output_patterns": [
+    "\\bTDBNavigator\\b",
+    "\\bVcl\\."
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

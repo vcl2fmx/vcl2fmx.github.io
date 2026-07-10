@@ -1,0 +1,25 @@
+{
+  "input_file": "contracts\\components_and_events\\21_shape_circle_quiet.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": ["FMX.Forms", "FMX.Objects"],
+  "expected_units_absent": ["Vcl.Forms", "Vcl.ExtCtrls"],
+  "expected_output_patterns": [
+    "shpLED: TEllipse",
+    "object shpLED: TEllipse",
+    "// FMX: redundant VCL Shape assignment omitted; shpLED is generated as TEllipse\\.",
+    "shpLED\\.Fill\\.Color := claRed"
+  ],
+  "forbidden_output_patterns": [
+    "shpLED\\.Shape := stCircle",
+    "Shape = stCircle",
+    "FMX manual review: shpLED\\.Shape"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": [
+    "TShape property assignment",
+    "Unsupported property",
+    "Shape = stCircle"
+  ]
+}

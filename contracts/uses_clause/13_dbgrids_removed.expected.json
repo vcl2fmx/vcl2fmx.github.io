@@ -1,0 +1,25 @@
+{
+  "input_file": "contracts\\uses_clause\\13_dbgrids_removed.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "DBGrids",
+    "DBCtrls",
+    "ComCtrls",
+    "Menus"
+  ],
+  "expected_output_patterns": [
+    "System.SysUtils",
+    "System.Classes"
+  ],
+  "forbidden_output_patterns": [
+    "\\bDBGrids\\b",
+    "\\bDBCtrls\\b",
+    "\\bComCtrls\\b",
+    "\\bMenus\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

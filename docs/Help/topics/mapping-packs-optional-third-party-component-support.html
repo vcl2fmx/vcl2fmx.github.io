@@ -1,0 +1,192 @@
+﻿<!doctype html><html><head><meta charset="utf-8"><title>Mapping Packs: Optional Third-Party Component Support</title><link rel="stylesheet" href="../style.css"></head><body class="topic-page"><main><div class="doc-topic" style="display:block;">
+<h1>2.1 Mapping Packs: Optional Third-Party Component Support</h1>
+
+<p>A mapping pack is an optional JSON file that gives the converter explicit knowledge about component libraries outside standard VCL. The converter still performs the normal VCL-to-FMX migration work on its own but mapping packs add a separate, visible layer for third-party controls so those decisions can be reviewed instead of hidden inside converter code.</p>
+
+<p>Use mapping packs when a project contains controls from libraries such as DevExpress, TMS, Raize/Konopka, JVCL, EhLib, InfoPower, TeeChart, FastReport, Devart, IntraWeb, UniGUI, or VirtualTreeView. The pack can identify the original VCL class, choose a safe action, map simple properties and events, and explain anything that still requires manual review. This version includes mapping packs for the stated third-party vendors, but while these are included, they do not represent full conversions of the components but rather as much as possible at this point in Delphi FMX.</p>
+
+<p>A mapping pack does not install a vendor product, prove that a commercial component has a full FMX equivalent, or remove the need to test the converted application. Its purpose is to make third-party handling predictable: simple controls may convert, approximate controls may convert with warnings, complex controls may be report-only, and nonvisual or cross-platform items may be preserved when that is the safest choice. Again, they do not represent full conversions of the components but rather as much as possible at this point.</p>
+
+<h3>Mapping-pack actions</h3>
+
+<table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
+<tbody><tr><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Action</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">What it means for the user</th></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">convert</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The converter can generate the target FMX component with reasonable confidence.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">partial</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The converter can generate an approximate FMX component, but the report must describe the limitations.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">manual_review</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The converter should report the component and avoid unsafe automatic conversion.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">detect_only</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The converter identifies the component or vendor but does not generate a replacement.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">preserve</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The converter may keep the original class/reference when preservation is safer or explicitly intended.</td></tr>
+</tbody></table>
+
+<p>For normal operation, keep the mapping_packs folder beside VCL2FMXConverter.exe, in whatever folder you install it.</p>
+
+<p>For example if the converter structure is similar to: C:\converter\VCL2FMXConverter.exe</p>
+
+<p>then the mapping packs would be in: C:\converter\mapping_packs\</p>
+
+<p>The packs act as companion files in unison with the converter executable. After a run, review the generated report and their associated report sections for loaded packs, converted third-party components, partial conversions, detect-only findings, preserved components, unknown third-party-looking components, and manual-review reasons.</p>
+
+<h3>How to read mapping-pack results</h3>
+
+<p>The generated report is a detailed audit trail. If a pack converts a component, the report should say which pack was used and what confidence level was declared. If a pack only detects a component, the report should explain why no FMX replacement was generated.</p>
+
+<p>When testing without owning the vendor library, a mock DFM can still exercise the mapping logic because the converter reads class names from the DFM. That kind of test confirms loader behavior, rule selection, generated output, and report wording, but it does not validate the real vendor component's runtime behavior. The following is an example of a mock .dfm which may be modified for your own use for testing:object FormDevExpressMock: TFormDevExpressMock</p>
+
+<p>Left = 0</p>
+
+<p>Top = 0</p>
+
+<p>Caption = 'DevExpress Mapping Pack Mock Test'</p>
+
+<p>ClientHeight = 360</p>
+
+<p>ClientWidth = 560</p>
+
+<p>object cxButton1: TcxButton</p>
+
+<p>Left = 24</p>
+
+<p>Top = 24</p>
+
+<p>Width = 120</p>
+
+<p>Height = 32</p>
+
+<p>Caption = 'Click Me'</p>
+
+<p>Enabled = True</p>
+
+<p>Visible = True</p>
+
+<p>Hint = 'Button hint'</p>
+
+<p>OnClick = cxButton1Click</p>
+
+<p>end</p>
+
+<p>object cxTextEdit1: TcxTextEdit</p>
+
+<p>Left = 24</p>
+
+<p>Top = 72</p>
+
+<p>Width = 180</p>
+
+<p>Height = 24</p>
+
+<p>Text = 'Sample text'</p>
+
+<p>Enabled = True</p>
+
+<p>Visible = True</p>
+
+<p>OnChange = cxTextEdit1Change</p>
+
+<p>end</p>
+
+<p>object cxMemo1: TcxMemo</p>
+
+<p>Left = 24</p>
+
+<p>Top = 112</p>
+
+<p>Width = 220</p>
+
+<p>Height = 80</p>
+
+<p>Text = 'Sample memo'</p>
+
+<p>Enabled = True</p>
+
+<p>Visible = True</p>
+
+<p>end</p>
+
+<p>object cxMaskEdit1: TcxMaskEdit</p>
+
+<p>Left = 24</p>
+
+<p>Top = 208</p>
+
+<p>Width = 180</p>
+
+<p>Height = 24</p>
+
+<p>Text = '12345'</p>
+
+<p>end</p>
+
+<p>object cxGrid1: TcxGrid</p>
+
+<p>Left = 260</p>
+
+<p>Top = 24</p>
+
+<p>Width = 260</p>
+
+<p>Height = 180</p>
+
+<p>end</p>
+
+<p>object dxRibbon1: TdxRibbon</p>
+
+<p>Left = 0</p>
+
+<p>Top = 264</p>
+
+<p>Width = 560</p>
+
+<p>Height = 80</p>
+
+<p>end</p>
+
+<p>end</p>
+
+<p>Here is the companion .pas file that goes with this .dfmunit UnitDevExpressMock;</p>
+
+<p>interface</p>
+
+<p>uses</p>
+
+<p>System.SysUtils, System.Classes, Vcl.Forms;</p>
+
+<p>type</p>
+
+<p>TFormDevExpressMock = class(TForm)</p>
+
+<p>cxButton1: TcxButton;</p>
+
+<p>cxTextEdit1: TcxTextEdit;</p>
+
+<p>cxMemo1: TcxMemo;</p>
+
+<p>cxMaskEdit1: TcxMaskEdit;</p>
+
+<p>cxGrid1: TcxGrid;</p>
+
+<p>dxRibbon1: TdxRibbon;</p>
+
+<p>procedure cxButton1Click(Sender: TObject);</p>
+
+<p>procedure cxTextEdit1Change(Sender: TObject);</p>
+
+<p>end;</p>
+
+<p>implementation</p>
+
+<p>{$R *.dfm}</p>
+
+<p>procedure TFormDevExpressMock.cxButton1Click(Sender: TObject);</p>
+
+<p>begin</p>
+
+<p>end;</p>
+
+<p>procedure TFormDevExpressMock.cxTextEdit1Change(Sender: TObject);</p>
+
+<p>begin</p>
+
+<p>end;</p>
+
+<p>end.</p>
+</div><div class="page-nav"><a href="../index.html" target="_top">Contents</a><a href="what-the-converter-is-and-what-it-is-not.html" onclick="try{parent.setActiveTopic('topics/what-the-converter-is-and-what-it-is-not.html');}catch(e){}">Previous</a><a href="system-requirements-and-workspace-preparation.html" onclick="try{parent.setActiveTopic('topics/system-requirements-and-workspace-preparation.html');}catch(e){}">Next</a></div></main><script>try{parent.postMessage({helpTopic:"topics/mapping-packs-optional-third-party-component-support.html"},"*");}catch(e){}</script></body></html>

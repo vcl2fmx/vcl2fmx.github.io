@@ -1,0 +1,13 @@
+{
+  "input_file": "contracts\\encoding\\03_tabs_and_spaces.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractTabsAndSpaces",
+    "Writeln\\('tab indentation'\\);"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\."
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

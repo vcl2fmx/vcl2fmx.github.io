@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\04_multiline_if_sendmessage_no_begin.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["multiline if SendMessage without begin"],
+  "expected_units_added": [],
+  "expected_units_absent": [],
+  "expected_output_patterns": ["WM_CLOSE|Original: if SendMessage|Writeln\\('closed'\\)"],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": ["WM_CLOSE|SendMessage|Windows messaging"],
+  "forbidden_report_patterns": []
+}

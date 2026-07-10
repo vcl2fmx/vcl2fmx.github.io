@@ -1,0 +1,22 @@
+{
+  "input_file": "contracts\\uses_clause\\10_duplicate_uses_cleanup.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [
+    "FMX.Forms"
+  ],
+  "expected_units_absent": [
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "System.SysUtils",
+    "System.Classes",
+    "FMX.Forms"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Forms\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

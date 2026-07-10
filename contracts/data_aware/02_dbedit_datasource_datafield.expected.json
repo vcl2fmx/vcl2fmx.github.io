@@ -1,0 +1,15 @@
+{
+  "input_file": "contracts\\data_aware\\02_dbedit_datasource_datafield.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractDBEditDataSourceDataField",
+    "DBEdit1: TEdit",
+    "\\bDataSource1: TDataSource"
+  ],
+  "forbidden_output_patterns": [
+    "\\bTDBEdit\\b",
+    "\\bVcl\\.DBCtrls\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

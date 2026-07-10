@@ -1,0 +1,133 @@
+{
+  "pack_name": "nSoftware_MappingPack_v2",
+  "pack_id": "nsoftware.mapping.v2",
+  "vendor": "nSoftware",
+  "version": "2.0.0",
+  "description": "Conservative preservation pack for nSoftware/IPWorks Delphi components. IPWorks offers Delphi VCL and FMX support, so nonvisual networking components may be preserved when the target has the correct edition and deployment files.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TipwHTTP",
+      "fmx_class": "TipwHTTP",
+      "action": "preserve",
+      "confidence": 78,
+      "notes": "HTTP component is nonvisual and may be preserved with an FMX-capable IPWorks edition.",
+      "manual_review_reason": "Verify unit names, TLS/certificate handling, callbacks, and deployment libraries for the target platform."
+    },
+    {
+      "vcl_class": "TipwREST",
+      "fmx_class": "TipwREST",
+      "action": "preserve",
+      "confidence": 78,
+      "notes": "REST component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review authentication, JSON/XML handling, async events, and target-platform networking."
+    },
+    {
+      "vcl_class": "TipwFTP",
+      "fmx_class": "TipwFTP",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "FTP component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review TLS, passive mode, local paths, and deployment dependencies."
+    },
+    {
+      "vcl_class": "TipwSFTP",
+      "fmx_class": "TipwSFTP",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "SFTP component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review SSH keys, host-key validation, and target-platform support."
+    },
+    {
+      "vcl_class": "TipwSMTP",
+      "fmx_class": "TipwSMTP",
+      "action": "preserve",
+      "confidence": 78,
+      "notes": "SMTP component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review OAuth/TLS, attachments, message encoding, and async event handling."
+    },
+    {
+      "vcl_class": "TipwPOP",
+      "fmx_class": "TipwPOP",
+      "action": "preserve",
+      "confidence": 78,
+      "notes": "POP component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review OAuth/TLS and message storage behavior."
+    },
+    {
+      "vcl_class": "TipwIMAP",
+      "fmx_class": "TipwIMAP",
+      "action": "preserve",
+      "confidence": 78,
+      "notes": "IMAP component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review synchronization, OAuth/TLS, and background callback behavior."
+    },
+    {
+      "vcl_class": "TipwOAuth",
+      "fmx_class": "TipwOAuth",
+      "action": "manual_review",
+      "confidence": 60,
+      "manual_review_reason": "OAuth redirect/browser flow may need platform-specific FMX handling."
+    },
+    {
+      "vcl_class": "TipwJSON",
+      "fmx_class": "TipwJSON",
+      "action": "preserve",
+      "confidence": 80,
+      "notes": "JSON component is nonvisual and may be preserved."
+    },
+    {
+      "vcl_class": "TipwXML",
+      "fmx_class": "TipwXML",
+      "action": "preserve",
+      "confidence": 80,
+      "notes": "XML component is nonvisual and may be preserved."
+    },
+    {
+      "vcl_class": "TipwTCPClient",
+      "fmx_class": "TipwTCPClient",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "TCP client is nonvisual and may be preserved.",
+      "manual_review_reason": "Review threading, TLS, reconnect behavior, and mobile/network permissions."
+    },
+    {
+      "vcl_class": "TipwTCPServer",
+      "fmx_class": "TipwTCPServer",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Server components require platform, firewall, threading, and lifecycle review."
+    },
+    {
+      "vcl_class": "TipwUDP",
+      "fmx_class": "TipwUDP",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "UDP component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review multicast/broadcast behavior and platform network permissions."
+    },
+    {
+      "vcl_class": "TipwWebSocket",
+      "fmx_class": "TipwWebSocket",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "WebSocket component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review TLS, threading, reconnect behavior, and target-platform support."
+    },
+    {
+      "vcl_class": "TipwCertMgr",
+      "fmx_class": "TipwCertMgr",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Certificate manager behavior can be OS-specific and requires deployment review."
+    },
+    {
+      "vcl_class": "TipwS3",
+      "fmx_class": "TipwS3",
+      "action": "preserve",
+      "confidence": 72,
+      "notes": "S3 component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review credentials, regions, TLS, file paths, and background transfer behavior."
+    }
+  ]
+}

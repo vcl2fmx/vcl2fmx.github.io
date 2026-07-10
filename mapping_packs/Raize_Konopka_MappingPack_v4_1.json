@@ -1,0 +1,425 @@
+{
+  "pack_name": "Raize_Konopka_MappingPack_v2",
+  "pack_id": "raize.konopka.complete.v2",
+  "vendor": "Raize / Konopka Signature VCL Controls",
+  "version": "2.0.0",
+  "description": "Complete merged mapping pack for Raize/Konopka Signature VCL controls. Combines the original base pack with supplemental entries covering label, image, date/time picker, calendar, scroll box, radio group, color edit, and spin buttons.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TRzButton",
+      "fmx_class": "TButton",
+      "action": "convert",
+      "confidence": 85,
+      "notes": "Basic button behavior maps well. Raize styling, glyph layout, and visual states require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        },
+        {
+          "vcl": "Hint",
+          "fmx": "Hint"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzBitBtn",
+      "fmx_class": "TButton",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Button caption and click map. Glyph/kind/layout behavior requires review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzEdit",
+      "fmx_class": "TEdit",
+      "action": "convert",
+      "confidence": 85,
+      "notes": "Basic edit text maps well. Frame controller, button edit features, and validation require review.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzMemo",
+      "fmx_class": "TMemo",
+      "action": "convert",
+      "confidence": 80,
+      "notes": "Basic memo text maps. Raize frame and visual styling require review.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Lines",
+          "fmx": "Lines"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzCheckBox",
+      "fmx_class": "TCheckBox",
+      "action": "convert",
+      "confidence": 85,
+      "notes": "Basic caption and checked state map. Custom glyphs and visual states require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Checked",
+          "fmx": "IsChecked"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzRadioButton",
+      "fmx_class": "TRadioButton",
+      "action": "convert",
+      "confidence": 80,
+      "notes": "Basic radio button maps. Grouping and styling require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Checked",
+          "fmx": "IsChecked"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzComboBox",
+      "fmx_class": "TComboBox",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Basic items and selection map. Frame controller, custom drawing, and lookup behavior require review.",
+      "properties": [
+        {
+          "vcl": "Items",
+          "fmx": "Items"
+        },
+        {
+          "vcl": "ItemIndex",
+          "fmx": "ItemIndex"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzListBox",
+      "fmx_class": "TListBox",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Basic items map. Multi-select, owner-draw, and styling require review."
+    },
+    {
+      "vcl_class": "TRzPanel",
+      "fmx_class": "TLayout",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Container behavior maps. Borders, gradients, captions, and Raize appearance settings require review.",
+      "properties": [
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzGroupBox",
+      "fmx_class": "TGroupBox",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Group caption and container behavior map. Raize visual styling requires review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzPageControl",
+      "fmx_class": "TTabControl",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Page structure maps. Tab styling, images, close buttons, and owner-draw behavior require review."
+    },
+    {
+      "vcl_class": "TRzTabSheet",
+      "fmx_class": "TTabItem",
+      "action": "partial",
+      "confidence": 80,
+      "notes": "Tab caption maps. Raize tab styling requires review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzProgressBar",
+      "fmx_class": "TProgressBar",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Basic progress value maps conceptually. Orientation, theme, and text display require review."
+    },
+    {
+      "vcl_class": "TRzTrackBar",
+      "fmx_class": "TTrackBar",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Basic trackbar value maps conceptually. Tick marks and styling require review."
+    },
+    {
+      "vcl_class": "TRzSplitter",
+      "fmx_class": "TSplitter",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Splitter behavior is plausible. Alignment and adjacent layout behavior require review."
+    },
+    {
+      "vcl_class": "TRzStatusBar",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "Status panels and owner-drawn panes require manual FMX status layout."
+    },
+    {
+      "vcl_class": "TRzToolbar",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "Toolbar/action layout should be redesigned using FMX buttons/tool layouts."
+    },
+    {
+      "vcl_class": "TRzDBGrid",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Data-aware grid behavior requires manual redesign or a grid-specific mapping pack."
+    },
+    {
+      "vcl_class": "TRzCheckTree",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "Check tree nodes, state images, and data model require manual review."
+    },
+    {
+      "vcl_class": "TRzButtonEdit",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "Embedded edit buttons and actions require explicit FMX redesign."
+    },
+    {
+      "vcl_class": "TRzPropertyStore",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Property persistence behavior is application-specific and should be reviewed manually."
+    },
+    {
+      "vcl_class": "TRzLabel",
+      "fmx_class": "TLabel",
+      "action": "partial",
+      "confidence": 78,
+      "notes": "Basic label text maps to FMX TLabel. Raize visual styling, font controller, and hot-track behavior require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzImage",
+      "fmx_class": "TImage",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Image display maps to FMX TImage. Raize border, shadow, and stretch effects require review.",
+      "manual_review_reason": "Verify image resource loading, stretch mode, and any Raize-specific visual effects.",
+      "properties": [
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzDateTimePicker",
+      "fmx_class": "TDateEdit",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Date picker UI maps to FMX TDateEdit for basic date selection. Time portion, null date, formatting, and Raize extras require review.",
+      "manual_review_reason": "Verify date/time formatting, null date handling, and frame controller behavior."
+    },
+    {
+      "vcl_class": "TRzCalendar",
+      "fmx_class": "TCalendar",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Calendar date selection maps conceptually to FMX TCalendar. Raize styling, multi-select, and event indicators require review.",
+      "manual_review_reason": "Verify date selection events and any custom day highlighting or formatting.",
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzScrollBox",
+      "fmx_class": "TScrollBox",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Scroll container behavior maps to FMX TScrollBox. Raize scroll bar styling and extras require review.",
+      "properties": [
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TRzRadioGroup",
+      "action": "detect_only",
+      "confidence": 35,
+      "manual_review_reason": "Raize radio group item layout, value semantics, and frame controller behavior require deliberate FMX redesign. Use individual TRadioButton controls grouped in a TLayout or TGroupBox."
+    },
+    {
+      "vcl_class": "TRzColorEdit",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 50,
+      "notes": "Color picker maps to a plain TEdit for the hex/text value. Popup color selector and color swatch display cannot be auto-recreated.",
+      "manual_review_reason": "Implement color selection using FMX TColorPanel, TColorBox, or a custom color picker dialog."
+    },
+    {
+      "vcl_class": "TRzSpinButtons",
+      "action": "detect_only",
+      "confidence": 30,
+      "manual_review_reason": "Standalone Raize spin buttons have no direct FMX equivalent. Implement using TSpinBox or a custom TLayout with Up/Down TSpeedButton controls."
+    }
+  ]
+}

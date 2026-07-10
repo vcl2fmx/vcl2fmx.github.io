@@ -1,0 +1,196 @@
+{
+  "pack_name": "DatabaseEngines_MappingPack_v2",
+  "pack_id": "databaseengines.mapping.v2",
+  "vendor": "NexusDB, ElevateDB, Apollo, DBISAM, Advantage, Absolute Database, IBObjects",
+  "version": "2.0.0",
+  "description": "Conservative preservation/review pack for common Delphi database engines. Nonvisual dataset, query, session, connection, and table components may be preserved only when compatible packages and target-platform support exist; legacy engines and data-aware UI controls require manual review.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TnxSession",
+      "fmx_class": "TnxSession",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "NexusDB session is nonvisual and may be preserved with compatible NexusDB packages.",
+      "manual_review_reason": "Verify package support, embedded/remote engine setup, aliases, and target platform."
+    },
+    {
+      "vcl_class": "TnxDatabase",
+      "fmx_class": "TnxDatabase",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "NexusDB database component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review aliases, paths, transactions, and deployment."
+    },
+    {
+      "vcl_class": "TnxTable",
+      "fmx_class": "TnxTable",
+      "action": "preserve",
+      "confidence": 68,
+      "notes": "NexusDB table component may be preserved.",
+      "manual_review_reason": "Review table paths, indexes, field definitions, and binding strategy."
+    },
+    {
+      "vcl_class": "TnxQuery",
+      "fmx_class": "TnxQuery",
+      "action": "preserve",
+      "confidence": 68,
+      "notes": "NexusDB query component may be preserved.",
+      "manual_review_reason": "Review SQL dialect, parameters, updates, and connection references."
+    },
+    {
+      "vcl_class": "TnxServerEngine",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "Embedded server engine lifecycle, threading, and deployment require review."
+    },
+    {
+      "vcl_class": "TEDBSession",
+      "fmx_class": "TEDBSession",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "ElevateDB session is nonvisual and may be preserved with compatible packages.",
+      "manual_review_reason": "Verify ElevateDB edition/platform support and deployment libraries."
+    },
+    {
+      "vcl_class": "TEDBDatabase",
+      "fmx_class": "TEDBDatabase",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "ElevateDB database component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review database paths, configuration, and platform storage."
+    },
+    {
+      "vcl_class": "TEDBTable",
+      "fmx_class": "TEDBTable",
+      "action": "preserve",
+      "confidence": 68,
+      "notes": "ElevateDB table may be preserved.",
+      "manual_review_reason": "Review table metadata, indexes, and binding."
+    },
+    {
+      "vcl_class": "TEDBQuery",
+      "fmx_class": "TEDBQuery",
+      "action": "preserve",
+      "confidence": 68,
+      "notes": "ElevateDB query may be preserved.",
+      "manual_review_reason": "Review SQL, parameters, transactions, and update behavior."
+    },
+    {
+      "vcl_class": "TApolloDatabase",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "Apollo VCL data components wrap a legacy data engine and require package/platform review before preservation."
+    },
+    {
+      "vcl_class": "TApolloTable",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "Apollo table migration should be reviewed with the database-engine modernization plan."
+    },
+    {
+      "vcl_class": "TApolloQuery",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "Apollo query migration requires SQL, connection, and package review."
+    },
+    {
+      "vcl_class": "TABSDatabase",
+      "fmx_class": "TABSDatabase",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Absolute Database preservation depends on package/platform support and deployment needs."
+    },
+    {
+      "vcl_class": "TABSTable",
+      "fmx_class": "TABSTable",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Review table paths, encryption, indexes, and binding."
+    },
+    {
+      "vcl_class": "TABSQuery",
+      "fmx_class": "TABSQuery",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Review SQL dialect, parameters, and update behavior."
+    },
+    {
+      "vcl_class": "TDBISAMDatabase",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "DBISAM migration should be reviewed for engine version, platform support, and possible ElevateDB/FireDAC modernization."
+    },
+    {
+      "vcl_class": "TDBISAMTable",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "DBISAM table migration requires database-engine review."
+    },
+    {
+      "vcl_class": "TDBISAMQuery",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "DBISAM SQL migration requires dialect and package review."
+    },
+    {
+      "vcl_class": "TAdsConnection",
+      "action": "manual_review",
+      "confidence": 35,
+      "manual_review_reason": "Advantage Database Server is legacy/Windows-oriented in many projects and requires explicit migration planning."
+    },
+    {
+      "vcl_class": "TAdsTable",
+      "action": "manual_review",
+      "confidence": 35,
+      "manual_review_reason": "Advantage table migration requires database-engine review."
+    },
+    {
+      "vcl_class": "TAdsQuery",
+      "action": "manual_review",
+      "confidence": 35,
+      "manual_review_reason": "Advantage SQL migration requires database-engine review."
+    },
+    {
+      "vcl_class": "TIB_Connection",
+      "fmx_class": "TIB_Connection",
+      "action": "manual_review",
+      "confidence": 60,
+      "manual_review_reason": "IBObjects preservation depends on package support, transaction handling, and target-platform deployment."
+    },
+    {
+      "vcl_class": "TIB_Transaction",
+      "fmx_class": "TIB_Transaction",
+      "action": "manual_review",
+      "confidence": 60,
+      "manual_review_reason": "Review transaction scope and connection references."
+    },
+    {
+      "vcl_class": "TIB_Query",
+      "fmx_class": "TIB_Query",
+      "action": "manual_review",
+      "confidence": 60,
+      "manual_review_reason": "Review SQL, parameters, live queries, and dataset binding."
+    },
+    {
+      "vcl_class": "TIBOQuery",
+      "fmx_class": "TIBOQuery",
+      "action": "manual_review",
+      "confidence": 58,
+      "manual_review_reason": "TDataSet-compatible IBObjects query may be preservable but requires binding and package review."
+    },
+    {
+      "vcl_class": "TIBOTable",
+      "fmx_class": "TIBOTable",
+      "action": "manual_review",
+      "confidence": 58,
+      "manual_review_reason": "Review table metadata, indexes, and binding."
+    },
+    {
+      "vcl_class": "TIB_Grid",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "IBObjects visual/data-aware controls require manual FMX UI and binding redesign."
+    }
+  ]
+}

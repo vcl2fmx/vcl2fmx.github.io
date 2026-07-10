@@ -1,0 +1,1037 @@
+{
+  "pack_name": "DevExpress_MappingPack_v2",
+  "pack_id": "devexpress.complete.v2",
+  "vendor": "DevExpress",
+  "version": "2.0.0",
+  "description": "Complete merged mapping pack for DevExpress VCL controls. Combines the original base pack with supplemental entries covering color combo, currency edit, hyperlink edit, image combo, list view, progress bar, track bar, rating control, and scroll box.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TcxButton",
+      "fmx_class": "TButton",
+      "action": "convert",
+      "confidence": 90,
+      "notes": "Basic button behavior only. DevExpress glyphs, skins, and look-and-feel require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        },
+        {
+          "vcl": "Hint",
+          "fmx": "Hint"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxTextEdit",
+      "fmx_class": "TEdit",
+      "action": "convert",
+      "confidence": 90,
+      "notes": "Basic text entry only. Masks, repository items, button collections, and DevExpress style controllers require review.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        },
+        {
+          "vcl": "Hint",
+          "fmx": "Hint"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxDBTextEdit",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 85,
+      "notes": "Text editor can be represented by TEdit, but DevExpress data binding, repository items, and validation require review.",
+      "manual_review_reason": "Verify LiveBindings or data-aware conversion output for DataSource/DataField semantics.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxMemo",
+      "fmx_class": "TMemo",
+      "action": "convert",
+      "confidence": 90,
+      "notes": "Basic memo text only. DevExpress style, scrollbars, and repository settings require review.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Lines",
+          "fmx": "Lines"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxDBMemo",
+      "fmx_class": "TMemo",
+      "action": "partial",
+      "confidence": 85,
+      "notes": "Memo text can be represented by TMemo, but data binding and DevExpress editor options require review.",
+      "manual_review_reason": "Verify LiveBindings or data-aware conversion output for memo field semantics.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Lines",
+          "fmx": "Lines"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxLabel",
+      "fmx_class": "TLabel",
+      "action": "convert",
+      "confidence": 85,
+      "notes": "Caption/text and visibility are mapped. DevExpress appearance and style controller settings require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxCheckBox",
+      "fmx_class": "TCheckBox",
+      "action": "convert",
+      "confidence": 85,
+      "notes": "Basic checked/caption behavior only. Multi-state and style settings require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Checked",
+          "fmx": "IsChecked"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxDBCheckBox",
+      "fmx_class": "TCheckBox",
+      "action": "partial",
+      "confidence": 80,
+      "notes": "Basic checkbox shape can be represented by TCheckBox, but database binding and value mapping require review.",
+      "manual_review_reason": "Verify checked/unchecked database values and LiveBindings after conversion.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Checked",
+          "fmx": "IsChecked"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxComboBox",
+      "fmx_class": "TComboBox",
+      "action": "convert",
+      "confidence": 80,
+      "notes": "Basic items and selection behavior only. DevExpress item objects, filtering, and lookup behavior require review.",
+      "properties": [
+        {
+          "vcl": "Items",
+          "fmx": "Items"
+        },
+        {
+          "vcl": "ItemIndex",
+          "fmx": "ItemIndex"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxDBComboBox",
+      "fmx_class": "TComboBox",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Basic combo box UI can be represented by TComboBox, but data binding and value lists require review.",
+      "manual_review_reason": "Verify Items, ItemIndex, field value mapping, and LiveBindings after conversion.",
+      "properties": [
+        {
+          "vcl": "Items",
+          "fmx": "Items"
+        },
+        {
+          "vcl": "ItemIndex",
+          "fmx": "ItemIndex"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxPageControl",
+      "fmx_class": "TTabControl",
+      "action": "convert",
+      "confidence": 85,
+      "notes": "Pages map to FMX tab control structure. Images, styles, and owner-drawn tab behavior require review."
+    },
+    {
+      "vcl_class": "TcxTabSheet",
+      "fmx_class": "TTabItem",
+      "action": "convert",
+      "confidence": 90,
+      "notes": "Tab captions map to FMX tab text.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxMaskEdit",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Text box generated, but mask semantics are not automatically recreated.",
+      "manual_review_reason": "Recreate mask validation with FMX edit rules or custom validation code.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxDBMaskEdit",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 60,
+      "notes": "Text box generated, but mask and data-aware semantics require manual review.",
+      "manual_review_reason": "Recreate mask validation and verify LiveBindings/DataField behavior."
+    },
+    {
+      "vcl_class": "TcxDateEdit",
+      "fmx_class": "TDateEdit",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Date editor generated. DevExpress calendar buttons, formatting, null handling, and validation require review."
+    },
+    {
+      "vcl_class": "TcxTimeEdit",
+      "fmx_class": "TTimeEdit",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Time editor generated when FMX TTimeEdit is available. Formatting, null handling, and validation require review."
+    },
+    {
+      "vcl_class": "TcxSpinEdit",
+      "fmx_class": "TSpinBox",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Numeric spin input generated. Min/max, increment, display formatting, and validation require review."
+    },
+    {
+      "vcl_class": "TcxCalcEdit",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Plain edit generated. Calculator popup and numeric formatting are not recreated.",
+      "manual_review_reason": "Replace with a custom numeric editor or recreate calculator behavior manually."
+    },
+    {
+      "vcl_class": "TcxButtonEdit",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 50,
+      "notes": "Plain edit generated. Embedded editor buttons and button actions are not recreated.",
+      "manual_review_reason": "Add explicit FMX buttons or redesign the editor interaction."
+    },
+    {
+      "vcl_class": "TcxDBButtonEdit",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "Button editor plus data binding is too application-specific for safe automatic conversion."
+    },
+    {
+      "vcl_class": "TcxLookupComboBox",
+      "fmx_class": "TComboBox",
+      "action": "partial",
+      "confidence": 50,
+      "notes": "Combo box generated, but lookup list source, key/display fields, filtering, and popup behavior require review.",
+      "manual_review_reason": "Recreate lookup binding and display/key field behavior manually or through LiveBindings."
+    },
+    {
+      "vcl_class": "TcxDBLookupComboBox",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "Database lookup semantics are too application-specific for a basic automatic rule."
+    },
+    {
+      "vcl_class": "TcxRadioButton",
+      "fmx_class": "TRadioButton",
+      "action": "convert",
+      "confidence": 75,
+      "notes": "Basic radio button state and caption are mapped. Grouping semantics require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Checked",
+          "fmx": "IsChecked"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxRadioGroup",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "Radio group item layout and value semantics require a deliberate FMX design."
+    },
+    {
+      "vcl_class": "TcxGroupBox",
+      "fmx_class": "TGroupBox",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Container and caption can map to TGroupBox. DevExpress border/style details require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TdxToggleSwitch",
+      "fmx_class": "TSwitch",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Switch state can map to FMX TSwitch. Caption/label placement and DevExpress styling require review.",
+      "properties": [
+        {
+          "vcl": "Checked",
+          "fmx": "IsChecked"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TdxDBToggleSwitch",
+      "fmx_class": "TSwitch",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Switch UI can map to FMX TSwitch, but data-aware value mapping requires review.",
+      "manual_review_reason": "Verify LiveBindings and checked/unchecked database values."
+    },
+    {
+      "vcl_class": "TdxMemData",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "In-memory dataset usage may be replaceable with FireDAC memory tables, but field definitions and runtime population need review."
+    },
+    {
+      "vcl_class": "TdxLayoutControl",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "Only very simple layout cases are plausible; automatic conversion needs layout-tree support before generating FMX containers."
+    },
+    {
+      "vcl_class": "TcxGrid",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "DevExpress grids have view, column, repository, style, and data-controller behavior that cannot be safely mapped by a basic pack."
+    },
+    {
+      "vcl_class": "TcxGridLevel",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Grid level hierarchy must be reviewed with the owning TcxGrid."
+    },
+    {
+      "vcl_class": "TcxGridTableView",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Grid views require manual redesign or a custom tested mapping pack."
+    },
+    {
+      "vcl_class": "TcxGridDBTableView",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Data-aware grid views require manual redesign or a custom tested mapping pack."
+    },
+    {
+      "vcl_class": "TcxGridBandedTableView",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Banded grid views are report-only in the basic pack."
+    },
+    {
+      "vcl_class": "TcxGridDBBandedTableView",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Data-aware banded grid views are report-only in the basic pack."
+    },
+    {
+      "vcl_class": "TcxGridCardView",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Card views require manual FMX layout redesign."
+    },
+    {
+      "vcl_class": "TcxGridDBCardView",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Data-aware card views require manual FMX layout redesign."
+    },
+    {
+      "vcl_class": "TcxGridLayoutView",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Layout views are report-only in the basic pack."
+    },
+    {
+      "vcl_class": "TcxGridDBLayoutView",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Data-aware layout views are report-only in the basic pack."
+    },
+    {
+      "vcl_class": "TcxGridChartView",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Chart views require manual chart migration."
+    },
+    {
+      "vcl_class": "TcxGridDBChartView",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Data-aware chart views require manual chart migration."
+    },
+    {
+      "vcl_class": "TcxGridColumn",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Grid columns must be migrated together with their grid view."
+    },
+    {
+      "vcl_class": "TcxGridBand",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Grid bands must be migrated together with their banded grid view."
+    },
+    {
+      "vcl_class": "TcxTreeList",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "TreeList structure and data binding require a custom migration plan."
+    },
+    {
+      "vcl_class": "TcxDBTreeList",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Data-aware TreeList structure requires a custom migration plan."
+    },
+    {
+      "vcl_class": "TcxVerticalGrid",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Vertical grid rows, editors, and data binding require manual redesign."
+    },
+    {
+      "vcl_class": "TcxDBVerticalGrid",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Data-aware vertical grids require manual redesign."
+    },
+    {
+      "vcl_class": "TcxPivotGrid",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Pivot grid conversion is report-only in the starter pack."
+    },
+    {
+      "vcl_class": "TcxDBPivotGrid",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Data-aware pivot grid conversion is report-only in the starter pack."
+    },
+    {
+      "vcl_class": "TdxBarManager",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "DevExpress bar and ribbon systems require manual FMX navigation/menu redesign."
+    },
+    {
+      "vcl_class": "TdxBar",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "DevExpress bars require manual FMX menu/toolbutton redesign."
+    },
+    {
+      "vcl_class": "TdxBarButton",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Bar buttons must be migrated with their bar manager or ribbon context."
+    },
+    {
+      "vcl_class": "TdxBarSubItem",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Nested bar menu structures require manual FMX redesign."
+    },
+    {
+      "vcl_class": "TdxBarPopupMenu",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Popup menu structures require manual FMX menu redesign."
+    },
+    {
+      "vcl_class": "TdxRibbon",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Ribbon conversion is report-only in the starter pack."
+    },
+    {
+      "vcl_class": "TdxRibbonTab",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Ribbon tabs must be redesigned with the ribbon/navigation model."
+    },
+    {
+      "vcl_class": "TdxRibbonTabGroup",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Ribbon tab groups must be redesigned with the ribbon/navigation model."
+    },
+    {
+      "vcl_class": "TdxRibbonStatusBar",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Ribbon status bars require manual FMX status/navigation redesign."
+    },
+    {
+      "vcl_class": "TdxDockingManager",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Docking systems require manual FMX layout and window-management design."
+    },
+    {
+      "vcl_class": "TdxDockSite",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Dock sites require manual FMX layout design."
+    },
+    {
+      "vcl_class": "TdxDockPanel",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Dock panels require manual FMX layout design."
+    },
+    {
+      "vcl_class": "TdxLayoutDockSite",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Layout dock sites require manual FMX layout design."
+    },
+    {
+      "vcl_class": "TcxScheduler",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Scheduler conversion is report-only in the basic pack."
+    },
+    {
+      "vcl_class": "TcxSchedulerStorage",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Scheduler storage requires manual data-model migration."
+    },
+    {
+      "vcl_class": "TcxSchedulerDBStorage",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Data-aware scheduler storage requires manual data-model migration."
+    },
+    {
+      "vcl_class": "TdxGanttControl",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Gantt controls require manual migration."
+    },
+    {
+      "vcl_class": "TdxChartControl",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Chart controls require manual chart migration."
+    },
+    {
+      "vcl_class": "TdxGaugeControl",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Gauge controls require manual visual redesign."
+    },
+    {
+      "vcl_class": "TdxMapControl",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Map controls require manual platform/service migration."
+    },
+    {
+      "vcl_class": "TdxDashboardControl",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Dashboard controls require manual migration."
+    },
+    {
+      "vcl_class": "TdxBarCode",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Barcode controls may have FMX alternatives, but symbology and rendering must be reviewed."
+    },
+    {
+      "vcl_class": "TdxDBBarCode",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Data-aware barcode controls require manual rendering and binding review."
+    },
+    {
+      "vcl_class": "TdxTokenEdit",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Token editors require custom FMX interaction design."
+    },
+    {
+      "vcl_class": "TdxDBTokenEdit",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Data-aware token editors require custom FMX interaction and binding design."
+    },
+    {
+      "vcl_class": "TcxRichEdit",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Rich edit controls require manual document/editor migration."
+    },
+    {
+      "vcl_class": "TcxDBRichEdit",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Data-aware rich edit controls require manual document/editor and binding migration."
+    },
+    {
+      "vcl_class": "TdxSpellChecker",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Spell checker integration requires manual replacement."
+    },
+    {
+      "vcl_class": "TdxPDFViewer",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "PDF viewer conversion is report-only in the basic pack."
+    },
+    {
+      "vcl_class": "TdxSpreadSheet",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Spreadsheet controls require manual migration."
+    },
+    {
+      "vcl_class": "TdxSkinController",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "VCL skin systems do not directly translate to FMX styles."
+    },
+    {
+      "vcl_class": "TcxColorComboBox",
+      "fmx_class": "TComboBox",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Color selection combo items can map to TComboBox but color preview cells and DevExpress color palette behavior require review.",
+      "manual_review_reason": "Recreate color display logic using custom item painting or a color picker dialog in FMX.",
+      "properties": [
+        {
+          "vcl": "ItemIndex",
+          "fmx": "ItemIndex"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxCurrencyEdit",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Currency editor maps to TEdit for basic text entry. Currency formatting, null handling, and DevExpress validation require review.",
+      "manual_review_reason": "Implement currency formatting and validation manually or use a TNumberBox/TSpinBox with custom format string.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxHyperLinkEdit",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Hyperlink text box maps to TEdit for text content. Click/URL launch behavior and DevExpress hyperlink styling require manual wiring.",
+      "manual_review_reason": "Add OnClick handler to open the URL via TLauncher.LaunchURL or equivalent FMX approach.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxImageComboBox",
+      "fmx_class": "TComboBox",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Image combo box maps to TComboBox for basic item selection. Image list references and per-item image display cannot be auto-mapped.",
+      "manual_review_reason": "Review item images, display text, and any ImageList references. Recreate image display using custom item templates.",
+      "properties": [
+        {
+          "vcl": "ItemIndex",
+          "fmx": "ItemIndex"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxListView",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "DevExpress ListView structure, item templates, groups, virtual mode, and custom drawing require manual FMX redesign. Consider FMX TListView with custom item appearances."
+    },
+    {
+      "vcl_class": "TcxProgressBar",
+      "fmx_class": "TProgressBar",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Basic progress value and range map to FMX TProgressBar. DevExpress styling, text overlay, and animation require review.",
+      "properties": [
+        {
+          "vcl": "Position",
+          "fmx": "Value"
+        },
+        {
+          "vcl": "Min",
+          "fmx": "Min"
+        },
+        {
+          "vcl": "Max",
+          "fmx": "Max"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TcxTrackBar",
+      "fmx_class": "TTrackBar",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Trackbar value and range map conceptually to FMX TTrackBar. Tick marks, DevExpress skin, and custom thumb rendering require review.",
+      "properties": [
+        {
+          "vcl": "Position",
+          "fmx": "Value"
+        },
+        {
+          "vcl": "Min",
+          "fmx": "Min"
+        },
+        {
+          "vcl": "Max",
+          "fmx": "Max"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TdxRatingControl",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Rating/star controls have no direct FMX stock equivalent. Requires custom FMX visual design using TImage or TPath components for star rendering."
+    },
+    {
+      "vcl_class": "TdxScrollBox",
+      "fmx_class": "TScrollBox",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Scroll container behavior maps to FMX TScrollBox. DevExpress style, virtual scrolling, and touch behavior require review.",
+      "properties": [
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    }
+  ]
+}

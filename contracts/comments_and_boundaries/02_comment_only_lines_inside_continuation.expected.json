@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\02_comment_only_lines_inside_continuation.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["comment line inside disabled block"],
+  "expected_units_added": [],
+  "expected_units_absent": [],
+  "expected_output_patterns": ["comment-only source line must remain commented|WM_CLOSE|Original: if True then SendMessage"],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": ["WM_CLOSE|SendMessage|Windows messaging"],
+  "forbidden_report_patterns": []
+}

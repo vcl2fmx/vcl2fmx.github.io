@@ -1,0 +1,22 @@
+{
+  "input_file": "contracts\\winapi_messages\\02_multiline_real_sendmessage.pas",
+  "expected_status": "converted",
+  "expected_conversions": [
+    "multiline SendMessage converted or reported"
+  ],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.StdCtrls"
+  ],
+  "expected_output_patterns": [
+    "GeneratedFMXMemoVScroll|Original: SendMessage|WM_VSCROLL"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.StdCtrls\\b"
+  ],
+  "expected_report_patterns": [
+    "SendMessage|WM_VSCROLL|Windows message"
+  ],
+  "forbidden_report_patterns": []
+}

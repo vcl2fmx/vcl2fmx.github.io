@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\colors\\04_real_cla_lowercase.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": ["unit ContractRealClaLowercase"],
+  "forbidden_output_patterns": [
+    "System\\.UIConsts",
+    "System\\.UITypes"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

@@ -1,0 +1,35 @@
+# Default text handling
+* text=auto
+
+# Delphi/source text files
+*.pas text
+*.dpr text
+*.dproj text
+*.groupproj text
+*.fmx text
+*.dfm text
+*.rc text
+*.h text
+*.txt text
+*.md text
+*.html text
+*.css text
+*.json text
+*.xml text
+*.svg text
+
+# Binary assets and documents
+*.res binary
+*.ico binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.docx binary
+*.zip binary
+*.7z binary
+*.rar binary
+*.db binary
+*.sqlite binary
+*.sqlite3 binary

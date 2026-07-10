@@ -1,0 +1,9 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\15_directive_between_call_lines.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["directive inside message call"],
+  "expected_output_patterns": ["WM_CLOSE|WM_USER|Original: SendMessage|\\{\\$IFDEF MSWINDOWS\\}"],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": "WM_CLOSE|WM_USER|SendMessage|Windows messaging",
+  "forbidden_report_patterns": []
+}

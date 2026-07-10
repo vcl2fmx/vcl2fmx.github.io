@@ -1,0 +1,487 @@
+{
+  "pack_name": "TMS_MappingPack_v2",
+  "pack_id": "tms.complete.v2",
+  "vendor": "TMS Software",
+  "version": "2.0.0",
+  "description": "Complete merged mapping pack for TMS VCL and FNC controls. Combines the original base pack with supplemental entries covering Adv date picker, rich editor, splitter, status bar, trackbar, progress bar, and the full TMS FNC framework-neutral control family.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TAdvEdit",
+      "fmx_class": "TEdit",
+      "action": "convert",
+      "confidence": 85,
+      "notes": "Basic edit text maps well. TMS lookup buttons, formatting, validation, and style controller behavior require review.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        },
+        {
+          "vcl": "Hint",
+          "fmx": "Hint"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        },
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TAdvMemo",
+      "fmx_class": "TMemo",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Basic memo text can map to TMemo. Syntax highlighting, gutter, code-folding, and TMS memo services require review.",
+      "manual_review_reason": "Review advanced memo/editor features before relying on the generated FMX memo.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Lines",
+          "fmx": "Lines"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TAdvComboBox",
+      "fmx_class": "TComboBox",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Basic items and selection can map. Attached labels, custom drawing, lookup behavior, and style details require review.",
+      "properties": [
+        {
+          "vcl": "Items",
+          "fmx": "Items"
+        },
+        {
+          "vcl": "ItemIndex",
+          "fmx": "ItemIndex"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TAdvCheckBox",
+      "fmx_class": "TCheckBox",
+      "action": "convert",
+      "confidence": 80,
+      "notes": "Basic caption and checked state map. Themed glyphs and HTML caption rendering require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Checked",
+          "fmx": "IsChecked"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TAdvGlowButton",
+      "fmx_class": "TButton",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Button behavior can map, but glow/Office styling, images, and layout options require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        },
+        {
+          "vcl": "Hint",
+          "fmx": "Hint"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TAdvPanel",
+      "fmx_class": "TLayout",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Container behavior can map to TLayout. Border, caption, gradients, and TMS styling require review.",
+      "properties": [
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TAdvPageControl",
+      "fmx_class": "TTabControl",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Page structure can map to TTabControl. Images, Office tabs, close buttons, and custom tab rendering require review."
+    },
+    {
+      "vcl_class": "TAdvTabSheet",
+      "fmx_class": "TTabItem",
+      "action": "partial",
+      "confidence": 80,
+      "notes": "Tab item caption can map. TMS tab options require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TAdvSpinEdit",
+      "fmx_class": "TSpinBox",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Numeric spin input can map. Min/max/increment, formatting, and validation require review."
+    },
+    {
+      "vcl_class": "TAdvListBox",
+      "fmx_class": "TListBox",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Simple list items may map. HTML, images, checkboxes, and owner-draw behavior require review."
+    },
+    {
+      "vcl_class": "TAdvStringGrid",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "TAdvStringGrid has rich cell editors, sorting, filtering, printing, HTML, and owner-draw behavior. It needs a tested grid-specific mapping pack."
+    },
+    {
+      "vcl_class": "TDBAdvGrid",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Data-aware TMS grids require manual data-binding and column/editor migration."
+    },
+    {
+      "vcl_class": "TAdvColumnGrid",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Column grid behavior requires grid-specific migration."
+    },
+    {
+      "vcl_class": "TAdvTreeView",
+      "action": "detect_only",
+      "confidence": 30,
+      "manual_review_reason": "Tree node storage, images, checkboxes, and custom drawing require manual review."
+    },
+    {
+      "vcl_class": "TAdvListView",
+      "action": "detect_only",
+      "confidence": 30,
+      "manual_review_reason": "Advanced list view appearance and item templates require manual review."
+    },
+    {
+      "vcl_class": "TPlanner",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Planner/scheduler conversion is report-only in the basic pack."
+    },
+    {
+      "vcl_class": "TDBPlanner",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Data-aware planner conversion requires manual scheduler/data-model migration."
+    },
+    {
+      "vcl_class": "TAdvToolBar",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Toolbars require manual FMX action/menu redesign."
+    },
+    {
+      "vcl_class": "TAdvOfficePager",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Office pager/ribbon-like navigation requires manual FMX redesign."
+    },
+    {
+      "vcl_class": "TAdvSmoothListBox",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Smooth list item templates and animation require manual review."
+    },
+    {
+      "vcl_class": "TAdvTableView",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "TableView item templates and interaction model require manual review."
+    },
+    {
+      "vcl_class": "TTMSFNCGrid",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "TMS FNC Grid is framework-neutral and may be usable in FMX if the project owns and references the TMS FNC packages.",
+      "manual_review_reason": "Verify TMS FNC units/packages and target-platform support."
+    },
+    {
+      "vcl_class": "TTMSFNCChart",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "TMS FNC Chart is framework-neutral and may be usable in FMX if the project owns and references the TMS FNC packages.",
+      "manual_review_reason": "Verify TMS FNC units/packages and target-platform support."
+    },
+    {
+      "vcl_class": "TTMSFNCMaps",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "TMS FNC Maps is framework-neutral, but service keys and platform setup require review.",
+      "manual_review_reason": "Verify mapping service configuration and FMX package references."
+    },
+    {
+      "vcl_class": "TTMSFNCTreeView",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "TMS FNC TreeView is framework-neutral and may be usable in FMX with the proper packages.",
+      "manual_review_reason": "Verify package references and node population behavior."
+    },
+    {
+      "vcl_class": "TTMSFNCPlanner",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "TMS FNC Planner is framework-neutral, but scheduling/data-model behavior needs review.",
+      "manual_review_reason": "Verify package references, data binding, and target-platform support."
+    },
+    {
+      "vcl_class": "TAdvDateTimePicker",
+      "fmx_class": "TDateEdit",
+      "action": "partial",
+      "confidence": 60,
+      "notes": "Date/time picker UI maps to FMX TDateEdit for basic date selection. Time portion, null value handling, formatting, and TMS styling require review.",
+      "manual_review_reason": "Verify date/time formatting, null date behavior, and whether a combined date+time editor is needed in FMX."
+    },
+    {
+      "vcl_class": "TAdvRichEditor",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "TMS rich editor features (formatting, hyperlinks, tables, spell check) do not map to stock FMX TMemo. Review TRichView FMX edition or another FMX-capable rich editor as a replacement."
+    },
+    {
+      "vcl_class": "TAdvSplitter",
+      "fmx_class": "TSplitter",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Splitter resize behavior maps to FMX TSplitter. TMS hover styling and live resize options require review.",
+      "properties": [
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TAdvStatusBar",
+      "action": "detect_only",
+      "confidence": 35,
+      "manual_review_reason": "TMS status bar panels, owner-drawn panes, and progress indicators require manual FMX layout redesign using TLayout and TLabel combinations."
+    },
+    {
+      "vcl_class": "TAdvTrackBar",
+      "fmx_class": "TTrackBar",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Basic trackbar value can map to FMX TTrackBar. TMS tick marks, styling, and range label options require review.",
+      "properties": [
+        {
+          "vcl": "Position",
+          "fmx": "Value"
+        },
+        {
+          "vcl": "Min",
+          "fmx": "Min"
+        },
+        {
+          "vcl": "Max",
+          "fmx": "Max"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TAdvProgressBar",
+      "fmx_class": "TProgressBar",
+      "action": "partial",
+      "confidence": 68,
+      "notes": "Basic progress value maps to FMX TProgressBar. TMS gradient, text overlay, and animation styling require review.",
+      "properties": [
+        {
+          "vcl": "Position",
+          "fmx": "Value"
+        },
+        {
+          "vcl": "Min",
+          "fmx": "Min"
+        },
+        {
+          "vcl": "Max",
+          "fmx": "Max"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TFNCDatePicker",
+      "fmx_class": "TDateEdit",
+      "action": "preserve",
+      "confidence": 72,
+      "notes": "TMS FNC DatePicker is framework-neutral and may be preserved when the target project references the correct TMS FNC packages for FMX.",
+      "manual_review_reason": "Verify TMS FNC package installation, unit references (FMX.TMSFNCDatePicker), and target-platform support."
+    },
+    {
+      "vcl_class": "TFNCEdit",
+      "fmx_class": "TEdit",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "TMS FNC Edit is framework-neutral and may be preserved with TMS FNC FMX packages installed.",
+      "manual_review_reason": "Verify FNC unit references and package deployment."
+    },
+    {
+      "vcl_class": "TFNCButton",
+      "fmx_class": "TButton",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "TMS FNC Button is framework-neutral and may be preserved with TMS FNC FMX packages installed.",
+      "manual_review_reason": "Verify FNC unit references and package deployment."
+    },
+    {
+      "vcl_class": "TFNCLabel",
+      "fmx_class": "TLabel",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "TMS FNC Label is framework-neutral and may be preserved with TMS FNC FMX packages installed.",
+      "manual_review_reason": "Verify FNC unit references and package deployment."
+    },
+    {
+      "vcl_class": "TFNCListBox",
+      "fmx_class": "TListBox",
+      "action": "preserve",
+      "confidence": 72,
+      "notes": "TMS FNC ListBox is framework-neutral and may be preserved with TMS FNC FMX packages installed.",
+      "manual_review_reason": "Verify FNC unit references, item templates, and package deployment."
+    },
+    {
+      "vcl_class": "TFNCComboBox",
+      "fmx_class": "TComboBox",
+      "action": "preserve",
+      "confidence": 72,
+      "notes": "TMS FNC ComboBox is framework-neutral and may be preserved with TMS FNC FMX packages installed.",
+      "manual_review_reason": "Verify FNC unit references and package deployment."
+    },
+    {
+      "vcl_class": "TFNCMemo",
+      "fmx_class": "TMemo",
+      "action": "preserve",
+      "confidence": 72,
+      "notes": "TMS FNC Memo is framework-neutral and may be preserved with TMS FNC FMX packages installed.",
+      "manual_review_reason": "Verify FNC unit references and package deployment."
+    },
+    {
+      "vcl_class": "TFNCPanel",
+      "fmx_class": "TLayout",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "TMS FNC Panel is framework-neutral and may be preserved with TMS FNC FMX packages installed.",
+      "manual_review_reason": "Verify FNC unit references, border/caption behavior, and package deployment."
+    },
+    {
+      "vcl_class": "TFNCPageControl",
+      "fmx_class": "TTabControl",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "TMS FNC PageControl is framework-neutral and may be preserved with TMS FNC FMX packages installed.",
+      "manual_review_reason": "Verify FNC unit references, tab item structure, and package deployment."
+    }
+  ]
+}

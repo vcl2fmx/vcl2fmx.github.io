@@ -1,0 +1,1 @@
+{"input_file":"contracts\\winapi_messages\\33_sendmessage_lvm_getitemcount.pas","expected_status":"converted","expected_output_patterns":["LVM_GETITEMCOUNT","Use FMX list view"],"expected_report_patterns":["Windows messaging","LVM_GETITEMCOUNT"],"forbidden_output_patterns":[],"forbidden_report_patterns":[]}

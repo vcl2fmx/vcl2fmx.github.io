@@ -1,0 +1,1 @@
+{"input_file":"contracts\\project_files\\03_project_with_resource\\ProjectWithResource.dpr","expected_status":"converted","expected_output_patterns":["program ProjectWithResource"],"forbidden_output_patterns":[],"expected_report_patterns":[],"forbidden_report_patterns":[]}

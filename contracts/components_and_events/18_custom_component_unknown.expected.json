@@ -1,0 +1,14 @@
+{
+  "input_file": "contracts\\components_and_events\\18_custom_component_unknown.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractCustomComponentUnknown",
+    "TMyLegacyWidget = class\\(TComponent\\)",
+    "MyLegacyWidget1: TMyLegacyWidget"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Forms\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

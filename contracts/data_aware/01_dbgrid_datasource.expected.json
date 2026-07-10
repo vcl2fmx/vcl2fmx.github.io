@@ -1,0 +1,15 @@
+{
+  "input_file": "contracts\\data_aware\\01_dbgrid_datasource.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractDBGridDataSource",
+    "DBGrid1: TStringGrid",
+    "\\bDataSource1: TDataSource"
+  ],
+  "forbidden_output_patterns": [
+    "\\bTDBGrid\\b",
+    "\\bVcl\\.DBGrids\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

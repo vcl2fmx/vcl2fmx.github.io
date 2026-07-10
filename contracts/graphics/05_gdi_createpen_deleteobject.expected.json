@@ -1,0 +1,14 @@
+{
+  "input_file": "contracts\\graphics\\05_gdi_createpen_deleteobject.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractGDICreatePenDeleteObject",
+    "FMX manual review: replace GDI pen/brush/object code with Canvas\\.Stroke and Canvas\\.Fill settings"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "GDI drawing API requires manual FMX Canvas conversion",
+    "Graphics or GDI usage"
+  ],
+  "forbidden_report_patterns": []
+}

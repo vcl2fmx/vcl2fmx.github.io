@@ -1,0 +1,17 @@
+﻿object ImageListForm: TImageListForm
+  Caption = 'Images'
+  Left = 0
+  Top = 0
+  ClientWidth = 300
+  ClientHeight = 200
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+  object ImageList1: TImageList
+    Top = 24
+    Left = 24
+  end
+
+end

@@ -1,0 +1,29 @@
+{
+  "input_file": "contracts\\winapi_messages\\03_user_defined_sendmessage_call.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Winapi.Messages",
+    "Winapi.Windows",
+    "System.Messaging",
+    "FMXMessageBridge"
+  ],
+  "expected_output_patterns": [
+    "procedure TContractUserDefinedSendMessageCall\\.SendMessage\\(const AText: string\\)",
+    "SendMessage\\('status updated'\\)"
+  ],
+  "forbidden_output_patterns": [
+    "FMXMessageBridge",
+    "System\\.Messaging",
+    "TODO.*SendMessage"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": [
+    "Windows messaging",
+    "Windows messages or message handlers",
+    "message-based behavior",
+    "SendMessage.*manual review"
+  ]
+}

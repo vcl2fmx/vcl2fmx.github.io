@@ -1,0 +1,24 @@
+{
+  "input_file": "contracts\\components_and_events\\02_wndproc_override.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [
+    "WndProc override"
+  ],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "FMX manual review: procedure WndProc\\(var Msg: TMessage\\); override;",
+    "FMX: if Msg\\.Msg = WM_SIZE then -> use TMessageManager",
+    "Caption := 'sized'"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Forms\\b"
+  ],
+  "expected_report_patterns": [
+    "WndProc|WM_SIZE|Windows messages"
+  ],
+  "forbidden_report_patterns": []
+}

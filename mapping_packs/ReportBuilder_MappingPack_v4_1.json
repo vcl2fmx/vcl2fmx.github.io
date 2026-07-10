@@ -1,0 +1,82 @@
+{
+  "pack_name": "ReportBuilder_MappingPack_v2",
+  "pack_id": "reportbuilder.mapping.v2",
+  "vendor": "Digital Metaphors ReportBuilder",
+  "version": "2.0.0",
+  "description": "Detection pack for ReportBuilder reporting components. ReportBuilder reports are design/report artifacts rather than ordinary visual controls, so this pack reports them for migration planning and does not generate FMX replacements.",
+  "mode": "detection",
+  "rules": [
+    {
+      "vcl_class": "TppReport",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "ReportBuilder reports require report-engine migration or preservation outside the FMX form conversion path."
+    },
+    {
+      "vcl_class": "TppDBPipeline",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Data pipeline must be reviewed with the report migration strategy."
+    },
+    {
+      "vcl_class": "TppBDEPipeline",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "BDE-based report pipelines require database-engine modernization review."
+    },
+    {
+      "vcl_class": "TppDesigner",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Runtime report designer UI is not safe for automatic FMX conversion."
+    },
+    {
+      "vcl_class": "TppViewer",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Report preview/viewer UI requires report-engine-specific FMX replacement or manual redesign."
+    },
+    {
+      "vcl_class": "TppArchiveReader",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Archive reading/preview should be reviewed with reporting deployment requirements."
+    },
+    {
+      "vcl_class": "TppSystemVariable",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Report layout components belong to the report definition and should be handled by a report-specific migration path."
+    },
+    {
+      "vcl_class": "TppLabel",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Report labels should remain within the report definition or be migrated by a report converter, not the form converter."
+    },
+    {
+      "vcl_class": "TppDBText",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Report data-bound fields require report-specific migration."
+    },
+    {
+      "vcl_class": "TppImage",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Report images require report definition review."
+    },
+    {
+      "vcl_class": "TppSubReport",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Subreports require report-structure review."
+    },
+    {
+      "vcl_class": "TppJITPipeline",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "JIT pipeline event code must be reviewed manually."
+    }
+  ]
+}

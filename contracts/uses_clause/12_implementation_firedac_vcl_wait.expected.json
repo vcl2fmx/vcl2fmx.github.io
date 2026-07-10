@@ -1,0 +1,19 @@
+{
+  "input_file": "contracts\\uses_clause\\12_implementation_firedac_vcl_wait.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "FireDAC.VCLUI.Wait"
+  ],
+  "expected_output_patterns": [
+    "System.SysUtils",
+    "System.Classes"
+  ],
+  "forbidden_output_patterns": [
+    "FireDAC\\.VCLUI\\.Wait"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

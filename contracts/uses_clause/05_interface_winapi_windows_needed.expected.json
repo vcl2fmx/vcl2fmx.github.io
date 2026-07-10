@@ -1,0 +1,10 @@
+{
+  "input_file": "contracts\\uses_clause\\05_interface_winapi_windows_needed.pas",
+  "expected_status": "converted",
+  "expected_units_added": ["Winapi.Windows"],
+  "expected_units_absent": ["Winapi.Messages"],
+  "expected_output_patterns": ["\\bWinapi\\.Windows\\b", "CreateFile", "CloseHandle"],
+  "forbidden_output_patterns": ["\\bWinapi\\.Messages\\b"],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

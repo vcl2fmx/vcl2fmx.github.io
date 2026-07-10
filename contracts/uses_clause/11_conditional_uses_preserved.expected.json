@@ -1,0 +1,20 @@
+{
+  "input_file": "contracts\\uses_clause\\11_conditional_uses_preserved.pas",
+  "expected_status": "success",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Winapi.Messages"
+  ],
+  "expected_output_patterns": [
+    "\\{\\$IFDEF MSWINDOWS\\}",
+    "Winapi.Windows",
+    "\\{\\$ENDIF\\}"
+  ],
+  "forbidden_output_patterns": [
+    "Winapi.Messages"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

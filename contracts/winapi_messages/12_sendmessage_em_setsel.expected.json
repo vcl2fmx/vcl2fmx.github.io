@@ -1,0 +1,22 @@
+{
+  "input_file": "contracts\\winapi_messages\\12_sendmessage_em_setsel.pas",
+  "expected_status": "converted",
+  "expected_conversions": [
+    "EM_SETSEL SendMessage converted or reported"
+  ],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.StdCtrls"
+  ],
+  "expected_output_patterns": [
+    "EM_SETSEL|SelStart|SelLength|Original: SendMessage|SendMessage\\("
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.StdCtrls\\b"
+  ],
+  "expected_report_patterns": [
+    "EM_SETSEL|SendMessage|Windows message"
+  ],
+  "forbidden_report_patterns": []
+}

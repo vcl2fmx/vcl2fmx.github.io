@@ -1,0 +1,16 @@
+{
+  "input_file": "contracts\\third_party\\01_devexpress_grid_name.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractDevExpressGridName",
+    "cxGrid1: TcxGrid",
+    "\\bcxGrid\\b"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\."
+  ],
+  "expected_report_patterns": [
+    "DevExpress_MappingPack_v4_1"
+  ],
+  "forbidden_report_patterns": []
+}

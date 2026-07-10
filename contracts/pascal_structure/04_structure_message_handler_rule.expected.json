@@ -1,0 +1,24 @@
+{
+  "input_file": "contracts\\pascal_structure\\04_structure_message_handler_rule.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [
+    "Pascal structure message handler declaration"
+  ],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "message WM_SYSCOMMAND"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Forms\\b"
+  ],
+  "expected_report_patterns": [
+    "Pascal structure message handler declaration",
+    "WM_SYSCOMMAND",
+    "Structure"
+  ],
+  "forbidden_report_patterns": []
+}

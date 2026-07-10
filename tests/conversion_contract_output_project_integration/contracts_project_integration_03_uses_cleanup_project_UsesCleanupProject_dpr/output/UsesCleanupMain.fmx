@@ -1,0 +1,22 @@
+﻿object UsesCleanupForm: TUsesCleanupForm
+  Caption = 'Uses Cleanup Project'
+  Left = 0
+  Top = 0
+  ClientWidth = 280
+  ClientHeight = 160
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+  object Button1: TButton
+    Size.Width = 120.000000000000000000
+    Text = 'uses cleanup'
+    Position.X = 24.000000000000000000
+    Position.Y = 24.000000000000000000
+    Size.Height = 36.000000000000000000
+    TabOrder = 0
+    Size.PlatformDefault = False
+  end
+
+end

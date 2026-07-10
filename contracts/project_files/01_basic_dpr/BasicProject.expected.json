@@ -1,0 +1,1 @@
+{"input_file":"contracts\\project_files\\01_basic_dpr\\BasicProject.dpr","expected_status":"converted","expected_output_patterns":["program BasicProject"],"forbidden_output_patterns":[],"expected_report_patterns":[],"forbidden_report_patterns":[]}

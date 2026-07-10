@@ -1,0 +1,20 @@
+﻿object ContractMappingAssistancePrefixForm: TContractMappingAssistancePrefixForm
+  Caption = 'Mapping Assistance'
+  Left = 0
+  Top = 0
+  ClientWidth = 320
+  ClientHeight = 240
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+  object AdvMystery1: TControl
+    Position.X = 12.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.Width = 120.000000000000000000
+    Position.Y = 12.000000000000000000
+    Size.PlatformDefault = False
+  end
+
+end

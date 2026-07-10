@@ -1,0 +1,34 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\20_function_boundary_with_generics.pas",
+  "expected_status": "converted",
+  "expected_conversions": [
+    {
+      "category": "commented-out unsupported VCL/Winapi behavior",
+      "symbol": "SendMessage"
+    }
+  ],
+  "expected_manual_reviews": [
+    {
+      "category": "manual-review report only",
+      "symbol": "SendMessage"
+    }
+  ],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Winapi.Messages"
+  ],
+  "expected_output_patterns": [
+    "FMX: WM_CLOSE - Use Close or OnCloseQuery rather than posting WM_CLOSE.",
+    "Original: SendMessage\\(FHandle, WM_CLOSE, 0, 0\\)",
+    "function TContractFunctionBoundaryWithGenerics.Values: TArray<Integer>;"
+  ],
+  "forbidden_output_patterns": [
+    "FMX manual review: function TContractFunctionBoundaryWithGenerics.Values"
+  ],
+  "expected_report_patterns": [
+    "SendMessage",
+    "Windows messaging",
+    "Windows message API replaced"
+  ],
+  "forbidden_report_patterns": []
+}

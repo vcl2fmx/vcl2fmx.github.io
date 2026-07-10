@@ -1,0 +1,25 @@
+VCL to FMX Converter V3
+Local Toolchain Paths
+Recorded: 2026-04-24
+
+Delphi 13.1 / RAD Studio 37.0
+
+Win32 command-line compiler:
+C:\Program Files (x86)\Embarcadero\Studio\37.0\bin\dcc32.exe
+
+Win64 command-line compiler:
+C:\Program Files (x86)\Embarcadero\Studio\37.0\bin64\dcc64.exe
+
+RAD Studio environment setup:
+C:\Program Files (x86)\Embarcadero\Studio\37.0\bin\rsvars.bat
+
+RAD Studio IDE:
+C:\Program Files (x86)\Embarcadero\Studio\37.0\bin\bds.exe
+
+MSBuild:
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe
+
+Notes:
+- dcc32.exe was invoked successfully and reported:
+  Embarcadero Delphi for Win32 compiler version 37.0
+- For future project-level verification, prefer MSBuild over raw dcc32.

@@ -1,0 +1,12 @@
+{
+  "input_file": "contracts\\components_and_events\\14_border_style_window_state.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": ["FMX.Forms"],
+  "expected_units_absent": ["Vcl.Forms"],
+  "expected_output_patterns": ["BorderStyle := bsDialog", "WindowState := TWindowState.wsMaximized"],
+  "forbidden_output_patterns": ["Vcl\\.Forms"],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

@@ -1,0 +1,25 @@
+{
+  "input_file": "contracts\\components_and_events\\03_non_message_domain_methods.pas",
+  "expected_status": "success",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Winapi.Messages",
+    "Winapi.Windows",
+    "System.Messaging",
+    "FMXMessageBridge"
+  ],
+  "expected_output_patterns": [
+    "procedure TContractNonMessageDomainMethods.DispatchMessage",
+    "procedure TContractNonMessageDomainMethods.TranslateMessage",
+    "procedure TContractNonMessageDomainMethods.PeekMessage"
+  ],
+  "forbidden_output_patterns": [
+    "FMX manual review: Winapi call requires redesign or platform service"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": [
+    "Windows messaging"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "input_file": "contracts\\graphics\\04_gdi_getdc_release.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractGDIGetDCRelease",
+    "FMX manual review: move this drawing code to an FMX OnPaint handler",
+    "FMX manual review: remove this paired Windows paint/DC cleanup"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "GDI drawing API requires manual FMX Canvas conversion",
+    "Graphics or GDI usage"
+  ],
+  "forbidden_report_patterns": []
+}

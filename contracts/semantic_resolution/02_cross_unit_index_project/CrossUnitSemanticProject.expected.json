@@ -1,0 +1,13 @@
+{
+  "input_file": "contracts\\semantic_resolution\\02_cross_unit_index_project\\CrossUnitSemanticProject.dpr",
+  "copy_case_directory": true,
+  "expected_status": "converted",
+  "expected_output_patterns": ["program CrossUnitSemanticProject"],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "Cross-unit semantic index built",
+    "2 classes",
+    "2 methods"
+  ],
+  "forbidden_report_patterns": []
+}

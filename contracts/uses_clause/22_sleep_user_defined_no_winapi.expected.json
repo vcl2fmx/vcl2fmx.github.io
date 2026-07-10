@@ -1,0 +1,13 @@
+{
+  "input_file": "contracts\\uses_clause\\22_sleep_user_defined_no_winapi.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractSleepUserDefinedNoWinapi",
+    "MySleep\\(100\\)"
+  ],
+  "forbidden_output_patterns": [
+    "\\bWinapi\\.Windows\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

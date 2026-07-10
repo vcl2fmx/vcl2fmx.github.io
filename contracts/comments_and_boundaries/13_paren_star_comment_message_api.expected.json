@@ -1,0 +1,12 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\13_paren_star_comment_message_api.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": ["Winapi.Messages", "Winapi.Windows", "System.Messaging", "FMXMessageBridge"],
+  "expected_output_patterns": ["Writeln\\('paren star comment only'\\)"],
+  "forbidden_output_patterns": ["\\bWinapi\\.Messages\\b", "\\bWinapi\\.Windows\\b", "Original: .*PostMessage"],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": ["Windows messaging", "message-based behavior"]
+}

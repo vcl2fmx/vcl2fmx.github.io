@@ -1,0 +1,12 @@
+{
+  "input_file": "contracts\\components_and_events\\12_media_player_notify.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": ["FMX.Forms"],
+  "expected_units_absent": ["Vcl.Forms", "Vcl.MPlayer"],
+  "expected_output_patterns": ["MediaPlayer1: TMediaPlayer", "MediaPlayer1.Notify := True"],
+  "forbidden_output_patterns": ["Vcl\\.Forms", "Vcl\\.MPlayer"],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

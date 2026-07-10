@@ -1,0 +1,42 @@
+﻿object RealWorldForm: TRealWorldForm
+  Caption = 'Real World Report Shape'
+  Left = 0
+  Top = 0
+  ClientWidth = 460
+  ClientHeight = 300
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+  object Memo1: TMemo
+    Lines.Strings = (
+      'real project shape'
+    )
+    Size.Width = 220.000000000000000000
+    Position.X = 16.000000000000000000
+    Position.Y = 16.000000000000000000
+    Size.Height = 120.000000000000000000
+    TabOrder = 0
+    Size.PlatformDefault = False
+  end
+
+  object StringGrid1: TStringGrid
+    Size.Width = 400.000000000000000000
+    RowCount = 4
+    Position.X = 16.000000000000000000
+    Position.Y = 160.000000000000000000
+    Size.Height = 100.000000000000000000
+    TabOrder = 1
+    Size.PlatformDefault = False
+    object StringGrid1Column1: TStringColumn
+      Header = 'Column 1'
+      Width = 80.000000000000000000
+    end
+    object StringGrid1Column2: TStringColumn
+      Header = 'Column 2'
+      Width = 80.000000000000000000
+    end
+  end
+
+end

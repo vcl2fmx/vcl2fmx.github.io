@@ -1,0 +1,22 @@
+{
+  "input_file": "contracts\\project_integration\\01_include_project\\IncludeProblemProject.dpr",
+  "copy_case_directory": true,
+  "skip_generated_compile": true,
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "program IncludeProblemProject",
+    "unit IncludeProblemMain",
+    "ProjectNestedBValue",
+    "Café déjà vu"
+  ],
+  "expected_report_patterns": [
+    "Pascal include directive",
+    "MissingContract\\.inc",
+    "Pascal include outside source folder",
+    "Recursive Pascal include loop detected"
+  ],
+  "forbidden_output_patterns": [],
+  "forbidden_report_patterns": [
+    "Pascal include depth guard"
+  ]
+}

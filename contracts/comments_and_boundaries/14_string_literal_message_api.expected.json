@@ -1,0 +1,29 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\14_string_literal_message_api.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Winapi.Messages",
+    "Winapi.Windows",
+    "System.Messaging",
+    "FMXMessageBridge"
+  ],
+  "expected_output_patterns": [
+    "Writeln\\('SendMessage\\(Handle, WM_CLOSE, 0, 0\\)'\\)"
+  ],
+  "forbidden_output_patterns": [
+    "\\bWinapi\\.Messages\\b",
+    "\\bWinapi\\.Windows\\b",
+    "System\\.Classes\\s+type",
+    "FMXMessageBridge",
+    "System\\.Messaging"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": [
+    "Windows messaging",
+    "Windows messages or message handlers",
+    "message-based behavior"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "input_file": "contracts\\colors\\10_alpha_color_type.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractAlphaColorType",
+    "System\\.UITypes",
+    "var C: TAlphaColor"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

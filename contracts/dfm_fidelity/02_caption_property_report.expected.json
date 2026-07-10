@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\dfm_fidelity\\02_caption_property_report.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": ["object Panel1: TPanel"],
+  "forbidden_output_patterns": ["Important panel caption"],
+  "expected_report_patterns": [
+    "DFM/FMXL property fidelity check",
+    "Panel1.Caption value 'Important panel caption'"
+  ],
+  "forbidden_report_patterns": []
+}

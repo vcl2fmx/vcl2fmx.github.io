@@ -1,0 +1,109 @@
+{
+  "pack_name": "Imaging_PDF_MappingPack_v2",
+  "pack_id": "imaging.pdf.mapping.v2",
+  "vendor": "Gnostice, ImageEn, PDF/Imaging Libraries",
+  "version": "2.0.0",
+  "description": "Conservative detection/review pack for Delphi PDF, document, and imaging component libraries. Image/PDF viewers and editors are feature-rich controls with platform, codec, printing, and licensing concerns, so this pack reports them and preserves only clearly nonvisual helper components with review.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TgtPDFViewer",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Gnostice PDF viewer UI requires PDF-library-specific FMX replacement or manual redesign."
+    },
+    {
+      "vcl_class": "TgtPDFDocument",
+      "fmx_class": "TgtPDFDocument",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "PDF document component may be preservable if the target owns compatible packages; review licensing, deployment, and platform support."
+    },
+    {
+      "vcl_class": "TgtPDFPrinter",
+      "action": "manual_review",
+      "confidence": 35,
+      "manual_review_reason": "PDF printing is platform-specific and must be reviewed manually."
+    },
+    {
+      "vcl_class": "TgtPDFOutlineViewer",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "PDF outline/navigation UI requires manual FMX replacement."
+    },
+    {
+      "vcl_class": "TgtPDFSearch",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "PDF search behavior depends on the document engine and UI integration."
+    },
+    {
+      "vcl_class": "TImageEnView",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "ImageEn visual image viewer/editor behavior requires manual FMX replacement or package-specific support review."
+    },
+    {
+      "vcl_class": "TImageEnMView",
+      "action": "manual_review",
+      "confidence": 40,
+      "manual_review_reason": "Multi-image thumbnail/browser UI requires manual FMX replacement."
+    },
+    {
+      "vcl_class": "TImageEnVect",
+      "action": "manual_review",
+      "confidence": 35,
+      "manual_review_reason": "Vector/image editing features do not map safely to stock FMX controls."
+    },
+    {
+      "vcl_class": "TImageEnLayerMView",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "Layered image editing UI requires package-specific migration."
+    },
+    {
+      "vcl_class": "TImageEnProc",
+      "fmx_class": "TImageEnProc",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Image processing component may be preservable, but package/platform support and bitmap type usage must be reviewed."
+    },
+    {
+      "vcl_class": "TImageEnIO",
+      "fmx_class": "TImageEnIO",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Image I/O may be preservable, but codec deployment, file paths, and target-platform support require review."
+    },
+    {
+      "vcl_class": "TImageEnFolderMView",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "Folder/image browser UI requires manual FMX replacement and platform storage review."
+    },
+    {
+      "vcl_class": "TImageEnDBView",
+      "action": "manual_review",
+      "confidence": 35,
+      "manual_review_reason": "Data-aware image viewing requires dataset, blob field, and LiveBindings review."
+    },
+    {
+      "vcl_class": "TImageEnDBMView",
+      "action": "manual_review",
+      "confidence": 30,
+      "manual_review_reason": "Data-aware thumbnail browsing requires manual dataset and UI migration."
+    },
+    {
+      "vcl_class": "TPdfViewer",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Generic PDF viewer class detected; confirm actual vendor/library and choose an FMX-compatible PDF strategy."
+    },
+    {
+      "vcl_class": "TPdfDocument",
+      "action": "manual_review",
+      "confidence": 40,
+      "manual_review_reason": "Generic PDF document class detected; verify library, licensing, deployment, and platform support."
+    }
+  ]
+}

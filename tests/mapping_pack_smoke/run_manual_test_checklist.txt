@@ -1,0 +1,43 @@
+VCL2FMXConverter v4.1 mapping-pack smoke test checklist
+
+1. Run the current v4.1 Release build:
+   C:\New Delphi Projects\VCL2FMXConverterV4\Win32\Release\VCL2FMXConverter.exe
+
+2. Use these paths in the UI:
+   Source:
+   C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\source
+
+   Output:
+   C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\output
+
+3. Convert both PAS and DFM files.
+
+4. Open generated FMX:
+   C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\output\UnitDevExpressMock.fmx
+
+5. Confirm these generated class mappings:
+   cxButton1: TButton
+   cxTextEdit1: TEdit
+   cxMemo1: TMemo
+   cxMaskEdit1: TEdit
+
+6. Confirm these detect-only components were omitted from generated FMX:
+   cxGrid1: TcxGrid
+   dxRibbon1: TdxRibbon
+
+7. Confirm this caption property mapping:
+   Text = 'Click Me'
+
+8. Open report:
+   C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\output\VCL_to_FMX_Conversion_Report.html
+
+9. Confirm report mentions:
+   Mapping packs loaded: 11
+   DevExpress_MappingPack_v1
+   Mapping pack partial conversion
+   TcxMaskEdit
+   Mapping pack detection only
+   TcxGrid
+   TdxRibbon
+
+10. Do not compile the generated mock project. This is a converter-behavior fixture only.

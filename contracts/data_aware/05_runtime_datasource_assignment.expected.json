@@ -1,0 +1,21 @@
+{
+  "input_file": "contracts\\data_aware\\05_runtime_datasource_assignment.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractRuntimeDataSourceAssignment",
+    "DBEdit1: TEdit",
+    "// FMX manual review: DBEdit1\\.DataSource := DataSource1;",
+    "// FMX manual review: DBEdit1\\.DataField := 'NAME';"
+  ],
+  "forbidden_output_patterns": [
+    "^\\s*DBEdit1\\.DataSource\\s*:=",
+    "^\\s*DBEdit1\\.DataField\\s*:=",
+    "\\bTDBEdit\\b"
+  ],
+  "expected_report_patterns": [
+    "Runtime VCL data-aware property assignment needs FMX manual review",
+    "Replace VCL data-aware property wiring with LiveBindings or explicit dataset/control synchronization",
+    "Data binding review: Yes"
+  ],
+  "forbidden_report_patterns": []
+}

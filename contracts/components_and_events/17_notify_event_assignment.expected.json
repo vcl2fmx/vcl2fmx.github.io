@@ -1,0 +1,14 @@
+{
+  "input_file": "contracts\\components_and_events\\17_notify_event_assignment.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractNotifyEventAssignment",
+    "Timer1: TTimer",
+    "Timer1\\.OnTimer := OnTick;"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.ExtCtrls\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

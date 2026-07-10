@@ -1,0 +1,19 @@
+{
+  "input_file": "contracts\\project_integration\\04_dfm_fmxl_project\\DfmFmxlProject.dpr",
+  "copy_case_directory": true,
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit DfmFmxlMain",
+    "Café",
+    "déjà vu",
+    "éléphant",
+    "Strings = \\(",
+    "OnSelectCell = StringGrid1SelectCell[\\s\\S]*object StringGrid1Column1: TStringColumn"
+  ],
+  "forbidden_output_patterns": [
+    "Lines\\.Strings = '",
+    "OnSelectCell = StringGrid1SelectCell[\\s\\S]*end[\\s\\S]*object StringColumn"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

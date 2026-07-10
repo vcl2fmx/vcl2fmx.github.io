@@ -1,0 +1,18 @@
+{
+  "input_file": "contracts\\winapi_messages\\10_sendmessage_wm_user_offset.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [
+    "WM_USER SendMessage"
+  ],
+  "expected_units_added": [],
+  "expected_units_absent": [],
+  "expected_output_patterns": [
+    "WM_USER|TMessageManager|Original: SendMessage|SendMessage\\("
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "WM_USER|SendMessage|Windows messaging"
+  ],
+  "forbidden_report_patterns": []
+}

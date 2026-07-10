@@ -1,0 +1,9 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\10_finalization_boundary.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["finalization boundary"],
+  "expected_output_patterns": ["WM_CLOSE|Original: SendMessage|finalization|Writeln\\('final'\\)"],
+  "forbidden_output_patterns": ["FMX manual review: finalization"],
+  "expected_report_patterns": ["WM_CLOSE|SendMessage|Windows messaging"],
+  "forbidden_report_patterns": []
+}

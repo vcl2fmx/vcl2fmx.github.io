@@ -1,0 +1,9 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\08_record_method_after_disabled_call.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["routine boundary after message call"],
+  "expected_output_patterns": ["WM_CLOSE|Original: SendMessage|procedure HelperAfterBoundary"],
+  "forbidden_output_patterns": ["FMX manual review: procedure HelperAfterBoundary"],
+  "expected_report_patterns": ["WM_CLOSE|SendMessage|Windows messaging"],
+  "forbidden_report_patterns": []
+}

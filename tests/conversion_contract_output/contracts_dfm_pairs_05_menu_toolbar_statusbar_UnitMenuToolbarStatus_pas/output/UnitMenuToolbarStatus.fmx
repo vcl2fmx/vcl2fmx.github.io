@@ -1,0 +1,31 @@
+﻿object MenuToolbarStatus: TMenuToolbarStatus
+  ClientWidth = 320
+  Caption = 'Menu'
+  ClientHeight = 240
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+  object MainMenu1: TMenuBar
+    Size.Width = 320.000000000000000000
+    Size.Height = 24.000000000000000000
+    Size.PlatformDefault = False
+  end
+
+  object ToolBar1: TToolBar
+    Position.X = 0.000000000000000000
+    Size.Height = 29.000000000000000000
+    Size.Width = 320.000000000000000000
+    Position.Y = 0.000000000000000000
+    Size.PlatformDefault = False
+  end
+
+  object StatusBar1: TStatusBar
+    Size.Width = 320.000000000000000000
+    Size.Height = 19.000000000000000000
+    Position.Y = 221.000000000000000000
+    Size.PlatformDefault = False
+  end
+
+end

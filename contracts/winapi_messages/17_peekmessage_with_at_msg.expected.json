@@ -1,0 +1,18 @@
+{
+  "input_file": "contracts\\winapi_messages\\17_peekmessage_with_at_msg.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [
+    "PeekMessage pump API"
+  ],
+  "expected_units_added": [],
+  "expected_units_absent": [],
+  "expected_output_patterns": [
+    "PeekMessage|Message pump calls not needed|Original:"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "PeekMessage|Windows messaging|Message pump"
+  ],
+  "forbidden_report_patterns": []
+}

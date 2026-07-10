@@ -1,0 +1,2 @@
+const
+  NestedIncludeValue = 'nested include';

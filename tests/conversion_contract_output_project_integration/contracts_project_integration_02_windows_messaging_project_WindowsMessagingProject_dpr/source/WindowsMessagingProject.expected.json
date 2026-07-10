@@ -1,0 +1,23 @@
+{
+  "input_file": "contracts\\project_integration\\02_windows_messaging_project\\WindowsMessagingProject.dpr",
+  "copy_case_directory": true,
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "LVM_GETITEMCOUNT",
+    "WM_USER",
+    "EM_SETSEL",
+    "FMX manual review: procedure WMSize\\(var Message: TWMSize\\); message WM_SIZE",
+    "procedure TWindowsMessagingForm\\.SendMessage\\(const AText: string\\)"
+  ],
+  "expected_report_patterns": [
+    "Windows messaging",
+    "LVM_GETITEMCOUNT",
+    "WM_USER",
+    "Windows message-based behavior needs FMX manual review",
+    "WndProc"
+  ],
+  "forbidden_output_patterns": [
+    "FMX manual review: procedure TWindowsMessagingForm\\.SendMessage\\(const AText: string\\)"
+  ],
+  "forbidden_report_patterns": []
+}

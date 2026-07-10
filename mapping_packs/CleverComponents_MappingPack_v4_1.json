@@ -1,0 +1,115 @@
+{
+  "pack_name": "CleverComponents_MappingPack_v2",
+  "pack_id": "clevercomponents.mapping.v2",
+  "vendor": "Clever Components",
+  "version": "2.0.0",
+  "description": "Conservative preservation/review pack for Clever Internet Suite and related CleverComponents libraries. Most internet components are nonvisual and may be preserved when compatible packages are available; visual samples, dialogs, and database-structure tools require review.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TclHttp",
+      "fmx_class": "TclHttp",
+      "action": "preserve",
+      "confidence": 72,
+      "notes": "HTTP component is nonvisual and may be preserved with compatible Clever Internet Suite packages.",
+      "manual_review_reason": "Review TLS, proxy, authentication, async callbacks, and platform networking behavior."
+    },
+    {
+      "vcl_class": "TclFtp",
+      "fmx_class": "TclFtp",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "FTP component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review passive/active mode, TLS, filesystem paths, and deployment behavior."
+    },
+    {
+      "vcl_class": "TclSFtp",
+      "fmx_class": "TclSFtp",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "SFTP component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review key files, host-key validation, local paths, and platform support."
+    },
+    {
+      "vcl_class": "TclSmtp",
+      "fmx_class": "TclSmtp",
+      "action": "preserve",
+      "confidence": 72,
+      "notes": "SMTP component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review OAuth/TLS configuration, attachments, and async event handling."
+    },
+    {
+      "vcl_class": "TclPop3",
+      "fmx_class": "TclPop3",
+      "action": "preserve",
+      "confidence": 72,
+      "notes": "POP3 component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review OAuth/TLS configuration, message storage paths, and threading."
+    },
+    {
+      "vcl_class": "TclImap4",
+      "fmx_class": "TclImap4",
+      "action": "preserve",
+      "confidence": 72,
+      "notes": "IMAP component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review folder synchronization, OAuth/TLS configuration, and background operations."
+    },
+    {
+      "vcl_class": "TclOAuth",
+      "fmx_class": "TclOAuth",
+      "action": "manual_review",
+      "confidence": 60,
+      "manual_review_reason": "OAuth callback browser/redirect behavior may need platform-specific FMX UI and deployment review."
+    },
+    {
+      "vcl_class": "TclJsonParser",
+      "fmx_class": "TclJsonParser",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "JSON parser is nonvisual and may be preserved."
+    },
+    {
+      "vcl_class": "TclSoapMessage",
+      "fmx_class": "TclSoapMessage",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "SOAP message component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review generated service code, TLS, and XML namespace behavior."
+    },
+    {
+      "vcl_class": "TclMailMessage",
+      "fmx_class": "TclMailMessage",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "Mail message component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review attachments, encodings, inline images, and filesystem paths."
+    },
+    {
+      "vcl_class": "TclCertificateStore",
+      "fmx_class": "TclCertificateStore",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Certificate stores can be OS-specific and require target-platform review."
+    },
+    {
+      "vcl_class": "TclThreadPool",
+      "fmx_class": "TclThreadPool",
+      "action": "preserve",
+      "confidence": 65,
+      "notes": "Thread pool is nonvisual and may be preserved.",
+      "manual_review_reason": "Review synchronization with FMX UI thread."
+    },
+    {
+      "vcl_class": "TclDBComparer",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "Database comparer/migration components require database and UI workflow review."
+    },
+    {
+      "vcl_class": "TclTaskRunner",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "Task execution may depend on Windows shell paths, scripts, and process behavior."
+    }
+  ]
+}

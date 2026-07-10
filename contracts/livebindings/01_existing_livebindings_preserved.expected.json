@@ -1,0 +1,16 @@
+{
+  "input_file": "contracts\\livebindings\\01_existing_livebindings_preserved.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractExistingLiveBindingsPreserved",
+    "BindSource1: TBindSource",
+    "BindingsList1: TBindingsList",
+    "Data\\.Bind\\.Components",
+    "Data\\.Bind\\.ObjectScope"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\."
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

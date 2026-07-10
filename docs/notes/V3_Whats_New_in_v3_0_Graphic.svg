@@ -1,0 +1,40 @@
+<svg width="1600" height="420" viewBox="0 0 1600 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgNew" x1="80" y1="50" x2="1500" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2E63B7"/>
+      <stop offset="0.55" stop-color="#417EE0"/>
+      <stop offset="1" stop-color="#5F98F2"/>
+    </linearGradient>
+    <linearGradient id="glassNew" x1="1010" y1="84" x2="1440" y2="332" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#D5E4FF" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.07"/>
+    </linearGradient>
+    <filter id="shadowNew" x="0" y="0" width="1600" height="420" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feOffset dy="12"/>
+      <feGaussianBlur stdDeviation="16"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.0863 0 0 0 0 0.2353 0 0 0 0 0.4863 0 0 0 0.18 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_1"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_1" result="shape"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="420" fill="transparent"/>
+
+  <g filter="url(#shadowNew)">
+    <rect x="52" y="42" width="1496" height="326" rx="34" fill="url(#bgNew)"/>
+    <circle cx="1288" cy="126" r="136" fill="#FFFFFF" fill-opacity="0.08"/>
+    <circle cx="1395" cy="256" r="84" fill="#FFFFFF" fill-opacity="0.10"/>
+    <circle cx="1165" cy="300" r="102" fill="#FFFFFF" fill-opacity="0.06"/>
+    <rect x="1038" y="88" width="374" height="220" rx="30" fill="url(#glassNew)"/>
+
+    <text x="114" y="126" fill="#E8F2FF" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="600" letter-spacing="3">VCL TO FMX CONVERTER</text>
+    <text x="114" y="246" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="154" font-weight="700">v3.0</text>
+    <text x="120" y="322" fill="#DCE9FF" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="600" letter-spacing="4">WHAT'S NEW</text>
+
+    <path d="M1112 146H1350" stroke="#F4F8FF" stroke-opacity="0.72" stroke-width="10" stroke-linecap="round"/>
+    <path d="M1112 184H1308" stroke="#F4F8FF" stroke-opacity="0.40" stroke-width="10" stroke-linecap="round"/>
+    <path d="M1112 222H1332" stroke="#F4F8FF" stroke-opacity="0.24" stroke-width="10" stroke-linecap="round"/>
+    <path d="M1112 260H1260" stroke="#F4F8FF" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+    <text x="1226" y="312" text-anchor="middle" fill="#F4F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="600" letter-spacing="1.5">STABILITY | COVERAGE | READINESS</text>
+  </g>
+</svg>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>VCL2FMX Downloads Page Mockup</title>
+  <style>
+    body {
+      margin: 0;
+      background: #eaf1f8;
+      color: #17314f;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .page {
+      width: 1180px;
+      margin: 28px auto;
+      background: #fff;
+      border: 1px solid #d7e2f0;
+      box-shadow: 0 20px 40px rgba(20, 54, 90, 0.16);
+    }
+
+    header {
+      padding: 44px 54px;
+      background: #102b47;
+      color: #fff;
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: 46px;
+      line-height: 1.1;
+    }
+
+    header p {
+      margin: 0;
+      max-width: 880px;
+      color: #d8e6f4;
+    }
+
+    section {
+      padding: 44px 54px;
+      border-top: 1px solid #d7e2f0;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 30px;
+    }
+
+    .download-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .download-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+      padding: 22px 24px;
+      border: 1px solid #d7e2f0;
+      border-radius: 8px;
+      background: #f8fbff;
+    }
+
+    .download-row h3 {
+      margin: 0 0 4px;
+      font-size: 21px;
+    }
+
+    .download-row p {
+      margin: 0;
+      color: #566d86;
+      font-size: 16px;
+    }
+
+    .button {
+      min-width: 150px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      background: #2f6fcd;
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .note {
+      padding: 18px 20px;
+      background: #fff8e9;
+      border-left: 5px solid #9b6a00;
+      color: #4e3a10;
+      margin-top: 24px;
+    }
+
+    .footer {
+      padding: 28px 54px;
+      background: #f0f6fc;
+      color: #566d86;
+      border-top: 1px solid #d7e2f0;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <h1>Downloads</h1>
+      <p>Keep the download page direct and technical. The current stable release should be obvious, and optional tools should be clearly labeled as optional.</p>
+    </header>
+
+    <section>
+      <h2>Current Stable Release</h2>
+      <div class="download-list">
+        <div class="download-row">
+          <div>
+            <h3>VCL2FMXConverter v4.1.8 Source Code</h3>
+            <p>Complete source package with mapping packs. Intended for Delphi users who want to build, inspect, and modify the converter.</p>
+          </div>
+          <div class="button">Download ZIP</div>
+        </div>
+        <div class="download-row">
+          <div>
+            <h3>User Guide</h3>
+            <p>Step-by-step operating instructions for running conversions and reading the generated reports.</p>
+          </div>
+          <div class="button">Open PDF</div>
+        </div>
+        <div class="download-row">
+          <div>
+            <h3>Engineering Guide</h3>
+            <p>Architecture, maintenance notes, conversion flow, and technical guidance for contributors.</p>
+          </div>
+          <div class="button">Open PDF</div>
+        </div>
+        <div class="download-row">
+          <div>
+            <h3>License</h3>
+            <p>Open-source license terms for the converter and distributed source package.</p>
+          </div>
+          <div class="button">Open PDF</div>
+        </div>
+      </div>
+
+      <div class="note">
+        Suggested note: The converter is distributed as source code so Delphi developers can build it locally, inspect how conversions are handled, and modify mapping rules for their own projects.
+      </div>
+    </section>
+
+    <section>
+      <h2>Optional Companion Downloads</h2>
+      <div class="download-list">
+        <div class="download-row">
+          <div>
+            <h3>Additional Mapping Packs</h3>
+            <p>Optional JSON packs for additional third-party Delphi components. These are transparent rule files, not compiled plugins.</p>
+          </div>
+          <div class="button">Download ZIP</div>
+        </div>
+        <div class="download-row">
+          <div>
+            <h3>JSON Mapping Pack Studio</h3>
+            <p>Optional companion tool for creating and editing VCL2FMX mapping-pack JSON files.</p>
+          </div>
+          <div class="button">Download</div>
+        </div>
+        <div class="download-row">
+          <div>
+            <h3>Component Mapping Reference</h3>
+            <p>Reference list showing component mappings included with the converter.</p>
+          </div>
+          <div class="button">Open PDF</div>
+        </div>
+        <div class="download-row">
+          <div>
+            <h3>Generic Rules Reference</h3>
+            <p>Reference information for general property, event, and conversion rules.</p>
+          </div>
+          <div class="button">Open PDF</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Recommended button order: source ZIP first, User Guide second, Engineering Guide third, optional tools below.
+    </div>
+  </main>
+</body>
+</html>

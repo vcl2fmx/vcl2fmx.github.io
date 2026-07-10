@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\colors\\01_class_should_not_add_uiconsts.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": ["unit ContractClassShouldNotAddUIConsts"],
+  "forbidden_output_patterns": [
+    "System\\.UIConsts",
+    "System\\.UITypes"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

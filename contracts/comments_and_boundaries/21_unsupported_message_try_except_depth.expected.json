@@ -1,0 +1,27 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\21_unsupported_message_try_except_depth.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": ["Windows messages or message handlers"],
+  "expected_units_added": ["FMX.Forms"],
+  "expected_units_absent": ["Vcl.Forms", "Winapi.Messages"],
+  "expected_output_patterns": [
+    "// FMX manual review: procedure TContractUnsupportedMessageTryExceptDepth\\.WMSysCommand",
+    "// FMX manual review: begin",
+    "// FMX manual review: try",
+    "// FMX manual review: except",
+    "// FMX manual review: end;",
+    "// FMX manual review: inherited;",
+    "// FMX manual review: end;"
+  ],
+  "forbidden_output_patterns": [
+    "^end;\\s*$",
+    "Winapi\\.Messages",
+    "Vcl\\.Forms"
+  ],
+  "expected_report_patterns": [
+    "Windows messages or message handlers",
+    "WMSysCommand"
+  ],
+  "forbidden_report_patterns": []
+}

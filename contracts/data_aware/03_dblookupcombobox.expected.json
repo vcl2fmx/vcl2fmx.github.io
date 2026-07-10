@@ -1,0 +1,13 @@
+{
+  "input_file": "contracts\\data_aware\\03_dblookupcombobox.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractDBLookupComboBox",
+    "DBLookupComboBox1: TDBLookupComboBox"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.DBCtrls\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

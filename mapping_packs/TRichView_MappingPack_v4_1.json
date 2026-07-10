@@ -1,0 +1,78 @@
+{
+  "pack_name": "TRichView_MappingPack_v2",
+  "pack_id": "trichview.mapping.v2",
+  "vendor": "TRichView",
+  "version": "2.0.0",
+  "description": "Conservative preservation/review pack for TRichView, ScaleRichView, ReportWorkshop, and RVMedia components. TRichView offers FireMonkey support, but rich document, printing, media, and reporting behavior must be verified in the target project.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TRichView",
+      "fmx_class": "TRichView",
+      "action": "preserve",
+      "confidence": 78,
+      "notes": "TRichView has FMX support, so preserving the class may be appropriate when the FMX packages are installed.",
+      "manual_review_reason": "Verify FMX package references, document loading, styles, embedded images, hyperlinks, and printing/export behavior."
+    },
+    {
+      "vcl_class": "TRichViewEdit",
+      "fmx_class": "TRichViewEdit",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "Rich text editing may be preserved with FMX TRichView packages.",
+      "manual_review_reason": "Review editor commands, popup menus, spell-check integration, drag/drop, and platform-specific input behavior."
+    },
+    {
+      "vcl_class": "TDBRichView",
+      "fmx_class": "TDBRichView",
+      "action": "manual_review",
+      "confidence": 60,
+      "manual_review_reason": "Data-aware rich document controls require review with the target dataset/binding strategy."
+    },
+    {
+      "vcl_class": "TDBRichViewEdit",
+      "fmx_class": "TDBRichViewEdit",
+      "action": "manual_review",
+      "confidence": 58,
+      "manual_review_reason": "Data-aware rich editing requires manual dataset, field, update, and LiveBindings review."
+    },
+    {
+      "vcl_class": "TRVStyle",
+      "fmx_class": "TRVStyle",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "Style component may be reusable with TRichView FMX components.",
+      "manual_review_reason": "Verify style ownership, fonts, colors, paragraph styles, and document compatibility."
+    },
+    {
+      "vcl_class": "TScaleRichView",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "ScaleRichView/page-layout behavior is report/document-specific and should not be automatically converted."
+    },
+    {
+      "vcl_class": "TRVPrint",
+      "action": "detect_only",
+      "confidence": 30,
+      "manual_review_reason": "Printing/export paths are framework and platform specific."
+    },
+    {
+      "vcl_class": "TRVReportHelper",
+      "action": "detect_only",
+      "confidence": 30,
+      "manual_review_reason": "Report helper integration requires report-specific migration."
+    },
+    {
+      "vcl_class": "TRVCamera",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "RVMedia camera/video behavior depends on devices, codecs, and platform permissions."
+    },
+    {
+      "vcl_class": "TRVMicrophone",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "RVMedia audio behavior depends on platform permissions and capture devices."
+    }
+  ]
+}

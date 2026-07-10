@@ -1,0 +1,21 @@
+﻿object TabPageControl: TTabPageControl
+  ClientWidth = 320
+  Caption = 'Tabs'
+  ClientHeight = 240
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+  object PageControl1: TTabControl
+    Align = Client
+    Size.Width = 320.000000000000000000
+    Size.Height = 240.000000000000000000
+    Size.PlatformDefault = False
+    object TabSheet1: TTabItem
+      Text = 'One'
+    end
+
+  end
+
+end

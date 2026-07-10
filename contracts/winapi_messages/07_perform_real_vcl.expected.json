@@ -1,0 +1,24 @@
+{
+  "input_file": "contracts\\winapi_messages\\07_perform_real_vcl.pas",
+  "expected_status": "converted",
+  "expected_conversions": [
+    "real VCL Perform call converted to generated FMX helper"
+  ],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.StdCtrls"
+  ],
+  "expected_output_patterns": [
+    "GeneratedFMXMemoLineScroll\\(Memo1, -3\\)",
+    "function GeneratedFMXMemoLineScroll"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.StdCtrls\\b",
+    "Memo1\\.Perform\\(EM_LINESCROLL, 0, -3\\)"
+  ],
+  "expected_report_patterns": [
+    "Windows message Perform/SendMessage pattern converted to generated FMX helper"
+  ],
+  "forbidden_report_patterns": []
+}

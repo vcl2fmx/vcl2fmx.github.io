@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>topics/vcl2fmxconverter-v5-0-user-guide.html</loc></url>
+  <url><loc>topics/purpose-and-audience.html</loc></url>
+  <url><loc>topics/what-the-converter-is-and-what-it-is-not.html</loc></url>
+  <url><loc>topics/mapping-packs-optional-third-party-component-support.html</loc></url>
+  <url><loc>topics/system-requirements-and-workspace-preparation.html</loc></url>
+  <url><loc>topics/building-and-launching-the-converter.html</loc></url>
+  <url><loc>topics/main-window-and-control-by-control-walkthrough.html</loc></url>
+  <url><loc>topics/run-the-converted-app-and-validate-real-user-workflows.html</loc></url>
+  <url><loc>topics/practical-operator-workflow.html</loc></url>
+  <url><loc>topics/preparing-a-source-project-for-best-results.html</loc></url>
+  <url><loc>topics/running-a-conversion.html</loc></url>
+  <url><loc>topics/reading-the-log-and-the-conversion-report.html</loc></url>
+  <url><loc>topics/understanding-the-output-folder-and-files.html</loc></url>
+  <url><loc>topics/opening-the-converted-project-in-delphi.html</loc></url>
+  <url><loc>topics/validating-the-converted-application.html</loc></url>
+  <url><loc>topics/test-startup-and-shutdown-behavior.html</loc></url>
+  <url><loc>topics/troubleshooting-and-recovery-procedures.html</loc></url>
+  <url><loc>topics/making-changes-to-the-converter-software.html</loc></url>
+  <url><loc>topics/operational-best-practices.html</loc></url>
+  <url><loc>topics/frequently-asked-questions.html</loc></url>
+  <url><loc>topics/appendix-a-quick-start-checklist.html</loc></url>
+  <url><loc>topics/appendix-b-pre-conversion-checklist.html</loc></url>
+  <url><loc>topics/appendix-c-post-conversion-review-checklist.html</loc></url>
+  <url><loc>topics/appendix-d-glossary.html</loc></url>
+  <url><loc>topics/index.html</loc></url>
+  <url><loc>topics/conversion-contracts-in-v5-0.html</loc></url>
+</urlset>

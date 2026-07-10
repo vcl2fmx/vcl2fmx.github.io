@@ -1,0 +1,15 @@
+{
+  "input_file": "contracts\\livebindings\\06_bindsource_db.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractBindSourceDB",
+    "BindSourceDB1: TBindSourceDB",
+    "Data\\.Bind\\.DBScope",
+    "Fmx\\.Bind\\.Editors"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\."
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

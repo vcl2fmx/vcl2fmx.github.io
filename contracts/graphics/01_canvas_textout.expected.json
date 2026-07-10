@@ -1,0 +1,13 @@
+{
+  "input_file": "contracts\\graphics\\01_canvas_textout.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractCanvasTextOut",
+    "Canvas\\.TextOut\\(10, 10, 'hello'\\);"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Graphics\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

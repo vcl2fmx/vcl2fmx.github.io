@@ -1,0 +1,906 @@
+DevExpress VCL Conversion Feasibility Report
+For VCL2FMXConverter v3.x / v4 planning
+Date: 2026-04-29
+
+Purpose
+=======
+
+This report reviews DevExpress VCL component families that work with Delphi and
+evaluates whether support for them can reasonably be added to VCL2FMXConverter.
+The goal is not to turn the converter into an all-in-one commercial component
+migration product. The goal is to identify the DevExpress areas where open-source
+conversion support would be important, realistic, and safe.
+
+This report omits C++ considerations because VCL2FMXConverter is focused on
+Delphi source conversion.
+
+
+Sources Reviewed
+================
+
+Official DevExpress sources:
+
+1. DevExpress VCL Controls Documentation
+   https://docs.devexpress.com/VCL/401349/vcl-controls
+
+2. DevExpress VCL Product Page
+   https://www.devexpress.com/products/vcl/
+
+3. TcxGrid Class / Data Grid Documentation
+   https://docs.devexpress.com/VCL/cxGrid.TcxGrid
+
+4. VCL Data Grid Overview
+   https://docs.devexpress.com/VCL/171098/ExpressQuantumGrid/task-based-help/importing-expressquantumgrid3
+
+5. VCL ExpressEditors Library
+   https://docs.devexpress.com/VCL/403745/ExpressEditors/vcl-editors-overview
+
+6. VCL ExpressBars / Ribbon Documentation
+   https://docs.devexpress.com/VCL/155030/ExpressBars/fundamentals/ribbon/ribbon-user-interface
+
+7. VCL Chart Control
+   https://docs.devexpress.com/VCL/404415/ExpressCharts/vcl-charts
+
+8. VCL Scheduler
+   https://docs.devexpress.com/VCL/403679/ExpressScheduler/vcl-scheduler
+
+9. VCL Pivot Grid
+   https://docs.devexpress.com/VCL/157065/ExpressPivotGrid/vcl-pivot-grid
+
+10. VCL Layout Control
+    https://docs.devexpress.com/VCL/152013/ExpressLayoutControl/introduction
+
+11. VCL PDF Viewer
+    https://docs.devexpress.com/VCL/177014/ExpressPDFViewer/vcl-pdf-viewer
+
+12. VCL Reports
+    https://docs.devexpress.com/VCL/405469/ExpressReports/vcl-reports
+
+13. VCL Dashboards
+    https://docs.devexpress.com/VCL/405642/ExpressDashboards/vcl-dashboards
+
+14. VCL Dock Controls
+    https://docs.devexpress.com/VCL/164021/ExpressDockingLibrary/vcl-dock-controls
+
+Local converter files reviewed:
+
+1. C:\New Delphi Projects\VCL2FMXConverterV3\Converter.Advanced.ThirdParty.pas
+2. C:\New Delphi Projects\VCL2FMXConverterV3\Converter.Core.Integration.pas
+3. C:\New Delphi Projects\VCL2FMXConverterV3\Converter.Parser.DFM.pas
+4. C:\New Delphi Projects\VCL2FMXConverterV3\Converter.Mapper.Component.pas
+
+
+Current DevExpress Status In VCL2FMXConverter
+=============================================
+
+The current converter has limited DevExpress awareness but not true DevExpress
+conversion.
+
+What currently exists:
+
+1. Converter.Advanced.ThirdParty.pas has a DevExpress catalog.
+2. The catalog includes:
+   - TcxButton
+   - TcxGrid
+   - TcxDBEdit
+   - TcxLookupComboBox
+   - TcxPageControl
+   - TcxTabSheet
+   - TcxTreeList
+   - TcxVerticalGrid
+3. The third-party detector classifies any class beginning with Tcx as
+   DevExpress.
+4. DFM conversion calls FThirdParty.AnalyzeComponent when third-party analysis is
+   enabled.
+
+What does not currently exist:
+
+1. There are no real DevExpress VCL-to-FMX component mappings in
+   Converter.Mapper.Component.pas.
+2. There are no DevExpress property/event conversion rules.
+3. There is no DevExpress FMX package detection.
+4. There is no check that the user owns or installed any DevExpress FMX-capable
+   library.
+5. The vendor summary generator in Converter.Advanced.ThirdParty.pas exists, but
+   no active call site was found.
+
+Current conclusion:
+
+The converter can detect some DevExpress controls and emit general notes, but it
+does not currently convert DevExpress components in a reliable production sense.
+
+
+DevExpress Product Scope
+========================
+
+DevExpress VCL is a large commercial suite. The official product page lists 230+
+VCL controls and a broad set of product families. The documentation page lists
+major suites such as:
+
+- ExpressQuantumGrid Suite
+- ExpressEditors Library
+- ExpressBars Suite
+- ExpressCharts Suite
+- ExpressDashboards Suite
+- ExpressReports Suite
+- ExpressRichEditControl Suite
+- ExpressSkins Library
+- ExpressScheduler Suite
+- ExpressSpreadSheet Suite
+- ExpressQuantumTreeList Suite
+- ExpressPDFViewer Suite
+- ExpressPrinting System
+- ExpressLayoutControl Suite
+- ExpressNavBar Suite
+- ExpressPivotGrid Suite
+- ExpressVerticalGrid Suite
+- ExpressDocking Library
+- ExpressMemData
+- ExpressDataController
+- ExpressSpellChecker Suite
+- ExpressMapControl Suite
+- ExpressGanttControl Suite
+- ExpressGaugeControl Suite
+- ExpressTileControl Suite
+- ExpressFlowChart Suite
+- ExpressOrgChart Suite
+- ExpressPageControl Suite
+- ExpressWizardControl Suite
+
+DevExpress currently advertises support for Embarcadero Delphi 13 Florence on
+its VCL product page.
+
+
+Feasibility Scale
+=================
+
+The following scale is used in this report:
+
+1. High
+   Reasonable to implement in the public converter with conservative rules.
+
+2. Medium
+   Possible, but should be partial and clearly reported.
+
+3. Low
+   Detection/reporting only, unless a user supplies a tested mapping pack.
+
+4. Not Recommended
+   Too framework-specific, too stateful, or too risky for automatic conversion.
+
+
+Deep Dive 1: DevExpress Editors Library
+=======================================
+
+Representative components:
+
+- TcxTextEdit
+- TcxDBTextEdit
+- TcxMaskEdit
+- TcxDBMaskEdit
+- TcxButtonEdit
+- TcxDBButtonEdit
+- TcxComboBox
+- TcxDBComboBox
+- TcxLookupComboBox
+- TcxDBLookupComboBox
+- TcxCalcEdit
+- TcxSpinEdit
+- TcxTimeEdit
+- TcxDateEdit
+- TcxMemo
+- TcxDBMemo
+- TcxRichEdit
+- TcxDBRichEdit
+- TdxToggleSwitch
+- TdxDBToggleSwitch
+- TdxBarCode
+- TdxDBBarCode
+- TdxTokenEdit
+- TdxDBTokenEdit
+
+Why this matters:
+
+Editors are common in real business applications. Many DevExpress applications
+use them as standalone controls and as in-place editors inside grids, tree lists,
+ribbons, menus, and layout controls.
+
+FMX conversion possibility:
+
+High for simple standalone editors.
+Medium for data-aware editors.
+Low for editor repository/in-place-editor scenarios.
+
+Possible converter support:
+
+- TcxTextEdit -> TEdit
+- TcxDBTextEdit -> TEdit plus existing manual field-binding path
+- TcxMaskEdit -> TEdit with manual review for mask behavior
+- TcxMemo -> TMemo
+- TcxDBMemo -> TMemo plus binding
+- TcxComboBox -> TComboBox
+- TcxDBComboBox -> TComboBox plus binding
+- TcxCheckBox -> TCheckBox, if encountered
+- TdxToggleSwitch -> TSwitch or TCheckBox, depending on available FMX target
+- TcxDateEdit -> TDateEdit, with manual review for formatting
+- TcxTimeEdit -> TTimeEdit or TEdit, depending on available FMX support
+
+Important limitations:
+
+- Embedded buttons in TcxButtonEdit are not a simple TEdit feature in FMX.
+- Properties.Buttons, Properties.OnButtonClick, masks, repository items, and
+  style controllers need manual review.
+- DevExpress editors often store important behavior under the nested Properties
+  object. The converter must not blindly discard this.
+
+Recommendation:
+
+Add a DevExpress Editors Basic mapping pack. Start with simple standalone
+controls only. Data-aware variants should reuse the converter's existing manual
+binding infrastructure. Complex nested Properties behavior should generate
+manual-review report entries.
+
+
+Deep Dive 2: DevExpress PageControl and TabSheet
+================================================
+
+Representative components:
+
+- TcxPageControl
+- TcxTabSheet
+
+Why this matters:
+
+Tab controls are common and structurally similar to existing VCL-to-FMX mappings.
+The current converter already handles standard TPageControl to TTabControl and
+TTabSheet to TTabItem.
+
+FMX conversion possibility:
+
+High for simple tab containers.
+Medium when advanced DevExpress properties are used.
+
+Possible converter support:
+
+- TcxPageControl -> TTabControl
+- TcxTabSheet -> TTabItem
+- Caption -> Text
+- ActivePage or ActivePageIndex -> selected tab handling if practical
+- TabVisible -> visibility handling where FMX supports it
+
+Important limitations:
+
+- DevExpress style/look-and-feel settings do not map cleanly.
+- Owner-drawn tabs, images, close buttons, hot tracking, tab positions, and
+  advanced page options require manual review.
+
+Recommendation:
+
+This is one of the best first DevExpress conversion targets. Add it through an
+opt-in DevExpress Basic mapping pack and produce report warnings when advanced
+properties are detected.
+
+
+Deep Dive 3: DevExpress Buttons and Simple Visual Controls
+==========================================================
+
+Representative components:
+
+- TcxButton
+- TdxToggleSwitch
+- TdxBarCode
+- possibly simple TcxLabel or TcxGroupBox variants, if encountered
+
+Why this matters:
+
+Simple button-style controls are low-risk compared with grids and ribbons. Users
+expect basic click behavior to survive conversion.
+
+FMX conversion possibility:
+
+High for simple buttons.
+Medium for visual fidelity.
+Low for DevExpress styling/skin behavior.
+
+Possible converter support:
+
+- TcxButton -> TButton
+- Caption -> Text
+- OnClick -> OnClick
+- Enabled, Visible, Hint, ShowHint, Align, Anchors where supported
+
+Important limitations:
+
+- Images, glyphs, kind/style settings, look-and-feel, skins, and button layout
+  may not preserve visually.
+- ButtonEdit embedded buttons are a different problem and should be handled
+  under the editor family, not TcxButton.
+
+Recommendation:
+
+Add basic TcxButton support. Treat images/glyphs/style properties as report
+warnings or manual-review items.
+
+
+Deep Dive 4: DevExpress Data Grid / ExpressQuantumGrid
+======================================================
+
+Representative components:
+
+- TcxGrid
+- TcxGridLevel
+- TcxGridDBTableView
+- TcxGridTableView
+- TcxGridBandedTableView
+- TcxGridDBBandedTableView
+- TcxGridCardView
+- TcxGridDBCardView
+- TcxGridLayoutView
+- TcxGridDBLayoutView
+- TcxGridChartView
+- TcxGridDBChartView
+- TcxGridColumn
+- TcxGridBand
+
+Why this matters:
+
+TcxGrid is one of the most important DevExpress controls. It is also one of the
+hardest to convert. DevExpress documentation describes TcxGrid as a container for
+views and levels. Views handle data, display format, and interaction. The grid
+can support table, banded table, card, layout, chart, and WinExplorer views.
+
+FMX conversion possibility:
+
+Low for automatic conversion.
+Medium for detection and partial report extraction.
+Not recommended for full generic conversion.
+
+Why conversion is hard:
+
+- TcxGrid is not a single grid. It is a hierarchy of grid, levels, views,
+  columns, bands, data controllers, and repository editors.
+- It supports bound, unbound, provider, and server modes.
+- It includes filtering, sorting, grouping, summaries, master-detail,
+  embedded editors, custom drawing, styles, images, and many user interaction
+  features.
+- FMX TGrid does not provide equivalent behavior.
+
+Possible converter support:
+
+- Detect TcxGrid and related view classes.
+- Report all grid views, columns, bands, datasets, and editor repositories found.
+- Optionally generate a very basic TGrid placeholder for simple table views.
+- Preserve column names/captions into comments or report data.
+
+Important limitations:
+
+- A generic conversion to FMX TGrid would lose too much behavior.
+- Auto-converting this could damage trust if the generated output compiles but
+  behaves badly.
+
+Recommendation:
+
+Do not auto-convert TcxGrid in the public converter by default. Provide
+detection, a strong report, and optional user mapping pack support. A later
+"TcxGrid simple table preview" could be opt-in only.
+
+
+Deep Dive 5: TreeList, VerticalGrid, and PivotGrid
+==================================================
+
+Representative components:
+
+- TcxTreeList
+- TcxDBTreeList
+- TcxVerticalGrid
+- TcxDBVerticalGrid
+- TcxPivotGrid
+- TcxDBPivotGrid
+
+Why this matters:
+
+These components are common in data-heavy business applications and represent
+specialized data visualization models.
+
+FMX conversion possibility:
+
+Low for generic conversion.
+Medium for detection/report extraction.
+
+Why conversion is hard:
+
+- TreeList is a hybrid tree/grid model with hierarchy, columns, state, and
+  often data binding.
+- VerticalGrid rotates a data-entry grid into property-row layout.
+- PivotGrid includes summaries, grouping, filters, totals, OLAP modes, and export.
+- FMX does not provide direct standard replacements with equivalent behavior.
+
+Possible converter support:
+
+- Detect and report.
+- Extract column/field names where possible.
+- Recommend manual redesign or third-party FMX replacement.
+- Allow user mapping packs to define project-specific replacements.
+
+Recommendation:
+
+Report-only in the core converter. Do not attempt automatic conversion in V3.x.
+
+
+Deep Dive 6: ExpressBars, Ribbon, Menus, Toolbars, and Docking
+==============================================================
+
+Representative components:
+
+- TdxBarManager
+- TdxBar
+- TdxBarButton
+- TdxBarSubItem
+- TdxRibbon
+- TdxRibbonTab
+- TdxRibbonTabGroup
+- TdxRibbonStatusBar
+- TdxDockingManager
+- TdxDockSite
+- TdxDockPanel
+- TdxLayoutDockSite
+
+Why this matters:
+
+DevExpress bars/ribbons/docking are heavily used in professional desktop
+applications.
+
+FMX conversion possibility:
+
+Low for automatic conversion.
+Medium for menu/command extraction.
+
+Why conversion is hard:
+
+- Ribbon and bar systems are command frameworks, not simple visual controls.
+- They include bar managers, item links, actions, galleries, tabs, groups,
+  customization dialogs, key tips, mini toolbars, and persistent layout.
+- Docking uses dock sites, panels, side containers, tab containers, layout sites,
+  floating sites, and runtime drag/drop state.
+- FMX does not have a standard direct replacement for the full DevExpress bar
+  and docking ecosystem.
+
+Possible converter support:
+
+- Detect and report.
+- Extract bar items and captions into a report.
+- Generate a simple FMX menu or toolbar only for very simple TdxBarButton cases,
+  if the mapping pack requests it.
+
+Recommendation:
+
+Keep this report-only in the public converter. Add a future optional "command
+extraction" feature, not full ribbon/docking conversion.
+
+
+Deep Dive 7: ExpressLayoutControl and NavBar
+============================================
+
+Representative components:
+
+- TdxLayoutControl
+- TdxLayoutGroup
+- TdxLayoutItem
+- TdxLayoutSplitterItem
+- TdxNavBar
+- TdxNavBarGroup
+- TdxNavBarItem
+
+Why this matters:
+
+Layout controls and navigation bars affect the structure of the form itself.
+They are common in business applications.
+
+FMX conversion possibility:
+
+Medium for basic layout extraction.
+Low for preserving runtime customization.
+
+Why conversion is hard:
+
+- LayoutControl is a layout engine with nested groups/items.
+- It supports alignment constraints, runtime customization, stored layouts,
+  captions, hyperlinks, scrolling, skins, and embedded controls.
+- NavBar groups/items are not equivalent to a standard FMX menu or listbox.
+
+Possible converter support:
+
+- TdxLayoutControl -> TLayout or TScrollBox
+- TdxLayoutGroup -> TLayout or grouped layout section
+- TdxLayoutItem -> preserve child control and report lost layout metadata
+- TdxNavBar -> TListBox/TreeView/sidebar approximation, opt-in only
+
+Recommendation:
+
+Add detection and manual review first. Later, simple LayoutControl-to-TLayout
+support may be possible if the converter can preserve child control positions
+and grouping. Do not promise visual parity.
+
+
+Deep Dive 8: Scheduler, Gantt, Calendar, and Time-Based UI
+==========================================================
+
+Representative components:
+
+- TcxScheduler
+- TcxSchedulerStorage
+- TcxSchedulerDBStorage
+- TdxGanttControl
+- date navigator and related scheduler UI components
+
+Why this matters:
+
+Schedulers and Gantt controls represent complex business workflow state.
+
+FMX conversion possibility:
+
+Low.
+
+Why conversion is hard:
+
+- Scheduler supports appointments, recurring events, multiple views, storage
+  components, date navigators, commands, ribbons/toolbars, and appointment UI.
+- Recurrence rules, reminders, resources, and custom appointment fields are
+  behavioral models, not simple properties.
+- Gantt controls include tasks, dependencies, hierarchy, timeline rendering,
+  editing, and persistence.
+
+Possible converter support:
+
+- Detect and report storage/dataset references.
+- Emit manual review with fields found.
+- Suggest third-party FMX scheduler/Gantt replacement if the user supplies a
+  mapping pack.
+
+Recommendation:
+
+Report-only. Do not auto-convert.
+
+
+Deep Dive 9: Charts, Gauges, Maps, Dashboards, and Analytics
+============================================================
+
+Representative components:
+
+- TdxChartControl
+- chart diagrams and series
+- TdxGaugeControl
+- TdxMapControl
+- TdxDashboardControl
+- related palette/repository components
+
+Why this matters:
+
+These controls are visual and analytical. They often sit in executive or
+operational dashboards.
+
+FMX conversion possibility:
+
+Medium for very simple charts.
+Low for dashboards, maps, gauges, and advanced analytics.
+
+Why conversion is hard:
+
+- Charts include diagrams, series, palettes, bound/unbound data, axes,
+  crosshairs, labels, legends, and render-mode settings.
+- DevExpress chart render modes include DirectX, GDI+, and GDI. FMX rendering
+  is different.
+- Dashboards are based on DevExpress JavaScript Dashboard Designer/Viewer and
+  wrappers/dependencies, not a simple VCL-to-FMX control mapping.
+- Maps and gauges have specialized data and rendering models.
+
+Possible converter support:
+
+- Detect chart controls and list series/data bindings in the report.
+- For simple chart cases, generate a manual-review note suggesting TeeChart FMX,
+  Skia-based charting, or another user-selected target.
+- Do not generate an automatic FMX chart until a target chart library and mapping
+  pack are selected.
+
+Recommendation:
+
+Report-only in the core. Possible future chart mapping pack if a specific FMX
+chart target is chosen.
+
+
+Deep Dive 10: Reports, PDF Viewer, RichEdit, Spreadsheet, Printing
+==================================================================
+
+Representative components:
+
+- DevExpress VCL Reports / ExpressReports
+- DevExpress VCL Dashboard Designer/Viewer
+- TcxRichEdit or DevExpress Rich Edit components
+- Spreadsheet controls
+- PDF Viewer
+- ExpressPrinting System
+
+Why this matters:
+
+These components handle documents, printing, exports, and end-user design
+features. They are valuable in business software but expensive to migrate.
+
+FMX conversion possibility:
+
+Low for automatic conversion.
+Medium for detection/reporting.
+
+Why conversion is hard:
+
+- Reports and dashboards are products in their own right.
+- DevExpress VCL Reports and Dashboards now involve web-based designer/viewer
+  technology and embedded dependencies.
+- PDF Viewer, RichEdit, Spreadsheet, and Printing have large document models.
+- FMX does not include equivalent first-party replacements.
+
+Possible converter support:
+
+- Detect and report.
+- Preserve references only if the user explicitly provides a mapping pack.
+- Add report sections explaining required manual replacement.
+
+Recommendation:
+
+Report-only. Do not attempt automatic conversion in core VCL2FMXConverter.
+
+
+Additional DevExpress Families
+==============================
+
+Skins and LookAndFeel
+---------------------
+
+DevExpress skins and look-and-feel settings do not map cleanly to FMX. FMX uses
+different styling and rendering concepts. The converter should report skin and
+look-and-feel dependencies, not try to convert them automatically.
+
+ExpressMemData and ExpressDataController
+----------------------------------------
+
+These may be nonvisual or data-related helpers. Some may be preserved or replaced
+with FireDAC/memory dataset alternatives, but only after class-specific analysis.
+Default recommendation is detection and manual review.
+
+SpellChecker
+------------
+
+Report-only. FMX has no universal standard equivalent.
+
+FlowChart / OrgChart / Wizard / Tile Controls
+---------------------------------------------
+
+Report-only by default. Simple wizard/page-flow approximations might be possible
+later, but full behavior is too specific.
+
+
+Recommended DevExpress Support Strategy
+=======================================
+
+Do not build direct DevExpress support as a monolithic feature. Build it as three
+layers.
+
+Layer 1: Detection and Reporting
+--------------------------------
+
+This should be in the core converter.
+
+Add or improve:
+
+- Detect DevExpress by class prefix: Tcx, Tdx, TdxBar, TdxRibbon, TdxLayout,
+  TdxNavBar, TdxChart, TdxGauge, TdxMap, TdxDashboard.
+- Report vendor, class name, component name, DFM file, parent control, and
+  recommended action.
+- Distinguish:
+  - simple candidate
+  - partial candidate
+  - manual review
+  - not recommended for automatic conversion
+
+Layer 2: DevExpress Basic Mapping Pack
+--------------------------------------
+
+This should be optional and user-controlled.
+
+Good starter mappings:
+
+- TcxButton -> TButton
+- TcxTextEdit -> TEdit
+- TcxDBTextEdit -> TEdit plus generated binding
+- TcxMaskEdit -> TEdit plus manual-review note
+- TcxMemo -> TMemo
+- TcxDBMemo -> TMemo plus generated binding
+- TcxComboBox -> TComboBox
+- TcxDBComboBox -> TComboBox plus generated binding
+- TcxCheckBox -> TCheckBox, if encountered
+- TdxToggleSwitch -> TCheckBox or TSwitch, depending on selected target
+- TcxPageControl -> TTabControl
+- TcxTabSheet -> TTabItem
+
+Layer 3: DevExpress Advanced Report-Only Pack
+---------------------------------------------
+
+This should not auto-convert. It should improve reporting for complex controls.
+
+Good candidates:
+
+- TcxGrid
+- TcxTreeList
+- TcxVerticalGrid
+- TcxPivotGrid
+- TdxBarManager
+- TdxRibbon
+- TdxDockingManager
+- TdxLayoutControl
+- TcxScheduler
+- TdxGanttControl
+- TdxChartControl
+- TdxGaugeControl
+- TdxMapControl
+- TdxDashboardControl
+- PDF Viewer
+- Report components
+- Spreadsheet controls
+- RichEdit controls
+
+
+Recommended Implementation Priority
+===================================
+
+Priority 1: Improve Detection
+-----------------------------
+
+This is the safest and most useful first step.
+
+Add richer DevExpress detection and report output. The report should say exactly
+what was found and why it was or was not converted.
+
+Priority 2: Add Mapping Pack Infrastructure
+-------------------------------------------
+
+Do not hardcode many DevExpress rules into converter core. Support import/export
+of mapping packs so DevExpress users can contribute mappings.
+
+Priority 3: Add DevExpress Basic Pack
+-------------------------------------
+
+Start with simple editors, buttons, memo, combo, checkbox, and page controls.
+Every mapping should include confidence and report notes.
+
+Priority 4: Add Complex-Control Report Extraction
+-------------------------------------------------
+
+For TcxGrid and similar controls, collect useful metadata:
+
+- grid class
+- views
+- levels
+- columns
+- bands
+- datasets
+- repository editors
+- known unsupported features
+
+This helps users redesign the FMX equivalent without pretending the converter
+can do it automatically.
+
+Priority 5: Optional MSBuild Validation
+---------------------------------------
+
+When DevExpress mappings are used, post-conversion build validation becomes more
+important. The report should clearly show whether the converted project compiled.
+
+
+What Should Not Be Done
+=======================
+
+Avoid these in the public converter core:
+
+1. Do not auto-convert TcxGrid to TGrid by default.
+2. Do not auto-convert Ribbon/Bar/Docking systems to approximate FMX layouts.
+3. Do not assume DevExpress FMX equivalents exist for every VCL class.
+4. Do not add DevExpress runtime/package dependencies to the converter.
+5. Do not promise visual parity.
+6. Do not convert complex controls unless a user explicitly loads a mapping pack.
+7. Do not let DevExpress-specific logic destabilize standard VCL-to-FMX output.
+
+
+Competitive Value Compared With Mida
+====================================
+
+Mida claims broad DevExpress/third-party conversion support. VCL2FMXConverter can
+compete differently:
+
+1. Be transparent.
+   Show exactly what was detected, mapped, skipped, and why.
+
+2. Be open.
+   Let users create, inspect, edit, and share mapping packs.
+
+3. Be conservative.
+   Convert simple controls. Report complex controls honestly.
+
+4. Be verifiable.
+   Use MSBuild validation after conversion and include the result in the report.
+
+5. Be community-driven.
+   DevExpress users can contribute tested mapping packs without forcing all users
+   to inherit risky mappings.
+
+
+Practical Feasibility Summary
+=============================
+
+High feasibility:
+
+- TcxButton
+- TcxTextEdit
+- TcxDBTextEdit
+- TcxMemo
+- TcxDBMemo
+- TcxComboBox
+- TcxDBComboBox
+- TcxCheckBox, if encountered
+- TcxPageControl
+- TcxTabSheet
+
+Medium feasibility:
+
+- TcxMaskEdit
+- TcxButtonEdit
+- TcxDBButtonEdit
+- TcxLookupComboBox
+- TcxDBLookupComboBox
+- TcxDateEdit
+- TcxTimeEdit
+- TdxToggleSwitch
+- TdxLayoutControl, very simple cases only
+- TdxNavBar, approximation only
+
+Low feasibility / report-only:
+
+- TcxGrid
+- TcxTreeList
+- TcxVerticalGrid
+- TcxPivotGrid
+- TdxBarManager
+- TdxRibbon
+- TdxDockingManager
+- TcxScheduler
+- TdxGanttControl
+- TdxChartControl
+- TdxGaugeControl
+- TdxMapControl
+- TdxDashboardControl
+- DevExpress reports
+- PDF viewer
+- Spreadsheet
+- RichEdit
+- Printing system
+- Skins and look-and-feel
+
+
+Final Recommendation
+====================
+
+DevExpress support is worth adding, but only in a disciplined way.
+
+Recommended first public feature:
+
+"DevExpress Detection and Basic Mapping Pack Support"
+
+Scope:
+
+1. Detect DevExpress components more thoroughly.
+2. Report simple/complex/manual-review classification.
+3. Add optional mapping-pack infrastructure.
+4. Provide a small DevExpress Basic mapping pack for safe controls.
+5. Keep complex controls report-only unless users supply explicit mapping packs.
+
+This would make VCL2FMXConverter more competitive with Mida without trying to be
+an all-in-one commercial migration suite.
+

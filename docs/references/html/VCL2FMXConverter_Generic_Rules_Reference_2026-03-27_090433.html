@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>VCL2FMXConverter Generic Rules Reference</title>
+  <style>
+    body {
+      font-family: Calibri, Arial, sans-serif;
+      font-size: 11pt;
+      line-height: 1.35;
+      color: #222;
+      margin: 24px;
+    }
+    h1, h2 {
+      color: #7a0c0c;
+      margin-bottom: 6px;
+    }
+    p {
+      margin-top: 0;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 18px;
+    }
+    th, td {
+      border: 1px solid #b7b7b7;
+      padding: 6px 8px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      background: #efe2c2;
+      color: #4b2a1a;
+    }
+    .note {
+      background: #f9f4e8;
+      border: 1px solid #d8c49a;
+      padding: 8px 10px;
+      margin-bottom: 18px;
+    }
+    .small {
+      font-size: 10pt;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>VCL2FMXConverter Generic Rules Reference</h1>
+
+  <div class="note">
+    <strong>Scope:</strong> This document lists the active generic conversion rules in the converter. It covers component mappings, data-aware rules, property and event rewrites, layout and style handling, runtime helper behavior, media conversion logic, and project-generation rules. It does <strong>not</strong> include project-specific rules. Current v3 note: the live Component Map, Property Map, and Event Map screens are now backed by the same compiled mapper knowledge used during conversion, and the mapper exports explicit RTTI inventories and class/property/event matrices for audit and maintenance.
+  </div>
+
+  <p class='small'><strong>Updated:</strong> April 15, 2026 19:58 from the current v3.0 codebase.</p>
+  <p class='small'><strong>Reference data source:</strong> mapper_source_fallback.</p>
+  <p class='small'><strong>Current matrix snapshot:</strong> classes: 79 total (36 direct, 33 substitute, 8 manual review); properties: 74 total (45 direct, 22 renamed, 5 transformed, 0 omitted, 2 manual review); events: 27 total (15 direct, 5 renamed, 7 incompatible signature, 0 manual review).</p>
+
+  <h2>1. Component Mapping Rules</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Rule Name</th>
+        <th>VCL Source</th>
+        <th>FMX Output</th>
+        <th>What the New Component / Rule Does</th>
+        <th>Implemented In</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Component mapping rule</td>
+        <td></td>
+        <td>Manual review / unsupported</td>
+        <td>Mapped according to the current converter rules.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Component mapping rule</td>
+        <td></td>
+        <td>Manual review / unsupported</td>
+        <td>Mapped according to the current converter rules.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TAction</td>
+        <td>TAction</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TActionList</td>
+        <td>TActionList</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Unsupported / manual review</td>
+        <td>TADODataSet</td>
+        <td>Manual review / unsupported</td>
+        <td>Windows-specific ADO dataset requires manual review for FMX targets.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Unsupported / manual review</td>
+        <td>TApdComPort</td>
+        <td>Manual review / unsupported</td>
+        <td>Third-party serial communications component - requires a custom FMX/WinAPI replacement</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TBevel</td>
+        <td>TRectangle</td>
+        <td>Use TRectangle with appropriate Fill and Stroke</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TBitBtn</td>
+        <td>TButton</td>
+        <td>Use TButton with Images property</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TButton</td>
+        <td>TButton</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Unsupported / manual review</td>
+        <td>TChart</td>
+        <td>Manual review / unsupported</td>
+        <td>Requires TMS FMX Chart or similar third-party component</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TCheckBox</td>
+        <td>TCheckBox</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TCheckListBox</td>
+        <td>TListBox</td>
+        <td>Use FMX TListBox and review checked-item behavior manually.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Unsupported / manual review</td>
+        <td>TClientDataSet</td>
+        <td>Manual review / unsupported</td>
+        <td>Dataset component requires manual review; preserve only if the target platform and supporting units are appropriate.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TColorBox</td>
+        <td>TColorComboBox</td>
+        <td>FMX color-selection equivalent is TColorComboBox in FMX.Colors</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TColorDialog</td>
+        <td>TColorDialog</td>
+        <td>Generated compatibility dialog with a Color property and Execute support</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TComboBox</td>
+        <td>TComboBox</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TDateTimePicker</td>
+        <td>TDateEdit</td>
+        <td>Uses the closest stock FMX substitute and applies later parser or integration rules where needed.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TDBCheckBox</td>
+        <td>TCheckBox</td>
+        <td>Use LiveBindings to connect to data source</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TDBComboBox</td>
+        <td>TComboEdit</td>
+        <td>Use LiveBindings to connect to data source</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TDBCtrlGrid</td>
+        <td>TStringGrid</td>
+        <td>Major structural difference - requires LiveBindings and manual layout review.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TDBEdit</td>
+        <td>TEdit</td>
+        <td>Use LiveBindings to connect to data source</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TDBGrid</td>
+        <td>TStringGrid</td>
+        <td>Major architectural difference - requires LiveBindings completely</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TDBListBox</td>
+        <td>TListBox</td>
+        <td>Use LiveBindings with FMX TListBox and review lookup/list-source behavior manually.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TDBNavigator</td>
+        <td>TBindNavigator</td>
+        <td>Use FMX LiveBindings navigator with generated TBindSourceDB hookup</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TDrawGrid</td>
+        <td>TStringGrid</td>
+        <td>Use FMX TStringGrid and review custom drawing/cell rendering manually.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TEdit</td>
+        <td>TEdit</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TFileOpenDialog</td>
+        <td>TOpenDialog</td>
+        <td>Use FMX TOpenDialog as the closest standard substitute</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TFileSaveDialog</td>
+        <td>TSaveDialog</td>
+        <td>Use FMX TSaveDialog as the closest standard substitute.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TFlowPanel</td>
+        <td>TFlowLayout</td>
+        <td>Use FMX TFlowLayout as the closest standard flow container.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TFontDialog</td>
+        <td>TFontDialog</td>
+        <td>Generated compatibility dialog with a streamed Font property and Execute support</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TForm</td>
+        <td>TForm</td>
+        <td>Root forms are converted through dedicated parser rules; this row keeps form properties and events explicit in the mapping matrix.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TFrame</td>
+        <td>TFrame</td>
+        <td>FMX frames are available and should be treated as first-class matrix entries.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TGridPanel</td>
+        <td>TGridPanelLayout</td>
+        <td>Use FMX TGridPanelLayout as the closest standard grid layout container.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TGroupBox</td>
+        <td>TGroupBox</td>
+        <td>Preserve visual FMX group box semantics and caption handling</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TImage</td>
+        <td>TImage</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TImageList</td>
+        <td>TImageList</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TLabel</td>
+        <td>TLabel</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TLabeledEdit</td>
+        <td>Manual review / unsupported</td>
+        <td>Create TLayout with TLabel and TEdit</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TLinkLabel</td>
+        <td>TLabel</td>
+        <td>Hyperlink behavior requires manual review, but the visual text target is an FMX label.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TListBox</td>
+        <td>TListBox</td>
+        <td>Item objects need conversion</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TListView</td>
+        <td>TListView</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TMainMenu</td>
+        <td>TMenuBar</td>
+        <td>Uses the closest stock FMX substitute and applies later parser or integration rules where needed.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TMaskEdit</td>
+        <td>TEdit</td>
+        <td>Use FMX TEdit and review EditMask behavior manually.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TMediaPlayer</td>
+        <td>TMediaPlayer</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TMemo</td>
+        <td>TMemo</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TMenuItem</td>
+        <td>TMenuItem</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TMonthCalendar</td>
+        <td>TCalendar</td>
+        <td>Uses the closest stock FMX substitute and applies later parser or integration rules where needed.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TNumberBox</td>
+        <td>TNumberBox</td>
+        <td>FMX TNumberBox is available in FMX.NumberBox</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TOpenDialog</td>
+        <td>TOpenDialog</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TPageControl</td>
+        <td>TTabControl</td>
+        <td>Uses the closest stock FMX substitute and applies later parser or integration rules where needed.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TPaintBox</td>
+        <td>TPaintBox</td>
+        <td>FMX TPaintBox is available in FMX.Objects</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TPanel</td>
+        <td>TPanel</td>
+        <td>Preserve visual FMX panel semantics for container controls</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TPopupMenu</td>
+        <td>TPopupMenu</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TProgressBar</td>
+        <td>TProgressBar</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Unsupported / manual review</td>
+        <td>TQuery</td>
+        <td>Manual review / unsupported</td>
+        <td>Legacy query component requires manual review or replacement.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TRadioButton</td>
+        <td>TRadioButton</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TRadioGroup</td>
+        <td>TRadioGroup</td>
+        <td>Generated compatibility group that rebuilds internal FMX radio buttons from Items</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TRichEdit</td>
+        <td>TMemo</td>
+        <td>Use FMX TMemo and review rich-text formatting behavior manually.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TSaveDialog</td>
+        <td>TSaveDialog</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TScrollBar</td>
+        <td>TScrollBar</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TScrollBox</td>
+        <td>TScrollBox</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TShape</td>
+        <td>TShape</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TSpeedButton</td>
+        <td>TSpeedButton</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TSpinEdit</td>
+        <td>TSpinBox</td>
+        <td>FMX TSpinBox is available in FMX.SpinBox</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TSplitter</td>
+        <td>TSplitter</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Unsupported / manual review</td>
+        <td>TSQLDataSet</td>
+        <td>Manual review / unsupported</td>
+        <td>dbExpress dataset requires manual review for FMX targets.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TStaticText</td>
+        <td>TLabel</td>
+        <td>Static text converts cleanly to an FMX label.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TStatusBar</td>
+        <td>TStatusBar</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TStringGrid</td>
+        <td>TStringGrid</td>
+        <td>Data model completely different - requires LiveBindings</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TTabSheet</td>
+        <td>TTabItem</td>
+        <td>Uses the closest stock FMX substitute and applies later parser or integration rules where needed.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Unsupported / manual review</td>
+        <td>TTaskDialog</td>
+        <td>Manual review / unsupported</td>
+        <td>No standard FMX task dialog component - requires a custom dialog implementation.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TTimer</td>
+        <td>TTimer</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TToolBar</td>
+        <td>TToolBar</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TTrackBar</td>
+        <td>TTrackBar</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Unsupported / manual review</td>
+        <td>TTrayIcon</td>
+        <td>Manual review / unsupported</td>
+        <td>No standard FMX tray icon component - requires platform-specific code</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TTreeView</td>
+        <td>TTreeView</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TUpDown</td>
+        <td>TSpinBox</td>
+        <td>Uses the closest stock FMX substitute and applies later parser or integration rules where needed.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Substitute component mapping</td>
+        <td>TValueListEditor</td>
+        <td>TGrid</td>
+        <td>Complex - requires custom grid implementation</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Direct component mapping</td>
+        <td>TWebBrowser</td>
+        <td>TWebBrowser</td>
+        <td>Maps directly to the matching FMX component surface.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>2. Data-Aware and Binding Rules</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Rule Name</th>
+        <th>VCL Source</th>
+        <th>FMX Output</th>
+        <th>What the New Component / Rule Does</th>
+        <th>Implemented In</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Field binding analysis</td>
+        <td>TDBEdit / field-style DB-aware editors</td>
+        <td>TEdit + generated bind/sync code</td>
+        <td>Detects field-bound editors and generates the helper methods and events needed to keep FMX edits synchronized with dataset values.</td>
+        <td>Converter.Advanced.DataAware.pas; Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Grid binding analysis</td>
+        <td>TDBGrid</td>
+        <td>TStringGrid + binding/selector strategy</td>
+        <td>Captures grid column metadata and routes each form to either a browse-grid path or a selector-grid-with-editors path based on the form structure.</td>
+        <td>Converter.Advanced.DataAware.pas; Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Navigator binding analysis</td>
+        <td>TDBNavigator</td>
+        <td>TBindNavigator + generated bind source</td>
+        <td>Detects navigator usage and generates the FMX navigator/bind-source setup needed to drive the dataset.</td>
+        <td>Converter.Advanced.DataAware.pas</td>
+      </tr>
+      <tr>
+        <td>Lookup combo analysis</td>
+        <td>TDBLookupComboBox</td>
+        <td>Lookup-style LiveBindings setup</td>
+        <td>Marks lookup combos for fill-control binding behavior so list values and selected keys can be bridged in FMX.</td>
+        <td>Converter.Advanced.DataAware.pas</td>
+      </tr>
+      <tr>
+        <td>Display text binding</td>
+        <td>TDBText</td>
+        <td>TLabel + text binding</td>
+        <td>Routes read-only DB text fields to an FMX label with text/property binding semantics.</td>
+        <td>Converter.Advanced.DataAware.pas; Converter.Advanced.ThirdParty.pas</td>
+      </tr>
+      <tr>
+        <td>Editable combo text binding</td>
+        <td>TDBComboBox</td>
+        <td>TComboEdit + combo text sync</td>
+        <td>Uses an editable FMX combo-edit for data-aware combo text and generates selection, popup, and field-sync logic around it.</td>
+        <td>Converter.Advanced.DataAware.pas; Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Blob image binding</td>
+        <td>TDBImage</td>
+        <td>TImage + blob binding</td>
+        <td>Flags image fields for blob/property binding so visual image content can be pushed into FMX bitmap-based controls.</td>
+        <td>Converter.Advanced.DataAware.pas</td>
+      </tr>
+      <tr>
+        <td>Memo text binding</td>
+        <td>TDBMemo</td>
+        <td>TMemo + text binding</td>
+        <td>Routes memo fields to multiline FMX text components with property binding behavior.</td>
+        <td>Converter.Advanced.DataAware.pas</td>
+      </tr>
+      <tr>
+        <td>Boolean field binding</td>
+        <td>TDBCheckBox</td>
+        <td>TCheckBox + IsChecked binding</td>
+        <td>Maps boolean database fields to FMX check boxes using IsChecked rather than Checked.</td>
+        <td>Converter.Advanced.DataAware.pas</td>
+      </tr>
+      <tr>
+        <td>Enum / radio-group binding</td>
+        <td>TDBRadioGroup</td>
+        <td>TRadioGroup + enum binding</td>
+        <td>Maps enumerated field groups to FMX radio-group/property binding behavior when the current compatibility path is appropriate.</td>
+        <td>Converter.Advanced.DataAware.pas; Converter.Advanced.ThirdParty.pas</td>
+      </tr>
+      <tr>
+        <td>Bind-source code generation</td>
+        <td>DB-aware datasets and controls</td>
+        <td>LiveBindings objects and generated helper code</td>
+        <td>Creates the FMX-side bind-source objects and related link components where direct FMX data-aware controls do not exist.</td>
+        <td>Converter.Advanced.DataAware.pas</td>
+      </tr>
+      <tr>
+        <td>Read-only browse grid rule</td>
+        <td>Editable source DB grid with separate editors</td>
+        <td>Browse-only TStringGrid</td>
+        <td>Keeps the grid for browsing/selection and pushes editing responsibility into the already-existing standalone editors on the form.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Selector-grid rule</td>
+        <td>Editable source DB grid without separate editors</td>
+        <td>TStringGrid + generated editor panel</td>
+        <td>Builds a selector grid plus generated editors so inline VCL DB-grid editing is replaced with a safer FMX editing model.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>3. Property, Event, and Semantic Translation Rules</h2>
+  <p class="small">The current explicit property matrix classifies 74 rows (45 direct, 22 renamed, 5 transformed, 0 omitted, 2 manual review). The current explicit event matrix classifies 27 rows (15 direct, 5 renamed, 7 incompatible-signature, 0 manual review).</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Rule Name</th>
+        <th>VCL Source</th>
+        <th>FMX Output</th>
+        <th>What the New Component / Rule Does</th>
+        <th>Implemented In</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Caption-to-Text translation</td>
+        <td>Caption-based control text</td>
+        <td>Text / TextSettings-based output</td>
+        <td>Converts VCL Caption usage to the appropriate FMX text property or text-setting path depending on the control type.</td>
+        <td>Converter.Parser.DFM.pas; Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Checked-to-IsChecked translation</td>
+        <td>Checked</td>
+        <td>IsChecked</td>
+        <td>Normalizes VCL toggle state access to the FMX boolean property used by check boxes and radio buttons.</td>
+        <td>Converter.Mapper.Component.pas; Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Picture-to-Bitmap translation</td>
+        <td>TPicture-based image content</td>
+        <td>Bitmap-based FMX image content</td>
+        <td>Bridges the VCL picture model to the bitmap-oriented FMX image control model.</td>
+        <td>Converter.Mapper.Component.pas; Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Brush and Pen translation</td>
+        <td>Brush / Pen</td>
+        <td>Fill / Stroke</td>
+        <td>Maps VCL drawing properties to the FMX rendering property model.</td>
+        <td>Converter.Mapper.Component.pas; Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Combo popup event translation</td>
+        <td>OnDropDown</td>
+        <td>OnPopup</td>
+        <td>Rewrites combo drop-down events to the FMX popup event used by combo boxes and combo-edit controls.</td>
+        <td>Converter.Mapper.Component.pas; Converter.Parser.DFM.pas</td>
+      </tr>
+      <tr>
+        <td>Combo close event translation</td>
+        <td>OnCloseUp</td>
+        <td>OnClosePopup</td>
+        <td>Rewrites combo close-up events to the FMX popup-close event used by combo boxes and combo-edit controls.</td>
+        <td>Converter.Mapper.Component.pas; Converter.Parser.DFM.pas</td>
+      </tr>
+      <tr>
+        <td>Date picker open event translation</td>
+        <td>OnDropDown</td>
+        <td>OnOpenPicker</td>
+        <td>Maps the VCL date-picker open event to the FMX picker-open event.</td>
+        <td>Converter.Mapper.Component.pas; Converter.Parser.DFM.pas</td>
+      </tr>
+      <tr>
+        <td>Date picker close event translation</td>
+        <td>OnCloseUp</td>
+        <td>OnClosePicker</td>
+        <td>Maps the VCL date-picker close event to the FMX picker-close event.</td>
+        <td>Converter.Mapper.Component.pas; Converter.Parser.DFM.pas</td>
+      </tr>
+      <tr>
+        <td>Key event signature review</td>
+        <td>OnKeyDown / OnKeyUp</td>
+        <td>FMX key events with different signatures</td>
+        <td>Marks keyboard events whose FMX handler signatures differ from VCL so the converter can report or adapt them honestly.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Form mouse-move signature review</td>
+        <td>Form OnMouseMove</td>
+        <td>FMX mouse events with Single coordinates</td>
+        <td>Flags signature differences where FMX expects floating-point coordinates instead of the VCL integer pattern.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Root-form double-click adaptation</td>
+        <td>Form OnDblClick</td>
+        <td>Generated OnMouseUp adapter</td>
+        <td>Keeps FMX forms from streaming an unsupported OnDblClick property by remapping root-form double-click behavior through a generated mouse-up adapter.</td>
+        <td>Converter.Parser.DFM.pas; Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Masked-edit rule</td>
+        <td>EditMask</td>
+        <td>Manual review</td>
+        <td>Keeps TMaskEdit on the supported class matrix while leaving masking semantics explicit instead of pretending there is a full FMX equivalent.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Windows message to FMX event translation</td>
+        <td>WM_* handlers</td>
+        <td>OnEnter / OnExit / OnClick / OnResize / etc.</td>
+        <td>Translates common Windows message-handler patterns into the closest FMX event model and marks critical areas for review when needed.</td>
+        <td>Converter.Advanced.CriticalAreas.pas</td>
+      </tr>
+      <tr>
+        <td>VCL color constant translation</td>
+        <td>clBtnFace, clWindow, clActiveCaption, and similar constants</td>
+        <td>TAlphaColor / FMX-safe color literals</td>
+        <td>Converts common VCL color constants into the FMX color system so colors render correctly outside WinAPI painting.</td>
+        <td>Converter.Advanced.WinAPI.pas; Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>TColor cast normalization</td>
+        <td>TColor(...)</td>
+        <td>TAlphaColor(...)</td>
+        <td>Normalizes explicit color casts so converted code compiles and uses the FMX color type system.</td>
+        <td>Converter.Advanced.WinAPI.pas</td>
+      </tr>
+      <tr>
+        <td>MessageDlg button qualification</td>
+        <td>[mbOK], [mbYes, mbNo] and similar sets</td>
+        <td>[TMsgDlgBtn.mbOK], [TMsgDlgBtn.mbYes, TMsgDlgBtn.mbNo]</td>
+        <td>Qualifies generated FMX message-dialog button sets so they use the FMX/System.UITypes enum surface instead of bare VCL-style identifiers.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Folder picker dialog translation</td>
+        <td>TFileOpenDialog with fdoPickFolders</td>
+        <td>FMX SelectDirectory helper path</td>
+        <td>Converts folder-only browse flows to FMX directory selection and suppresses unsupported VCL dialog option constants from leaking into generated FMX Pascal.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Toggle user-change semantics</td>
+        <td>VCL check box / radio button OnClick semantics</td>
+        <td>FMX OnChange plus generated silent setter</td>
+        <td>Preserves user-change behavior generically by separating programmatic state assignment from user-triggered event handling.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Message dialog preservation</td>
+        <td>ShowMessage(...)</td>
+        <td>ShowMessage(...)</td>
+        <td>Preserves standard message dialogs rather than routing them through an extra helper layer.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>4. Layout, Text, and Style Rules</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Rule Name</th>
+        <th>VCL Source</th>
+        <th>FMX Output</th>
+        <th>What the New Component / Rule Does</th>
+        <th>Implemented In</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Scoped StyledSettings emission</td>
+        <td>Styled text-capable controls with custom font/color/alignment</td>
+        <td>Scoped StyledSettings literal</td>
+        <td>Clears only the FMX style buckets actually overridden by converted font, color, and alignment settings instead of forcing StyledSettings to an empty set.</td>
+        <td>Converter.Parser.DFM.pas</td>
+      </tr>
+      <tr>
+        <td>Label AutoSize preservation</td>
+        <td>AutoSize and non-AutoSize VCL labels</td>
+        <td>TLabel sizing that follows the original intent</td>
+        <td>Keeps safe AutoSize behavior where appropriate and avoids over-expanding labels that were fixed-width in VCL.</td>
+        <td>Converter.Parser.DFM.pas</td>
+      </tr>
+      <tr>
+        <td>Fixed-width label width bump</td>
+        <td>Long single-line fixed-width labels</td>
+        <td>Wider TLabel output</td>
+        <td>Adds a mild width increase so slightly larger FMX text does not clip or crowd adjacent controls.</td>
+        <td>Converter.Parser.DFM.pas</td>
+      </tr>
+      <tr>
+        <td>Wrapped label width normalization</td>
+        <td>Long wrapped labels and labels with manual line breaks</td>
+        <td>Wider wrapped TLabel output</td>
+        <td>Expands wrapped labels so multiline text fits more naturally in FMX.</td>
+        <td>Converter.Parser.DFM.pas</td>
+      </tr>
+      <tr>
+        <td>Wrapped label height normalization</td>
+        <td>Wrapped labels that need extra vertical space</td>
+        <td>Taller TLabel output</td>
+        <td>Increases label height so wrapped text fully displays instead of truncating after the first line.</td>
+        <td>Converter.Parser.DFM.pas</td>
+      </tr>
+      <tr>
+        <td>Right/centered label alignment preservation</td>
+        <td>Right-justified or centered labels</td>
+        <td>Fixed-width aligned FMX label output</td>
+        <td>Preserves alignment intent and keeps labels visually aligned with nearby controls rather than forcing unsafe autosizing.</td>
+        <td>Converter.Parser.DFM.pas</td>
+      </tr>
+      <tr>
+        <td>Auto-sized label anchor reset</td>
+        <td>Auto-sized VCL labels carrying broad anchor sets</td>
+        <td>Default FMX anchors for auto-sized labels</td>
+        <td>Prevents FMX from stretching centered or auto-sized labels just because the source VCL label carried opposite-edge anchors.</td>
+        <td>Converter.Parser.DFM.pas</td>
+      </tr>
+      <tr>
+        <td>DIP-aware font scaling</td>
+        <td>VCL pixel-sized text controls</td>
+        <td>Adjusted FMX font sizes and dimensions</td>
+        <td>Applies component-aware sizing adjustments so text controls look closer to their VCL proportions under FMX device-independent pixels.</td>
+        <td>Converter.Parser.DFM.pas</td>
+      </tr>
+      <tr>
+        <td>Editable combo read-only safeguard</td>
+        <td>TDBComboBox converted to TComboEdit</td>
+        <td>Editable combo-edit output</td>
+        <td>Prevents VCL ReadOnly metadata from incorrectly locking editable converted combo-edit controls.</td>
+        <td>Converter.Parser.DFM.pas</td>
+      </tr>
+      <tr>
+        <td>Runtime font-size styled-setting release</td>
+        <td>Control.Font.Size assignments on FMX styled text controls</td>
+        <td>Generated font-size helper that clears TStyledSetting.Size first</td>
+        <td>Ensures runtime font-size changes are honored on FMX text controls whose styles would otherwise keep Size locked.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>VCL-style text layout math preservation</td>
+        <td>Label stacking math that depends on Height after runtime font changes</td>
+        <td>Generated VCL text-height helper</td>
+        <td>Preserves vertical spacing in converted dashboards and clock-style layouts by using source label metrics instead of trusting raw FMX auto-size heights.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Style-resource background application</td>
+        <td>VCL styled containers with explicit background colors</td>
+        <td>Styled FMX container tinting</td>
+        <td>Applies explicit container colors through the FMX style tree so panels, group boxes, toolbars, and status bars keep their visual intent.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Recursive container color propagation</td>
+        <td>Nested VCL containers with explicit color usage</td>
+        <td>ApplyContainerBackgroundColor helper</td>
+        <td>Walks the FMX control tree and applies compatible background color handling to styled container hierarchies.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>5. Runtime Helper and Code-Rewrite Rules</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Rule Name</th>
+        <th>VCL Source</th>
+        <th>FMX Output</th>
+        <th>What the New Component / Rule Does</th>
+        <th>Implemented In</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Bound date parser</td>
+        <td>Date text entered into converted bound edits</td>
+        <td>GeneratedTryParseBoundDate</td>
+        <td>Accepts flexible date text, validates it, and converts it safely before the dataset field is updated.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Bound time parser</td>
+        <td>Time text entered into converted bound edits</td>
+        <td>GeneratedTryParseBoundTime</td>
+        <td>Accepts flexible 12-hour and 24-hour time input and normalizes it for FMX-bound field updates.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Bound field assignment helper</td>
+        <td>Field updates from converted edits</td>
+        <td>GeneratedAssignBoundFieldValue</td>
+        <td>Centralizes type-aware field assignment so invalid values are rejected cleanly and valid values normalize through the field display logic.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>DisplayText refresh preservation</td>
+        <td>TDBEdit.Field.DisplayText refresh logic</td>
+        <td>GeneratedGetManualFieldDisplayText</td>
+        <td>Preserves VCL data-aware display formatting such as OnGetText-driven month/day presentation when converted edits refresh from their bound field display text.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Bound edit commit wiring</td>
+        <td>TDBEdit-style behavior</td>
+        <td>OnChangeTracking / OnExit / OnKeyDown wiring</td>
+        <td>Wakes dataset edit mode while typing, commits on Enter or exit, and re-syncs from the field display value afterward.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>TMemo clear normalization</td>
+        <td>TMemo.Clear</td>
+        <td>Lines.Clear</td>
+        <td>Normalizes memo-clearing calls to the FMX multiline text model.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Numeric Position-to-Value normalization</td>
+        <td>Track and progress Position semantics</td>
+        <td>FMX Value semantics</td>
+        <td>Normalizes common slider-style control reads and writes to FMX Value properties.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Combo startup popup suppression</td>
+        <td>Generated combo setup on form creation</td>
+        <td>Field sync without popup side effects</td>
+        <td>Initializes converted combo values from the bound field without calling actual popup-open logic during form startup.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Combo popup-close preservation</td>
+        <td>Existing OnClosePopup handlers on converted combo controls</td>
+        <td>Generated close-popup wrapper plus restore-on-cleanup</td>
+        <td>Chains original close-popup logic with generated field-sync behavior and restores the original handler for externally owned/shared combo controls during teardown.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>External datasource handler restoration</td>
+        <td>Wrapped external TDataSource.OnDataChange handlers</td>
+        <td>Restore original OnDataChange on cleanup</td>
+        <td>Prevents generated binding cleanup from leaving a shared datasource with its handler nilled out after the form closes.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>External navigator handler restoration</td>
+        <td>Wrapped external TBindNavigator.BeforeAction handlers</td>
+        <td>Restore original BeforeAction on cleanup</td>
+        <td>Prevents shared navigators from being left pointed at generated wrapper methods on a destroyed form.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Startup OnEnter guard</td>
+        <td>Side-effecting OnEnter handlers that fire during initial FMX display</td>
+        <td>Generated startup-guard enter wrappers</td>
+        <td>Prevents startup focus churn from triggering VCL OnEnter logic too early when a form first appears in FMX.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Deferred FormShow toggle click</td>
+        <td>Programmatic toggle state changes followed by click handler calls in FormShow</td>
+        <td>ForceQueue-deferred simulated click</td>
+        <td>Lets the FMX form finish showing before the original handler runs, which better matches VCL startup timing.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Media duration to milliseconds</td>
+        <td>MediaPlayer.Length-style millisecond logic</td>
+        <td>Round((Duration / MediaTimeScale) * 1000)</td>
+        <td>Converts FMX TMediaTime values into the millisecond units expected by converted VCL code.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Media duration to seconds</td>
+        <td>MediaPlayer.Length div 1000-style logic</td>
+        <td>Round(Duration / MediaTimeScale)</td>
+        <td>Converts FMX TMediaTime values into seconds for countdown and remaining-time calculations.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>FMX media notify bridge</td>
+        <td>TMediaPlayer.OnNotify / Notify usage</td>
+        <td>Generated media-notify timer bridge</td>
+        <td>Emulates the VCL-style media notify pattern on FMX players by watching playback state and firing the original callback path generically.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Ellipse drawing helper</td>
+        <td>VCL-style ellipse fill/stroke drawing patterns</td>
+        <td>FillAndStrokeEllipse</td>
+        <td>Injects a reusable FMX helper for shape-drawing scenarios that do not map cleanly one-to-one from the VCL canvas model.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Client geometry normalization</td>
+        <td>CenterX / CenterY and client-size assumptions</td>
+        <td>ClientWidth / ClientHeight-aware output</td>
+        <td>Normalizes geometry calculations that depend on VCL client sizing so they make sense under FMX layout rules.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Hide-to-tray fallback simplification</td>
+        <td>Hide To Tray button or handler</td>
+        <td>WindowState := wsMinimized</td>
+        <td>Converts hide-to-tray niceties to a simpler FMX-safe minimize behavior rather than trying to emulate a platform tray implementation automatically.</td>
+        <td>Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>DPR auto-create preservation</td>
+        <td>Application.CreateForm list in the source DPR</td>
+        <td>Preserved Application.CreateForm output</td>
+        <td>Keeps the source form auto-create list intact and suppresses the immediate extra Show call that caused FMX startup instability.</td>
+        <td>Converter.Project.Generator.pas</td>
+      </tr>
+      <tr>
+        <td>ShellExecute preservation</td>
+        <td>Windows ShellExecute help/document/URL launch calls</td>
+        <td>Live ShellExecute output in Windows-targeted FMX projects</td>
+        <td>Keeps valid Windows shell-launch behavior active instead of commenting it out, restoring help/document buttons and similar utilities.</td>
+        <td>Converter.Advanced.WinAPI.pas</td>
+      </tr>
+      <tr>
+        <td>Serial and named-pipe handle preservation</td>
+        <td>Comm-resource CreateFile / WriteFile patterns</td>
+        <td>Preserved Windows handle open/write calls</td>
+        <td>Keeps valid Windows serial-port and named-pipe communication paths live instead of downgrading them as ordinary file I/O.</td>
+        <td>Converter.Advanced.WinAPI.pas</td>
+      </tr>
+      <tr>
+        <td>Process-control preservation</td>
+        <td>GetExitCodeProcess / TerminateProcess around preserved CreateProcess flows</td>
+        <td>Live Windows process-control output</td>
+        <td>Keeps partial process-runner code from breaking by preserving the surrounding Windows process-status and termination calls when the process path is already being preserved.</td>
+        <td>Converter.Advanced.WinAPI.pas</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>6. Analysis, Catalog, and Review Rules</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Rule Name</th>
+        <th>VCL Source</th>
+        <th>FMX Output</th>
+        <th>What the New Component / Rule Does</th>
+        <th>Implemented In</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Explicit matrix export</td>
+        <td>Current mapper state</td>
+        <td>JSON inventory and matrix artifacts</td>
+        <td>Exports RTTI inventories plus explicit class, property, and event matrices so coverage can be audited from the compiled mapper.</td>
+        <td>Converter.Mapper.Component.pas</td>
+      </tr>
+      <tr>
+        <td>Third-party component catalog</td>
+        <td>Known VCL components and compatibility metadata</td>
+        <td>Catalog-backed FMX suggestions</td>
+        <td>Provides a compatibility catalog used during analysis and documentation of what maps directly, what needs bindings, and what needs redesign.</td>
+        <td>Converter.Advanced.ThirdParty.pas</td>
+      </tr>
+      <tr>
+        <td>Manual-review comment emission</td>
+        <td>Unsupported or risky VCL patterns</td>
+        <td>FMX manual review comments</td>
+        <td>Leaves review markers only where the converter still needs the user to make a conscious follow-up decision.</td>
+        <td>Converter.Advanced.CriticalAreas.pas; Converter.Parser.Pascal.pas; Converter.Core.Integration.pas</td>
+      </tr>
+      <tr>
+        <td>Critical-area reporting</td>
+        <td>Message maps, WinAPI-heavy code, unsupported patterns</td>
+        <td>Conversion report output</td>
+        <td>Collects risky patterns during conversion so they can be surfaced for later inspection.</td>
+        <td>Converter.Advanced.CriticalAreas.pas; Converter.Core.Engine.pas</td>
+      </tr>
+      <tr>
+        <td>Live mapping reference tabs</td>
+        <td>Current mapper knowledge</td>
+        <td>Component / Property / Event map pages</td>
+        <td>Uses the same mapper and discovery paths that drive conversion so the on-screen reference tabs reflect the compiled v3 knowledge base.</td>
+        <td>MainForm.pas</td>
+      </tr>
+      <tr>
+        <td>Inventory-based runtime companion reporting</td>
+        <td>Real runtime-support files in source roots and build-output folders</td>
+        <td>Actionable staged/found report entries</td>
+        <td>Scans real .exe/.dll/.lib/.sf2 support files, stages selected runtime companions into the FMX output directory, filters out the primary project executable, and reports only the meaningful staged or still-manual items.</td>
+        <td>Converter.Project.Generator.pas</td>
+      </tr>
+      <tr>
+        <td>Report wording clarity</td>
+        <td>Distinct-file issue count and staged companion wording</td>
+        <td>Clearer text and HTML report labels</td>
+        <td>Clarifies that the report count is for distinct files needing attention and uses explicit staged-runtime wording in both report channels.</td>
+        <td>Converter.Core.Engine.pas; Converter.Project.Generator.pas</td>
+      </tr>
+      <tr>
+        <td>Generic release hygiene</td>
+        <td>Project-specific identifiers in converter source</td>
+        <td>Audit and sweep checks</td>
+        <td>Supports the generic/public release process by allowing the converter source to be scanned for forbidden project-specific markers.</td>
+        <td>GENERIC_RULE_AUDIT_2026-03-20.txt; generic sweep process</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="small">End of reference.</p>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "input_file": "contracts\\winapi_messages\\32_custom_message_constant_not_prefix.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": ["Winapi.Messages", "Winapi.Windows", "System.Messaging", "FMXMessageBridge"],
+  "expected_output_patterns": ["SendMessage\\('Close', AppMessageClose\\)"],
+  "forbidden_output_patterns": ["\\bWinapi\\.Messages\\b", "\\bWinapi\\.Windows\\b", "FMXMessageBridge", "System\\.Messaging"],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": ["Windows messaging", "Windows messages or message handlers", "message-based behavior"]
+}

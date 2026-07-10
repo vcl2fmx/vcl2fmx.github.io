@@ -1,0 +1,16 @@
+{
+  "input_file": "contracts\\livebindings\\03_multiple_forms_one_unit.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractMultipleFormsOneUnit"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\."
+  ],
+  "expected_report_patterns": [
+    "Multiple form/frame/datamodule declarations found in 03_multiple_forms_one_unit\\.pas; generated LiveBindings may need manual review",
+    "Multi-form unit LiveBindings review",
+    "Data binding review: Yes"
+  ],
+  "forbidden_report_patterns": []
+}

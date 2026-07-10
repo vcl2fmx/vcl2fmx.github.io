@@ -1,0 +1,41 @@
+<svg width="1600" height="420" viewBox="0 0 1600 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgEng" x1="90" y1="54" x2="1496" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1F5AA8"/>
+      <stop offset="0.52" stop-color="#326FCA"/>
+      <stop offset="1" stop-color="#4D87E4"/>
+    </linearGradient>
+    <linearGradient id="glassEng" x1="1010" y1="82" x2="1450" y2="324" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#D6E5FF" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.05"/>
+    </linearGradient>
+    <filter id="shadowEng" x="0" y="0" width="1600" height="420" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feOffset dy="12"/>
+      <feGaussianBlur stdDeviation="16"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.0745 0 0 0 0 0.2078 0 0 0 0 0.4353 0 0 0 0.2 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_1"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_1" result="shape"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="420" fill="transparent"/>
+
+  <g filter="url(#shadowEng)">
+    <rect x="52" y="42" width="1496" height="326" rx="34" fill="url(#bgEng)"/>
+    <circle cx="1316" cy="118" r="132" fill="#FFFFFF" fill-opacity="0.08"/>
+    <circle cx="1415" cy="252" r="82" fill="#FFFFFF" fill-opacity="0.09"/>
+    <circle cx="1158" cy="286" r="98" fill="#FFFFFF" fill-opacity="0.05"/>
+    <rect x="1028" y="84" width="392" height="224" rx="30" fill="url(#glassEng)"/>
+
+    <text x="114" y="130" fill="#EAF3FF" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="600" letter-spacing="3">VCL TO FMX CONVERTER</text>
+    <text x="114" y="258" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="104" font-weight="700">v5.0</text>
+    <text x="120" y="327" fill="#DCE9FF" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="600" letter-spacing="4">ENGINEERING GUIDE</text>
+
+    <path d="M1110 156L1160 122L1210 156L1160 190L1110 156Z" fill="#F5F9FF" fill-opacity="0.72"/>
+    <path d="M1218 156L1268 122L1318 156L1268 190L1218 156Z" fill="#F5F9FF" fill-opacity="0.46"/>
+    <path d="M1160 198L1210 164L1260 198L1210 232L1160 198Z" fill="#F5F9FF" fill-opacity="0.32"/>
+    <path d="M1106 262H1346" stroke="#F5F9FF" stroke-opacity="0.24" stroke-width="10" stroke-linecap="round"/>
+    <path d="M1106 288H1288" stroke="#F5F9FF" stroke-opacity="0.16" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</svg>
+

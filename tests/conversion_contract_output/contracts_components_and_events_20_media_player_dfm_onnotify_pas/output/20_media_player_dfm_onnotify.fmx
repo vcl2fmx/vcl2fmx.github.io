@@ -1,0 +1,17 @@
+﻿object ContractMediaPlayerDfmOnNotifyForm: TContractMediaPlayerDfmOnNotifyForm
+  Caption = 'Media Notify DFM Contract'
+  Left = 0
+  Top = 0
+  ClientWidth = 320
+  ClientHeight = 240
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+  object MediaPlayer1: TMediaPlayer
+    Top = 16
+    Left = 16
+  end
+
+end

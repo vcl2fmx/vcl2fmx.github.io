@@ -1,0 +1,462 @@
+{
+  "pack_name": "LMD_MappingPack_v2",
+  "pack_id": "lmd.complete.v2",
+  "vendor": "LMD Innovative",
+  "version": "2.0.0",
+  "description": "Complete merged mapping pack for LMD Innovative VCL controls. Combines the original base pack with supplemental entries covering date/time picker, progress bar, track bar, spin edit, image, scroll bar, splitter, and status bar.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TLMDButton",
+      "fmx_class": "TButton",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Basic button caption and click behavior can map; LMD styling, glyphs, and effects require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        },
+        {
+          "vcl": "Hint",
+          "fmx": "Hint"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDSpeedButton",
+      "fmx_class": "TSpeedButton",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Basic click behavior can map; grouped button state, glyphs, and LMD visual effects require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDLabel",
+      "fmx_class": "TLabel",
+      "action": "partial",
+      "confidence": 78,
+      "notes": "Basic label text can map. HTML/text effects, bevels, and LMD rendering features require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDEdit",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 78,
+      "notes": "Basic text entry can map; masks, validation, button editors, and LMD styling require review.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        },
+        {
+          "vcl": "Hint",
+          "fmx": "Hint"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDMemo",
+      "fmx_class": "TMemo",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Basic memo text can map. LMD editor features, syntax/coloring, and scroll options require review.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Lines",
+          "fmx": "Lines"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDCheckBox",
+      "fmx_class": "TCheckBox",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Basic checked state and caption can map. LMD styling and tri-state behavior require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Checked",
+          "fmx": "IsChecked"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDRadioButton",
+      "fmx_class": "TRadioButton",
+      "action": "partial",
+      "confidence": 72,
+      "notes": "Basic radio button behavior can map; grouping and LMD styling require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Checked",
+          "fmx": "IsChecked"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDComboBox",
+      "fmx_class": "TComboBox",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Simple items and selected index can map; lookup, images, custom drawing, and LMD styling require review.",
+      "properties": [
+        {
+          "vcl": "Items",
+          "fmx": "Items"
+        },
+        {
+          "vcl": "ItemIndex",
+          "fmx": "ItemIndex"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDListBox",
+      "fmx_class": "TListBox",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Simple item lists can map; owner-draw, images, check states, and data-aware behavior require review."
+    },
+    {
+      "vcl_class": "TLMDGroupBox",
+      "fmx_class": "TGroupBox",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Container and caption behavior can map; borders, bevels, and LMD styling require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDPanel",
+      "fmx_class": "TLayout",
+      "action": "partial",
+      "confidence": 68,
+      "notes": "Container behavior can map to TLayout. Panel captions, bevels, backgrounds, and LMD styling require review."
+    },
+    {
+      "vcl_class": "TLMDPageControl",
+      "fmx_class": "TTabControl",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Basic page structure can map; custom tabs and images require review."
+    },
+    {
+      "vcl_class": "TLMDTabSheet",
+      "fmx_class": "TTabItem",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Basic tab item caption can map.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDStringGrid",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "LMD grid behavior, custom drawing, editors, and data integration require grid-specific migration."
+    },
+    {
+      "vcl_class": "TLMDTreeView",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "Tree nodes, images, checkboxes, and custom rendering require manual review."
+    },
+    {
+      "vcl_class": "TLMDObjectInspector",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Object inspector/designer-style controls are design-surface specific and should be rebuilt or reviewed manually."
+    },
+    {
+      "vcl_class": "TLMDFormDesigner",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "Runtime form designer behavior is not safe for automatic FMX conversion."
+    },
+    {
+      "vcl_class": "TLMDDBGrid",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Data-aware grids require manual FMX grid and LiveBindings migration."
+    },
+    {
+      "vcl_class": "TLMDDateTimePicker",
+      "fmx_class": "TDateEdit",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Date/time picker maps to FMX TDateEdit for basic date selection. Time portion, null date behavior, LMD formatting, and styling require review.",
+      "manual_review_reason": "Verify date/time formatting, null date handling, and LMD frame controller behavior after conversion."
+    },
+    {
+      "vcl_class": "TLMDProgressBar",
+      "fmx_class": "TProgressBar",
+      "action": "partial",
+      "confidence": 68,
+      "notes": "Progress value and range map to FMX TProgressBar. LMD orientation, gradient, text overlay, and animation styling require review.",
+      "properties": [
+        {
+          "vcl": "Position",
+          "fmx": "Value"
+        },
+        {
+          "vcl": "Min",
+          "fmx": "Min"
+        },
+        {
+          "vcl": "Max",
+          "fmx": "Max"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDTrackBar",
+      "fmx_class": "TTrackBar",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Trackbar value and range map to FMX TTrackBar. Tick marks, LMD styling, and custom thumb rendering require review.",
+      "properties": [
+        {
+          "vcl": "Position",
+          "fmx": "Value"
+        },
+        {
+          "vcl": "Min",
+          "fmx": "Min"
+        },
+        {
+          "vcl": "Max",
+          "fmx": "Max"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDSpinEdit",
+      "fmx_class": "TSpinBox",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Numeric spin edit maps to FMX TSpinBox. LMD formatting, validation, and button styling require review.",
+      "manual_review_reason": "Verify Min, Max, Increment, and display format after conversion.",
+      "properties": [
+        {
+          "vcl": "Value",
+          "fmx": "Value"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDImage",
+      "fmx_class": "TImage",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Image display maps to FMX TImage. LMD border, shadow, stretch, and transparency effects require review.",
+      "manual_review_reason": "Verify image resource loading and any LMD-specific visual effects.",
+      "properties": [
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDScrollBar",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "Standalone LMD scroll bar has limited FMX equivalent. Review whether the scroll bar drives a custom content area and redesign using FMX TScrollBox or a custom scroll interaction."
+    },
+    {
+      "vcl_class": "TLMDSplitter",
+      "fmx_class": "TSplitter",
+      "action": "partial",
+      "confidence": 68,
+      "notes": "Splitter resize behavior maps to FMX TSplitter. LMD styling and live resize options require review.",
+      "properties": [
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TLMDStatusBar",
+      "action": "detect_only",
+      "confidence": 30,
+      "manual_review_reason": "LMD status bar panels and owner-drawn panes require manual FMX layout redesign using TLayout and TLabel combinations anchored to the bottom of the form."
+    }
+  ]
+}

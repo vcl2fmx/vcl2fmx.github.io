@@ -1,0 +1,25 @@
+{
+  "input_file": "contracts\\pascal_structure\\01_parameterless_method_and_class_members.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [
+    "message WM_* handler declaration"
+  ],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "FValue: Integer",
+    "property Value: Integer",
+    "procedure TContractPascalStructureClassMembers.Run;",
+    "Inc\\(FValue\\)"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Forms\\b"
+  ],
+  "expected_report_patterns": [
+    "WM_SIZE"
+  ],
+  "forbidden_report_patterns": []
+}

@@ -1,0 +1,1 @@
+{"input_file":"contracts\\dfm_pairs\\04_nested_panels\\UnitNestedPanels.pas","expected_status":"converted","expected_output_patterns":["unit UnitNestedPanels"],"forbidden_output_patterns":[],"expected_report_patterns":[],"forbidden_report_patterns":[]}

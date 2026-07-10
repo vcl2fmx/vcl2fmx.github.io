@@ -1,0 +1,12 @@
+{
+  "input_file": "contracts\\components_and_events\\15_image_picture_stretch.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": ["FMX.Forms"],
+  "expected_units_absent": ["Vcl.Forms", "Vcl.ExtCtrls"],
+  "expected_output_patterns": ["Image1: TImage", "Image1.WrapMode := TImageWrapMode.Stretch", "Image1.WrapMode := TImageWrapMode.Fit", "Image1.Bitmap.LoadFromFile"],
+  "forbidden_output_patterns": ["Vcl\\.Forms", "Vcl\\.ExtCtrls"],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

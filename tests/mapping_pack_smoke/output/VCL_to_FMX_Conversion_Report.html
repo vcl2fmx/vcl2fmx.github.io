@@ -1,0 +1,481 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VCL to FMX Conversion Report</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --page-bg: #eef5fd;
+      --card-bg: #ffffff;
+      --hero-a: #2f6fcd;
+      --hero-b: #5d95e2;
+      --text: #13314f;
+      --muted: #58708d;
+      --line: #d6e4f3;
+      --info: #2f6fcd;
+      --warning: #c98a19;
+      --manual: #b25f2c;
+      --error: #c24141;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #f6faff 0%, var(--page-bg) 100%);
+    }
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    .hero {
+      border-radius: 24px;
+      padding: 28px 32px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--hero-a) 0%, var(--hero-b) 100%);
+      box-shadow: 0 20px 40px rgba(30, 72, 123, 0.15);
+    }
+    .eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      opacity: 0.8;
+    }
+    h1 {
+      margin: 10px 0 8px;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+    .hero p {
+      margin: 0;
+      max-width: 900px;
+      color: rgba(255,255,255,0.92);
+    }
+    .status-chip {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      font-weight: 600;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .meta-card, .section, .manual-card {
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 12px 28px rgba(17, 49, 79, 0.06);
+    }
+    .meta-card {
+      padding: 18px 20px;
+    }
+    .meta-card .label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .meta-card .value {
+      margin-top: 8px;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .section {
+      margin-top: 22px;
+      padding: 22px 24px;
+    }
+    .section h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+    .section p.section-note {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px 10px;
+      text-align: left;
+      vertical-align: top;
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+    th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      border-top: none;
+      padding-top: 0;
+    }
+    .severity {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .severity.info { background: var(--info); }
+    .severity.warning { background: var(--warning); }
+    .severity.manual { background: var(--manual); }
+    .severity.error { background: var(--error); }
+    .severity.neutral { background: #7a8ea7; }
+    .manual-list {
+      display: grid;
+      gap: 16px;
+    }
+    .manual-card {
+      padding: 18px 20px;
+    }
+    .manual-card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+    .usage-list {
+      display: grid;
+      gap: 12px;
+    }
+    .usage-card {
+      border-top: 1px solid var(--line);
+      padding: 14px 0 16px;
+    }
+    .usage-card:first-child { border-top: none; padding-top: 0; }
+    .usage-title {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: baseline;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .usage-title span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .usage-map {
+      margin-top: 6px;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 13px;
+    }
+    .usage-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .usage-path {
+      margin-top: 10px;
+      padding: 9px 10px;
+      border-radius: 8px;
+      background: #f7fbff;
+      border: 1px solid #e4eef8;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+    .usage-notes {
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .compact-list {
+      display: grid;
+      gap: 8px;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 13px;
+    }
+    .compact-list div {
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      overflow-wrap: anywhere;
+    }
+    .compact-list div:first-child { border-top: none; padding-top: 0; }
+    .empty-state {
+      color: var(--muted);
+      padding: 8px 0;
+    }
+    .manual-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .block {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #f7fbff;
+      border: 1px solid #e4eef8;
+    }
+    .block-label {
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .pre {
+      white-space: pre-wrap;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .footer-note {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media print {
+      body { background: #ffffff; padding: 0; }
+      .page { max-width: none; }
+      .hero, .meta-card, .section, .manual-card { box-shadow: none; }
+      .section, .manual-card, .meta-card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">VCL to FMX Converter</div>
+      <h1>Conversion Report</h1>
+      <p>Generated 2026-04-30 09:14:56</p>
+      <p>Source: C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\source<br>Output: C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\output</p>
+      <div class="status-chip">Manual review required</div>
+      <p>Next step: Open the grouped manual-review section, inspect each affected file in the IDE, and apply the required FMX decisions before relying on the output.</p>
+    </div>
+    <div class="meta">
+      <div class="meta-card"><div class="label">Files processed</div><div class="value">2</div></div>
+      <div class="meta-card"><div class="label">Files converted</div><div class="value">2</div></div>
+      <div class="meta-card"><div class="label">Distinct files needing attention</div><div class="value">1</div></div>
+      <div class="meta-card"><div class="label">Manual review items</div><div class="value">2</div></div>
+      <div class="meta-card"><div class="label">Blocking items</div><div class="value">0</div></div>
+      <div class="meta-card"><div class="label">Files with errors</div><div class="value">0</div></div>
+      <div class="meta-card"><div class="label">Warnings</div><div class="value">0</div></div>
+      <div class="meta-card"><div class="label">Errors</div><div class="value">0</div></div>
+      <div class="meta-card"><div class="label">Total issues</div><div class="value">2</div></div>
+      <div class="meta-card"><div class="label">Mapping packs loaded</div><div class="value">11</div></div>
+      <div class="meta-card"><div class="label">Run time</div><div class="value">&lt; 1 second</div></div>
+    </div>
+    <div class="section">
+      <h2>Output files</h2>
+      <p class="section-note">Files and folders produced or updated by this conversion run.</p>
+      <table>
+        <tbody>
+          <tr><th>Output folder</th><td>C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\output</td></tr>
+          <tr><th>Text report</th><td>C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\output\VCL_to_FMX_Conversion_Report.txt</td></tr>
+          <tr><th>HTML report</th><td>C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\output\VCL_to_FMX_Conversion_Report.html</td></tr>
+          <tr><th>Converted source files</th><td>Generated Pascal and FMX files are written beside converted source names in the output folder.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="section">
+      <h2>Mapping packs loaded</h2>
+      <p class="section-note">External mapping packs loaded for this conversion run.</p>
+      <table>
+        <tbody>
+          <tr><th>1</th><td>Devart_MappingPack_v1 (devart.dataaccess.preserve.v1) - 24 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\Devart_MappingPack_v1.json</td></tr>
+          <tr><th>2</th><td>DevExpress_MappingPack_v1 (devexpress.basic.detection.v1) - 80 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\DevExpress_MappingPack_v1.json</td></tr>
+          <tr><th>3</th><td>EhLib_MappingPack_v1 (ehlib.basic.detection.v1) - 15 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\EhLib_MappingPack_v1.json</td></tr>
+          <tr><th>4</th><td>FastReport_MappingPack_v1 (fastreport.detection.v1) - 17 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\FastReport_MappingPack_v1.json</td></tr>
+          <tr><th>5</th><td>InfoPower_MappingPack_v1 (woll2woll.infopower.basic.detection.v1) - 15 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\InfoPower_MappingPack_v1.json</td></tr>
+          <tr><th>6</th><td>IntraWeb_UniGUI_MappingPack_v1 (intraweb.unigui.detectonly.v1) - 27 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\IntraWeb_UniGUI_MappingPack_v1.json</td></tr>
+          <tr><th>7</th><td>JVCL_MappingPack_v1 (jvcl.basic.detection.v1) - 22 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\JVCL_MappingPack_v1.json</td></tr>
+          <tr><th>8</th><td>Raize_Konopka_MappingPack_v1 (raize.konopka.basic.detection.v1) - 21 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\Raize_Konopka_MappingPack_v1.json</td></tr>
+          <tr><th>9</th><td>TeeChart_MappingPack_v1 (steema.teechart.basic.detection.v1) - 16 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\TeeChart_MappingPack_v1.json</td></tr>
+          <tr><th>10</th><td>TMS_MappingPack_v1 (tms.basic.detection.v1) - 26 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\TMS_MappingPack_v1.json</td></tr>
+          <tr><th>11</th><td>VirtualTreeView_MappingPack_v1 (virtualtreeview.detection.v1) - 7 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\VirtualTreeView_MappingPack_v1.json</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="section">
+      <h2>Third-party components converted</h2>
+      <p class="section-note">Mapping-pack components that generated FMX output with a convert action.</p>
+      <div class="usage-list">
+        <div class="usage-card">
+          <div class="usage-title">cxButton1<span>convert | 90%</span></div>
+          <div class="usage-map">TcxButton -> TButton</div>
+          <div class="usage-meta">
+            <span>Pack: DevExpress_MappingPack_v1</span>
+            <span>Vendor: DevExpress</span>
+          </div>
+          <div class="usage-path">C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\source\UnitDevExpressMock.dfm:7</div>
+          <div class="usage-notes">Basic button behavior only. DevExpress glyphs, skins, and look-and-feel require review.</div>
+        </div>
+        <div class="usage-card">
+          <div class="usage-title">cxTextEdit1<span>convert | 90%</span></div>
+          <div class="usage-map">TcxTextEdit -> TEdit</div>
+          <div class="usage-meta">
+            <span>Pack: DevExpress_MappingPack_v1</span>
+            <span>Vendor: DevExpress</span>
+          </div>
+          <div class="usage-path">C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\source\UnitDevExpressMock.dfm:18</div>
+          <div class="usage-notes">Basic text entry only. Masks, repository items, button collections, and DevExpress style controllers require review.</div>
+        </div>
+        <div class="usage-card">
+          <div class="usage-title">cxMemo1<span>convert | 90%</span></div>
+          <div class="usage-map">TcxMemo -> TMemo</div>
+          <div class="usage-meta">
+            <span>Pack: DevExpress_MappingPack_v1</span>
+            <span>Vendor: DevExpress</span>
+          </div>
+          <div class="usage-path">C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\source\UnitDevExpressMock.dfm:28</div>
+          <div class="usage-notes">Basic memo text only. DevExpress style, scrollbars, and repository settings require review.</div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Third-party components partially converted</h2>
+      <p class="section-note">Mapping-pack components that generated FMX output but still require review.</p>
+      <div class="usage-list">
+        <div class="usage-card">
+          <div class="usage-title">cxMaskEdit1<span>partial | 65%</span></div>
+          <div class="usage-map">TcxMaskEdit -> TEdit</div>
+          <div class="usage-meta">
+            <span>Pack: DevExpress_MappingPack_v1</span>
+            <span>Vendor: DevExpress</span>
+          </div>
+          <div class="usage-path">C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\source\UnitDevExpressMock.dfm:37</div>
+          <div class="usage-notes">Recreate mask validation with FMX edit rules or custom validation code.</div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Third-party components detected only</h2>
+      <p class="section-note">Mapping-pack components intentionally reported without generated FMX output.</p>
+      <div class="usage-list">
+        <div class="usage-card">
+          <div class="usage-title">cxGrid1<span>detect_only | 20%</span></div>
+          <div class="usage-map">TcxGrid -> No FMX output generated</div>
+          <div class="usage-meta">
+            <span>Pack: DevExpress_MappingPack_v1</span>
+            <span>Vendor: DevExpress</span>
+          </div>
+          <div class="usage-path">C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\source\UnitDevExpressMock.dfm:44</div>
+          <div class="usage-notes">DevExpress grids have view, column, repository, style, and data-controller behavior that cannot be safely mapped by a basic pack.</div>
+        </div>
+        <div class="usage-card">
+          <div class="usage-title">dxRibbon1<span>detect_only | 10%</span></div>
+          <div class="usage-map">TdxRibbon -> No FMX output generated</div>
+          <div class="usage-meta">
+            <span>Pack: DevExpress_MappingPack_v1</span>
+            <span>Vendor: DevExpress</span>
+          </div>
+          <div class="usage-path">C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\source\UnitDevExpressMock.dfm:50</div>
+          <div class="usage-notes">Ribbon conversion is report-only in the starter pack.</div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Mappings used</h2>
+      <p class="section-note">Compact list of mapping-pack rules that fired during this conversion run.</p>
+      <div class="compact-list">
+        <div>cxButton1: TcxButton -&gt; TButton (convert, 90%)</div>
+        <div>cxTextEdit1: TcxTextEdit -&gt; TEdit (convert, 90%)</div>
+        <div>cxMemo1: TcxMemo -&gt; TMemo (convert, 90%)</div>
+        <div>cxMaskEdit1: TcxMaskEdit -&gt; TEdit (partial, 65%)</div>
+        <div>cxGrid1: TcxGrid -&gt; No FMX output generated (detect_only, 20%)</div>
+        <div>dxRibbon1: TdxRibbon -&gt; No FMX output generated (detect_only, 10%)</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Unknown third-party components</h2>
+      <p class="section-note">Third-party-looking components that did not have a mapping-pack rule.</p>
+      <table><tbody><tr><td>None detected.</td></tr></tbody></table>
+    </div>
+    <div class="section">
+      <h2>Detailed issues</h2>
+      <p class="section-note">Non-manual-review informational items, warnings, and errors are listed below. Manual-review items are grouped in their own section.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Severity</th>
+            <th>Message</th>
+            <th>File</th>
+            <th>Line</th>
+            <th>Problem type</th>
+            <th>Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="6">No non-manual-review informational, warning, or error items were recorded.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="section">
+      <h2>Manual review items</h2>
+      <p class="section-note">These items usually require an IDE review or a deliberate FMX design decision before the converted output is production-ready.</p>
+      <div class="manual-list">
+        <div class="manual-card">
+          <h3>1. Mapping pack partial conversion</h3>
+          <div class="manual-meta">
+            <span>Occurrences: 1</span>
+          </div>
+          <p><strong>Detail:</strong> Mapping pack DevExpress_MappingPack_v1 partially converted cxMaskEdit1 (TcxMaskEdit) to TEdit with 65% confidence.</p>
+          <div class="block">
+            <div class="block-label">Affected locations</div>
+            <div class="pre">C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\source\UnitDevExpressMock.dfm:37 -&gt; object cxMaskEdit1: TcxMaskEdit</div>
+          </div>
+          <div class="block">
+            <div class="block-label">Recommended solution</div>
+            <div class="pre">Text box generated, but mask semantics are not automatically recreated.</div>
+          </div>
+        </div>
+        <div class="manual-card">
+          <h3>2. Mapping pack detection only</h3>
+          <div class="manual-meta">
+            <span>Occurrences: 2</span>
+          </div>
+          <p><strong>Detail:</strong> 2 mapping-pack detect-only components were found; no FMX replacements were generated.</p>
+          <div class="block">
+            <div class="block-label">Affected locations</div>
+            <div class="pre">C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\source\UnitDevExpressMock.dfm:44 -&gt; object cxGrid1: TcxGrid
+C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\source\UnitDevExpressMock.dfm:50 -&gt; object dxRibbon1: TdxRibbon</div>
+          </div>
+          <div class="block">
+            <div class="block-label">Recommended solution</div>
+            <div class="pre">DevExpress grids have view, column, repository, style, and data-controller behavior that cannot be safely mapped by a basic pack.
+Ribbon conversion is report-only in the starter pack.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Issue summary</h2>
+      <p class="section-note">Use this section for a quick print-friendly tally of the result.</p>
+      <table>
+        <tbody>
+          <tr><th>Informational</th><td>0</td></tr>
+          <tr><th>Warnings</th><td>0</td></tr>
+          <tr><th>Manual review required</th><td>2</td></tr>
+          <tr><th>Errors</th><td>0</td></tr>
+          <tr><th>Blocking items</th><td>0</td></tr>
+          <tr><th>Distinct files needing attention</th><td>1</td></tr>
+          <tr><th>Files with conversion errors</th><td>0</td></tr>
+        </tbody>
+      </table>
+      <div class="footer-note">Next step: Open the grouped manual-review section, inspect each affected file in the IDE, and apply the required FMX decisions before relying on the output.</div>
+      <div class="footer-note">Generated output should still be reviewed in the IDE. Projects with manual-review or blocking items may not run until those items are fixed or mitigated.</div>
+    </div>
+  </div>
+</body>
+</html>

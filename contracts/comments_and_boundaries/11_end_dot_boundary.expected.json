@@ -1,0 +1,9 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\11_end_dot_boundary.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["end dot boundary"],
+  "expected_output_patterns": ["WM_CLOSE|Original: SendMessage|end\\."],
+  "forbidden_output_patterns": ["FMX manual review: end\\."],
+  "expected_report_patterns": ["WM_CLOSE|SendMessage|Windows messaging"],
+  "forbidden_report_patterns": []
+}

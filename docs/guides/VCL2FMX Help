@@ -1,0 +1,594 @@
+﻿{
+  "name": "New Help Project",
+  "version": "1.0",
+  "company": "Your Company",
+  "outputPath": "C:\\New Delphi Projects\\HelpDocCreator\\PublishedHelp",
+  "variables": [
+    {
+      "key": "Version",
+      "value": "1.0"
+    },
+    {
+      "key": "ProductName",
+      "value": "New Help Project"
+    },
+    {
+      "key": "Company",
+      "value": "Your Company"
+    }
+  ],
+  "snippets": [
+    {
+      "key": "warning",
+      "value": "> Warning: Describe the risk and the recovery path."
+    },
+    {
+      "key": "procedure",
+      "value": "1. Start from the main window.\r\n2. Choose the command.\r\n3. Confirm the result."
+    },
+    {
+      "key": "note",
+      "value": "> Note: Replace this with a concise note."
+    }
+  ],
+  "conditions": [
+    {
+      "key": "Pro",
+      "value": "Included in the professional edition."
+    },
+    {
+      "key": "Enterprise",
+      "value": "Included in enterprise builds."
+    }
+  ],
+  "assets": [
+    {
+      "key": "image1.png",
+      "value": "ImportedAssets\\VCL2FMXConverter_v4_0_User_Guide\\image1.png"
+    }
+  ],
+  "templates": [
+    {
+      "key": "Procedure",
+      "value": "# {{Title}}\r\n\r\n## Goal\r\nState the outcome.\r\n\r\n## Steps\r\n{{snippet:procedure}}\r\n\r\n## Result\r\nDescribe the success state."
+    },
+    {
+      "key": "Troubleshooting",
+      "value": "# {{Title}}\r\n\r\n## Symptom\r\nDescribe what the user sees.\r\n\r\n## Cause\r\nExplain the likely cause.\r\n\r\n## Fix\r\nGive the shortest reliable recovery path."
+    },
+    {
+      "key": "Overview",
+      "value": "# {{Title}}\r\n\r\n## What It Does\r\nDescribe the feature in one practical paragraph.\r\n\r\n## When To Use It\r\nExplain the user situation this topic solves.\r\n\r\n## Related Topics\r\nAdd links to nearby concepts and procedures."
+    }
+  ],
+  "glossary": [
+    {
+      "key": "Snippet",
+      "value": "A reusable block of documentation inserted into one or more topics."
+    },
+    {
+      "key": "Topic",
+      "value": "A standalone documentation page that can be authored, reviewed, indexed, and published."
+    },
+    {
+      "key": "Condition",
+      "value": "A build rule that includes or excludes content for a specific audience, edition, or version."
+    }
+  ],
+  "indexKeywords": [
+    {
+      "key": "reference",
+      "value": "Reference"
+    },
+    {
+      "key": "troubleshooting",
+      "value": "Troubleshooting"
+    },
+    {
+      "key": "getting started",
+      "value": "Getting Started"
+    }
+  ],
+  "buildProfiles": [
+    {
+      "key": "Responsive HTML",
+      "value": "html=true;markdown=true;search=true;print=true;glossary=true;index=true;mapids=true"
+    },
+    {
+      "key": "Developer Integration",
+      "value": "html=true;search=true;mapids=true;aliasHeader=true;tocJson=true"
+    },
+    {
+      "key": "Print Manual",
+      "value": "print=true;markdown=false;singlePage=true"
+    }
+  ],
+  "projectSettings": [
+    {
+      "key": "HtmlTitle",
+      "value": "New Help Project"
+    },
+    {
+      "key": "SupportUrl",
+      "value": "https://example.com/support"
+    },
+    {
+      "key": "HtmlHomeFileName",
+      "value": "index.html"
+    },
+    {
+      "key": "MetadataPrefix",
+      "value": ""
+    },
+    {
+      "key": "ActiveTheme",
+      "value": "Professional Light"
+    },
+    {
+      "key": "SearchSynonyms",
+      "value": "setup=install;error=problem;topic=article"
+    },
+    {
+      "key": "MarkdownFolder",
+      "value": "markdown"
+    },
+    {
+      "key": "LastBuildAt",
+      "value": ""
+    },
+    {
+      "key": "OutputPath",
+      "value": "C:\\New Delphi Projects\\HelpDocCreator\\PublishedHelp"
+    },
+    {
+      "key": "BuildNumber",
+      "value": "0"
+    },
+    {
+      "key": "PortalTitle",
+      "value": "New Help Project"
+    },
+    {
+      "key": "Copyright",
+      "value": "Copyright 2026 Your Company"
+    },
+    {
+      "key": "StopWords",
+      "value": "a,an,and,the,or,to,of,in,on,for"
+    },
+    {
+      "key": "DefaultLanguage",
+      "value": "en-US"
+    }
+  ],
+  "themes": [
+    {
+      "key": "Professional Light",
+      "value": "text=#1f2933;background=#f7f9fb;surface=#ffffff;primary=#17324d;accent=#0f766e;warning=#b7791f"
+    },
+    {
+      "key": "High Contrast",
+      "value": "text=#000000;background=#ffffff;surface=#ffffff;primary=#000000;accent=#005fcc;warning=#8a4b00"
+    },
+    {
+      "key": "Technical Dark",
+      "value": "text=#e5e7eb;background=#111827;surface=#1f2937;primary=#93c5fd;accent=#5eead4;warning=#fbbf24"
+    }
+  ],
+  "importExportRules": [
+    {
+      "key": "Auto Setup Import",
+      "value": "Create title and overview pages; split headings into topics; infer Help IDs, tags, TOC, index, and website navigation files"
+    },
+    {
+      "key": "Translation Package",
+      "value": "Export topic id, title, body, language, updatedAt; import by topic id"
+    },
+    {
+      "key": "HTML Import",
+      "value": "Extract body content; normalize links; copy local assets; preserve alt text"
+    },
+    {
+      "key": "Word Import",
+      "value": "Preserve headings; split Heading 1 into topics; copy images into assets; clean pasted styles"
+    },
+    {
+      "key": "Markdown Import",
+      "value": "Use first H1 as topic title; preserve fenced code; resolve relative images"
+    }
+  ],
+  "topics": [
+    {
+      "id": "{E4085EA2-785A-4B60-AADC-D7D31AB72F5D}",
+      "parentId": "",
+      "title": "![Picture 1](ImportedAssets/VCL2FMXConverter_v4_0_User_Guide/image1.png)",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1><br></h1>\n\n<figure><img src=\"ImportedAssets/VCL2FMXConverter_v4_0_User_Guide/image1.png\" alt=\"Picture 1\" class=\"\"><figcaption><br></figcaption><figcaption><br></figcaption><figcaption><br></figcaption></figure>\n\n<p style=\"text-align: center;\">Detailed Operator, Validation, and Workflow Manual</p>\n\n<p style=\"text-align: center;\">Updated May 4, 2026</p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p>\n\n<p>Audience: developers, technical operators, project owners, and maintainers who will run the converter and validate converted Delphi projects.</p>\n</article>",
+      "status": "Approved",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_PICTURE_1_IMPORTEDASSETS_VCL2FMXCONVERTER_V4_0_USER_GUIDE_IMAGE1_PNG",
+      "language": "en-US",
+      "tags": "imported,docx",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:57:34.639Z"
+    },
+    {
+      "id": "{78EE5C89-9C58-4FD4-A706-779F5BE5389F}",
+      "parentId": "",
+      "title": "Purpose and Audience",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>1. Purpose and Audience</h1>\n\n<p>The VCL2FMXConverter exists to automate the majority of the engineering work involved in moving a Delphi application from standard VCL to FMX. It is intended to reduce repetitive migration labor, surface the most important conversion risks early, and leave the user with an FMX project that can be compiled, tested, and polished in Delphi.</p>\n\n<p>This manual is written for people who will actually operate the converter. That includes developers converting their own applications, technical staff helping with migration efforts, project owners supervising conversion work, and maintainers who need to understand how to rerun the tool safely and interpret its output.&nbsp;&nbsp;</p><p>Use this guide when you need to run the converter, interpret its output, and validate the converted FMX project.</p>\n</article>",
+      "status": "Approved",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_PURPOSE_AND_AUDIENCE",
+      "language": "en-US",
+      "tags": "imported,docx",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:59:08.887Z"
+    },
+    {
+      "id": "{B8114628-6007-4EEC-9EB1-31CAEF4F02CC}",
+      "parentId": "",
+      "title": "What the Converter Is, and What It Is Not",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>2. What the Converter Is, and What It Is Not</h1>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Converter Behavior</th><th>What It Means in Practice</th></tr>\n<tr><td>Automates most of the migration work</td><td>The converter handles the majority of syntax, form, mapping, and startup translation work automatically.</td></tr>\n<tr><td>Works as a migration system, not a blind text replacer</td><td>It uses parsing, mapping, and rewrite logic rather than relying only on global text substitution.</td></tr>\n<tr><td>Aims for buildable and reviewable output</td><td>The goal is not merely changed text; the goal is a project that can be opened, built, and exercised in Delphi.</td></tr>\n<tr><td>Leaves a small review tail</td><td>A converted application can still need font, layout, or minor behavioral review after the automated pass.</td></tr>\n<tr><td>Does not replace software testing</td><td>A successful conversion still needs compile, runtime, and user validation to confirm the result is correct.</td></tr>\n</tbody></table>\n\n<p>A useful way to think about the converter is this: it is a serious productivity accelerator, not a promise that every converted application is instantly production-ready without verification. In practice, it can bring the vast majority of a migration under control and make the remaining issues understandable.</p>\n\n<p>The current generic baseline is broader than the earlier public-review drafts. It now includes safer FMX form emission, broader standard-control coverage for items such as TMaskEdit, TStaticText, TFlowPanel, TGridPanel, TCheckListBox, TRichEdit, TDrawGrid, TDBCtrlGrid, TFileSaveDialog, and TLinkLabel, and direct numeric-control handling for TNumberBox and converted TSpinBox workflows. It also adds generated compatibility paths for TRadioGroup and TFontDialog, along with more honest blocking-issue reporting when the converter knows the output is not yet trustworthy.</p>\n\n<p>The live Component Map, Property Map, and Event Map pages are now backed by the same current mapper knowledge used during conversion. That makes them the best quick-reference view of what the current v5.0 build knows about standard component, property, and event coverage. Version 5.0 also supports optional JSON mapping packs that make third-party component handling visible and auditable before a conversion run.</p>\n</article>",
+      "status": "Approved",
+      "iconName": "page",
+      "owner": "Auto Import",
+      "helpId": "IDH_WHAT_THE_CONVERTER_IS_AND_WHAT_IT_IS_NOT",
+      "language": "en-US",
+      "tags": "imported,docx,procedure,reference",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:58:51.823Z"
+    },
+    {
+      "id": "{B9ADC750-EF94-40FD-8574-98344177ACE3}",
+      "parentId": "",
+      "title": "Mapping Packs: Optional Third-Party Component Support",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>2.1 Mapping Packs: Optional Third-Party Component Support</h1>\n\n<p>A mapping pack is an optional JSON file that gives the converter explicit knowledge about component libraries outside standard VCL. The converter still performs the normal VCL-to-FMX migration work on its own but mapping packs add a separate, visible layer for third-party controls so those decisions can be reviewed instead of hidden inside converter code.</p>\n\n<p>Use mapping packs when a project contains controls from libraries such as DevExpress, TMS, Raize/Konopka, JVCL, EhLib, InfoPower, TeeChart, FastReport, Devart, IntraWeb, UniGUI, or VirtualTreeView. The pack can identify the original VCL class, choose a safe action, map simple properties and events, and explain anything that still requires manual review. This version includes mapping packs for the stated third-party vendors, but while these are included, they do not represent full conversions of the components but rather as much as possible at this point in Delphi FMX.</p>\n\n<p>A mapping pack does not install a vendor product, prove that a commercial component has a full FMX equivalent, or remove the need to test the converted application. Its purpose is to make third-party handling predictable: simple controls may convert, approximate controls may convert with warnings, complex controls may be report-only, and nonvisual or cross-platform items may be preserved when that is the safest choice. Again, they do not represent full conversions of the components but rather as much as possible at this point.</p>\n\n<h3>Mapping-pack actions</h3>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Action</th><th>What it means for the user</th></tr>\n<tr><td>convert</td><td>The converter can generate the target FMX component with reasonable confidence.</td></tr>\n<tr><td>partial</td><td>The converter can generate an approximate FMX component, but the report must describe the limitations.</td></tr>\n<tr><td>manual_review</td><td>The converter should report the component and avoid unsafe automatic conversion.</td></tr>\n<tr><td>detect_only</td><td>The converter identifies the component or vendor but does not generate a replacement.</td></tr>\n<tr><td>preserve</td><td>The converter may keep the original class/reference when preservation is safer or explicitly intended.</td></tr>\n</tbody></table>\n\n<p>For normal operation, keep the mapping_packs folder beside VCL2FMXConverter.exe, in whatever folder you install it.</p>\n\n<p>For example if the converter structure is similar to: C:\\converter\\VCL2FMXConverter.exe</p>\n\n<p>then the mapping packs would be in: C:\\converter\\mapping_packs\\</p>\n\n<p>The packs act as companion files in unison with the converter executable. After a run, review the generated report and their associated report sections for loaded packs, converted third-party components, partial conversions, detect-only findings, preserved components, unknown third-party-looking components, and manual-review reasons.</p>\n\n<h3>How to read mapping-pack results</h3>\n\n<p>The generated report is a detailed audit trail. If a pack converts a component, the report should say which pack was used and what confidence level was declared. If a pack only detects a component, the report should explain why no FMX replacement was generated.</p>\n\n<p>When testing without owning the vendor library, a mock DFM can still exercise the mapping logic because the converter reads class names from the DFM. That kind of test confirms loader behavior, rule selection, generated output, and report wording, but it does not validate the real vendor component's runtime behavior. The following is an example of a mock .dfm which may be modified for your own use for testing:object FormDevExpressMock: TFormDevExpressMock</p>\n\n<p>Left = 0</p>\n\n<p>Top = 0</p>\n\n<p>Caption = 'DevExpress Mapping Pack Mock Test'</p>\n\n<p>ClientHeight = 360</p>\n\n<p>ClientWidth = 560</p>\n\n<p>object cxButton1: TcxButton</p>\n\n<p>Left = 24</p>\n\n<p>Top = 24</p>\n\n<p>Width = 120</p>\n\n<p>Height = 32</p>\n\n<p>Caption = 'Click Me'</p>\n\n<p>Enabled = True</p>\n\n<p>Visible = True</p>\n\n<p>Hint = 'Button hint'</p>\n\n<p>OnClick = cxButton1Click</p>\n\n<p>end</p>\n\n<p>object cxTextEdit1: TcxTextEdit</p>\n\n<p>Left = 24</p>\n\n<p>Top = 72</p>\n\n<p>Width = 180</p>\n\n<p>Height = 24</p>\n\n<p>Text = 'Sample text'</p>\n\n<p>Enabled = True</p>\n\n<p>Visible = True</p>\n\n<p>OnChange = cxTextEdit1Change</p>\n\n<p>end</p>\n\n<p>object cxMemo1: TcxMemo</p>\n\n<p>Left = 24</p>\n\n<p>Top = 112</p>\n\n<p>Width = 220</p>\n\n<p>Height = 80</p>\n\n<p>Text = 'Sample memo'</p>\n\n<p>Enabled = True</p>\n\n<p>Visible = True</p>\n\n<p>end</p>\n\n<p>object cxMaskEdit1: TcxMaskEdit</p>\n\n<p>Left = 24</p>\n\n<p>Top = 208</p>\n\n<p>Width = 180</p>\n\n<p>Height = 24</p>\n\n<p>Text = '12345'</p>\n\n<p>end</p>\n\n<p>object cxGrid1: TcxGrid</p>\n\n<p>Left = 260</p>\n\n<p>Top = 24</p>\n\n<p>Width = 260</p>\n\n<p>Height = 180</p>\n\n<p>end</p>\n\n<p>object dxRibbon1: TdxRibbon</p>\n\n<p>Left = 0</p>\n\n<p>Top = 264</p>\n\n<p>Width = 560</p>\n\n<p>Height = 80</p>\n\n<p>end</p>\n\n<p>end</p>\n\n<p>Here is the companion .pas file that goes with this .dfmunit UnitDevExpressMock;</p>\n\n<p>interface</p>\n\n<p>uses</p>\n\n<p>System.SysUtils, System.Classes, Vcl.Forms;</p>\n\n<p>type</p>\n\n<p>TFormDevExpressMock = class(TForm)</p>\n\n<p>cxButton1: TcxButton;</p>\n\n<p>cxTextEdit1: TcxTextEdit;</p>\n\n<p>cxMemo1: TcxMemo;</p>\n\n<p>cxMaskEdit1: TcxMaskEdit;</p>\n\n<p>cxGrid1: TcxGrid;</p>\n\n<p>dxRibbon1: TdxRibbon;</p>\n\n<p>procedure cxButton1Click(Sender: TObject);</p>\n\n<p>procedure cxTextEdit1Change(Sender: TObject);</p>\n\n<p>end;</p>\n\n<p>implementation</p>\n\n<p>{$R *.dfm}</p>\n\n<p>procedure TFormDevExpressMock.cxButton1Click(Sender: TObject);</p>\n\n<p>begin</p>\n\n<p>end;</p>\n\n<p>procedure TFormDevExpressMock.cxTextEdit1Change(Sender: TObject);</p>\n\n<p>begin</p>\n\n<p>end;</p>\n\n<p>end.</p>\n</article>",
+      "status": "Approved",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_MAPPING_PACKS_OPTIONAL_THIRD_PARTY_COMPONENT_SUPPORT",
+      "language": "en-US",
+      "tags": "imported,docx,procedure,reference",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:59:20.552Z"
+    },
+    {
+      "id": "{695B3906-0060-4BF8-A824-B42E067C967E}",
+      "parentId": "",
+      "title": "System Requirements and Workspace Preparation",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>3. System Requirements and Workspace Preparation</h1>\n\n<ol start=\"1\"><li>A Windows development environment with Delphi installed and working.</li></ol>\n<ol start=\"2\"><li>Access to the original VCL source code and form files.</li></ol>\n<ol start=\"3\"><li>A separate target directory for generated FMX output.</li></ol>\n<ol start=\"4\"><li>Sufficient disk space for source, output, reports, and milestone backups.</li></ol>\n<ol start=\"5\"><li>A backup strategy before major converter runs or large rule changes.</li></ol>\n<p>A clean folder layout is strongly recommended. Keep the converter source, the original VCL project, and the converted FMX output in separate locations. This prevents stale output files from being mistaken for current results and makes it much easier to compare source and target artifacts during troubleshooting.</p>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Workspace Area</th><th>Recommended Use</th></tr>\n<tr><td>Converter folder</td><td>Contains the converter source and its own documentation/scripts.</td></tr>\n<tr><td>Source project folder</td><td>Contains the original VCL application being migrated.</td></tr>\n<tr><td>Output folder</td><td>Contains only the newly generated FMX project for the current run.</td></tr>\n<tr><td>Backup storage</td><td>Contains milestone snapshots, cloud copies, or archived converter states.</td></tr>\n</tbody></table>\n</article>",
+      "status": "Approved",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_SYSTEM_REQUIREMENTS_AND_WORKSPACE_PREPARATION",
+      "language": "en-US",
+      "tags": "imported,docx,troubleshooting,procedure",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:58:45.820Z"
+    },
+    {
+      "id": "{B8B62D62-7B82-477C-9AAD-4710D6472BF5}",
+      "parentId": "",
+      "title": "Building and Launching the Converter",
+      "body": "# 4. Building and Launching the Converter\r\n\r\n1. Open the VCL2FMXConverter project in Delphi.\r\n2. Build the converter and confirm the build completes cleanly.\r\n3. Run the converter application.\r\nVerify that the tabbed workspace opens and that Dashboard, Project Scan, Component Map, Property Map, Event Map, Conversion Output, and Rules are available.\r\n\r\nIf the converter itself does not build, stop there and resolve that issue before attempting any project migration. The converter must be treated like any other software tool: it needs a healthy build before its output can be trusted.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_BUILDING_AND_LAUNCHING_THE_CONVERTER",
+      "language": "en-US",
+      "tags": "imported,docx",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.306Z"
+    },
+    {
+      "id": "{74DB85AB-3AFA-4D6B-8DC9-AC2CB37A1E40}",
+      "parentId": "",
+      "title": "Main Window and Control-by-Control Walkthrough",
+      "body": "# 5. Main Window and Control-by-Control Walkthrough\r\n\r\n<table class=\"doc-table\">\r\n<tr><th>Control</th><th>Purpose</th><th>How a User Should Think About It</th></tr>\r\n<tr><td>Source project</td><td>Points at the original VCL project or source root.</td><td>This is the source of truth the converter will scan.</td></tr>\r\n<tr><td>Output folder</td><td>Points at the output directory for generated FMX artifacts.</td><td>Treat this as disposable and regenerable output, not as your only copy of the application.</td></tr>\r\n<tr><td>Files to convert</td><td>Chooses PAS only, DFM only, or both.</td><td>Use narrower scopes for focused retests, and use both for full conversions.</td></tr>\r\n<tr><td>Include subfolders</td><td>Controls whether subdirectories are scanned.</td><td>Leave it enabled for complete projects unless you intentionally want to limit the run.</td></tr>\r\n<tr><td>Report and output actions</td><td>Opens the generated report, prints it when supported, or opens the output folder.</td><td>Use these after every run so report review is part of the normal workflow.</td></tr>\r\n<tr><td>Critical Areas / Data Aware / 3rd Party / WinAPI</td><td>Per-run rule toggles for the specialized conversion families.</td><td>Leave these enabled for a normal full pass, and only turn one off when intentionally isolating behavior.</td></tr>\r\n<tr><td>Convert Project</td><td>Starts the conversion process.</td><td>Only press this after source, output, scope, and rule choices are correct.</td></tr>\r\n<tr><td>Conversion Output log</td><td>Displays progress and key messages while also supporting report review.</td><td>Read it after every run; it is the first indicator of what happened.</td></tr>\r\n</table>\r\n\r\nThe current v5.0 main window is a tabbed workspace. Dashboard shows the latest run summary and quick actions. Project Scan holds the path and scope controls, Component Map / Property Map / Event Map expose the live mapper reference surface, Conversion Output shows the live log and report status, and Rules controls the four specialized conversion families. The converter still does its real work behind the scenes, but the operator needs to use the front end carefully because path mistakes, stale output folders, and poorly scoped runs can create misleading results.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_MAIN_WINDOW_AND_CONTROL_BY_CONTROL_WALKTHROUGH",
+      "language": "en-US",
+      "tags": "imported,docx,procedure,reference",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.307Z"
+    },
+    {
+      "id": "{7C0CA751-F2C2-4D9B-A423-C5B31E03B570}",
+      "parentId": "",
+      "title": "Recommended Conversion Workflow",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>6. Recommended Conversion Workflow</h1>\n</article>",
+      "status": "Approved",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_RECOMMENDED_CONVERSION_WORKFLOW",
+      "language": "en-US",
+      "tags": "imported,docx",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:59:52.436Z"
+    },
+    {
+      "id": "{33D72C74-5B70-4BC1-B37D-A52B815A87D6}",
+      "parentId": "{7C0CA751-F2C2-4D9B-A423-C5B31E03B570}",
+      "title": "Practical Operator Workflow",
+      "body": "# 6.1 Practical Operator Workflow\r\n\r\n<table class=\"doc-table\">\r\n<tr><th>Stage</th><th>Operator action</th><th>Expected result</th></tr>\r\n<tr><td>Prepare</td><td>check source</td><td>set clean target</td></tr>\r\n<tr><td>Run</td><td>select options</td><td>start conversion</td></tr>\r\n<tr><td>Open</td><td>load FMX project</td><td>build in Delphi</td></tr>\r\n<tr><td>Validate</td><td>run app</td><td>exercise real workflows</td></tr>\r\n<tr><td>Refine</td><td>improve converter</td><td>rerun cleanly</td></tr>\r\n</table>\r\n\r\n1. Prepare a clean output directory.\r\n2. Run the converter against the selected VCL project.\r\n3. Open the generated FMX project in Delphi.\r\n4. Resolve structural and compile issues first.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_PRACTICAL_OPERATOR_WORKFLOW",
+      "language": "en-US",
+      "tags": "imported,docx,procedure,reference",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.307Z"
+    },
+    {
+      "id": "{C42F5792-5830-48B3-9EF2-39C9825108C3}",
+      "parentId": "{7C0CA751-F2C2-4D9B-A423-C5B31E03B570}",
+      "title": "Run the converted app and validate real user workflows.",
+      "body": "# 5. Run the converted app and validate real user workflows.\r\n6. Only after runtime stability, review and tune layout or styling details.\r\nThis sequence matters. Trying to perfect colors or spacing before the application builds and runs cleanly is usually wasted effort. Stabilize structure first, runtime second, and presentation third.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_RUN_THE_CONVERTED_APP_AND_VALIDATE_REAL_USER_WORKFLOWS",
+      "language": "en-US",
+      "tags": "imported,docx",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.307Z"
+    },
+    {
+      "id": "{B3664ACB-3513-4DF4-B690-734FF5D2CDE0}",
+      "parentId": "",
+      "title": "Preparing a Source Project for Best Results",
+      "body": "# 7. Preparing a Source Project for Best Results\r\n\r\nSome preparation work in the source project can make the converter easier to use and the output easier to validate. This is not always required, but it is often helpful.\r\n\r\n1. Know which folder is the real source root and which files are truly active in the project.\r\n2. Be aware of duplicated unit names or old backup copies inside the source tree.\r\n3. Understand any database, media, or file-path dependencies that the converted application will need at runtime.\r\n4. Keep note of major workflows that must be validated after conversion, such as startup, scheduling, playback, database edits, dialogs, and reporting.\r\n5. If possible, have the original VCL application available for side-by-side behavior comparison.\r\nThe converter can do a great deal, but it is still easier to use when the operator knows which source files matter and which business workflows are critical.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_PREPARING_A_SOURCE_PROJECT_FOR_BEST_RESULTS",
+      "language": "en-US",
+      "tags": "imported,docx,procedure",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.307Z"
+    },
+    {
+      "id": "{9E27634C-8CA9-4D19-B27B-5BD37F44A0FB}",
+      "parentId": "",
+      "title": "Running a Conversion",
+      "body": "# 8. Running a Conversion\r\n\r\n1. Enter or browse to the source folder.\r\n2. Enter or browse to the target folder. A convenience folder name is provided if you wish to use it.\r\n3. Choose PAS only, DFM only, or both.\r\n4. Set the include-subfolders option and the four rule toggles as needed.\r\n5. Review the specialized rule choices if your workflow needs a focused retest.\r\n6. Click Convert and allow the process to complete.\r\nRead the log before opening the output in Delphi. When the HTML report exists, use Open Report or Print Report directly from the converter, and use Open Output Folder when you need the generated files immediately.\r\n\r\nFor full project migrations, the normal choice is to convert both PAS and DFM files recursively into a clean output folder. Targeted runs are useful only when you already know that a specific phase is the thing under review.\r\n\r\nDuring the same run, the generator can inventory real support files in the source root and in existing build-output folders. That makes the report more trustworthy because helper executables, DLLs, library files, sound-font files, and similar runtime companions are reported from real locations instead of being guessed from quoted Pascal strings.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_RUNNING_A_CONVERSION",
+      "language": "en-US",
+      "tags": "imported,docx,reference",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.308Z"
+    },
+    {
+      "id": "{9DE7A04A-7B63-4C46-A80F-F728D810685D}",
+      "parentId": "",
+      "title": "Reading the Log and the Conversion Report",
+      "body": "# 9. Reading the Log and the Conversion Report\r\n\r\nEvery conversion run should be reviewed through two channels: the live log in the converter UI and the generated report files in the output folder. When the HTML report exists, the Open Report and Print Report buttons use it first. These are not optional extras; they are part of the operating workflow.\r\n\r\n<table class=\"doc-table\">\r\n<tr><th>Information Source</th><th>What It Tells You</th><th>How to Use It</th></tr>\r\n<tr><td>Conversion Output log</td><td>Live progress and immediate messages during the run.</td><td>Use it to see which files were processed and whether the run completed normally.</td></tr>\r\n<tr><td>Conversion reports</td><td>Persistent text and HTML records of what the converter saw and reported.</td><td>Use them for later review, troubleshooting, printing, and communication with other engineers.</td></tr>\r\n<tr><td>Delphi compile output</td><td>The authoritative correctness check after generation.</td><td>Use it to identify real syntax, unit, and form-reader issues.</td></tr>\r\n<tr><td>Runtime behavior</td><td>The final reality check for workflow correctness.</td><td>Use it to confirm that the converted application actually behaves acceptably.</td></tr>\r\n</table>\r\n\r\nPay special attention to the final run status. The current v5.0 report flow distinguishes Blocking issues present, Manual review required, and Clean conversion. The generated report now calls out a recommended next step, Distinct files needing attention, and files with conversion errors. Treat blocking issues as stop conditions even if files were generated. Informational messages about external project assets are different: they warn that companion files may still need manual copying or relocation before runtime testing. Mapping-pack runs additionally report loaded packs, third-party conversions, partial conversions, detect-only findings, preserved components, and unknown third-party-looking classes.\r\n\r\nThe current report also distinguishes between support files that were actually staged into the FMX output directory and support files that were only found in the source root or beside an existing built executable. Read those companion-file notes carefully, because staging a helper file into the output tree is not the same thing as confirming it will deploy beside the final built executable.\r\n\r\nIf the report and the compiler disagree, the compiler wins. If Code Insight and the real compiler disagree, the compiler wins again. The memo log and report are aids, not replacements for build and run validation.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_READING_THE_LOG_AND_THE_CONVERSION_REPORT",
+      "language": "en-US",
+      "tags": "imported,docx,troubleshooting,procedure,reference",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.308Z"
+    },
+    {
+      "id": "{CD3F9728-90B8-4ECA-A713-F5D51976BC66}",
+      "parentId": "",
+      "title": "Understanding the Output Folder and Files",
+      "body": "# 10. Understanding the Output Folder and Files\r\n\r\n<table class=\"doc-table\">\r\n<tr><th>Output Artifact</th><th>Purpose</th><th>User Action</th></tr>\r\n<tr><td>Converted .pas files</td><td>FMX-oriented Pascal source units derived from the original VCL source.</td><td>Open in Delphi and build as part of the generated project.</td></tr>\r\n<tr><td>Converted .fmx files</td><td>FireMonkey form definitions derived from DFM files.</td><td>Allow Delphi to load them and watch for reader errors.</td></tr>\r\n<tr><td>Project files</td><td>The FMX project shell and startup metadata.</td><td>Open the project file in Delphi and build it.</td></tr>\r\n<tr><td>Conversion report</td><td>Text summary of the run.</td><td>Keep it for diagnostics and engineering review.</td></tr>\r\n<tr><td>Milestone backups</td><td>Snapshots of converter state or other preserved artifacts.</td><td>Store separately so they do not pollute source or output folders.</td></tr>\r\n</table>\r\n\r\nProject files now include a more complete FMX shell, and the generator attempts to carry along common companion assets such as .res, .ico, .manifest, and safe local project references. If the source project points at an absolute external asset outside the source tree, you should expect to verify or copy that file manually before runtime testing.\r\n\r\nThe output folder may now also contain staged runtime companions such as helper executables, DLLs, library files, or sound-font style support files. The generator adds them when it finds real candidates in the source root or in existing build-output folders such as Win32, Win64, Debug, Release, or deploy. Those files are copied to make review easier, but you still need to verify the final deployment location expected by the generated app.\r\n\r\nA clean output folder is one of the most important habits in using the converter. Stale generated units and forms can create false problems, hide real changes, and lead Delphi to load the wrong copy of a file.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_UNDERSTANDING_THE_OUTPUT_FOLDER_AND_FILES",
+      "language": "en-US",
+      "tags": "imported,docx,troubleshooting,procedure,reference",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.308Z"
+    },
+    {
+      "id": "{E0D7C0B9-8458-4BE4-B05A-64EACA86A41E}",
+      "parentId": "",
+      "title": "Opening the Converted Project in Delphi",
+      "body": "# 11. Opening the Converted Project in Delphi\r\n\r\n1. Open the generated project in Delphi.\r\n2. Let Delphi load the forms and watch for form-reader errors first.\r\n3. Build the project and capture the real compiler results.\r\n4. Fix structural problems before pursuing visual polish.\r\n5. Rebuild and rerun after each significant converter improvement.\r\nThe converter now strips or remaps several common VCL-only form properties before Delphi sees the FMX output, so some earlier reader failures no longer appear. Even so, form-reader errors still deserve first priority because they block every later stage of validation.\r\n\r\nThe first successful load of the project is a major milestone, but it is not the end of validation. A project can open and still fail at compile time, or compile and still fail at runtime. Treat these as separate checkpoints.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_OPENING_THE_CONVERTED_PROJECT_IN_DELPHI",
+      "language": "en-US",
+      "tags": "imported,docx,troubleshooting",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.309Z"
+    },
+    {
+      "id": "{1D77957D-A652-4E3E-AD9A-D212A5EF6FA4}",
+      "parentId": "",
+      "title": "Validating the Converted Application",
+      "body": "# 12. Validating the Converted Application\r\n\r\n<table class=\"doc-table\">\r\n<tr><th>Validation Layer</th><th>Goal</th><th>Typical Questions</th></tr>\r\n<tr><td>Structural</td><td>Can Delphi read the generated forms and units?</td><td>Are there reader errors, malformed collections, or invalid properties?</td></tr>\r\n<tr><td>Compile-time</td><td>Does the project build on the first pass?</td><td>Are units missing, events wrong, or symbols unresolved?</td></tr>\r\n<tr><td>Runtime</td><td>Does the application start and execute real workflows?</td><td>Do timers, media, data, dialogs, and navigation work?</td></tr>\r\n<tr><td>Visual</td><td>Does the application look acceptable and remain usable?</td><td>Are fonts, labels, colors, and layouts readable and sensible?</td></tr>\r\n</table>\r\n\r\nValidation should now explicitly cover the newer generic support surface. That includes numeric entry controls, radio-group style selections, font-picking workflows, scrollable long-message dialogs, and any wave-audio paths that depend on Winapi.MMSystem or waveOut APIs.\r\n\r\nReal validation means exercising the actual workflows that matter to the application: data entry, startup, scheduling, media playback, dialogs, and reporting. A converted app is only as good as the workflows it can successfully perform.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_VALIDATING_THE_CONVERTED_APPLICATION",
+      "language": "en-US",
+      "tags": "imported,docx,troubleshooting,procedure",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.309Z"
+    },
+    {
+      "id": "{8FC93CD6-DFBA-4207-8D9D-F8DF87737E73}",
+      "parentId": "{1D77957D-A652-4E3E-AD9A-D212A5EF6FA4}",
+      "title": "Test startup and shutdown behavior.",
+      "body": "# 1. Test startup and shutdown behavior.\r\n2. Test any timers or schedules if the original app depended on them.\r\n3. Test data-aware screens and save/cancel workflows.\r\n4. Test media or file operations where applicable.\r\n5. Test secondary forms, help, menus, and common user actions.\r\n6. Test numeric entry controls such as TNumberBox and converted TSpinBox screens.\r\n7. Test TRadioGroup and TFontDialog workflows if the original application used them.\r\n8. Test wave-audio or WinMM paths where the source project uses MMSystem or waveOut APIs.\r\nIf a form uses shared datasets, shared datasources, shared navigators, or shared combo controls, close and reopen the form and verify the shared object still behaves correctly afterward.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_TEST_STARTUP_AND_SHUTDOWN_BEHAVIOR",
+      "language": "en-US",
+      "tags": "imported,docx,procedure",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.309Z"
+    },
+    {
+      "id": "{4D669055-7CB8-461D-BC63-CF34B15E4817}",
+      "parentId": "{1D77957D-A652-4E3E-AD9A-D212A5EF6FA4}",
+      "title": "If the application launches help files, external documents, URLs, or utility",
+      "body": "# 1. If the application launches help files, external documents, URLs, or utility",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_IF_THE_APPLICATION_LAUNCHES_HELP_FILES_EXTERNAL_DOCUMENTS_URLS_OR_UTILITY",
+      "language": "en-US",
+      "tags": "imported,docx",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.309Z"
+    },
+    {
+      "id": "{2D056FBC-0E4B-49E7-9B49-D2660445B032}",
+      "parentId": "",
+      "title": "Troubleshooting and Recovery Procedures",
+      "body": "# 13. Troubleshooting and Recovery Procedures\r\n\r\n<table class=\"doc-table\">\r\n<tr><th>Symptom</th><th>Likely Cause</th><th>Recommended Response</th></tr>\r\n<tr><td>Form reader error</td><td>An unsupported VCL property or malformed FMX output was emitted.</td><td>Fix the converter rule, regenerate into a clean output folder, and retest.</td></tr>\r\n<tr><td>Compiler errors after regeneration</td><td>A converter rule is missing or incomplete.</td><td>Treat the compiler message as the next engineering target and improve the converter globally.</td></tr>\r\n<tr><td>Runtime access violation</td><td>A startup, event, media, drawing, or binding mismatch remains.</td><td>Trace the workflow, isolate the phase, and improve the converter behavior globally.</td></tr>\r\n<tr><td>Visual mismatch only</td><td>The app is basically working but presentation differs.</td><td>Defer deep visual polishing until structural and runtime behavior are stable.</td></tr>\r\n<tr><td>Code Insight disagreement</td><td>The IDE parser is stale or confused.</td><td>Trust the real compiler and reopen files or restart the IDE if needed.</td></tr>\r\n<tr><td>Conversion completed with blocking issues</td><td>A real unsupported component or blocking rule gap was detected.</td><td>Stop there, read the report, and improve the converter globally before trusting the output.</td></tr>\r\n<tr><td>External project asset reference not copied</td><td>The project shell references a file outside the source tree or in an unresolved path.</td><td>Copy or relocate the asset manually, then decide whether the generator needs a new generic asset-copy rule.</td></tr>\r\n</table>\r\n\r\nIf a run goes badly, do not try to repair everything at once. The fastest route is usually to identify the highest-severity problem, improve the converter globally, regenerate clean output, and retest.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_TROUBLESHOOTING_AND_RECOVERY_PROCEDURES",
+      "language": "en-US",
+      "tags": "imported,docx,troubleshooting,procedure,reference",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.309Z"
+    },
+    {
+      "id": "{FAAA6406-96B5-43C2-BAF4-403D11621A34}",
+      "parentId": "",
+      "title": "Making Changes to the Converter Software",
+      "body": "# 14. Making Changes to the Converter Software\r\n\r\nRefer to the Engineering Manual for guidance for making changes to the converter. It is a highly complex application which uses much integration and branches to many areas. Only qualified programmers who have a deep understanding of Delphi should attempt any modifications that may be required.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_MAKING_CHANGES_TO_THE_CONVERTER_SOFTWARE",
+      "language": "en-US",
+      "tags": "imported,docx",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.310Z"
+    },
+    {
+      "id": "{E6067B4B-45C3-44C6-BEC6-3C869E955028}",
+      "parentId": "",
+      "title": "Operational Best Practices",
+      "body": "# 15. Operational Best Practices\r\n\r\n1. Always keep the source project, output project, and converter workspace separate.\r\n2. Use clean output folders for serious test cycles.\r\n3. Back up milestone converter states before risky changes. Backups are extremely important to save accomplished work.\r\n4. Keep zipped milestone backups out of the live converter workspace so later workspace backups do not recurse and grow uncontrollably. Make sure they are off the development computer in another location, like a cloud service like DropBox, Google Drive, etc.\r\n5. Treat real compiler output as the authority over IDE-only hints or stale parse errors.\r\n6. Record what was fixed globally so later projects benefit immediately.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_OPERATIONAL_BEST_PRACTICES",
+      "language": "en-US",
+      "tags": "imported,docx,troubleshooting",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.310Z"
+    },
+    {
+      "id": "{FD9ED8F5-DB91-4681-90ED-7126044DBAFF}",
+      "parentId": "{E6067B4B-45C3-44C6-BEC6-3C869E955028}",
+      "title": "Do not burn time on tiny visual tweaks until the application builds and runs",
+      "body": "# 7. Do not burn time on tiny visual tweaks until the application builds and runs",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_DO_NOT_BURN_TIME_ON_TINY_VISUAL_TWEAKS_UNTIL_THE_APPLICATION_BUILDS_AND_RUNS",
+      "language": "en-US",
+      "tags": "imported,docx",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.310Z"
+    },
+    {
+      "id": "{F4305DE6-B6FC-41AF-9E24-A1176AE21912}",
+      "parentId": "",
+      "title": "Frequently Asked Questions",
+      "body": "# 16. Frequently Asked Questions\r\n\r\n<table class=\"doc-table\">\r\n<tr><th>Question</th><th>Answer</th></tr>\r\n<tr><td>Will every project convert perfectly on the first run?</td><td>No. The converter is powerful, but real-world projects still expose new patterns that may need another global rule.</td></tr>\r\n<tr><td>Should I hand-edit the generated FMX project permanently?</td><td>Only for temporary testing or minor final polish. The real fix should go into the converter whenever the pattern is reusable.</td></tr>\r\n<tr><td>Why do I still need Delphi after conversion?</td><td>Because the generated project still has to be built, run, and validated in the real Delphi environment.</td></tr>\r\n<tr><td>Why are backups important?</td><td>Because converter improvements are cumulative, and known-good milestone states are valuable when comparing behavior or recovering from regressions.</td></tr>\r\n<tr><td>When should I review visuals?</td><td>After the project loads, compiles, and runs acceptably. Visual polish is usually the last phase.</td></tr>\r\n<tr><td>What does blocking issues mean?</td><td>It means the converter found a serious unsupported pattern or rule gap. Generated files may exist, but you should resolve the blocking issue before treating the output as a valid converted project.</td></tr>\r\n</table>",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_FREQUENTLY_ASKED_QUESTIONS",
+      "language": "en-US",
+      "tags": "imported,docx,troubleshooting",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.310Z"
+    },
+    {
+      "id": "{91376BA4-78EA-4823-A53A-7524C0884BEC}",
+      "parentId": "",
+      "title": "Appendix A. Quick Start Checklist",
+      "body": "# Appendix A. Quick Start Checklist\r\n\r\n1. Build the converter.\r\n2. Choose source and target folders.\r\n3. Use a clean output directory.\r\n4. Run conversion.\r\n5. Open the FMX project in Delphi.\r\n6. Build, run, and validate the converted app.\r\n7. Improve the converter globally and regenerate as needed.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_APPENDIX_A_QUICK_START_CHECKLIST",
+      "language": "en-US",
+      "tags": "imported,docx,procedure",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.310Z"
+    },
+    {
+      "id": "{ED82FFA8-2CE8-4915-8CBE-081DEE872077}",
+      "parentId": "",
+      "title": "Appendix B. Pre-Conversion Checklist",
+      "body": "# Appendix B. Pre-Conversion Checklist\r\n\r\n1. Confirm the real source root folder.\r\n2. Confirm the target output folder is correct and clean.\r\n3. Know which workflows are critical in the original application.\r\n4. Ensure supporting files such as databases or media are available for runtime testing.\r\n5. Plan where milestone backups will be stored.",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_APPENDIX_B_PRE_CONVERSION_CHECKLIST",
+      "language": "en-US",
+      "tags": "imported,docx",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.311Z"
+    },
+    {
+      "id": "{90E1CB0C-A14D-4A07-B80B-09CCBE100F2C}",
+      "parentId": "",
+      "title": "Appendix C. Post-Conversion Review Checklist",
+      "body": "# Appendix C. Post-Conversion Review Checklist\r\n\r\n1. Did the forms open without reader errors?\r\n2. Did the project compile on the first pass?\r\n3. Did the application start and close normally?\r\n4. Did core workflows run correctly?\r\n5. Are the remaining issues structural, runtime, or merely visual?\r\n6. Was the converter fixed globally if a reusable defect was found?",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_APPENDIX_C_POST_CONVERSION_REVIEW_CHECKLIST",
+      "language": "en-US",
+      "tags": "imported,docx,troubleshooting,procedure",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.311Z"
+    },
+    {
+      "id": "{9DD36119-1FD7-46F0-9E03-CB8F2D64F145}",
+      "parentId": "",
+      "title": "Appendix D. Glossary",
+      "body": "# Appendix D. Glossary\r\n\r\n<table class=\"doc-table\">\r\n<tr><th>Term</th><th>Meaning</th></tr>\r\n<tr><td>VCL</td><td>Visual Component Library, Delphi's traditional Windows UI framework.</td></tr>\r\n<tr><td>FMX</td><td>FireMonkey, Delphi's multi-platform UI framework.</td></tr>\r\n<tr><td>DFM</td><td>A Delphi form definition file used by VCL projects.</td></tr>\r\n<tr><td>FMX form</td><td>The converted FireMonkey form file, typically emitted as .fmx.</td></tr>\r\n<tr><td>LiveBindings</td><td>The FMX binding model used for data-aware behavior.</td></tr>\r\n<tr><td>Global fix</td><td>A converter change that benefits multiple current or future projects, not just one output file.</td></tr>\r\n<tr><td>Mapping pack</td><td>Optional JSON file that adds transparent third-party component detection, conversion, preservation, or manual-review rules.</td></tr>\r\n</table>",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_APPENDIX_D_GLOSSARY",
+      "language": "en-US",
+      "tags": "imported,docx,troubleshooting,reference",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.311Z"
+    },
+    {
+      "id": "{CC546169-285A-4A4E-A0D5-66CAB58E3E02}",
+      "parentId": "",
+      "title": "Index",
+      "body": "# Index\r\n\r\n<table class=\"doc-table\">\r\n<tr><th>Term</th><th>Section Reference</th></tr>\r\n<tr><td>Backups</td><td>Sections 3, 10, and 15</td></tr>\r\n<tr><td>Codex workflow</td><td>Section 14</td></tr>\r\n<tr><td>Delphi validation</td><td>Sections 11 and 12</td></tr>\r\n<tr><td>Output folder</td><td>Section 10</td></tr>\r\n<tr><td>Troubleshooting</td><td>Section 13</td></tr>\r\n</table>",
+      "status": "Ready",
+      "iconName": "auto",
+      "owner": "Auto Import",
+      "helpId": "IDH_INDEX",
+      "language": "en-US",
+      "tags": "imported,docx,troubleshooting,reference",
+      "conditions": "",
+      "updatedAt": "2026-05-20T09:56:24.311Z"
+    }
+  ]
+}

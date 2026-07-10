@@ -1,0 +1,79 @@
+VCL2FMXConverter v4.1 - Binary DFM Fix Verification Handoff
+Date: June 11, 2026
+
+REPORTED PROBLEM
+
+A French beta tester reported that binary DFM input produced no usable FMX,
+while saving the same form as text allowed conversion.
+
+CONFIRMED ROOT CAUSE
+
+The former IsBinaryDFM implementation recognized only a raw TPF0 signature.
+Delphi 13.1 convert.exe creates normal binary DFM resource streams beginning
+with an $FF resource header. The old test did not recognize that format.
+
+The engine also called its generic text reader before the DFM parser examined
+the stream format. That reader accepted the binary bytes as Unicode text. In a
+reproduction, the log incorrectly identified the binary DFM as code page 1200,
+after which parsing found no root component.
+
+CHANGES
+
+1. Converter.Parser.DFM.pas
+   - TDFMParser.IsBinaryDFM now calls System.Classes.TestStreamFormat.
+   - sofBinary is treated as binary DFM input.
+   - ConvertBinaryToText first calls ObjectResourceToText, which handles the
+     binary resource format used by Delphi DFM files.
+   - If resource conversion fails, the input and output streams are reset and
+     ObjectBinaryToText is attempted for raw TPF0 object streams.
+   - If both conversions fail, the existing explicit warning/error reporting
+     remains active.
+
+2. Converter.Core.Engine.pas
+   - ProcessDfmFile no longer passes DFM bytes through the generic text reader.
+   - DFM loading and format detection are delegated to the binary-aware parser.
+   - Existing empty/invalid FMX blocking and skipped-save protections remain.
+
+3. tests/french_beta_regression/run_guard.ps1
+   - The guard creates a genuine binary DFM from RegressionForm.dfm using the
+     Delphi 13.1 conversion utility with -b.
+   - It verifies the resulting stream has Delphi's $FF binary resource header.
+   - It runs that binary DFM through the normal conversion engine.
+   - It requires successful conversion and a nonempty FMX beginning with the
+     expected root object declaration.
+   - Existing text DFM and malformed DFM tests remain active.
+
+4. tools/run_acceptance_tests.ps1
+   - Added an explicit binary DFM architecture check for TestStreamFormat,
+     ObjectResourceToText, raw ObjectBinaryToText fallback, and removal of the
+     premature DFM text-read path.
+   - The dynamic French-beta regression corpus remains part of the full gate.
+
+VERIFICATION
+
+Focused French beta regression guard:
+PASS - text DFM conversion
+PASS - genuine Delphi binary DFM conversion
+PASS - nonempty and valid FMX output
+PASS - malformed DFM blocked without creating FMX
+PASS - generated Pascal compilation
+
+Complete acceptance gate:
+60 passed, 0 failed, 0 informational
+Report: C:\Users\marti\AppData\Local\Temp\VCL2FMX_ACCEPTANCE_2026-06-11_072324.txt
+
+Release MSBuild is included in the acceptance gate and passed with zero
+warnings and zero errors.
+
+FILES CHANGED
+
+Converter.Parser.DFM.pas
+Converter.Core.Engine.pas
+tests/french_beta_regression/run_guard.ps1
+tests/french_beta_regression/README.md
+tools/run_acceptance_tests.ps1
+
+VERSION
+
+Product version remains v4.1.
+

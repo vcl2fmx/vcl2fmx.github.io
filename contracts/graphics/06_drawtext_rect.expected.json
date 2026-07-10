@@ -1,0 +1,14 @@
+{
+  "input_file": "contracts\\graphics\\06_drawtext_rect.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractDrawTextRect",
+    "\\bWinapi\\.Windows\\b",
+    "DrawText\\(0, 'hello', -1, R, DT_LEFT\\);"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\."
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

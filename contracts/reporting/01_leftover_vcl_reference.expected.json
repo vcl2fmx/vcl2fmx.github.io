@@ -1,0 +1,16 @@
+{
+  "input_file": "contracts\\reporting\\01_leftover_vcl_reference.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractLeftoverVclReference",
+    "Vcl\\.Forms\\.Application\\.Title"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "Leftover VCL unit reference in generated Pascal",
+    "Generated Pascal still references a Vcl\\.\\* unit namespace\\.",
+    "Replace the remaining Vcl\\.\\* reference with the correct FMX or System unit before compiling\\.",
+    "Blocking: Yes"
+  ],
+  "forbidden_report_patterns": []
+}

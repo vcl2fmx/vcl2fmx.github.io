@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\semantic_resolution\\01_message_handler_missing_implementation.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": ["unit ContractSemanticMissingMessageImplementation"],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "Pascal semantic resolution",
+    "message handler TContractSemanticMissingMessageImplementation.WMSysCommand is declared but no matching implementation was found"
+  ],
+  "forbidden_report_patterns": []
+}

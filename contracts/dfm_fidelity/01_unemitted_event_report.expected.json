@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\dfm_fidelity\\01_unemitted_event_report.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": ["object ContractDfmFidelityForm: TContractDfmFidelityForm"],
+  "forbidden_output_patterns": ["OnMouseWheel = FormMouseWheel"],
+  "expected_report_patterns": [
+    "DFM/FMXL fidelity check",
+    "OnMouseWheel = FormMouseWheel"
+  ],
+  "forbidden_report_patterns": []
+}

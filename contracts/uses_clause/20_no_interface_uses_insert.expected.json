@@ -1,0 +1,19 @@
+{
+  "input_file": "contracts\\uses_clause\\20_no_interface_uses_insert.pas",
+  "expected_status": "success",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Winapi.Messages",
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "interface",
+    "type TContractNoInterfaceUsesInsert",
+    "implementation"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

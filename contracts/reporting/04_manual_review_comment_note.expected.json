@@ -1,0 +1,16 @@
+{
+  "input_file": "contracts\\reporting\\04_manual_review_comment_note.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractManualReviewCommentNote",
+    "// FMX manual review: replace this component behavior manually"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "Generated manual-review note",
+    "Generated code includes a converter manual-review note: replace this component behavior manually",
+    "Review this note in the IDE and complete the missing FMX behavior manually where needed\\.",
+    "Manual review required: 1"
+  ],
+  "forbidden_report_patterns": []
+}

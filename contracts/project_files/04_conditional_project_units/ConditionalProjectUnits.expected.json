@@ -1,0 +1,1 @@
+{"input_file":"contracts\\project_files\\04_conditional_project_units\\ConditionalProjectUnits.dpr","expected_status":"converted","expected_output_patterns":["program ConditionalProjectUnits"],"forbidden_output_patterns":[],"expected_report_patterns":[],"forbidden_report_patterns":[]}

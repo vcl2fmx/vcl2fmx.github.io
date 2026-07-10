@@ -1,0 +1,16 @@
+{
+  "input_file": "contracts\\colors\\15_open_option_enums.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractOpenOptionEnums",
+    "FMX\\.Dialogs",
+    "System\\.UITypes",
+    "TOpenOption\\.ofAllowMultiSelect"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Dialogs\\b",
+    "\\[ofAllowMultiSelect\\]"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

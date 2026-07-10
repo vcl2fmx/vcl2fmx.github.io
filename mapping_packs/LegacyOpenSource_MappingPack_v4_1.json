@@ -1,0 +1,151 @@
+{
+  "pack_name": "LegacyOpenSource_MappingPack_v2",
+  "pack_id": "legacyopensource.mapping.v2",
+  "vendor": "TurboPack, SynEdit, HtmlViewer, Delphi HTML Components",
+  "version": "2.0.0",
+  "description": "Conservative detection/review pack for widely used legacy and open-source Delphi component libraries. This pack helps identify SynEdit, HtmlViewer, TurboPower Orpheus, Abbrevia, AsyncPro, OnGuard, and related components; it avoids unsafe automatic conversion of complex VCL controls.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TSynEdit",
+      "fmx_class": "TMemo",
+      "action": "manual_review",
+      "confidence": 45,
+      "notes": "Plain text can be represented by TMemo, but syntax highlighting and editor behavior do not map safely.",
+      "manual_review_reason": "Review highlighters, gutter, bookmarks, completion, search, keyboard handling, and possible FMX editor replacement."
+    },
+    {
+      "vcl_class": "TSynMemo",
+      "fmx_class": "TMemo",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "SynEdit memo behavior requires syntax/editor feature review."
+    },
+    {
+      "vcl_class": "TSynCompletionProposal",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Code completion popup/editor integration requires manual migration."
+    },
+    {
+      "vcl_class": "TSynExporterHTML",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "Exporter components may be preservable as nonvisual code but require package and output-path review."
+    },
+    {
+      "vcl_class": "THtmlViewer",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "HtmlViewer is VCL/Lazarus-oriented in common use; review whether to replace with FMX TWebBrowser, Delphi HTML Components, or another FMX HTML renderer."
+    },
+    {
+      "vcl_class": "TFrameViewer",
+      "action": "manual_review",
+      "confidence": 40,
+      "manual_review_reason": "Frame-based HTML viewing requires manual FMX replacement review."
+    },
+    {
+      "vcl_class": "THTMLLabel",
+      "fmx_class": "TLabel",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "HTML text rendering cannot be safely flattened to a plain FMX label without visual review."
+    },
+    {
+      "vcl_class": "THTMLPanel",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "HTML-enabled panel behavior requires an FMX-capable HTML renderer or manual redesign."
+    },
+    {
+      "vcl_class": "THTMLListBox",
+      "action": "manual_review",
+      "confidence": 40,
+      "manual_review_reason": "HTML-enabled item templates require manual FMX list/template migration."
+    },
+    {
+      "vcl_class": "TOvcButton",
+      "fmx_class": "TButton",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Orpheus controls are legacy VCL controls; simple button behavior may map, but visual/style behavior needs review."
+    },
+    {
+      "vcl_class": "TOvcEdit",
+      "fmx_class": "TEdit",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Orpheus edit masks, validation, and formatting require manual review."
+    },
+    {
+      "vcl_class": "TOvcTable",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Orpheus table/grid behavior requires manual migration."
+    },
+    {
+      "vcl_class": "TOvcNotebook",
+      "fmx_class": "TTabControl",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "Notebook/page behavior may map structurally, but legacy control behavior requires review."
+    },
+    {
+      "vcl_class": "TOvcCalendar",
+      "fmx_class": "TCalendar",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "Calendar selection and formatting behavior requires review."
+    },
+    {
+      "vcl_class": "TAbZipKit",
+      "fmx_class": "TAbZipKit",
+      "action": "manual_review",
+      "confidence": 60,
+      "manual_review_reason": "Abbrevia compression component may be preservable as nonvisual code, but package/platform support and file paths must be reviewed."
+    },
+    {
+      "vcl_class": "TAbZipBrowser",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Abbrevia visual archive browser requires manual FMX UI replacement."
+    },
+    {
+      "vcl_class": "TAbZipView",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Abbrevia visual archive view requires manual FMX UI replacement."
+    },
+    {
+      "vcl_class": "TApdComPort",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "AsyncPro serial/TAPI behavior is platform-specific and requires manual migration."
+    },
+    {
+      "vcl_class": "TApdDataPacket",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "AsyncPro protocol/data packet behavior requires package and threading review."
+    },
+    {
+      "vcl_class": "TApdTerminal",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Terminal emulation UI requires manual FMX replacement."
+    },
+    {
+      "vcl_class": "TOgMakeKeys",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "OnGuard licensing/key components may be preservable but require security and package review."
+    },
+    {
+      "vcl_class": "TOgDaysCode",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "OnGuard licensing behavior should be reviewed carefully during platform migration."
+    }
+  ]
+}

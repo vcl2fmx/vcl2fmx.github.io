@@ -1,0 +1,14 @@
+{
+  "input_file": "contracts\\colors\\12_theme_dependent_colors.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": [
+    "Theme-dependent VCL color"
+  ],
+  "expected_output_patterns": ["unit ContractThemeDependentColors"],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "Theme-dependent VCL color clActiveCaption",
+    "Theme-dependent VCL color clInactiveCaption"
+  ],
+  "forbidden_report_patterns": []
+}

@@ -1,0 +1,106 @@
+{
+  "pack_name": "TeeChart_MappingPack_v2",
+  "pack_id": "steema.teechart.basic.detection.v2",
+  "vendor": "Steema TeeChart",
+  "version": "2.0.0",
+  "description": "Detection and cautious preservation guidance for TeeChart/TeeGrid components. TeeChart and TeeGrid have VCL/FMX editions, but series, tools, axes, data binding, and package references require review.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TChart",
+      "action": "manual_review",
+      "confidence": 60,
+      "manual_review_reason": "TeeChart has FMX support, but chart series, axes, tools, themes, and package references must be reviewed before preserving or converting."
+    },
+    {
+      "vcl_class": "TDBChart",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "Data-aware chart binding requires manual review with the target data layer."
+    },
+    {
+      "vcl_class": "TQRChart",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "QuickReport-hosted TeeChart must be reviewed with report migration."
+    },
+    {
+      "vcl_class": "TTeeCommander",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "Chart command UI is VCL-specific and should be redesigned or matched to FMX TeeChart tooling."
+    },
+    {
+      "vcl_class": "TChartEditor",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "Runtime chart editor availability is package/version-specific."
+    },
+    {
+      "vcl_class": "TChartPreviewer",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "Preview UI is package/version-specific."
+    },
+    {
+      "vcl_class": "TChartGrid",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Chart data grid requires manual UI/data-binding review."
+    },
+    {
+      "vcl_class": "TTeeGDIPlus",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Rendering backend helpers are platform/runtime-specific."
+    },
+    {
+      "vcl_class": "TLineSeries",
+      "action": "detect_only",
+      "confidence": 40,
+      "manual_review_reason": "Series subcomponents must be migrated together with the owning chart."
+    },
+    {
+      "vcl_class": "TBarSeries",
+      "action": "detect_only",
+      "confidence": 40,
+      "manual_review_reason": "Series subcomponents must be migrated together with the owning chart."
+    },
+    {
+      "vcl_class": "TPieSeries",
+      "action": "detect_only",
+      "confidence": 40,
+      "manual_review_reason": "Series subcomponents must be migrated together with the owning chart."
+    },
+    {
+      "vcl_class": "TAreaSeries",
+      "action": "detect_only",
+      "confidence": 40,
+      "manual_review_reason": "Series subcomponents must be migrated together with the owning chart."
+    },
+    {
+      "vcl_class": "TPointSeries",
+      "action": "detect_only",
+      "confidence": 40,
+      "manual_review_reason": "Series subcomponents must be migrated together with the owning chart."
+    },
+    {
+      "vcl_class": "TFastLineSeries",
+      "action": "detect_only",
+      "confidence": 40,
+      "manual_review_reason": "Series subcomponents must be migrated together with the owning chart."
+    },
+    {
+      "vcl_class": "TTeeGrid",
+      "action": "manual_review",
+      "confidence": 60,
+      "manual_review_reason": "TeeGrid has VCL/FMX editions, but columns, data binding, editing, and package references require review."
+    },
+    {
+      "vcl_class": "TDBTeeGrid",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "Data-aware TeeGrid migration requires data-binding review."
+    }
+  ]
+}

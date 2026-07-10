@@ -1,0 +1,23 @@
+{
+  "input_file": "contracts\\components_and_events\\04_button_click_signature.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [
+    "FMX.Forms"
+  ],
+  "expected_units_absent": [
+    "Vcl.Forms",
+    "Vcl.StdCtrls"
+  ],
+  "expected_output_patterns": [
+    "procedure Button1Click\\(Sender: TObject\\)",
+    "Caption := 'clicked'"
+  ],
+  "forbidden_output_patterns": [
+    "Vcl\\.Forms",
+    "Vcl\\.StdCtrls"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

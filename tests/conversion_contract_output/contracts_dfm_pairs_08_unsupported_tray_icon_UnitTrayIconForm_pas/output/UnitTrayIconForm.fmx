@@ -1,0 +1,10 @@
+﻿object TrayIconForm: TTrayIconForm
+  ClientWidth = 320
+  Caption = 'Tray'
+  ClientHeight = 240
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+end

@@ -1,0 +1,52 @@
+{
+  "pack_name": "VirtualTreeView_MappingPack_v2",
+  "pack_id": "virtualtreeview.detection.v2",
+  "vendor": "Virtual TreeView",
+  "version": "2.0.0",
+  "description": "Detection-only starter pack for Virtual TreeView. Virtual TreeView uses virtual node/data callbacks and custom drawing, so automatic FMX conversion is not safe without application-specific code migration.",
+  "mode": "detection",
+  "rules": [
+    {
+      "vcl_class": "TVirtualStringTree",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "VirtualStringTree node initialization, text callbacks, columns, images, check states, and node data require manual migration."
+    },
+    {
+      "vcl_class": "TVirtualDrawTree",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Owner-drawn virtual tree rendering requires manual FMX redesign."
+    },
+    {
+      "vcl_class": "TBaseVirtualTree",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Base virtual tree descendants require manual migration."
+    },
+    {
+      "vcl_class": "TCustomVirtualStringTree",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Custom virtual string tree descendants require manual migration."
+    },
+    {
+      "vcl_class": "TCustomVirtualDrawTree",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Custom virtual draw tree descendants require manual migration."
+    },
+    {
+      "vcl_class": "TVirtualTreeColumns",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Column collections must be migrated together with the owning virtual tree."
+    },
+    {
+      "vcl_class": "TVirtualTreeColumn",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Tree columns must be migrated together with the owning virtual tree."
+    }
+  ]
+}

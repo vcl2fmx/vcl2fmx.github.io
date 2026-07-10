@@ -1,0 +1,771 @@
+<!doctype html><html><head><meta charset='utf-8'>
+<title>VCL2FMXConverter v5.0 Rules and Maps</title>
+<style>
+body{font-family:Segoe UI,Arial,sans-serif;margin:34px;color:#24364b;background:#fff}
+h1{color:#1f4e79} h2{color:#2f5496;margin-top:32px}
+.meta{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0}
+.card{border:1px solid #c9d7ea;border-radius:8px;padding:12px 16px;background:#f7fbff}
+table{border-collapse:collapse;width:100%;margin:14px 0 24px 0;font-size:13px}
+th{background:#1f4e79;color:white;text-align:left;padding:7px}
+td{border:1px solid #d6dce6;padding:6px;vertical-align:top}
+tr:nth-child(even){background:#f8fbff}
+</style></head><body>
+<h1>VCL2FMXConverter v5.0 Rules, Component, Property, and Event Maps</h1>
+<p><strong>Version:</strong> 5.0 Vanguard<br><strong>Revision date:</strong> June 27, 2026</p>
+<div class='meta'>
+<div class='card'><strong>Built-in components</strong><br>77</div>
+<div class='card'><strong>Built-in properties</strong><br>71</div>
+<div class='card'><strong>Built-in events</strong><br>27</div>
+<div class='card'><strong>Mapping-pack rules</strong><br>493</div>
+<div class='card'><strong>Contracts</strong><br>194</div>
+</div>
+<p><strong>v5.0 reporting rule update:</strong> Report rules now separate actionable issue totals from informational and dry-run notices. Manual-review report groups show an expansion prompt so affected locations and recommended fixes are easier to find.</p>
+<h2>v5.0 Rule Families</h2>
+<table>
+<thead><tr>
+<th>Rule family</th>
+<th>v5.0 behavior</th>
+</tr></thead><tbody>
+<tr><td>Contract-first development</td><td>Structural behavior should have a sample Delphi input, an expectation file, and a regression guard.</td></tr>
+<tr><td>Include analysis</td><td>Analyze Pascal include directives, nested includes, recursion, outside-tree paths, conditionals, comments, and UTF-8 content while preserving include directives.</td></tr>
+<tr><td>Windows messaging</td><td>Detect real message APIs and declarations by category, report unsafe behavior, and ignore false positives.</td></tr>
+<tr><td>Uses cleanup</td><td>Remove unused VCL/Winapi units, including protected/conditional Vcl.Themes cases.</td></tr>
+<tr><td>GDI drawing</td><td>Convert reliable GDI patterns to FMX canvas calls where covered and report visual review where needed.</td></tr>
+<tr><td>DFM/FMXL generation</td><td>Preserve string collections, TStringGrid event order, and UTF-8 BOM output.</td></tr>
+<tr><td>Mapping packs</td><td>Load 22 JSON packs, validate actions, and report loaded packs and usage.</td></tr>
+</tbody></table>
+<h2>Contract Areas</h2>
+<table>
+<thead><tr>
+<th>Area</th>
+<th>Expectation count</th>
+</tr></thead><tbody>
+<tr><td>colors</td><td>15</td></tr>
+<tr><td>comments_and_boundaries</td><td>21</td></tr>
+<tr><td>components_and_events</td><td>24</td></tr>
+<tr><td>data_aware</td><td>8</td></tr>
+<tr><td>dfm_pairs</td><td>7</td></tr>
+<tr><td>dfm_fidelity</td><td>3</td></tr>
+<tr><td>dry_run_preview</td><td>1</td></tr>
+<tr><td>encoding</td><td>4</td></tr>
+<tr><td>graphics</td><td>7</td></tr>
+<tr><td>include_analysis</td><td>11</td></tr>
+<tr><td>livebindings</td><td>6</td></tr>
+<tr><td>pascal_structure</td><td>4</td></tr>
+<tr><td>project_files</td><td>5</td></tr>
+<tr><td>project_integration</td><td>6</td></tr>
+<tr><td>reporting</td><td>4</td></tr>
+<tr><td>semantic_resolution</td><td>2</td></tr>
+<tr><td>third_party</td><td>4</td></tr>
+<tr><td>uses_clause</td><td>22</td></tr>
+<tr><td>winapi_messages</td><td>40</td></tr>
+</tbody></table>
+<h2>Component Map</h2>
+<table>
+<thead><tr>
+<th>VCL class</th>
+<th>FMX target</th>
+<th>Mapping</th>
+<th>Confidence</th>
+<th>Notes</th>
+</tr></thead><tbody>
+<tr><td>TForm</td><td>TForm</td><td>Direct</td><td>100</td><td>Root forms are converted through dedicated parser rules; this row keeps form properties and events explicit in the mapping matrix.</td></tr>
+<tr><td>TFrame</td><td>TFrame</td><td>Direct</td><td>95</td><td>FMX frames are available and should be treated as first-class matrix entries.</td></tr>
+<tr><td>TButton</td><td>TButton</td><td>Direct</td><td>100</td><td></td></tr>
+<tr><td>TEdit</td><td>TEdit</td><td>Direct</td><td>100</td><td></td></tr>
+<tr><td>TMaskEdit</td><td>TEdit</td><td>Substitute</td><td>80</td><td>Use FMX TEdit and review EditMask behavior manually.</td></tr>
+<tr><td>TLabel</td><td>TLabel</td><td>Direct</td><td>100</td><td></td></tr>
+<tr><td>TStaticText</td><td>TLabel</td><td>Substitute</td><td>90</td><td>Static text converts cleanly to an FMX label.</td></tr>
+<tr><td>TPanel</td><td>TPanel</td><td>Direct</td><td>95</td><td>Preserve visual FMX panel semantics for container controls</td></tr>
+<tr><td>TGroupBox</td><td>TGroupBox</td><td>Direct</td><td>95</td><td>Preserve visual FMX group box semantics and caption handling</td></tr>
+<tr><td>TFlowPanel</td><td>TFlowLayout</td><td>Substitute</td><td>85</td><td>Use FMX TFlowLayout as the closest standard flow container.</td></tr>
+<tr><td>TGridPanel</td><td>TGridPanelLayout</td><td>Substitute</td><td>85</td><td>Use FMX TGridPanelLayout as the closest standard grid layout container.</td></tr>
+<tr><td>TCheckBox</td><td>TCheckBox</td><td>Direct</td><td>100</td><td></td></tr>
+<tr><td>TRadioButton</td><td>TRadioButton</td><td>Direct</td><td>100</td><td></td></tr>
+<tr><td>TListBox</td><td>TListBox</td><td>Direct</td><td>90</td><td>Item objects need conversion</td></tr>
+<tr><td>TCheckListBox</td><td>TListBox</td><td>Substitute</td><td>70</td><td>Use FMX TListBox and review checked-item behavior manually.</td></tr>
+<tr><td>TDBListBox</td><td>TListBox</td><td>Substitute</td><td>60</td><td>Use LiveBindings with FMX TListBox and review lookup/list-source behavior manually.</td></tr>
+<tr><td>TComboBox</td><td>TComboBox</td><td>Direct</td><td>90</td><td></td></tr>
+<tr><td>TNumberBox</td><td>TNumberBox</td><td>Direct</td><td>95</td><td>FMX TNumberBox is available in FMX.NumberBox</td></tr>
+<tr><td>TSpinEdit</td><td>TSpinBox</td><td>Substitute</td><td>90</td><td>FMX TSpinBox is available in FMX.SpinBox</td></tr>
+<tr><td>TColorBox</td><td>TColorComboBox</td><td>Substitute</td><td>85</td><td>FMX color-selection equivalent is TColorComboBox in FMX.Colors</td></tr>
+<tr><td>TMemo</td><td>TMemo</td><td>Direct</td><td>90</td><td></td></tr>
+<tr><td>TRichEdit</td><td>TMemo</td><td>Substitute</td><td>75</td><td>Use FMX TMemo and review rich-text formatting behavior manually.</td></tr>
+<tr><td>TPaintBox</td><td>TPaintBox</td><td>Direct</td><td>90</td><td>FMX TPaintBox is available in FMX.Objects</td></tr>
+<tr><td>TImage</td><td>TImage</td><td>Direct</td><td>80</td><td></td></tr>
+<tr><td>TPageControl</td><td>TTabControl</td><td>Substitute</td><td>85</td><td></td></tr>
+<tr><td>TTabSheet</td><td>TTabItem</td><td>Substitute</td><td>90</td><td></td></tr>
+<tr><td>TScrollBox</td><td>TScrollBox</td><td>Direct</td><td>90</td><td></td></tr>
+<tr><td>TStringGrid</td><td>TStringGrid</td><td>Substitute</td><td>70</td><td>Data model completely different - requires LiveBindings</td></tr>
+<tr><td>TDBEdit</td><td>TEdit</td><td>Substitute</td><td>60</td><td>Use LiveBindings to connect to data source</td></tr>
+<tr><td>TDBCheckBox</td><td>TCheckBox</td><td>Substitute</td><td>55</td><td>Use LiveBindings to connect to data source</td></tr>
+<tr><td>TDBComboBox</td><td>TComboEdit</td><td>Substitute</td><td>50</td><td>Use LiveBindings to connect to data source</td></tr>
+<tr><td>TDBGrid</td><td>TStringGrid</td><td>Substitute</td><td>50</td><td>Major architectural difference - requires LiveBindings completely</td></tr>
+<tr><td>TDrawGrid</td><td>TStringGrid</td><td>Substitute</td><td>55</td><td>Use FMX TStringGrid and review custom drawing/cell rendering manually.</td></tr>
+<tr><td>TDBCtrlGrid</td><td>TStringGrid</td><td>Substitute</td><td>45</td><td>Major structural difference - requires LiveBindings and manual layout review.</td></tr>
+<tr><td>TDBNavigator</td><td>TBindNavigator</td><td>Substitute</td><td>85</td><td>Use FMX LiveBindings navigator with generated TBindSourceDB hookup</td></tr>
+<tr><td>TMainMenu</td><td>TMenuBar</td><td>Substitute</td><td>85</td><td></td></tr>
+<tr><td>TMenuItem</td><td>TMenuItem</td><td>Direct</td><td>95</td><td></td></tr>
+<tr><td>TPopupMenu</td><td>TPopupMenu</td><td>Direct</td><td>90</td><td></td></tr>
+<tr><td>TTimer</td><td>TTimer</td><td>Direct</td><td>100</td><td></td></tr>
+<tr><td>TOpenDialog</td><td>TOpenDialog</td><td>Direct</td><td>90</td><td></td></tr>
+<tr><td>TFileOpenDialog</td><td>TOpenDialog</td><td>Substitute</td><td>60</td><td>Use FMX TOpenDialog as the closest standard substitute</td></tr>
+<tr><td>TSaveDialog</td><td>TSaveDialog</td><td>Direct</td><td>90</td><td></td></tr>
+<tr><td>TFileSaveDialog</td><td>TSaveDialog</td><td>Substitute</td><td>65</td><td>Use FMX TSaveDialog as the closest standard substitute.</td></tr>
+<tr><td>TFontDialog</td><td>TFontDialog</td><td>Substitute</td><td>70</td><td>Generated compatibility dialog with a streamed Font property and Execute support</td></tr>
+<tr><td>TRadioGroup</td><td>TRadioGroup</td><td>Substitute</td><td>75</td><td>Generated compatibility group that rebuilds internal FMX radio buttons from Items</td></tr>
+<tr><td>TLinkLabel</td><td>TLabel</td><td>Substitute</td><td>65</td><td>Hyperlink behavior requires manual review, but the visual text target is an FMX label.</td></tr>
+<tr><td>TTrayIcon</td><td>Manual review / none</td><td>Unmapped</td><td>0</td><td>No standard FMX tray icon component - requires platform-specific code</td></tr>
+<tr><td>TApdComPort</td><td>Manual review / none</td><td>Unmapped</td><td>0</td><td>Third-party serial communications component - requires a custom FMX/WinAPI replacement</td></tr>
+<tr><td>TColorDialog</td><td>TColorDialog</td><td>Substitute</td><td>70</td><td>Generated compatibility dialog with a Color property and Execute support</td></tr>
+<tr><td>TActionList</td><td>TActionList</td><td>Direct</td><td>95</td><td></td></tr>
+<tr><td>TAction</td><td>TAction</td><td>Direct</td><td>95</td><td></td></tr>
+<tr><td>TImageList</td><td>TImageList</td><td>Direct</td><td>80</td><td></td></tr>
+<tr><td>TSplitter</td><td>TSplitter</td><td>Direct</td><td>90</td><td></td></tr>
+<tr><td>TStatusBar</td><td>TStatusBar</td><td>Direct</td><td>80</td><td></td></tr>
+<tr><td>TToolBar</td><td>TToolBar</td><td>Direct</td><td>85</td><td></td></tr>
+<tr><td>TProgressBar</td><td>TProgressBar</td><td>Direct</td><td>95</td><td></td></tr>
+<tr><td>TTrackBar</td><td>TTrackBar</td><td>Direct</td><td>95</td><td></td></tr>
+<tr><td>TUpDown</td><td>TSpinBox</td><td>Substitute</td><td>70</td><td></td></tr>
+<tr><td>TDateTimePicker</td><td>TDateEdit</td><td>Substitute</td><td>75</td><td></td></tr>
+<tr><td>TMonthCalendar</td><td>TCalendar</td><td>Substitute</td><td>80</td><td></td></tr>
+<tr><td>TTreeView</td><td>TTreeView</td><td>Direct</td><td>85</td><td></td></tr>
+<tr><td>TListView</td><td>TListView</td><td>Direct</td><td>80</td><td></td></tr>
+<tr><td>TWebBrowser</td><td>TWebBrowser</td><td>Direct</td><td>80</td><td></td></tr>
+<tr><td>TShape</td><td>TShape</td><td>Direct</td><td>70</td><td></td></tr>
+<tr><td>TBevel</td><td>TRectangle</td><td>Substitute</td><td>60</td><td>Use TRectangle with appropriate Fill and Stroke</td></tr>
+<tr><td>TScrollBar</td><td>TScrollBar</td><td>Direct</td><td>85</td><td></td></tr>
+<tr><td>TSpeedButton</td><td>TSpeedButton</td><td>Direct</td><td>85</td><td></td></tr>
+<tr><td>TBitBtn</td><td>TButton</td><td>Substitute</td><td>75</td><td>Use TButton with Images property</td></tr>
+<tr><td>TLabeledEdit</td><td>Manual review / none</td><td>Substitute</td><td>65</td><td>Create TLayout with TLabel and TEdit</td></tr>
+<tr><td>TValueListEditor</td><td>TGrid</td><td>Substitute</td><td>50</td><td>Complex - requires custom grid implementation</td></tr>
+<tr><td>TChart</td><td>Manual review / none</td><td>Unmapped</td><td>0</td><td>Requires TMS FMX Chart or similar third-party component</td></tr>
+<tr><td>TTaskDialog</td><td>Manual review / none</td><td>Unmapped</td><td>0</td><td>No standard FMX task dialog component - requires a custom dialog implementation.</td></tr>
+<tr><td>TClientDataSet</td><td>Manual review / none</td><td>Unmapped</td><td>0</td><td>Dataset component requires manual review; preserve only if the target platform and supporting units are appropriate.</td></tr>
+<tr><td>TQuery</td><td>Manual review / none</td><td>Unmapped</td><td>0</td><td>Legacy query component requires manual review or replacement.</td></tr>
+<tr><td>TADODataSet</td><td>Manual review / none</td><td>Unmapped</td><td>0</td><td>Windows-specific ADO dataset requires manual review for FMX targets.</td></tr>
+<tr><td>TSQLDataSet</td><td>Manual review / none</td><td>Unmapped</td><td>0</td><td>dbExpress dataset requires manual review for FMX targets.</td></tr>
+<tr><td>TMediaPlayer</td><td>TMediaPlayer</td><td>Direct</td><td>80</td><td></td></tr>
+</tbody></table>
+<h2>Property Map</h2>
+<table>
+<thead><tr>
+<th>Component</th>
+<th>VCL property</th>
+<th>FMX property</th>
+<th>Transform</th>
+<th>Transformer</th>
+</tr></thead><tbody>
+<tr><td>TForm</td><td>Caption</td><td>Caption</td><td>no</td><td></td></tr>
+<tr><td>TForm</td><td>ClientWidth</td><td>ClientWidth</td><td>no</td><td></td></tr>
+<tr><td>TForm</td><td>ClientHeight</td><td>ClientHeight</td><td>no</td><td></td></tr>
+<tr><td>TButton</td><td>Caption</td><td>Text</td><td>no</td><td></td></tr>
+<tr><td>TButton</td><td>Enabled</td><td>Enabled</td><td>no</td><td></td></tr>
+<tr><td>TEdit</td><td>Text</td><td>Text</td><td>no</td><td></td></tr>
+<tr><td>TEdit</td><td>ReadOnly</td><td>ReadOnly</td><td>no</td><td></td></tr>
+<tr><td>TEdit</td><td>MaxLength</td><td>MaxLength</td><td>no</td><td></td></tr>
+<tr><td>TMaskEdit</td><td>Text</td><td>Text</td><td>no</td><td></td></tr>
+<tr><td>TMaskEdit</td><td>ReadOnly</td><td>ReadOnly</td><td>no</td><td></td></tr>
+<tr><td>TMaskEdit</td><td>MaxLength</td><td>MaxLength</td><td>no</td><td></td></tr>
+<tr><td>TMaskEdit</td><td>EditMask</td><td>Manual review / omitted</td><td>no</td><td></td></tr>
+<tr><td>TLabel</td><td>Caption</td><td>Text</td><td>no</td><td></td></tr>
+<tr><td>TLabel</td><td>Layout</td><td>TextSettings.VertAlign</td><td>no</td><td></td></tr>
+<tr><td>TStaticText</td><td>Caption</td><td>Text</td><td>no</td><td></td></tr>
+<tr><td>TGroupBox</td><td>Caption</td><td>Text</td><td>no</td><td></td></tr>
+<tr><td>TCheckBox</td><td>Caption</td><td>Text</td><td>no</td><td></td></tr>
+<tr><td>TCheckBox</td><td>Checked</td><td>IsChecked</td><td>no</td><td></td></tr>
+<tr><td>TRadioButton</td><td>Caption</td><td>Text</td><td>no</td><td></td></tr>
+<tr><td>TRadioButton</td><td>Checked</td><td>IsChecked</td><td>no</td><td></td></tr>
+<tr><td>TListBox</td><td>Items</td><td>Items</td><td>no</td><td></td></tr>
+<tr><td>TListBox</td><td>ItemIndex</td><td>ItemIndex</td><td>no</td><td></td></tr>
+<tr><td>TCheckListBox</td><td>Items</td><td>Items</td><td>no</td><td></td></tr>
+<tr><td>TCheckListBox</td><td>ItemIndex</td><td>ItemIndex</td><td>no</td><td></td></tr>
+<tr><td>TComboBox</td><td>Text</td><td>Text</td><td>no</td><td></td></tr>
+<tr><td>TComboBox</td><td>Items</td><td>Items</td><td>no</td><td></td></tr>
+<tr><td>TComboBox</td><td>ItemIndex</td><td>ItemIndex</td><td>no</td><td></td></tr>
+<tr><td>TComboBox</td><td>Style</td><td>Manual review / omitted</td><td>no</td><td></td></tr>
+<tr><td>TNumberBox</td><td>MinValue</td><td>Min</td><td>no</td><td></td></tr>
+<tr><td>TNumberBox</td><td>MaxValue</td><td>Max</td><td>no</td><td></td></tr>
+<tr><td>TNumberBox</td><td>Decimal</td><td>DecimalDigits</td><td>no</td><td></td></tr>
+<tr><td>TSpinEdit</td><td>MinValue</td><td>Min</td><td>no</td><td></td></tr>
+<tr><td>TSpinEdit</td><td>MaxValue</td><td>Max</td><td>no</td><td></td></tr>
+<tr><td>TSpinEdit</td><td>Increment</td><td>Increment</td><td>no</td><td></td></tr>
+<tr><td>TMemo</td><td>Lines</td><td>Lines</td><td>no</td><td></td></tr>
+<tr><td>TMemo</td><td>ReadOnly</td><td>ReadOnly</td><td>no</td><td></td></tr>
+<tr><td>TMemo</td><td>WordWrap</td><td>WordWrap</td><td>no</td><td></td></tr>
+<tr><td>TRichEdit</td><td>Lines</td><td>Lines</td><td>no</td><td></td></tr>
+<tr><td>TRichEdit</td><td>ReadOnly</td><td>ReadOnly</td><td>no</td><td></td></tr>
+<tr><td>TRichEdit</td><td>WordWrap</td><td>WordWrap</td><td>no</td><td></td></tr>
+<tr><td>TImage</td><td>Picture</td><td>Bitmap</td><td>yes</td><td>TransformPicture</td></tr>
+<tr><td>TOpenDialog</td><td>FileName</td><td>FileName</td><td>no</td><td></td></tr>
+<tr><td>TOpenDialog</td><td>Filter</td><td>Filter</td><td>no</td><td></td></tr>
+<tr><td>TOpenDialog</td><td>DefaultExt</td><td>DefaultExt</td><td>no</td><td></td></tr>
+<tr><td>TOpenDialog</td><td>InitialDir</td><td>InitialDir</td><td>no</td><td></td></tr>
+<tr><td>TOpenDialog</td><td>Title</td><td>Title</td><td>no</td><td></td></tr>
+<tr><td>TSaveDialog</td><td>FileName</td><td>FileName</td><td>no</td><td></td></tr>
+<tr><td>TSaveDialog</td><td>Filter</td><td>Filter</td><td>no</td><td></td></tr>
+<tr><td>TSaveDialog</td><td>DefaultExt</td><td>DefaultExt</td><td>no</td><td></td></tr>
+<tr><td>TSaveDialog</td><td>InitialDir</td><td>InitialDir</td><td>no</td><td></td></tr>
+<tr><td>TSaveDialog</td><td>Title</td><td>Title</td><td>no</td><td></td></tr>
+<tr><td>TFileSaveDialog</td><td>FileName</td><td>FileName</td><td>no</td><td></td></tr>
+<tr><td>TFileSaveDialog</td><td>DefaultExtension</td><td>DefaultExt</td><td>no</td><td></td></tr>
+<tr><td>TFileSaveDialog</td><td>DefaultFolder</td><td>InitialDir</td><td>no</td><td></td></tr>
+<tr><td>TFileSaveDialog</td><td>Title</td><td>Title</td><td>no</td><td></td></tr>
+<tr><td>TRadioGroup</td><td>Items</td><td>Items</td><td>no</td><td></td></tr>
+<tr><td>TRadioGroup</td><td>ItemIndex</td><td>ItemIndex</td><td>no</td><td></td></tr>
+<tr><td>TLinkLabel</td><td>Caption</td><td>Text</td><td>no</td><td></td></tr>
+<tr><td>TProgressBar</td><td>Position</td><td>Value</td><td>no</td><td></td></tr>
+<tr><td>TTrackBar</td><td>Position</td><td>Value</td><td>no</td><td></td></tr>
+<tr><td>TUpDown</td><td>Position</td><td>Value</td><td>no</td><td></td></tr>
+<tr><td>TUpDown</td><td>Min</td><td>Min</td><td>no</td><td></td></tr>
+<tr><td>TUpDown</td><td>Max</td><td>Max</td><td>no</td><td></td></tr>
+<tr><td>TDateTimePicker</td><td>Date</td><td>Date</td><td>no</td><td></td></tr>
+<tr><td>TDateTimePicker</td><td>Time</td><td>Time</td><td>no</td><td></td></tr>
+<tr><td>TDateTimePicker</td><td>Checked</td><td>IsChecked</td><td>no</td><td></td></tr>
+<tr><td>TDateTimePicker</td><td>ShowCheckBox</td><td>ShowCheckBox</td><td>no</td><td></td></tr>
+<tr><td>TDateTimePicker</td><td>Format</td><td>Format</td><td>no</td><td></td></tr>
+<tr><td>TMonthCalendar</td><td>Date</td><td>Date</td><td>no</td><td></td></tr>
+<tr><td>TShape</td><td>Brush</td><td>Fill</td><td>yes</td><td>TransformBrush</td></tr>
+<tr><td>TShape</td><td>Pen</td><td>Stroke</td><td>yes</td><td>TransformPen</td></tr>
+</tbody></table>
+<h2>Event Map</h2>
+<table>
+<thead><tr>
+<th>Component</th>
+<th>VCL event</th>
+<th>FMX event</th>
+<th>Signature</th>
+</tr></thead><tbody>
+<tr><td>TForm</td><td>OnCreate</td><td>OnCreate</td><td>yes</td></tr>
+<tr><td>TForm</td><td>OnShow</td><td>OnShow</td><td>yes</td></tr>
+<tr><td>TForm</td><td>OnMouseMove</td><td>OnMouseMove</td><td>review</td></tr>
+<tr><td>TButton</td><td>OnClick</td><td>OnClick</td><td>yes</td></tr>
+<tr><td>TEdit</td><td>OnChange</td><td>OnChange</td><td>yes</td></tr>
+<tr><td>TEdit</td><td>OnEnter</td><td>OnEnter</td><td>yes</td></tr>
+<tr><td>TEdit</td><td>OnExit</td><td>OnExit</td><td>yes</td></tr>
+<tr><td>TEdit</td><td>OnKeyDown</td><td>OnKeyDown</td><td>review</td></tr>
+<tr><td>TEdit</td><td>OnKeyUp</td><td>OnKeyUp</td><td>review</td></tr>
+<tr><td>TMaskEdit</td><td>OnChange</td><td>OnChange</td><td>yes</td></tr>
+<tr><td>TCheckBox</td><td>OnClick</td><td>OnClick</td><td>yes</td></tr>
+<tr><td>TRadioButton</td><td>OnClick</td><td>OnClick</td><td>yes</td></tr>
+<tr><td>TListBox</td><td>OnChange</td><td>OnChange</td><td>yes</td></tr>
+<tr><td>TListBox</td><td>OnClick</td><td>OnClick</td><td>yes</td></tr>
+<tr><td>TComboBox</td><td>OnChange</td><td>OnChange</td><td>yes</td></tr>
+<tr><td>TComboBox</td><td>OnDropDown</td><td>OnPopup</td><td>yes</td></tr>
+<tr><td>TComboBox</td><td>OnCloseUp</td><td>OnClosePopup</td><td>yes</td></tr>
+<tr><td>TComboBox</td><td>OnSelect</td><td>OnChange</td><td>yes</td></tr>
+<tr><td>TComboBox</td><td>OnKeyDown</td><td>OnKeyDown</td><td>review</td></tr>
+<tr><td>TComboBox</td><td>OnKeyUp</td><td>OnKeyUp</td><td>review</td></tr>
+<tr><td>TMemo</td><td>OnChange</td><td>OnChange</td><td>yes</td></tr>
+<tr><td>TMemo</td><td>OnKeyDown</td><td>OnKeyDown</td><td>review</td></tr>
+<tr><td>TMemo</td><td>OnKeyUp</td><td>OnKeyUp</td><td>review</td></tr>
+<tr><td>TTimer</td><td>OnTimer</td><td>OnTimer</td><td>yes</td></tr>
+<tr><td>TDateTimePicker</td><td>OnChange</td><td>OnChange</td><td>yes</td></tr>
+<tr><td>TDateTimePicker</td><td>OnDropDown</td><td>OnOpenPicker</td><td>yes</td></tr>
+<tr><td>TDateTimePicker</td><td>OnCloseUp</td><td>OnClosePicker</td><td>yes</td></tr>
+</tbody></table>
+<h2>Mapping-Pack Component Rules</h2>
+<table>
+<thead><tr>
+<th>Pack</th>
+<th>VCL class</th>
+<th>FMX target</th>
+<th>Action</th>
+<th>Confidence</th>
+<th>Notes</th>
+</tr></thead><tbody>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclHttp</td><td>TclHttp</td><td>preserve</td><td>72</td><td>Review TLS, proxy, authentication, async callbacks, and platform networking behavior.</td></tr>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclFtp</td><td>TclFtp</td><td>preserve</td><td>70</td><td>Review passive/active mode, TLS, filesystem paths, and deployment behavior.</td></tr>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclSFtp</td><td>TclSFtp</td><td>preserve</td><td>70</td><td>Review key files, host-key validation, local paths, and platform support.</td></tr>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclSmtp</td><td>TclSmtp</td><td>preserve</td><td>72</td><td>Review OAuth/TLS configuration, attachments, and async event handling.</td></tr>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclPop3</td><td>TclPop3</td><td>preserve</td><td>72</td><td>Review OAuth/TLS configuration, message storage paths, and threading.</td></tr>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclImap4</td><td>TclImap4</td><td>preserve</td><td>72</td><td>Review folder synchronization, OAuth/TLS configuration, and background operations.</td></tr>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclOAuth</td><td>TclOAuth</td><td>manual_review</td><td>60</td><td>OAuth callback browser/redirect behavior may need platform-specific FMX UI and deployment review.</td></tr>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclJsonParser</td><td>TclJsonParser</td><td>preserve</td><td>75</td><td>JSON parser is nonvisual and may be preserved.</td></tr>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclSoapMessage</td><td>TclSoapMessage</td><td>preserve</td><td>70</td><td>Review generated service code, TLS, and XML namespace behavior.</td></tr>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclMailMessage</td><td>TclMailMessage</td><td>preserve</td><td>75</td><td>Review attachments, encodings, inline images, and filesystem paths.</td></tr>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclCertificateStore</td><td>TclCertificateStore</td><td>manual_review</td><td>55</td><td>Certificate stores can be OS-specific and require target-platform review.</td></tr>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclThreadPool</td><td>TclThreadPool</td><td>preserve</td><td>65</td><td>Review synchronization with FMX UI thread.</td></tr>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclDBComparer</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>Database comparer/migration components require database and UI workflow review.</td></tr>
+<tr><td>CleverComponents_MappingPack_v4_1</td><td>TclTaskRunner</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>Task execution may depend on Windows shell paths, scripts, and process behavior.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TnxSession</td><td>TnxSession</td><td>preserve</td><td>70</td><td>Verify package support, embedded/remote engine setup, aliases, and target platform.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TnxDatabase</td><td>TnxDatabase</td><td>preserve</td><td>70</td><td>Review aliases, paths, transactions, and deployment.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TnxTable</td><td>TnxTable</td><td>preserve</td><td>68</td><td>Review table paths, indexes, field definitions, and binding strategy.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TnxQuery</td><td>TnxQuery</td><td>preserve</td><td>68</td><td>Review SQL dialect, parameters, updates, and connection references.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TnxServerEngine</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>Embedded server engine lifecycle, threading, and deployment require review.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TEDBSession</td><td>TEDBSession</td><td>preserve</td><td>70</td><td>Verify ElevateDB edition/platform support and deployment libraries.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TEDBDatabase</td><td>TEDBDatabase</td><td>preserve</td><td>70</td><td>Review database paths, configuration, and platform storage.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TEDBTable</td><td>TEDBTable</td><td>preserve</td><td>68</td><td>Review table metadata, indexes, and binding.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TEDBQuery</td><td>TEDBQuery</td><td>preserve</td><td>68</td><td>Review SQL, parameters, transactions, and update behavior.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TApolloDatabase</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>Apollo VCL data components wrap a legacy data engine and require package/platform review before preservation.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TApolloTable</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>Apollo table migration should be reviewed with the database-engine modernization plan.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TApolloQuery</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>Apollo query migration requires SQL, connection, and package review.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TABSDatabase</td><td>TABSDatabase</td><td>manual_review</td><td>55</td><td>Absolute Database preservation depends on package/platform support and deployment needs.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TABSTable</td><td>TABSTable</td><td>manual_review</td><td>55</td><td>Review table paths, encryption, indexes, and binding.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TABSQuery</td><td>TABSQuery</td><td>manual_review</td><td>55</td><td>Review SQL dialect, parameters, and update behavior.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TDBISAMDatabase</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>DBISAM migration should be reviewed for engine version, platform support, and possible ElevateDB/FireDAC modernization.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TDBISAMTable</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>DBISAM table migration requires database-engine review.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TDBISAMQuery</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>DBISAM SQL migration requires dialect and package review.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TAdsConnection</td><td>Manual review / none</td><td>manual_review</td><td>35</td><td>Advantage Database Server is legacy/Windows-oriented in many projects and requires explicit migration planning.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TAdsTable</td><td>Manual review / none</td><td>manual_review</td><td>35</td><td>Advantage table migration requires database-engine review.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TAdsQuery</td><td>Manual review / none</td><td>manual_review</td><td>35</td><td>Advantage SQL migration requires database-engine review.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TIB_Connection</td><td>TIB_Connection</td><td>manual_review</td><td>60</td><td>IBObjects preservation depends on package support, transaction handling, and target-platform deployment.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TIB_Transaction</td><td>TIB_Transaction</td><td>manual_review</td><td>60</td><td>Review transaction scope and connection references.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TIB_Query</td><td>TIB_Query</td><td>manual_review</td><td>60</td><td>Review SQL, parameters, live queries, and dataset binding.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TIBOQuery</td><td>TIBOQuery</td><td>manual_review</td><td>58</td><td>TDataSet-compatible IBObjects query may be preservable but requires binding and package review.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TIBOTable</td><td>TIBOTable</td><td>manual_review</td><td>58</td><td>Review table metadata, indexes, and binding.</td></tr>
+<tr><td>DatabaseEngines_MappingPack_v4_1</td><td>TIB_Grid</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>IBObjects visual/data-aware controls require manual FMX UI and binding redesign.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniConnection</td><td>TUniConnection</td><td>preserve</td><td>80</td><td>Verify provider packages, connection options, deployment libraries, and target-platform support.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniQuery</td><td>TUniQuery</td><td>preserve</td><td>80</td><td>Verify SQL, parameters, update behavior, and connection references.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniTable</td><td>TUniTable</td><td>preserve</td><td>75</td><td>Verify table names, indexes, update behavior, and target-platform support.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniStoredProc</td><td>TUniStoredProc</td><td>preserve</td><td>75</td><td>Verify parameter metadata and provider behavior.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniSQL</td><td>TUniSQL</td><td>preserve</td><td>75</td><td>Verify SQL statements and provider-specific options.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniScript</td><td>TUniScript</td><td>preserve</td><td>70</td><td>Review script execution, delimiters, error handling, and deployment.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniTransaction</td><td>TUniTransaction</td><td>preserve</td><td>75</td><td>Review transaction scope and connection references.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniUpdateSQL</td><td>TUniUpdateSQL</td><td>preserve</td><td>70</td><td>Review generated/handwritten update SQL and dataset references.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniDataSource</td><td>TUniDataSource</td><td>manual_review</td><td>60</td><td>DataSource preservation depends on FMX LiveBindings/data-aware strategy and component package support.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniMetaData</td><td>TUniMetaData</td><td>preserve</td><td>70</td><td>Review provider support and runtime usage.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniLoader</td><td>TUniLoader</td><td>preserve</td><td>65</td><td>Review platform-specific provider libraries and bulk-load behavior.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniDump</td><td>TUniDump</td><td>preserve</td><td>65</td><td>Review file paths, platform storage, and provider support.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniSQLMonitor</td><td>Manual review / none</td><td>manual_review</td><td>55</td><td>Monitoring/logging integration may be platform/package-specific.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniConnectDialog</td><td>Manual review / none</td><td>manual_review</td><td>35</td><td>Connection dialog UI is VCL-specific and should be rebuilt or replaced for FMX.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TUniAlerter</td><td>TUniAlerter</td><td>preserve</td><td>60</td><td>Verify provider event support and platform behavior.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TVirtualTable</td><td>TVirtualTable</td><td>manual_review</td><td>60</td><td>In-memory dataset may be preserved with Devart packages, but fields, indexes, persistence, and FMX binding should be reviewed.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TVirtualDataSet</td><td>TVirtualDataSet</td><td>manual_review</td><td>55</td><td>Custom virtual dataset callbacks and binding behavior require review.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TVirtualQuery</td><td>TVirtualQuery</td><td>manual_review</td><td>55</td><td>Virtual query behavior and in-memory source datasets require review.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TOracleUniProvider</td><td>TOracleUniProvider</td><td>preserve</td><td>75</td><td>Verify deployment libraries and target-platform support.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TSQLServerUniProvider</td><td>TSQLServerUniProvider</td><td>preserve</td><td>75</td><td>Verify deployment libraries and target-platform support.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TMySQLUniProvider</td><td>TMySQLUniProvider</td><td>preserve</td><td>75</td><td>Verify deployment libraries and target-platform support.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TInterBaseUniProvider</td><td>TInterBaseUniProvider</td><td>preserve</td><td>75</td><td>Verify deployment libraries and target-platform support.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TPostgreSQLUniProvider</td><td>TPostgreSQLUniProvider</td><td>preserve</td><td>75</td><td>Verify deployment libraries and target-platform support.</td></tr>
+<tr><td>Devart_MappingPack_v4_1</td><td>TSQLiteUniProvider</td><td>TSQLiteUniProvider</td><td>preserve</td><td>75</td><td>Verify deployment libraries and target-platform support.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxButton</td><td>TButton</td><td>convert</td><td>90</td><td>Basic button behavior only. DevExpress glyphs, skins, and look-and-feel require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxTextEdit</td><td>TEdit</td><td>convert</td><td>90</td><td>Basic text entry only. Masks, repository items, button collections, and DevExpress style controllers require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxDBTextEdit</td><td>TEdit</td><td>partial</td><td>85</td><td>Verify LiveBindings or data-aware conversion output for DataSource/DataField semantics.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxMemo</td><td>TMemo</td><td>convert</td><td>90</td><td>Basic memo text only. DevExpress style, scrollbars, and repository settings require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxDBMemo</td><td>TMemo</td><td>partial</td><td>85</td><td>Verify LiveBindings or data-aware conversion output for memo field semantics.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxLabel</td><td>TLabel</td><td>convert</td><td>85</td><td>Caption/text and visibility are mapped. DevExpress appearance and style controller settings require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxCheckBox</td><td>TCheckBox</td><td>convert</td><td>85</td><td>Basic checked/caption behavior only. Multi-state and style settings require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxDBCheckBox</td><td>TCheckBox</td><td>partial</td><td>80</td><td>Verify checked/unchecked database values and LiveBindings after conversion.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxComboBox</td><td>TComboBox</td><td>convert</td><td>80</td><td>Basic items and selection behavior only. DevExpress item objects, filtering, and lookup behavior require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxDBComboBox</td><td>TComboBox</td><td>partial</td><td>75</td><td>Verify Items, ItemIndex, field value mapping, and LiveBindings after conversion.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxPageControl</td><td>TTabControl</td><td>convert</td><td>85</td><td>Pages map to FMX tab control structure. Images, styles, and owner-drawn tab behavior require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxTabSheet</td><td>TTabItem</td><td>convert</td><td>90</td><td>Tab captions map to FMX tab text.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxMaskEdit</td><td>TEdit</td><td>partial</td><td>65</td><td>Recreate mask validation with FMX edit rules or custom validation code.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxDBMaskEdit</td><td>TEdit</td><td>partial</td><td>60</td><td>Recreate mask validation and verify LiveBindings/DataField behavior.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxDateEdit</td><td>TDateEdit</td><td>partial</td><td>70</td><td>Date editor generated. DevExpress calendar buttons, formatting, null handling, and validation require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxTimeEdit</td><td>TTimeEdit</td><td>partial</td><td>65</td><td>Time editor generated when FMX TTimeEdit is available. Formatting, null handling, and validation require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxSpinEdit</td><td>TSpinBox</td><td>partial</td><td>65</td><td>Numeric spin input generated. Min/max, increment, display formatting, and validation require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxCalcEdit</td><td>TEdit</td><td>partial</td><td>55</td><td>Replace with a custom numeric editor or recreate calculator behavior manually.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxButtonEdit</td><td>TEdit</td><td>partial</td><td>50</td><td>Add explicit FMX buttons or redesign the editor interaction.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxDBButtonEdit</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>Button editor plus data binding is too application-specific for safe automatic conversion.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxLookupComboBox</td><td>TComboBox</td><td>partial</td><td>50</td><td>Recreate lookup binding and display/key field behavior manually or through LiveBindings.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxDBLookupComboBox</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>Database lookup semantics are too application-specific for a basic automatic rule.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxRadioButton</td><td>TRadioButton</td><td>convert</td><td>75</td><td>Basic radio button state and caption are mapped. Grouping semantics require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxRadioGroup</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>Radio group item layout and value semantics require a deliberate FMX design.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGroupBox</td><td>TGroupBox</td><td>partial</td><td>70</td><td>Container and caption can map to TGroupBox. DevExpress border/style details require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxToggleSwitch</td><td>TSwitch</td><td>partial</td><td>75</td><td>Switch state can map to FMX TSwitch. Caption/label placement and DevExpress styling require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxDBToggleSwitch</td><td>TSwitch</td><td>partial</td><td>65</td><td>Verify LiveBindings and checked/unchecked database values.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxMemData</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>In-memory dataset usage may be replaceable with FireDAC memory tables, but field definitions and runtime population need review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxLayoutControl</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>Only very simple layout cases are plausible; automatic conversion needs layout-tree support before generating FMX containers.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGrid</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>DevExpress grids have view, column, repository, style, and data-controller behavior that cannot be safely mapped by a basic pack.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGridLevel</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Grid level hierarchy must be reviewed with the owning TcxGrid.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGridTableView</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Grid views require manual redesign or a custom tested mapping pack.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGridDBTableView</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Data-aware grid views require manual redesign or a custom tested mapping pack.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGridBandedTableView</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Banded grid views are report-only in the basic pack.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGridDBBandedTableView</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Data-aware banded grid views are report-only in the basic pack.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGridCardView</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Card views require manual FMX layout redesign.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGridDBCardView</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Data-aware card views require manual FMX layout redesign.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGridLayoutView</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Layout views are report-only in the basic pack.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGridDBLayoutView</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Data-aware layout views are report-only in the basic pack.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGridChartView</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Chart views require manual chart migration.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGridDBChartView</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Data-aware chart views require manual chart migration.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGridColumn</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Grid columns must be migrated together with their grid view.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxGridBand</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Grid bands must be migrated together with their banded grid view.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxTreeList</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>TreeList structure and data binding require a custom migration plan.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxDBTreeList</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Data-aware TreeList structure requires a custom migration plan.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxVerticalGrid</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Vertical grid rows, editors, and data binding require manual redesign.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxDBVerticalGrid</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Data-aware vertical grids require manual redesign.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxPivotGrid</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Pivot grid conversion is report-only in the starter pack.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxDBPivotGrid</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Data-aware pivot grid conversion is report-only in the starter pack.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxBarManager</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>DevExpress bar and ribbon systems require manual FMX navigation/menu redesign.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxBar</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>DevExpress bars require manual FMX menu/toolbutton redesign.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxBarButton</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Bar buttons must be migrated with their bar manager or ribbon context.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxBarSubItem</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Nested bar menu structures require manual FMX redesign.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxBarPopupMenu</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Popup menu structures require manual FMX menu redesign.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxRibbon</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Ribbon conversion is report-only in the starter pack.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxRibbonTab</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Ribbon tabs must be redesigned with the ribbon/navigation model.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxRibbonTabGroup</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Ribbon tab groups must be redesigned with the ribbon/navigation model.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxRibbonStatusBar</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Ribbon status bars require manual FMX status/navigation redesign.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxDockingManager</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Docking systems require manual FMX layout and window-management design.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxDockSite</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Dock sites require manual FMX layout design.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxDockPanel</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Dock panels require manual FMX layout design.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxLayoutDockSite</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Layout dock sites require manual FMX layout design.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxScheduler</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Scheduler conversion is report-only in the basic pack.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxSchedulerStorage</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Scheduler storage requires manual data-model migration.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxSchedulerDBStorage</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Data-aware scheduler storage requires manual data-model migration.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxGanttControl</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Gantt controls require manual migration.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxChartControl</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Chart controls require manual chart migration.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxGaugeControl</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Gauge controls require manual visual redesign.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxMapControl</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Map controls require manual platform/service migration.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxDashboardControl</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Dashboard controls require manual migration.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxBarCode</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Barcode controls may have FMX alternatives, but symbology and rendering must be reviewed.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxDBBarCode</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Data-aware barcode controls require manual rendering and binding review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxTokenEdit</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Token editors require custom FMX interaction design.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxDBTokenEdit</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Data-aware token editors require custom FMX interaction and binding design.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxRichEdit</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Rich edit controls require manual document/editor migration.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxDBRichEdit</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Data-aware rich edit controls require manual document/editor and binding migration.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxSpellChecker</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Spell checker integration requires manual replacement.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxPDFViewer</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>PDF viewer conversion is report-only in the basic pack.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxSpreadSheet</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Spreadsheet controls require manual migration.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxSkinController</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>VCL skin systems do not directly translate to FMX styles.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxColorComboBox</td><td>TComboBox</td><td>partial</td><td>65</td><td>Recreate color display logic using custom item painting or a color picker dialog in FMX.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxCurrencyEdit</td><td>TEdit</td><td>partial</td><td>65</td><td>Implement currency formatting and validation manually or use a TNumberBox/TSpinBox with custom format string.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxHyperLinkEdit</td><td>TEdit</td><td>partial</td><td>55</td><td>Add OnClick handler to open the URL via TLauncher.LaunchURL or equivalent FMX approach.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxImageComboBox</td><td>TComboBox</td><td>partial</td><td>55</td><td>Review item images, display text, and any ImageList references. Recreate image display using custom item templates.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxListView</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>DevExpress ListView structure, item templates, groups, virtual mode, and custom drawing require manual FMX redesign. Consider FMX TListView with custom item appearances.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxProgressBar</td><td>TProgressBar</td><td>partial</td><td>70</td><td>Basic progress value and range map to FMX TProgressBar. DevExpress styling, text overlay, and animation require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TcxTrackBar</td><td>TTrackBar</td><td>partial</td><td>65</td><td>Trackbar value and range map conceptually to FMX TTrackBar. Tick marks, DevExpress skin, and custom thumb rendering require review.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxRatingControl</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Rating/star controls have no direct FMX stock equivalent. Requires custom FMX visual design using TImage or TPath components for star rendering.</td></tr>
+<tr><td>DevExpress_MappingPack_v4_1</td><td>TdxScrollBox</td><td>TScrollBox</td><td>partial</td><td>65</td><td>Scroll container behavior maps to FMX TScrollBox. DevExpress style, virtual scrolling, and touch behavior require review.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TEditEh</td><td>TEdit</td><td>partial</td><td>70</td><td>Plain text entry can map to TEdit. Edit buttons, masks, lookup behavior, and validation require review.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TDBEditEh</td><td>TEdit</td><td>partial</td><td>60</td><td>Verify DataSource/DataField conversion and LiveBindings output.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TComboBoxEh</td><td>TComboBox</td><td>partial</td><td>65</td><td>Basic item list can map. MRU, edit buttons, lookup behavior, and custom dropdowns require review.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TDBComboBoxEh</td><td>TComboBox</td><td>partial</td><td>55</td><td>Verify field values, lookup lists, and LiveBindings.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TDBDateTimeEditEh</td><td>TDateEdit</td><td>partial</td><td>55</td><td>Verify date/time formatting and data binding.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TDBNumberEditEh</td><td>TEdit</td><td>partial</td><td>50</td><td>Use TSpinBox/TNumberBox/custom validation where appropriate.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TDBCheckBoxEh</td><td>TCheckBox</td><td>partial</td><td>60</td><td>Verify field values and LiveBindings.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TDBGridEh</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>EhLib DBGrid has rich columns, editors, footers, filters, and data behavior requiring a grid-specific migration plan.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TDBVertGridEh</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Vertical data grid requires manual redesign.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TDBLookupComboboxEh</td><td>Manual review / none</td><td>manual_review</td><td>40</td><td>Lookup key/display/list-source semantics are too application-specific for automatic conversion.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TDBLookupListBoxEh</td><td>Manual review / none</td><td>manual_review</td><td>40</td><td>Lookup list semantics require manual migration.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TMemTableEh</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>In-memory dataset may need FireDAC TFDMemTable or another FMX-compatible replacement; review fields, indexes, and persistence.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TDataSetDriverEh</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>Dataset driver/update behavior requires data-layer review.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TPlannerControlEh</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Planner controls require manual scheduler/data migration.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TDBPlannerControlEh</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Data-aware planner controls require manual scheduler/data migration.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TDBLabelEh</td><td>TLabel</td><td>partial</td><td>60</td><td>Verify DataSource/DataField conversion and LiveBindings output for label field display.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TDateTimeEditEh</td><td>TDateEdit</td><td>partial</td><td>55</td><td>Verify date/time formatting, null date behavior, and DataSource/DataField if data-aware.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TCalcEditEh</td><td>TEdit</td><td>partial</td><td>45</td><td>Replace calculator popup with a custom numeric input approach or TSpinBox/TNumberBox with appropriate range and format.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TPopupDateTimePickerEh</td><td>TDateEdit</td><td>partial</td><td>50</td><td>Verify popup behavior, date formatting, and time portion handling after conversion.</td></tr>
+<tr><td>EhLib_MappingPack_v4_1</td><td>TLookupEh</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>EhLib standalone lookup control with dataset/key/display semantics requires manual FMX redesign. Consider a TComboBox with LiveBindings lookup or a custom FMX lookup editor.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxReport</td><td>Manual review / none</td><td>manual_review</td><td>60</td><td>FastReport reports may be portable only if the target project owns a compatible FastReport FMX/runtime package and report templates are reviewed.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxDBDataSet</td><td>Manual review / none</td><td>manual_review</td><td>55</td><td>Dataset connectors must be reviewed with the target data layer and FastReport package.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxUserDataSet</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>User dataset callbacks and report data feeding are application-specific.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxIBODataSet</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>IB Objects connector behavior depends on the source data-access stack.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxPreview</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>Preview UI must be matched to the FastReport FMX viewer or redesigned.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxDesigner</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Report designer integration is package/version/license-specific.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxPDFExport</td><td>Manual review / none</td><td>manual_review</td><td>55</td><td>Exporter may have a compatible runtime class, but output settings and package references require review.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxXLSExport</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>Legacy XLS export settings and package references require review.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxXLSXExport</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>XLSX export settings and package references require review.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxHTMLExport</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>HTML export settings and package references require review.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxRTFExport</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>RTF export settings and package references require review.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxCSVExport</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>CSV export settings and package references require review.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxMailExport</td><td>Manual review / none</td><td>detect_only</td><td>30</td><td>Mail export depends on platform mail/network behavior and package support.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxReportServer</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>FastReport server components require architecture-level review.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxServerConnection</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Client/server report connection behavior requires architecture-level review.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxReportClient</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Report client behavior depends on FastReport server/client architecture.</td></tr>
+<tr><td>FastReport_MappingPack_v4_1</td><td>TfrxHTTPClient</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>HTTP report client behavior requires manual network/runtime review.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TgtPDFViewer</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Gnostice PDF viewer UI requires PDF-library-specific FMX replacement or manual redesign.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TgtPDFDocument</td><td>TgtPDFDocument</td><td>manual_review</td><td>55</td><td>PDF document component may be preservable if the target owns compatible packages; review licensing, deployment, and platform support.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TgtPDFPrinter</td><td>Manual review / none</td><td>manual_review</td><td>35</td><td>PDF printing is platform-specific and must be reviewed manually.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TgtPDFOutlineViewer</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>PDF outline/navigation UI requires manual FMX replacement.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TgtPDFSearch</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>PDF search behavior depends on the document engine and UI integration.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TImageEnView</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>ImageEn visual image viewer/editor behavior requires manual FMX replacement or package-specific support review.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TImageEnMView</td><td>Manual review / none</td><td>manual_review</td><td>40</td><td>Multi-image thumbnail/browser UI requires manual FMX replacement.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TImageEnVect</td><td>Manual review / none</td><td>manual_review</td><td>35</td><td>Vector/image editing features do not map safely to stock FMX controls.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TImageEnLayerMView</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>Layered image editing UI requires package-specific migration.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TImageEnProc</td><td>TImageEnProc</td><td>manual_review</td><td>55</td><td>Image processing component may be preservable, but package/platform support and bitmap type usage must be reviewed.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TImageEnIO</td><td>TImageEnIO</td><td>manual_review</td><td>55</td><td>Image I/O may be preservable, but codec deployment, file paths, and target-platform support require review.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TImageEnFolderMView</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>Folder/image browser UI requires manual FMX replacement and platform storage review.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TImageEnDBView</td><td>Manual review / none</td><td>manual_review</td><td>35</td><td>Data-aware image viewing requires dataset, blob field, and LiveBindings review.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TImageEnDBMView</td><td>Manual review / none</td><td>manual_review</td><td>30</td><td>Data-aware thumbnail browsing requires manual dataset and UI migration.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TPdfViewer</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Generic PDF viewer class detected; confirm actual vendor/library and choose an FMX-compatible PDF strategy.</td></tr>
+<tr><td>Imaging_PDF_MappingPack_v4_1</td><td>TPdfDocument</td><td>Manual review / none</td><td>manual_review</td><td>40</td><td>Generic PDF document class detected; verify library, licensing, deployment, and platform support.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwDBEdit</td><td>TEdit</td><td>partial</td><td>60</td><td>Verify DataSource/DataField conversion and any PictureMask behavior.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwDBRichEdit</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Rich text data-aware editing requires manual document/editor migration.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwDBMemo</td><td>TMemo</td><td>partial</td><td>55</td><td>Verify LiveBindings and memo field behavior.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwDBComboBox</td><td>TComboBox</td><td>partial</td><td>55</td><td>Verify item/value mapping and LiveBindings.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwCheckBox</td><td>TCheckBox</td><td>partial</td><td>65</td><td>Verify DB value mapping.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwDBDateTimePicker</td><td>TDateEdit</td><td>partial</td><td>55</td><td>Verify date/time field behavior.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwDBLookupCombo</td><td>Manual review / none</td><td>manual_review</td><td>40</td><td>Lookup combo table/key/display/filter behavior is too application-specific for automatic conversion.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwDBLookupComboDlg</td><td>Manual review / none</td><td>manual_review</td><td>35</td><td>Lookup dialog behavior requires explicit FMX UI and data-binding redesign.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwDBGrid</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>InfoPower DBGrid has rich columns, embedded controls, lookup editors, filtering, and searching that need a grid-specific migration plan.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwRecordViewPanel</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Record view layout is application-specific and should be redesigned manually.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwDBNavigator</td><td>Manual review / none</td><td>manual_review</td><td>40</td><td>Navigator commands should be reviewed with the target data-binding approach.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwIncrementalSearch</td><td>Manual review / none</td><td>manual_review</td><td>35</td><td>Incremental dataset search behavior needs manual data-layer review.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwFilterDialog</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Visual filtering dialog and SQL/filter generation require manual migration.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwLocateDialog</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Locate/search dialogs require manual migration.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwSearchDialog</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Search dialog behavior requires manual migration.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwLabel</td><td>TLabel</td><td>partial</td><td>65</td><td>Verify that any HTML-formatted caption content is reviewed and replaced with plain text or an FMX HTML-capable label.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwImage</td><td>TImage</td><td>partial</td><td>60</td><td>Verify image resource loading and any DataSource/DataField wiring if data-aware.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwDBImage</td><td>TImage</td><td>partial</td><td>50</td><td>Verify LiveBindings setup for blob/image fields and review image loading from dataset.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwStatusBar</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>InfoPower status bar panels and owner-drawn panes require manual FMX layout redesign using TLayout and TLabel combinations at the bottom of the form.</td></tr>
+<tr><td>InfoPower_MappingPack_v4_1</td><td>TwwCalendar</td><td>TCalendar</td><td>partial</td><td>50</td><td>Verify date selection events and any custom day rendering or highlighting behavior.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TIWAppForm</td><td>Manual review / none</td><td>detect_only</td><td>5</td><td>IntraWeb forms are web forms, not FMX forms. Migration requires architecture-level redesign.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TIWButton</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>IntraWeb controls execute in a browser/server lifecycle and should not be automatically converted to FMX controls.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TIWEdit</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>IntraWeb edit controls require web-framework or app-architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TIWMemo</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>IntraWeb memo controls require web-framework or app-architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TIWLabel</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>IntraWeb labels render HTML and should be reviewed in the web/app migration plan.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TIWCheckBox</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>IntraWeb controls use browser/server state and should not be auto-converted.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TIWComboBox</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>IntraWeb combo boxes require web-framework or app-architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TIWListBox</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>IntraWeb list controls require web-framework or app-architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TIWImage</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>IntraWeb image/resource handling requires manual migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TIWRegion</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>IntraWeb layout regions require manual FMX or web layout redesign.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TIWGrid</td><td>Manual review / none</td><td>detect_only</td><td>5</td><td>IntraWeb grids require web-framework or app-architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TIWDBGrid</td><td>Manual review / none</td><td>detect_only</td><td>5</td><td>IntraWeb data grids require web-framework/data architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniForm</td><td>Manual review / none</td><td>detect_only</td><td>5</td><td>uniGUI forms are web application forms, not FMX forms. Migration requires architecture-level redesign.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniButton</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>uniGUI controls use Ext JS/web lifecycle and should not be automatically converted to FMX.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniEdit</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>uniGUI edit controls require web-framework or app-architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniMemo</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>uniGUI memo controls require web-framework or app-architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniLabel</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>uniGUI labels are browser-rendered controls and require migration planning.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniCheckBox</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>uniGUI controls use web state and should not be auto-converted.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniComboBox</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>uniGUI combo boxes require web-framework or app-architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniDBComboBox</td><td>Manual review / none</td><td>detect_only</td><td>5</td><td>uniGUI data-aware controls require web/data architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniDBEdit</td><td>Manual review / none</td><td>detect_only</td><td>5</td><td>uniGUI data-aware controls require web/data architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniDBGrid</td><td>Manual review / none</td><td>detect_only</td><td>5</td><td>uniGUI data grids require web/data architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniPanel</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>uniGUI panels are web layout controls and require manual UI redesign.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniPageControl</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>uniGUI page controls require web/app architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniTabSheet</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>uniGUI tab sheets require web/app architecture migration.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniMainModule</td><td>Manual review / none</td><td>detect_only</td><td>5</td><td>uniGUI application modules are architecture-level web framework components.</td></tr>
+<tr><td>IntraWeb_UniGUI_MappingPack_v4_1</td><td>TUniServerModule</td><td>Manual review / none</td><td>detect_only</td><td>5</td><td>uniGUI server modules are architecture-level web framework components.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvButton</td><td>TButton</td><td>convert</td><td>85</td><td>Basic button behavior maps. JVCL glyph/layout extras require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvBitBtn</td><td>TButton</td><td>partial</td><td>75</td><td>Button action maps. Glyph/kind/layout behavior requires review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvEdit</td><td>TEdit</td><td>convert</td><td>85</td><td>Basic text edit maps. JVCL validation and visual extras require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvMemo</td><td>TMemo</td><td>convert</td><td>80</td><td>Basic memo text maps. JVCL additions require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvCheckBox</td><td>TCheckBox</td><td>convert</td><td>85</td><td>Basic checked/caption behavior maps. JVCL visual extras require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvRadioButton</td><td>TRadioButton</td><td>convert</td><td>80</td><td>Basic checked/caption behavior maps. Group semantics require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvComboBox</td><td>TComboBox</td><td>partial</td><td>75</td><td>Basic items and item index map. Auto-complete, owner-draw, and JVCL extras require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvListBox</td><td>TListBox</td><td>partial</td><td>75</td><td>Basic items map. Owner-draw and special list behavior require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvPanel</td><td>TLayout</td><td>partial</td><td>70</td><td>Container behavior maps. Borders, bevels, and JVCL appearance require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvGroupBox</td><td>TGroupBox</td><td>partial</td><td>75</td><td>Caption/container behavior maps. Styling requires review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvPageControl</td><td>TTabControl</td><td>partial</td><td>75</td><td>Page structure maps. JVCL tab extras require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvTabSheet</td><td>TTabItem</td><td>partial</td><td>80</td><td>Tab caption maps.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvProgressBar</td><td>TProgressBar</td><td>partial</td><td>75</td><td>Progress value maps conceptually. Text and visual style require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvTrackBar</td><td>TTrackBar</td><td>partial</td><td>75</td><td>Trackbar value maps conceptually. Tick marks and style require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvSpinEdit</td><td>TSpinBox</td><td>partial</td><td>70</td><td>Numeric spin edit can map. Formatting and validation require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvDBGrid</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Data-aware grid behavior requires a grid/data-binding migration plan.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvDBLookupCombo</td><td>Manual review / none</td><td>manual_review</td><td>40</td><td>Lookup dataset/key/display semantics need manual migration.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvDBDateEdit</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>Date editor plus data binding requires review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvTreeView</td><td>Manual review / none</td><td>detect_only</td><td>30</td><td>Tree node population, images, and state require manual review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvWizard</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Wizard/page flow should be redesigned explicitly in FMX.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvAppStorage</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>Application storage may be portable but persistence paths and platform behavior must be reviewed.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvFormStorage</td><td>Manual review / none</td><td>manual_review</td><td>40</td><td>Form storage depends on VCL form/control names and should be reviewed after conversion.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvLabel</td><td>TLabel</td><td>partial</td><td>80</td><td>Basic label text and visibility map well to FMX TLabel. JVCL font effects, color, and hot-track behavior require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvImage</td><td>TImage</td><td>partial</td><td>65</td><td>Verify image resource loading, stretch mode, and any JVCL transparency or effect properties.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvSplitter</td><td>TSplitter</td><td>partial</td><td>70</td><td>Splitter resize behavior maps to FMX TSplitter. JVCL visual extras and live resize options require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvScrollBox</td><td>TScrollBox</td><td>partial</td><td>65</td><td>Scroll container behavior maps to FMX TScrollBox. JVCL scroll bar styling and extras require review.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvCalendar</td><td>TCalendar</td><td>partial</td><td>55</td><td>Verify date selection events, formatting, and any custom day highlighting.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvDateTimePicker</td><td>TDateEdit</td><td>partial</td><td>55</td><td>Verify date/time formatting and null date handling after conversion.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvStatusBar</td><td>Manual review / none</td><td>detect_only</td><td>30</td><td>JVCL status bar panels and owner-drawn panes require manual FMX layout redesign using TLayout and TLabel combinations.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvToolBar</td><td>Manual review / none</td><td>detect_only</td><td>30</td><td>JVCL toolbar button layout and action wiring require manual FMX redesign using TToolBar or TLayout with TSpeedButton controls.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvBevel</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>VCL bevel controls have no direct FMX equivalent. Replace with TLine for a simple separator or TRectangle with no fill for a box bevel.</td></tr>
+<tr><td>JVCL_MappingPack_v4_1</td><td>TJvHint</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>JVCL custom hint manager is Windows-specific. FMX uses the Hint property on controls with ShowHint enabled; advanced balloon/delay customization requires a custom FMX hint window.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TSynEdit</td><td>TMemo</td><td>manual_review</td><td>45</td><td>Review highlighters, gutter, bookmarks, completion, search, keyboard handling, and possible FMX editor replacement.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TSynMemo</td><td>TMemo</td><td>manual_review</td><td>45</td><td>SynEdit memo behavior requires syntax/editor feature review.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TSynCompletionProposal</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Code completion popup/editor integration requires manual migration.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TSynExporterHTML</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>Exporter components may be preservable as nonvisual code but require package and output-path review.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>THtmlViewer</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>HtmlViewer is VCL/Lazarus-oriented in common use; review whether to replace with FMX TWebBrowser, Delphi HTML Components, or another FMX HTML renderer.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TFrameViewer</td><td>Manual review / none</td><td>manual_review</td><td>40</td><td>Frame-based HTML viewing requires manual FMX replacement review.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>THTMLLabel</td><td>TLabel</td><td>manual_review</td><td>45</td><td>HTML text rendering cannot be safely flattened to a plain FMX label without visual review.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>THTMLPanel</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>HTML-enabled panel behavior requires an FMX-capable HTML renderer or manual redesign.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>THTMLListBox</td><td>Manual review / none</td><td>manual_review</td><td>40</td><td>HTML-enabled item templates require manual FMX list/template migration.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TOvcButton</td><td>TButton</td><td>manual_review</td><td>55</td><td>Orpheus controls are legacy VCL controls; simple button behavior may map, but visual/style behavior needs review.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TOvcEdit</td><td>TEdit</td><td>manual_review</td><td>55</td><td>Orpheus edit masks, validation, and formatting require manual review.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TOvcTable</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Orpheus table/grid behavior requires manual migration.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TOvcNotebook</td><td>TTabControl</td><td>manual_review</td><td>50</td><td>Notebook/page behavior may map structurally, but legacy control behavior requires review.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TOvcCalendar</td><td>TCalendar</td><td>manual_review</td><td>50</td><td>Calendar selection and formatting behavior requires review.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TAbZipKit</td><td>TAbZipKit</td><td>manual_review</td><td>60</td><td>Abbrevia compression component may be preservable as nonvisual code, but package/platform support and file paths must be reviewed.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TAbZipBrowser</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Abbrevia visual archive browser requires manual FMX UI replacement.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TAbZipView</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Abbrevia visual archive view requires manual FMX UI replacement.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TApdComPort</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>AsyncPro serial/TAPI behavior is platform-specific and requires manual migration.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TApdDataPacket</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>AsyncPro protocol/data packet behavior requires package and threading review.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TApdTerminal</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Terminal emulation UI requires manual FMX replacement.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TOgMakeKeys</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>OnGuard licensing/key components may be preservable but require security and package review.</td></tr>
+<tr><td>LegacyOpenSource_MappingPack_v4_1</td><td>TOgDaysCode</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>OnGuard licensing behavior should be reviewed carefully during platform migration.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDButton</td><td>TButton</td><td>partial</td><td>75</td><td>Basic button caption and click behavior can map; LMD styling, glyphs, and effects require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDSpeedButton</td><td>TSpeedButton</td><td>partial</td><td>70</td><td>Basic click behavior can map; grouped button state, glyphs, and LMD visual effects require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDLabel</td><td>TLabel</td><td>partial</td><td>78</td><td>Basic label text can map. HTML/text effects, bevels, and LMD rendering features require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDEdit</td><td>TEdit</td><td>partial</td><td>78</td><td>Basic text entry can map; masks, validation, button editors, and LMD styling require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDMemo</td><td>TMemo</td><td>partial</td><td>75</td><td>Basic memo text can map. LMD editor features, syntax/coloring, and scroll options require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDCheckBox</td><td>TCheckBox</td><td>partial</td><td>75</td><td>Basic checked state and caption can map. LMD styling and tri-state behavior require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDRadioButton</td><td>TRadioButton</td><td>partial</td><td>72</td><td>Basic radio button behavior can map; grouping and LMD styling require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDComboBox</td><td>TComboBox</td><td>partial</td><td>70</td><td>Simple items and selected index can map; lookup, images, custom drawing, and LMD styling require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDListBox</td><td>TListBox</td><td>partial</td><td>65</td><td>Simple item lists can map; owner-draw, images, check states, and data-aware behavior require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDGroupBox</td><td>TGroupBox</td><td>partial</td><td>70</td><td>Container and caption behavior can map; borders, bevels, and LMD styling require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDPanel</td><td>TLayout</td><td>partial</td><td>68</td><td>Container behavior can map to TLayout. Panel captions, bevels, backgrounds, and LMD styling require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDPageControl</td><td>TTabControl</td><td>partial</td><td>70</td><td>Basic page structure can map; custom tabs and images require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDTabSheet</td><td>TTabItem</td><td>partial</td><td>75</td><td>Basic tab item caption can map.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDStringGrid</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>LMD grid behavior, custom drawing, editors, and data integration require grid-specific migration.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDTreeView</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>Tree nodes, images, checkboxes, and custom rendering require manual review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDObjectInspector</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Object inspector/designer-style controls are design-surface specific and should be rebuilt or reviewed manually.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDFormDesigner</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Runtime form designer behavior is not safe for automatic FMX conversion.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDDBGrid</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Data-aware grids require manual FMX grid and LiveBindings migration.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDDateTimePicker</td><td>TDateEdit</td><td>partial</td><td>55</td><td>Verify date/time formatting, null date handling, and LMD frame controller behavior after conversion.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDProgressBar</td><td>TProgressBar</td><td>partial</td><td>68</td><td>Progress value and range map to FMX TProgressBar. LMD orientation, gradient, text overlay, and animation styling require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDTrackBar</td><td>TTrackBar</td><td>partial</td><td>65</td><td>Trackbar value and range map to FMX TTrackBar. Tick marks, LMD styling, and custom thumb rendering require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDSpinEdit</td><td>TSpinBox</td><td>partial</td><td>65</td><td>Verify Min, Max, Increment, and display format after conversion.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDImage</td><td>TImage</td><td>partial</td><td>65</td><td>Verify image resource loading and any LMD-specific visual effects.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDScrollBar</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>Standalone LMD scroll bar has limited FMX equivalent. Review whether the scroll bar drives a custom content area and redesign using FMX TScrollBox or a custom scroll interaction.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDSplitter</td><td>TSplitter</td><td>partial</td><td>68</td><td>Splitter resize behavior maps to FMX TSplitter. LMD styling and live resize options require review.</td></tr>
+<tr><td>LMD_MappingPack_v4_1</td><td>TLMDStatusBar</td><td>Manual review / none</td><td>detect_only</td><td>30</td><td>LMD status bar panels and owner-drawn panes require manual FMX layout redesign using TLayout and TLabel combinations anchored to the bottom of the form.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwHTTP</td><td>TipwHTTP</td><td>preserve</td><td>78</td><td>Verify unit names, TLS/certificate handling, callbacks, and deployment libraries for the target platform.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwREST</td><td>TipwREST</td><td>preserve</td><td>78</td><td>Review authentication, JSON/XML handling, async events, and target-platform networking.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwFTP</td><td>TipwFTP</td><td>preserve</td><td>75</td><td>Review TLS, passive mode, local paths, and deployment dependencies.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwSFTP</td><td>TipwSFTP</td><td>preserve</td><td>75</td><td>Review SSH keys, host-key validation, and target-platform support.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwSMTP</td><td>TipwSMTP</td><td>preserve</td><td>78</td><td>Review OAuth/TLS, attachments, message encoding, and async event handling.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwPOP</td><td>TipwPOP</td><td>preserve</td><td>78</td><td>Review OAuth/TLS and message storage behavior.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwIMAP</td><td>TipwIMAP</td><td>preserve</td><td>78</td><td>Review synchronization, OAuth/TLS, and background callback behavior.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwOAuth</td><td>TipwOAuth</td><td>manual_review</td><td>60</td><td>OAuth redirect/browser flow may need platform-specific FMX handling.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwJSON</td><td>TipwJSON</td><td>preserve</td><td>80</td><td>JSON component is nonvisual and may be preserved.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwXML</td><td>TipwXML</td><td>preserve</td><td>80</td><td>XML component is nonvisual and may be preserved.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwTCPClient</td><td>TipwTCPClient</td><td>preserve</td><td>75</td><td>Review threading, TLS, reconnect behavior, and mobile/network permissions.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwTCPServer</td><td>TipwTCPServer</td><td>manual_review</td><td>55</td><td>Server components require platform, firewall, threading, and lifecycle review.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwUDP</td><td>TipwUDP</td><td>preserve</td><td>70</td><td>Review multicast/broadcast behavior and platform network permissions.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwWebSocket</td><td>TipwWebSocket</td><td>preserve</td><td>75</td><td>Review TLS, threading, reconnect behavior, and target-platform support.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwCertMgr</td><td>TipwCertMgr</td><td>manual_review</td><td>55</td><td>Certificate manager behavior can be OS-specific and requires deployment review.</td></tr>
+<tr><td>nSoftware_MappingPack_v4_1</td><td>TipwS3</td><td>TipwS3</td><td>preserve</td><td>72</td><td>Review credentials, regions, TLS, file paths, and background transfer behavior.</td></tr>
+<tr><td>QuickReport_MappingPack_v4_1</td><td>TQuickRep</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>QuickReport reports need report-engine migration or manual preservation outside normal FMX form conversion.</td></tr>
+<tr><td>QuickReport_MappingPack_v4_1</td><td>TQRBand</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Report bands belong to report layout and should not be converted as FMX controls.</td></tr>
+<tr><td>QuickReport_MappingPack_v4_1</td><td>TQRSubDetail</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Subdetail report sections require report-specific migration.</td></tr>
+<tr><td>QuickReport_MappingPack_v4_1</td><td>TQRLabel</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>QuickReport labels should remain in report definitions or be migrated by a report-specific workflow.</td></tr>
+<tr><td>QuickReport_MappingPack_v4_1</td><td>TQRDBText</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Data-bound report fields require report-engine migration.</td></tr>
+<tr><td>QuickReport_MappingPack_v4_1</td><td>TQRExpr</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Report expressions require formula and dataset review.</td></tr>
+<tr><td>QuickReport_MappingPack_v4_1</td><td>TQRMemo</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Report memo content belongs to the report definition.</td></tr>
+<tr><td>QuickReport_MappingPack_v4_1</td><td>TQRImage</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Report images need report-layout and asset review.</td></tr>
+<tr><td>QuickReport_MappingPack_v4_1</td><td>TQRShape</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Report shapes should be handled by report migration.</td></tr>
+<tr><td>QuickReport_MappingPack_v4_1</td><td>TQRPreview</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>QuickReport preview UI requires manual replacement or report-engine support.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzButton</td><td>TButton</td><td>convert</td><td>85</td><td>Basic button behavior maps well. Raize styling, glyph layout, and visual states require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzBitBtn</td><td>TButton</td><td>partial</td><td>75</td><td>Button caption and click map. Glyph/kind/layout behavior requires review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzEdit</td><td>TEdit</td><td>convert</td><td>85</td><td>Basic edit text maps well. Frame controller, button edit features, and validation require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzMemo</td><td>TMemo</td><td>convert</td><td>80</td><td>Basic memo text maps. Raize frame and visual styling require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzCheckBox</td><td>TCheckBox</td><td>convert</td><td>85</td><td>Basic caption and checked state map. Custom glyphs and visual states require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzRadioButton</td><td>TRadioButton</td><td>convert</td><td>80</td><td>Basic radio button maps. Grouping and styling require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzComboBox</td><td>TComboBox</td><td>partial</td><td>75</td><td>Basic items and selection map. Frame controller, custom drawing, and lookup behavior require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzListBox</td><td>TListBox</td><td>partial</td><td>75</td><td>Basic items map. Multi-select, owner-draw, and styling require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzPanel</td><td>TLayout</td><td>partial</td><td>70</td><td>Container behavior maps. Borders, gradients, captions, and Raize appearance settings require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzGroupBox</td><td>TGroupBox</td><td>partial</td><td>75</td><td>Group caption and container behavior map. Raize visual styling requires review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzPageControl</td><td>TTabControl</td><td>partial</td><td>75</td><td>Page structure maps. Tab styling, images, close buttons, and owner-draw behavior require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzTabSheet</td><td>TTabItem</td><td>partial</td><td>80</td><td>Tab caption maps. Raize tab styling requires review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzProgressBar</td><td>TProgressBar</td><td>partial</td><td>75</td><td>Basic progress value maps conceptually. Orientation, theme, and text display require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzTrackBar</td><td>TTrackBar</td><td>partial</td><td>75</td><td>Basic trackbar value maps conceptually. Tick marks and styling require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzSplitter</td><td>TSplitter</td><td>partial</td><td>70</td><td>Splitter behavior is plausible. Alignment and adjacent layout behavior require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzStatusBar</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>Status panels and owner-drawn panes require manual FMX status layout.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzToolbar</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>Toolbar/action layout should be redesigned using FMX buttons/tool layouts.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzDBGrid</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Data-aware grid behavior requires manual redesign or a grid-specific mapping pack.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzCheckTree</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>Check tree nodes, state images, and data model require manual review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzButtonEdit</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>Embedded edit buttons and actions require explicit FMX redesign.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzPropertyStore</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Property persistence behavior is application-specific and should be reviewed manually.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzLabel</td><td>TLabel</td><td>partial</td><td>78</td><td>Basic label text maps to FMX TLabel. Raize visual styling, font controller, and hot-track behavior require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzImage</td><td>TImage</td><td>partial</td><td>65</td><td>Verify image resource loading, stretch mode, and any Raize-specific visual effects.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzDateTimePicker</td><td>TDateEdit</td><td>partial</td><td>55</td><td>Verify date/time formatting, null date handling, and frame controller behavior.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzCalendar</td><td>TCalendar</td><td>partial</td><td>55</td><td>Verify date selection events and any custom day highlighting or formatting.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzScrollBox</td><td>TScrollBox</td><td>partial</td><td>65</td><td>Scroll container behavior maps to FMX TScrollBox. Raize scroll bar styling and extras require review.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzRadioGroup</td><td>Manual review / none</td><td>detect_only</td><td>35</td><td>Raize radio group item layout, value semantics, and frame controller behavior require deliberate FMX redesign. Use individual TRadioButton controls grouped in a TLayout or TGroupBox.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzColorEdit</td><td>TEdit</td><td>partial</td><td>50</td><td>Implement color selection using FMX TColorPanel, TColorBox, or a custom color picker dialog.</td></tr>
+<tr><td>Raize_Konopka_MappingPack_v4_1</td><td>TRzSpinButtons</td><td>Manual review / none</td><td>detect_only</td><td>30</td><td>Standalone Raize spin buttons have no direct FMX equivalent. Implement using TSpinBox or a custom TLayout with Up/Down TSpeedButton controls.</td></tr>
+<tr><td>RemObjects_MappingPack_v4_1</td><td>TDARemoteDataAdapter</td><td>TDARemoteDataAdapter</td><td>preserve</td><td>75</td><td>Verify schema, service names, login flow, dataset usage, and target-platform support.</td></tr>
+<tr><td>RemObjects_MappingPack_v4_1</td><td>TDAMemDataTable</td><td>TDAMemDataTable</td><td>preserve</td><td>75</td><td>Review fields, indexes, update logic, and binding strategy.</td></tr>
+<tr><td>RemObjects_MappingPack_v4_1</td><td>TDADataTable</td><td>TDADataTable</td><td>preserve</td><td>70</td><td>Review data adapters, field definitions, and update behavior.</td></tr>
+<tr><td>RemObjects_MappingPack_v4_1</td><td>TDASchema</td><td>TDASchema</td><td>preserve</td><td>70</td><td>Verify schema resource deployment and compatibility.</td></tr>
+<tr><td>RemObjects_MappingPack_v4_1</td><td>TROBinMessage</td><td>TROBinMessage</td><td>preserve</td><td>78</td><td>Verify package references and channel compatibility.</td></tr>
+<tr><td>RemObjects_MappingPack_v4_1</td><td>TROSOAPMessage</td><td>TROSOAPMessage</td><td>preserve</td><td>75</td><td>Verify service endpoints, serialization, and deployment requirements.</td></tr>
+<tr><td>RemObjects_MappingPack_v4_1</td><td>TROIndyHTTPChannel</td><td>TROIndyHTTPChannel</td><td>preserve</td><td>72</td><td>Review TLS, certificates, proxy behavior, and platform networking permissions.</td></tr>
+<tr><td>RemObjects_MappingPack_v4_1</td><td>TROWinInetHTTPChannel</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>WinInet is Windows-specific and may not be appropriate for cross-platform FMX targets.</td></tr>
+<tr><td>RemObjects_MappingPack_v4_1</td><td>TROIndyTCPChannel</td><td>TROIndyTCPChannel</td><td>preserve</td><td>70</td><td>Review network permissions, TLS, timeouts, and platform behavior.</td></tr>
+<tr><td>RemObjects_MappingPack_v4_1</td><td>TROLocalChannel</td><td>TROLocalChannel</td><td>preserve</td><td>70</td><td>Verify server/client lifetime and threading model.</td></tr>
+<tr><td>RemObjects_MappingPack_v4_1</td><td>TROEventReceiver</td><td>TROEventReceiver</td><td>manual_review</td><td>60</td><td>Event receiver threading and UI synchronization must be reviewed for FMX.</td></tr>
+<tr><td>RemObjects_MappingPack_v4_1</td><td>TROPoweredByButton</td><td>Manual review / none</td><td>manual_review</td><td>35</td><td>Visual branding/button component should be replaced or rebuilt in FMX.</td></tr>
+<tr><td>ReportBuilder_MappingPack_v4_1</td><td>TppReport</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>ReportBuilder reports require report-engine migration or preservation outside the FMX form conversion path.</td></tr>
+<tr><td>ReportBuilder_MappingPack_v4_1</td><td>TppDBPipeline</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Data pipeline must be reviewed with the report migration strategy.</td></tr>
+<tr><td>ReportBuilder_MappingPack_v4_1</td><td>TppBDEPipeline</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>BDE-based report pipelines require database-engine modernization review.</td></tr>
+<tr><td>ReportBuilder_MappingPack_v4_1</td><td>TppDesigner</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Runtime report designer UI is not safe for automatic FMX conversion.</td></tr>
+<tr><td>ReportBuilder_MappingPack_v4_1</td><td>TppViewer</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Report preview/viewer UI requires report-engine-specific FMX replacement or manual redesign.</td></tr>
+<tr><td>ReportBuilder_MappingPack_v4_1</td><td>TppArchiveReader</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Archive reading/preview should be reviewed with reporting deployment requirements.</td></tr>
+<tr><td>ReportBuilder_MappingPack_v4_1</td><td>TppSystemVariable</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Report layout components belong to the report definition and should be handled by a report-specific migration path.</td></tr>
+<tr><td>ReportBuilder_MappingPack_v4_1</td><td>TppLabel</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Report labels should remain within the report definition or be migrated by a report converter, not the form converter.</td></tr>
+<tr><td>ReportBuilder_MappingPack_v4_1</td><td>TppDBText</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Report data-bound fields require report-specific migration.</td></tr>
+<tr><td>ReportBuilder_MappingPack_v4_1</td><td>TppImage</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Report images require report definition review.</td></tr>
+<tr><td>ReportBuilder_MappingPack_v4_1</td><td>TppSubReport</td><td>Manual review / none</td><td>detect_only</td><td>10</td><td>Subreports require report-structure review.</td></tr>
+<tr><td>ReportBuilder_MappingPack_v4_1</td><td>TppJITPipeline</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>JIT pipeline event code must be reviewed manually.</td></tr>
+<tr><td>Skia4Delphi_MappingPack_v4_1</td><td>TSkLabel</td><td>TSkLabel</td><td>preserve</td><td>85</td><td>Verify Skia package installation, unit references, font behavior, text layout, and target-platform support.</td></tr>
+<tr><td>Skia4Delphi_MappingPack_v4_1</td><td>TSkAnimatedImage</td><td>TSkAnimatedImage</td><td>preserve</td><td>85</td><td>Verify asset paths, deployment entries, playback options, and platform codecs.</td></tr>
+<tr><td>Skia4Delphi_MappingPack_v4_1</td><td>TSkPaintBox</td><td>TSkPaintBox</td><td>preserve</td><td>80</td><td>Review OnDraw code for framework-specific coordinates, colors, bitmap types, and event signatures.</td></tr>
+<tr><td>Skia4Delphi_MappingPack_v4_1</td><td>TSkAnimatedPaintBox</td><td>TSkAnimatedPaintBox</td><td>preserve</td><td>78</td><td>Review animation timing, repaint logic, and Skia drawing callbacks.</td></tr>
+<tr><td>Skia4Delphi_MappingPack_v4_1</td><td>TSkSvg</td><td>TSkSvg</td><td>preserve</td><td>82</td><td>Verify SVG source paths, wrap/scaling behavior, and resource deployment.</td></tr>
+<tr><td>Skia4Delphi_MappingPack_v4_1</td><td>TSkSvgBrush</td><td>TSkSvgBrush</td><td>preserve</td><td>75</td><td>Verify brush ownership, source resources, and FMX styling interaction.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TChart</td><td>Manual review / none</td><td>manual_review</td><td>60</td><td>TeeChart has FMX support, but chart series, axes, tools, themes, and package references must be reviewed before preserving or converting.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TDBChart</td><td>Manual review / none</td><td>manual_review</td><td>50</td><td>Data-aware chart binding requires manual review with the target data layer.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TQRChart</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>QuickReport-hosted TeeChart must be reviewed with report migration.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TTeeCommander</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>Chart command UI is VCL-specific and should be redesigned or matched to FMX TeeChart tooling.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TChartEditor</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>Runtime chart editor availability is package/version-specific.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TChartPreviewer</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>Preview UI is package/version-specific.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TChartGrid</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Chart data grid requires manual UI/data-binding review.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TTeeGDIPlus</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Rendering backend helpers are platform/runtime-specific.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TLineSeries</td><td>Manual review / none</td><td>detect_only</td><td>40</td><td>Series subcomponents must be migrated together with the owning chart.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TBarSeries</td><td>Manual review / none</td><td>detect_only</td><td>40</td><td>Series subcomponents must be migrated together with the owning chart.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TPieSeries</td><td>Manual review / none</td><td>detect_only</td><td>40</td><td>Series subcomponents must be migrated together with the owning chart.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TAreaSeries</td><td>Manual review / none</td><td>detect_only</td><td>40</td><td>Series subcomponents must be migrated together with the owning chart.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TPointSeries</td><td>Manual review / none</td><td>detect_only</td><td>40</td><td>Series subcomponents must be migrated together with the owning chart.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TFastLineSeries</td><td>Manual review / none</td><td>detect_only</td><td>40</td><td>Series subcomponents must be migrated together with the owning chart.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TTeeGrid</td><td>Manual review / none</td><td>manual_review</td><td>60</td><td>TeeGrid has VCL/FMX editions, but columns, data binding, editing, and package references require review.</td></tr>
+<tr><td>TeeChart_MappingPack_v4_1</td><td>TDBTeeGrid</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>Data-aware TeeGrid migration requires data-binding review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvEdit</td><td>TEdit</td><td>convert</td><td>85</td><td>Basic edit text maps well. TMS lookup buttons, formatting, validation, and style controller behavior require review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvMemo</td><td>TMemo</td><td>partial</td><td>70</td><td>Review advanced memo/editor features before relying on the generated FMX memo.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvComboBox</td><td>TComboBox</td><td>partial</td><td>75</td><td>Basic items and selection can map. Attached labels, custom drawing, lookup behavior, and style details require review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvCheckBox</td><td>TCheckBox</td><td>convert</td><td>80</td><td>Basic caption and checked state map. Themed glyphs and HTML caption rendering require review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvGlowButton</td><td>TButton</td><td>partial</td><td>75</td><td>Button behavior can map, but glow/Office styling, images, and layout options require review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvPanel</td><td>TLayout</td><td>partial</td><td>70</td><td>Container behavior can map to TLayout. Border, caption, gradients, and TMS styling require review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvPageControl</td><td>TTabControl</td><td>partial</td><td>75</td><td>Page structure can map to TTabControl. Images, Office tabs, close buttons, and custom tab rendering require review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvTabSheet</td><td>TTabItem</td><td>partial</td><td>80</td><td>Tab item caption can map. TMS tab options require review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvSpinEdit</td><td>TSpinBox</td><td>partial</td><td>70</td><td>Numeric spin input can map. Min/max/increment, formatting, and validation require review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvListBox</td><td>TListBox</td><td>partial</td><td>70</td><td>Simple list items may map. HTML, images, checkboxes, and owner-draw behavior require review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvStringGrid</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>TAdvStringGrid has rich cell editors, sorting, filtering, printing, HTML, and owner-draw behavior. It needs a tested grid-specific mapping pack.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TDBAdvGrid</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Data-aware TMS grids require manual data-binding and column/editor migration.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvColumnGrid</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Column grid behavior requires grid-specific migration.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvTreeView</td><td>Manual review / none</td><td>detect_only</td><td>30</td><td>Tree node storage, images, checkboxes, and custom drawing require manual review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvListView</td><td>Manual review / none</td><td>detect_only</td><td>30</td><td>Advanced list view appearance and item templates require manual review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TPlanner</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Planner/scheduler conversion is report-only in the basic pack.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TDBPlanner</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Data-aware planner conversion requires manual scheduler/data-model migration.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvToolBar</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Toolbars require manual FMX action/menu redesign.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvOfficePager</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Office pager/ribbon-like navigation requires manual FMX redesign.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvSmoothListBox</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Smooth list item templates and animation require manual review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvTableView</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>TableView item templates and interaction model require manual review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TTMSFNCGrid</td><td>Manual review / none</td><td>preserve</td><td>75</td><td>Verify TMS FNC units/packages and target-platform support.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TTMSFNCChart</td><td>Manual review / none</td><td>preserve</td><td>75</td><td>Verify TMS FNC units/packages and target-platform support.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TTMSFNCMaps</td><td>Manual review / none</td><td>preserve</td><td>70</td><td>Verify mapping service configuration and FMX package references.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TTMSFNCTreeView</td><td>Manual review / none</td><td>preserve</td><td>75</td><td>Verify package references and node population behavior.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TTMSFNCPlanner</td><td>Manual review / none</td><td>preserve</td><td>70</td><td>Verify package references, data binding, and target-platform support.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvDateTimePicker</td><td>TDateEdit</td><td>partial</td><td>60</td><td>Verify date/time formatting, null date behavior, and whether a combined date+time editor is needed in FMX.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvRichEditor</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>TMS rich editor features (formatting, hyperlinks, tables, spell check) do not map to stock FMX TMemo. Review TRichView FMX edition or another FMX-capable rich editor as a replacement.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvSplitter</td><td>TSplitter</td><td>partial</td><td>70</td><td>Splitter resize behavior maps to FMX TSplitter. TMS hover styling and live resize options require review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvStatusBar</td><td>Manual review / none</td><td>detect_only</td><td>35</td><td>TMS status bar panels, owner-drawn panes, and progress indicators require manual FMX layout redesign using TLayout and TLabel combinations.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvTrackBar</td><td>TTrackBar</td><td>partial</td><td>65</td><td>Basic trackbar value can map to FMX TTrackBar. TMS tick marks, styling, and range label options require review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TAdvProgressBar</td><td>TProgressBar</td><td>partial</td><td>68</td><td>Basic progress value maps to FMX TProgressBar. TMS gradient, text overlay, and animation styling require review.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TFNCDatePicker</td><td>TDateEdit</td><td>preserve</td><td>72</td><td>Verify TMS FNC package installation, unit references (FMX.TMSFNCDatePicker), and target-platform support.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TFNCEdit</td><td>TEdit</td><td>preserve</td><td>75</td><td>Verify FNC unit references and package deployment.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TFNCButton</td><td>TButton</td><td>preserve</td><td>75</td><td>Verify FNC unit references and package deployment.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TFNCLabel</td><td>TLabel</td><td>preserve</td><td>75</td><td>Verify FNC unit references and package deployment.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TFNCListBox</td><td>TListBox</td><td>preserve</td><td>72</td><td>Verify FNC unit references, item templates, and package deployment.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TFNCComboBox</td><td>TComboBox</td><td>preserve</td><td>72</td><td>Verify FNC unit references and package deployment.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TFNCMemo</td><td>TMemo</td><td>preserve</td><td>72</td><td>Verify FNC unit references and package deployment.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TFNCPanel</td><td>TLayout</td><td>preserve</td><td>70</td><td>Verify FNC unit references, border/caption behavior, and package deployment.</td></tr>
+<tr><td>TMS_MappingPack_v4_1</td><td>TFNCPageControl</td><td>TTabControl</td><td>preserve</td><td>70</td><td>Verify FNC unit references, tab item structure, and package deployment.</td></tr>
+<tr><td>TRichView_MappingPack_v4_1</td><td>TRichView</td><td>TRichView</td><td>preserve</td><td>78</td><td>Verify FMX package references, document loading, styles, embedded images, hyperlinks, and printing/export behavior.</td></tr>
+<tr><td>TRichView_MappingPack_v4_1</td><td>TRichViewEdit</td><td>TRichViewEdit</td><td>preserve</td><td>75</td><td>Review editor commands, popup menus, spell-check integration, drag/drop, and platform-specific input behavior.</td></tr>
+<tr><td>TRichView_MappingPack_v4_1</td><td>TDBRichView</td><td>TDBRichView</td><td>manual_review</td><td>60</td><td>Data-aware rich document controls require review with the target dataset/binding strategy.</td></tr>
+<tr><td>TRichView_MappingPack_v4_1</td><td>TDBRichViewEdit</td><td>TDBRichViewEdit</td><td>manual_review</td><td>58</td><td>Data-aware rich editing requires manual dataset, field, update, and LiveBindings review.</td></tr>
+<tr><td>TRichView_MappingPack_v4_1</td><td>TRVStyle</td><td>TRVStyle</td><td>preserve</td><td>75</td><td>Verify style ownership, fonts, colors, paragraph styles, and document compatibility.</td></tr>
+<tr><td>TRichView_MappingPack_v4_1</td><td>TScaleRichView</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>ScaleRichView/page-layout behavior is report/document-specific and should not be automatically converted.</td></tr>
+<tr><td>TRichView_MappingPack_v4_1</td><td>TRVPrint</td><td>Manual review / none</td><td>detect_only</td><td>30</td><td>Printing/export paths are framework and platform specific.</td></tr>
+<tr><td>TRichView_MappingPack_v4_1</td><td>TRVReportHelper</td><td>Manual review / none</td><td>detect_only</td><td>30</td><td>Report helper integration requires report-specific migration.</td></tr>
+<tr><td>TRichView_MappingPack_v4_1</td><td>TRVCamera</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>RVMedia camera/video behavior depends on devices, codecs, and platform permissions.</td></tr>
+<tr><td>TRichView_MappingPack_v4_1</td><td>TRVMicrophone</td><td>Manual review / none</td><td>manual_review</td><td>45</td><td>RVMedia audio behavior depends on platform permissions and capture devices.</td></tr>
+<tr><td>VirtualTreeView_MappingPack_v4_1</td><td>TVirtualStringTree</td><td>Manual review / none</td><td>detect_only</td><td>25</td><td>VirtualStringTree node initialization, text callbacks, columns, images, check states, and node data require manual migration.</td></tr>
+<tr><td>VirtualTreeView_MappingPack_v4_1</td><td>TVirtualDrawTree</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Owner-drawn virtual tree rendering requires manual FMX redesign.</td></tr>
+<tr><td>VirtualTreeView_MappingPack_v4_1</td><td>TBaseVirtualTree</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Base virtual tree descendants require manual migration.</td></tr>
+<tr><td>VirtualTreeView_MappingPack_v4_1</td><td>TCustomVirtualStringTree</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Custom virtual string tree descendants require manual migration.</td></tr>
+<tr><td>VirtualTreeView_MappingPack_v4_1</td><td>TCustomVirtualDrawTree</td><td>Manual review / none</td><td>detect_only</td><td>20</td><td>Custom virtual draw tree descendants require manual migration.</td></tr>
+<tr><td>VirtualTreeView_MappingPack_v4_1</td><td>TVirtualTreeColumns</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Column collections must be migrated together with the owning virtual tree.</td></tr>
+<tr><td>VirtualTreeView_MappingPack_v4_1</td><td>TVirtualTreeColumn</td><td>Manual review / none</td><td>detect_only</td><td>15</td><td>Tree columns must be migrated together with the owning virtual tree.</td></tr>
+</tbody></table>
+</body></html>

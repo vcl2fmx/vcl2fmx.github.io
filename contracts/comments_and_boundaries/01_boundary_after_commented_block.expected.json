@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\01_boundary_after_commented_block.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["real SendMessage block"],
+  "expected_units_added": [],
+  "expected_units_absent": [],
+  "expected_output_patterns": ["WM_CLOSE|Original: SendMessage|procedure TContractBoundaryAfterCommentedBlock\\.SendMessage\\(const AText: string\\)"],
+  "forbidden_output_patterns": ["FMX manual review: procedure TContractBoundaryAfterCommentedBlock\\.SendMessage"],
+  "expected_report_patterns": ["WM_CLOSE|SendMessage|Windows messaging"],
+  "forbidden_report_patterns": []
+}

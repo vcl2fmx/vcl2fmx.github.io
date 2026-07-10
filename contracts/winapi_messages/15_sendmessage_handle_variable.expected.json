@@ -1,0 +1,18 @@
+{
+  "input_file": "contracts\\winapi_messages\\15_sendmessage_handle_variable.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [
+    "SendMessage with handle variable"
+  ],
+  "expected_units_added": [],
+  "expected_units_absent": [],
+  "expected_output_patterns": [
+    "WM_SIZE|Original: SendMessage|SendMessage\\("
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "WM_SIZE|SendMessage|Windows messaging"
+  ],
+  "forbidden_report_patterns": []
+}

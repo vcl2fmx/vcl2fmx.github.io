@@ -1,0 +1,16 @@
+{
+  "input_file": "contracts\\components_and_events\\16_statusbar_panels.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractStatusBarPanels",
+    "StatusBar1: TStatusBar",
+    "function FindNamedChild\\(",
+    "// FMX manual review: SetStatusBarPanelText\\(StatusBar1, 0, 'ready'\\);"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.ComCtrls\\b",
+    "StatusBar1\\.Panels\\[0\\]\\.Text\\s*:="
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

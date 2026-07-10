@@ -1,0 +1,16 @@
+{
+  "input_file": "contracts\\data_aware\\04_dbnavigator.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractDBNavigator",
+    "DBNavigator1: TBindNavigator",
+    "Fmx\\.Bind\\.Navigator",
+    "Data\\.Bind\\.Controls"
+  ],
+  "forbidden_output_patterns": [
+    "\\bTDBNavigator\\b",
+    "\\bVcl\\.DBCtrls\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

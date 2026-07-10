@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\winapi_messages\\29_postmessage_in_with_block.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["PostMessage in with block"],
+  "expected_units_added": [],
+  "expected_units_absent": ["Vcl.Forms"],
+  "expected_output_patterns": ["WM_CLOSE|Original: PostMessage|PostMessage\\("],
+  "forbidden_output_patterns": ["\\bVcl\\.Forms\\b"],
+  "expected_report_patterns": ["WM_CLOSE|PostMessage|Windows messaging"],
+  "forbidden_report_patterns": []
+}

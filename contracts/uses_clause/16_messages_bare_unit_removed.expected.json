@@ -1,0 +1,10 @@
+{
+  "input_file": "contracts\\uses_clause\\16_messages_bare_unit_removed.pas",
+  "expected_status": "converted",
+  "expected_units_added": [],
+  "expected_units_absent": ["Winapi.Messages"],
+  "expected_output_patterns": ["bare messages unit without usage"],
+  "forbidden_output_patterns": ["\\bWinapi\\.Messages\\b"],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": ["Windows messaging"]
+}

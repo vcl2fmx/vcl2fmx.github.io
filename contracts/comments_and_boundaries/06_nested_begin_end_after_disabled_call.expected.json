@@ -1,0 +1,9 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\06_nested_begin_end_after_disabled_call.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["nested block after message call"],
+  "expected_output_patterns": ["WM_USER|Original: SendMessage|Writeln\\('after'\\)"],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": ["WM_USER|SendMessage|Windows messaging"],
+  "forbidden_report_patterns": []
+}

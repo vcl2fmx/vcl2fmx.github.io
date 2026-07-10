@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{7B5F8858-3B47-40E3-AE64-A50B3BE5DEE8}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="VCL2FMXConverter.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="VCL2FMXConverter">
+        <MSBuild Projects="VCL2FMXConverter.dproj"/>
+    </Target>
+    <Target Name="VCL2FMXConverter:Clean">
+        <MSBuild Projects="VCL2FMXConverter.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="VCL2FMXConverter:Make">
+        <MSBuild Projects="VCL2FMXConverter.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="VCL2FMXConverter"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="VCL2FMXConverter:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="VCL2FMXConverter:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

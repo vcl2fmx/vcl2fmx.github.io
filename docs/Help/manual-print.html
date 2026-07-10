@@ -1,0 +1,467 @@
+﻿<!doctype html><html><head><meta charset="utf-8"><title>Print Manual</title><link rel="stylesheet" href="style.css"></head><body><div class="doc-topic" style="display:block;">
+<h1 style="text-align: center;">VCL2FMX Converter v5.0 User Guide</h1><div style="text-align: center;"><span style="font-family:&quot;Segoe UI&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;"><span style="font-family:&quot;Segoe Script&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;"><span style="font-family:&quot;Segoe Script&quot;;font-size:30pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;">Vanguard</span></span></span></div>
+
+
+
+<p style="text-align: center;"><br></p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p><p style="text-align: center;"><span style="font-family:&quot;Segoe UI&quot;;font-size:14pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;">Detailed Operator, Validation, and Workflow Manual</span></p>
+
+<p style="text-align: center;">Updated June 27, 2026</p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p>
+
+<p>Audience: developers, technical operators, project owners, and maintainers who will run the converter and validate converted Delphi projects.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>1. Purpose and Audience</h1>
+
+<p>The VCL2FMXConverter exists to automate the majority of the engineering work involved in moving a Delphi application from standard VCL to FMX. It is intended to reduce repetitive migration labor, surface the most important conversion risks early, and leave the user with an FMX project that can be compiled, tested, and polished in Delphi.</p>
+
+<p>This manual is written for people who will actually operate the converter. That includes developers converting their own applications, technical staff helping with migration efforts, project owners supervising conversion work, and maintainers who need to understand how to rerun the tool safely and interpret its output.</p>
+
+<ol start="1"><li>Use this guide when you need to run the converter, interpret its output, and validate the converted FMX project.</li><li>Use the engineering guide when you need to understand the converter internals</li><li>Use both guides together when a conversion is being actively refined and stabilized.</li></ol>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>2. What the Converter Is, and What It Is Not</h1>
+
+<table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
+<tbody><tr><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Converter Behavior</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">What It Means in Practice</th></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Automates most of the migration work</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The converter handles the majority of syntax, form, mapping, and startup translation work automatically.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Works as a migration system, not a blind text replacer</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">It uses parsing, mapping, and rewrite logic rather than relying only on global text substitution.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Aims for buildable and reviewable output</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The goal is not merely changed text; the goal is a project that can be opened, built, and exercised in Delphi.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Leaves a small review tail</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">A converted application can still need font, layout, or minor behavioral review after the automated pass.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Does not replace software testing</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">A successful conversion still needs compile, runtime, and user validation to confirm the result is correct.</td></tr>
+</tbody></table>
+
+<p>A useful way to think about the converter is this: it is a serious productivity accelerator, not a promise that every converted application is instantly production-ready without verification. In practice, it can bring the vast majority of a migration under control and make the remaining issues understandable.</p>
+
+<p>The current generic baseline is broader than the earlier public-review drafts. It now includes safer FMX form emission, broader standard-control coverage for items such as TMaskEdit, TStaticText, TFlowPanel, TGridPanel, TCheckListBox, TRichEdit, TDrawGrid, TDBCtrlGrid, TFileSaveDialog, and TLinkLabel, and direct numeric-control handling for TNumberBox and converted TSpinBox workflows. It also adds generated compatibility paths for TRadioGroup and TFontDialog, along with more honest blocking-issue reporting when the converter knows the output is not yet trustworthy.</p>
+
+<p>The live Component Map, Property Map, and Event Map pages are now backed by the same current mapper knowledge used during conversion. That makes them the best quick-reference view of what the current v5.0 build knows about standard component, property, and event coverage. Version 5.0 also supports optional JSON mapping packs that make third-party component handling visible and auditable before a conversion run.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>2.1 Mapping Packs: Optional Third-Party Component Support</h1>
+
+<p>A mapping pack is an optional JSON file that gives the converter explicit knowledge about component libraries outside standard VCL. The converter still performs the normal VCL-to-FMX migration work on its own but mapping packs add a separate, visible layer for third-party controls so those decisions can be reviewed instead of hidden inside converter code.</p>
+
+<p>Use mapping packs when a project contains controls from libraries such as DevExpress, TMS, Raize/Konopka, JVCL, EhLib, InfoPower, TeeChart, FastReport, Devart, IntraWeb, UniGUI, or VirtualTreeView. The pack can identify the original VCL class, choose a safe action, map simple properties and events, and explain anything that still requires manual review. This version includes mapping packs for the stated third-party vendors, but while these are included, they do not represent full conversions of the components but rather as much as possible at this point in Delphi FMX.</p>
+
+<p>A mapping pack does not install a vendor product, prove that a commercial component has a full FMX equivalent, or remove the need to test the converted application. Its purpose is to make third-party handling predictable: simple controls may convert, approximate controls may convert with warnings, complex controls may be report-only, and nonvisual or cross-platform items may be preserved when that is the safest choice. Again, they do not represent full conversions of the components but rather as much as possible at this point.</p>
+
+<h3>Mapping-pack actions</h3>
+
+<table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
+<tbody><tr><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Action</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">What it means for the user</th></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">convert</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The converter can generate the target FMX component with reasonable confidence.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">partial</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The converter can generate an approximate FMX component, but the report must describe the limitations.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">manual_review</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The converter should report the component and avoid unsafe automatic conversion.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">detect_only</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The converter identifies the component or vendor but does not generate a replacement.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">preserve</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The converter may keep the original class/reference when preservation is safer or explicitly intended.</td></tr>
+</tbody></table>
+
+<p>For normal operation, keep the mapping_packs folder beside VCL2FMXConverter.exe, in whatever folder you install it.</p>
+
+<p>For example if the converter structure is similar to: C:\converter\VCL2FMXConverter.exe</p>
+
+<p>then the mapping packs would be in: C:\converter\mapping_packs\</p>
+
+<p>The packs act as companion files in unison with the converter executable. After a run, review the generated report and their associated report sections for loaded packs, converted third-party components, partial conversions, detect-only findings, preserved components, unknown third-party-looking components, and manual-review reasons.</p>
+
+<h3>How to read mapping-pack results</h3>
+
+<p>The generated report is a detailed audit trail. If a pack converts a component, the report should say which pack was used and what confidence level was declared. If a pack only detects a component, the report should explain why no FMX replacement was generated.</p>
+
+<p>When testing without owning the vendor library, a mock DFM can still exercise the mapping logic because the converter reads class names from the DFM. That kind of test confirms loader behavior, rule selection, generated output, and report wording, but it does not validate the real vendor component's runtime behavior. The following is an example of a mock .dfm which may be modified for your own use for testing:object FormDevExpressMock: TFormDevExpressMock</p>
+
+<p>Left = 0</p>
+
+<p>Top = 0</p>
+
+<p>Caption = 'DevExpress Mapping Pack Mock Test'</p>
+
+<p>ClientHeight = 360</p>
+
+<p>ClientWidth = 560</p>
+
+<p>object cxButton1: TcxButton</p>
+
+<p>Left = 24</p>
+
+<p>Top = 24</p>
+
+<p>Width = 120</p>
+
+<p>Height = 32</p>
+
+<p>Caption = 'Click Me'</p>
+
+<p>Enabled = True</p>
+
+<p>Visible = True</p>
+
+<p>Hint = 'Button hint'</p>
+
+<p>OnClick = cxButton1Click</p>
+
+<p>end</p>
+
+<p>object cxTextEdit1: TcxTextEdit</p>
+
+<p>Left = 24</p>
+
+<p>Top = 72</p>
+
+<p>Width = 180</p>
+
+<p>Height = 24</p>
+
+<p>Text = 'Sample text'</p>
+
+<p>Enabled = True</p>
+
+<p>Visible = True</p>
+
+<p>OnChange = cxTextEdit1Change</p>
+
+<p>end</p>
+
+<p>object cxMemo1: TcxMemo</p>
+
+<p>Left = 24</p>
+
+<p>Top = 112</p>
+
+<p>Width = 220</p>
+
+<p>Height = 80</p>
+
+<p>Text = 'Sample memo'</p>
+
+<p>Enabled = True</p>
+
+<p>Visible = True</p>
+
+<p>end</p>
+
+<p>object cxMaskEdit1: TcxMaskEdit</p>
+
+<p>Left = 24</p>
+
+<p>Top = 208</p>
+
+<p>Width = 180</p>
+
+<p>Height = 24</p>
+
+<p>Text = '12345'</p>
+
+<p>end</p>
+
+<p>object cxGrid1: TcxGrid</p>
+
+<p>Left = 260</p>
+
+<p>Top = 24</p>
+
+<p>Width = 260</p>
+
+<p>Height = 180</p>
+
+<p>end</p>
+
+<p>object dxRibbon1: TdxRibbon</p>
+
+<p>Left = 0</p>
+
+<p>Top = 264</p>
+
+<p>Width = 560</p>
+
+<p>Height = 80</p>
+
+<p>end</p>
+
+<p>end</p>
+
+<p>Here is the companion .pas file that goes with this .dfmunit UnitDevExpressMock;</p>
+
+<p>interface</p>
+
+<p>uses</p>
+
+<p>System.SysUtils, System.Classes, Vcl.Forms;</p>
+
+<p>type</p>
+
+<p>TFormDevExpressMock = class(TForm)</p>
+
+<p>cxButton1: TcxButton;</p>
+
+<p>cxTextEdit1: TcxTextEdit;</p>
+
+<p>cxMemo1: TcxMemo;</p>
+
+<p>cxMaskEdit1: TcxMaskEdit;</p>
+
+<p>cxGrid1: TcxGrid;</p>
+
+<p>dxRibbon1: TdxRibbon;</p>
+
+<p>procedure cxButton1Click(Sender: TObject);</p>
+
+<p>procedure cxTextEdit1Change(Sender: TObject);</p>
+
+<p>end;</p>
+
+<p>implementation</p>
+
+<p>{$R *.dfm}</p>
+
+<p>procedure TFormDevExpressMock.cxButton1Click(Sender: TObject);</p>
+
+<p>begin</p>
+
+<p>end;</p>
+
+<p>procedure TFormDevExpressMock.cxTextEdit1Change(Sender: TObject);</p>
+
+<p>begin</p>
+
+<p>end;</p>
+
+<p>end.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>3. System Requirements and Workspace Preparation</h1>
+
+<ol start="1"><li>A Windows development environment with Delphi installed and working.</li></ol>
+<ol start="2"><li>Access to the original VCL source code and form files.</li></ol>
+<ol start="3"><li>A separate target directory for generated FMX output.</li></ol>
+<ol start="4"><li>Sufficient disk space for source, output, reports, and milestone backups.</li></ol>
+<ol start="5"><li>A backup strategy before major converter runs or large rule changes.</li></ol>
+<p>A clean folder layout is strongly recommended. Keep the converter source, the original VCL project, and the converted FMX output in separate locations. This prevents stale output files from being mistaken for current results and makes it much easier to compare source and target artifacts during troubleshooting.</p>
+
+<table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
+<tbody><tr><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Workspace Area</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Recommended Use</th></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Converter folder</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Contains the converter source and its own documentation/scripts.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Source project folder</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Contains the original VCL application being migrated.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Output folder</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Contains only the newly generated FMX project for the current run.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Backup storage</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Contains milestone snapshots, cloud copies, or archived converter states.</td></tr>
+</tbody></table>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>4. Building and Launching the Converter</h1>
+
+<ol start="1"><li>Open the VCL2FMXConverter project in Delphi.</li></ol>
+<ol start="2"><li>Build the converter and confirm the build completes cleanly.</li></ol>
+<ol start="3"><li>Run the converter application.</li></ol>
+<p>Verify that the tabbed workspace opens and that Dashboard, Project Scan, Component Map, Property Map, Event Map, Conversion Output, and Rules are available.</p>
+
+<p>If the converter itself does not build, stop there and resolve that issue before attempting any project migration. The converter must be treated like any other software tool: it needs a healthy build before its output can be trusted.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>5. Main Window and Control-by-Control Walkthrough</h1>
+
+<table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
+<tbody><tr><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Control</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Purpose</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">How a User Should Think About It</th></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Source project</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Points at the original VCL project or source root.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">This is the source of truth the converter will scan.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Output folder</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Points at the output directory for generated FMX artifacts.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Treat this as disposable and regenerable output, not as your only copy of the application.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Files to convert</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Chooses PAS only, DFM only, or both.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Use narrower scopes for focused retests, and use both for full conversions.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Include subfolders</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Controls whether subdirectories are scanned.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Leave it enabled for complete projects unless you intentionally want to limit the run.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Report and output actions</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Opens the generated report, prints it when supported, or opens the output folder.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Use these after every run so report review is part of the normal workflow.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Critical Areas / Data Aware / 3rd Party / WinAPI</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Per-run rule toggles for the specialized conversion families.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Leave these enabled for a normal full pass, and only turn one off when intentionally isolating behavior.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Convert Project</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Starts the conversion process.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Only press this after source, output, scope, and rule choices are correct.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Conversion Output log</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Displays progress and key messages while also supporting report review.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Read it after every run; it is the first indicator of what happened.</td></tr>
+</tbody></table>
+
+<p>The current v5.0 main window is a tabbed workspace. Dashboard shows the latest run summary and quick actions. Project Scan holds the path and scope controls, Component Map / Property Map / Event Map expose the live mapper reference surface, Conversion Output shows the live log and report status, and Rules controls the four specialized conversion families. The converter still does its real work behind the scenes, but the operator needs to use the front end carefully because path mistakes, stale output folders, and poorly scoped runs can create misleading results.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>5.1 Run the converted app and validate real user workflows.</h1><h1><span style="color: rgb(17, 24, 39); font-size: 15px;">Only after runtime stability, review and tune layout or styling details.</span></h1>
+<p>This sequence matters. Trying to perfect colors or spacing before the application builds and runs cleanly is usually wasted effort. Stabilize structure first, runtime second, and presentation third. Fully exercise the app and try all options and verify their successful operation.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>6. Recommended Conversion and Practical Operator Workflow</h1>
+
+<table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
+<tbody><tr><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Stage</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Operator action</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Expected result</th></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Prepare</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">check source</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">set clean target</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Run</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">select options</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">start conversion</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Open</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">load FMX project</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">build in Delphi</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Validate</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">run app</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">exercise real workflows</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Refine</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">improve converter</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">rerun cleanly</td></tr>
+</tbody></table>
+
+<ol start="1"><li>Prepare a clean output directory.</li></ol>
+<ol start="2"><li>Run the converter against the selected VCL project.</li></ol>
+<ol start="3"><li>Open the generated FMX project in Delphi.</li></ol>
+<ol start="4"><li>Resolve structural and compile issues first.</li></ol>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>7. Preparing a Source Project for Best Results</h1>
+
+<p>Some preparation work in the source project can make the converter easier to use and the output easier to validate. This is not always required, but it is often helpful.</p>
+
+<ol start="1"><li>Know which folder is the real source root and which files are truly active in the project.</li></ol>
+<ol start="2"><li>Be aware of duplicated unit names or old backup copies inside the source tree.</li></ol>
+<ol start="3"><li>Understand any database, media, or file-path dependencies that the converted application will need at runtime.</li></ol>
+<ol start="4"><li>Keep note of major workflows that must be validated after conversion, such as startup, scheduling, playback, database edits, dialogs, and reporting.</li></ol>
+<ol start="5"><li>If possible, have the original VCL application available for side-by-side behavior comparison.</li></ol>
+<p>The converter can do a great deal, but it is still easier to use when the operator knows which source files matter and which business workflows are critical.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>8. Running a Conversion</h1>
+
+<ol start="1"><li>Enter or browse to the source folder.</li></ol>
+<ol start="2"><li>Enter or browse to the target folder. A convenience folder name is provided if you wish to use it.</li></ol>
+<ol start="3"><li>Choose PAS only, DFM only, or both.</li></ol>
+<ol start="4"><li>Set the include-subfolders option and the four rule toggles as needed.</li></ol>
+<ol start="5"><li>Review the specialized rule choices if your workflow needs a focused retest.</li></ol>
+<ol start="6"><li>Click Convert and allow the process to complete.</li></ol>
+<p>Read the log before opening the output in Delphi. When the HTML report exists, use Open Report or Print Report directly from the converter, and use Open Output Folder when you need the generated files immediately.</p>
+
+<p>For full project migrations, the normal choice is to convert both PAS and DFM files recursively into a clean output folder. Targeted runs are useful only when you already know that a specific phase is the thing under review.</p>
+
+<p>During the same run, the generator can inventory real support files in the source root and in existing build-output folders. That makes the report more trustworthy because helper executables, DLLs, library files, sound-font files, and similar runtime companions are reported from real locations instead of being guessed from quoted Pascal strings.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>9. Reading the Log and the Conversion Report</h1>
+
+<p>Every conversion run should be reviewed through two channels: the live log in the converter UI and the generated report files in the output folder. When the HTML report exists, the Open Report and Print Report buttons use it first. These are not optional extras; they are part of the operating workflow.</p>
+
+<table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
+<tbody><tr><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Information Source</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">What It Tells You</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">How to Use It</th></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Conversion Output log</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Live progress and immediate messages during the run.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Use it to see which files were processed and whether the run completed normally.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Conversion reports</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Persistent text and HTML records of what the converter saw and reported.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Use them for later review, troubleshooting, printing, and communication with other engineers.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Delphi compile output</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The authoritative correctness check after generation.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Use it to identify real syntax, unit, and form-reader issues.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Runtime behavior</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The final reality check for workflow correctness.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Use it to confirm that the converted application actually behaves acceptably.</td></tr>
+</tbody></table>
+
+<p>Pay special attention to the final run status. The current v5.0 report flow distinguishes Blocking issues present, Manual review required, and Clean conversion. The generated report now calls out a recommended next step, Distinct files needing attention, and files with conversion errors. Treat blocking issues as stop conditions even if files were generated. Informational messages about external project assets are different: they warn that companion files may still need manual copying or relocation before runtime testing. Mapping-pack runs additionally report loaded packs, third-party conversions, partial conversions, detect-only findings, preserved components, and unknown third-party-looking classes.</p>
+
+<p>The current report also distinguishes between support files that were actually staged into the FMX output directory and support files that were only found in the source root or beside an existing built executable. Read those companion-file notes carefully, because staging a helper file into the output tree is not the same thing as confirming it will deploy beside the final built executable.</p>
+
+<p>If the report and the compiler disagree, the compiler wins. If Code Insight and the real compiler disagree, the compiler wins again. The memo log and report are aids, not replacements for build and run validation.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>10. Understanding the Output Folder and Files</h1>
+
+<table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
+<tbody><tr><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Output Artifact</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Purpose</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">User Action</th></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Converted .pas files</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">FMX-oriented Pascal source units derived from the original VCL source.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Open in Delphi and build as part of the generated project.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Converted .fmx files</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">FireMonkey form definitions derived from DFM files.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Allow Delphi to load them and watch for reader errors.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Project files</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The FMX project shell and startup metadata.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Open the project file in Delphi and build it.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Conversion report</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Text summary of the run.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Keep it for diagnostics and engineering review.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Milestone backups</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Snapshots of converter state or other preserved artifacts.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Store separately so they do not pollute source or output folders.</td></tr>
+</tbody></table>
+
+<p>Project files now include a more complete FMX shell, and the generator attempts to carry along common companion assets such as .res, .ico, .manifest, and safe local project references. If the source project points at an absolute external asset outside the source tree, you should expect to verify or copy that file manually before runtime testing.</p>
+
+<p>The output folder may now also contain staged runtime companions such as helper executables, DLLs, library files, or sound-font style support files. The generator adds them when it finds real candidates in the source root or in existing build-output folders such as Win32, Win64, Debug, Release, or deploy. Those files are copied to make review easier, but you still need to verify the final deployment location expected by the generated app.</p>
+
+<p>A clean output folder is one of the most important habits in using the converter. Stale generated units and forms can create false problems, hide real changes, and lead Delphi to load the wrong copy of a file.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>11. Opening the Converted Project in Delphi</h1>
+
+<ol start="1"><li>Open the generated project in Delphi.</li></ol>
+<ol start="2"><li>Let Delphi load the forms and watch for form-reader errors first.</li></ol>
+<ol start="3"><li>Build the project and capture the real compiler results.</li></ol>
+<ol start="4"><li>Fix structural problems before pursuing visual polish.</li></ol>
+<ol start="5"><li>Rebuild and rerun after each significant converter improvement.</li></ol>
+<p>The converter now strips or remaps several common VCL-only form properties before Delphi sees the FMX output, so some earlier reader failures no longer appear. Even so, form-reader errors still deserve first priority because they block every later stage of validation.</p>
+
+<p>The first successful load of the project is a major milestone, but it is not the end of validation. A project can open and still fail at compile time, or compile and still fail at runtime. Treat these as separate checkpoints.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>12. Validating the Converted Application</h1>
+
+<table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
+<tbody><tr><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Validation Layer</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Goal</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Typical Questions</th></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Structural</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Can Delphi read the generated forms and units?</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Are there reader errors, malformed collections, or invalid properties?</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Compile-time</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Does the project build on the first pass?</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Are units missing, events wrong, or symbols unresolved?</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Runtime</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Does the application start and execute real workflows?</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Do timers, media, data, dialogs, and navigation work?</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Visual</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Does the application look acceptable and remain usable?</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Are fonts, labels, colors, and layouts readable and sensible?</td></tr>
+</tbody></table>
+
+<p>Validation should now explicitly cover the newer generic support surface. That includes numeric entry controls, radio-group style selections, font-picking workflows, scrollable long-message dialogs, and any wave-audio paths that depend on Winapi.MMSystem or waveOut APIs.</p>
+
+<p>Real validation means exercising the actual workflows that matter to the application: data entry, startup, scheduling, media playback, dialogs, and reporting. A converted app is only as good as the workflows it can successfully perform.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>13. Test startup and shutdown behavior.</h1>
+<ol><li><span style="color: rgb(17, 24, 39); font-size: 15px;">Test any timers or schedules if the original app depended on them.</span></li><li>Test data-aware screens and save/cancel workflows.</li><li>Test media or file operations where applicable.</li><li>Test secondary forms, help, menus, and common user actions.</li><li>Test numeric entry controls such as TNumberBox and converted TSpinBox screens.</li><li>Test TRadioGroup and TFontDialog workflows if the original application used them.</li><li>Test wave-audio or WinMM paths where the source project uses MMSystem or waveOut APIs.</li><li>If the application launches, check operation of help files, external documents, URLs, or utilities.</li><li>If a form uses shared datasets, shared datasources, shared navigators, or shared combo controls, close and reopen the form and verify the shared object still behaves correctly afterward.</li></ol>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>14. Troubleshooting and Recovery Procedures</h1>
+
+<table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
+<tbody><tr><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Symptom</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Likely Cause</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Recommended Response</th></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Form reader error</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">An unsupported VCL property or malformed FMX output was emitted.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Fix the converter rule, regenerate into a clean output folder, and retest.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Compiler errors after regeneration</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">A converter rule is missing or incomplete.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Treat the compiler message as the next engineering target and improve the converter globally.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Runtime access violation</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">A startup, event, media, drawing, or binding mismatch remains.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Trace the workflow, isolate the phase, and improve the converter behavior globally.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Visual mismatch only</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The app is basically working but presentation differs.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Defer deep visual polishing until structural and runtime behavior are stable.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Code Insight disagreement</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The IDE parser is stale or confused.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Trust the real compiler and reopen files or restart the IDE if needed.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Conversion completed with blocking issues</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">A real unsupported component or blocking rule gap was detected.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Stop there, read the report, and improve the converter globally before trusting the output.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">External project asset reference not copied</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The project shell references a file outside the source tree or in an unresolved path.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Copy or relocate the asset manually, then decide whether the generator needs a new generic asset-copy rule.</td></tr>
+</tbody></table>
+
+<p>If a run goes badly, do not try to repair everything at once. The fastest route is usually to identify the highest-severity problem, improve the converter globally, regenerate clean output, and retest.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>15. Making Changes to the Converter Software</h1>
+
+<p>Refer to the Engineering Manual for guidance for making changes to the converter. It is a highly complex application which uses much integration and branches to many areas. Only qualified programmers who have a deep understanding of Delphi should attempt any modifications that may be required.</p>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>16. Operational Best Practices</h1>
+
+<ol start="1"><li>Always keep the source project, output project, and converter workspace separate.</li></ol>
+<ol start="2"><li>Use clean output folders for serious test cycles.</li></ol>
+<ol start="3"><li>Back up milestone converter states before risky changes. Backups are extremely important to save accomplished work.</li></ol>
+<ol start="4"><li>Keep zipped milestone backups out of the live converter workspace so later workspace backups do not recurse and grow uncontrollably. Make sure they are off the development computer in another location, like a cloud service like DropBox, Google Drive, etc.</li></ol>
+<ol start="5"><li>Treat real compiler output as the authority over IDE-only hints or stale parse errors.</li></ol>
+<ol start="6"><li>Record what was fixed globally so later projects benefit immediately.</li><li>Do not burn time on tiny visual tweaks until the application builds and runs</li></ol>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>17. Frequently Asked Questions</h1>
+
+<table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
+<tbody><tr><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Question</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Answer</th></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Will every project convert perfectly on the first run?</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">No. The converter is powerful, but real-world projects still expose new patterns that may need another global rule.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Should I hand-edit the generated FMX project permanently?</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Only for temporary testing or minor final polish. The real fix should go into the converter whenever the pattern is reusable.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Why do I still need Delphi after conversion?</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Because the generated project still has to be built, run, and validated in the real Delphi environment.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Why are backups important?</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Because converter improvements are cumulative, and known-good milestone states are valuable when comparing behavior or recovering from regressions.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">When should I review visuals?</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">After the project loads, compiles, and runs acceptably. Visual polish is usually the last phase.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">What does blocking issues mean?</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">It means the converter found a serious unsupported pattern or rule gap. Generated files may exist, but you should resolve the blocking issue before treating the output as a valid converted project.</td></tr>
+</tbody></table>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>Appendix A. Quick Start Checklist</h1>
+
+<ol start="1"><li>Build the converter.</li></ol>
+<ol start="2"><li>Choose source and target folders.</li></ol>
+<ol start="3"><li>Use a clean output directory.</li></ol>
+<ol start="4"><li>Run conversion.</li></ol>
+<ol start="5"><li>Open the FMX project in Delphi.</li></ol>
+<ol start="6"><li>Build, run, and validate the converted app.</li></ol>
+<ol start="7"><li>Improve the converter globally and regenerate as needed.</li></ol>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>Appendix B. Pre-Conversion Checklist</h1>
+
+<ol start="1"><li>Confirm the real source root folder.</li></ol>
+<ol start="2"><li>Confirm the target output folder is correct and clean.</li></ol>
+<ol start="3"><li>Know which workflows are critical in the original application.</li></ol>
+<ol start="4"><li>Ensure supporting files such as databases or media are available for runtime testing.</li></ol>
+<ol start="5"><li>Plan where milestone backups will be stored.</li></ol>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>Appendix C. Post-Conversion Review Checklist</h1>
+
+<ol start="1"><li>Did the forms open without reader errors?</li></ol>
+<ol start="2"><li>Did the project compile on the first pass?</li></ol>
+<ol start="3"><li>Did the application start and close normally?</li></ol>
+<ol start="4"><li>Did core workflows run correctly?</li></ol>
+<ol start="5"><li>Are the remaining issues structural, runtime, or merely visual?</li></ol>
+<ol start="6"><li>Was the converter fixed globally if a reusable defect was found?</li></ol>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>Appendix D. Glossary</h1>
+
+<table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
+<tbody><tr><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Term</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Meaning</th></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">VCL</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Visual Component Library, Delphi's traditional Windows UI framework.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">FMX</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">FireMonkey, Delphi's multi-platform UI framework.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">DFM</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">A Delphi form definition file used by VCL projects.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">FMX form</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The converted FireMonkey form file, typically emitted as .fmx.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">LiveBindings</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The FMX binding model used for data-aware behavior.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Global fix</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">A converter change that benefits multiple current or future projects, not just one output file.</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Mapping pack</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Optional JSON file that adds transparent third-party component detection, conversion, preservation, or manual-review rules.</td></tr>
+</tbody></table>
+</div><hr><div class="doc-topic" style="display:block;">
+<h1>Index</h1>
+
+<table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
+<tbody><tr><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Term</th><th style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;background:#1f6f54;color:#ffffff;font-weight:bold;height:auto;overflow:visible;">Section Reference</th></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Backups</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Sections 3, 10, and 15</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Codex workflow</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Section 14</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Delphi validation</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Sections 11 and 12</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Output folder</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Section 10</td></tr>
+<tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Troubleshooting</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Section 13</td></tr>
+</tbody></table>
+</div><hr></body></html>

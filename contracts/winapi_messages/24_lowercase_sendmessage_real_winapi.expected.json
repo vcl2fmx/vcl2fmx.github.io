@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\winapi_messages\\24_lowercase_sendmessage_real_winapi.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["lowercase real SendMessage"],
+  "expected_units_added": [],
+  "expected_units_absent": [],
+  "expected_output_patterns": ["wm_close|WM_CLOSE|Original: sendmessage|sendmessage\\("],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": ["wm_close|WM_CLOSE|sendmessage|Windows messaging"],
+  "forbidden_report_patterns": []
+}

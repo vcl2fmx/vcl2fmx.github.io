@@ -1,0 +1,13 @@
+{
+  "input_file": "contracts\\colors\\02_real_cla_color_should_add_uiconsts.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractRealClaColorShouldAddUIConsts",
+    "System\\.UIConsts",
+    "System\\.UITypes",
+    "ColorValue := claBlack"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

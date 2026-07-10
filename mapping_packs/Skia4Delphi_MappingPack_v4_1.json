@@ -1,0 +1,58 @@
+{
+  "pack_name": "Skia4Delphi_MappingPack_v2",
+  "pack_id": "skia4delphi.mapping.v2",
+  "vendor": "Skia4Delphi",
+  "version": "2.0.0",
+  "description": "Conservative preservation pack for Skia4Delphi controls. Skia4Delphi supports VCL and FMX, so existing Skia controls are usually preserved when the target project owns and references the correct Skia packages.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TSkLabel",
+      "fmx_class": "TSkLabel",
+      "action": "preserve",
+      "confidence": 85,
+      "notes": "Skia label exists in the Skia4Delphi control family for VCL and FMX. Preserve the class when the target project enables Skia and references FMX.Skia/System.Skia as needed.",
+      "manual_review_reason": "Verify Skia package installation, unit references, font behavior, text layout, and target-platform support."
+    },
+    {
+      "vcl_class": "TSkAnimatedImage",
+      "fmx_class": "TSkAnimatedImage",
+      "action": "preserve",
+      "confidence": 85,
+      "notes": "Animated image support is cross-framework, but external animation/image assets must be deployed with the FMX application.",
+      "manual_review_reason": "Verify asset paths, deployment entries, playback options, and platform codecs."
+    },
+    {
+      "vcl_class": "TSkPaintBox",
+      "fmx_class": "TSkPaintBox",
+      "action": "preserve",
+      "confidence": 80,
+      "notes": "Paint-box logic may be portable when drawing code uses Skia APIs rather than VCL canvas APIs.",
+      "manual_review_reason": "Review OnDraw code for framework-specific coordinates, colors, bitmap types, and event signatures."
+    },
+    {
+      "vcl_class": "TSkAnimatedPaintBox",
+      "fmx_class": "TSkAnimatedPaintBox",
+      "action": "preserve",
+      "confidence": 78,
+      "notes": "Animated paint box may be portable when animation/drawing code is Skia-based.",
+      "manual_review_reason": "Review animation timing, repaint logic, and Skia drawing callbacks."
+    },
+    {
+      "vcl_class": "TSkSvg",
+      "fmx_class": "TSkSvg",
+      "action": "preserve",
+      "confidence": 82,
+      "notes": "SVG display can usually be preserved with Skia4Delphi installed in the FMX target.",
+      "manual_review_reason": "Verify SVG source paths, wrap/scaling behavior, and resource deployment."
+    },
+    {
+      "vcl_class": "TSkSvgBrush",
+      "fmx_class": "TSkSvgBrush",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "SVG brush support may be portable within Skia4Delphi-enabled targets.",
+      "manual_review_reason": "Verify brush ownership, source resources, and FMX styling interaction."
+    }
+  ]
+}

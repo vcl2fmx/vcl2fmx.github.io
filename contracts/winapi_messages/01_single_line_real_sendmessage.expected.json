@@ -1,0 +1,24 @@
+{
+  "input_file": "contracts\\winapi_messages\\01_single_line_real_sendmessage.pas",
+  "expected_status": "converted",
+  "expected_conversions": [
+    "real Windows SendMessage call converted to generated FMX helper"
+  ],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.StdCtrls"
+  ],
+  "expected_output_patterns": [
+    "GeneratedFMXMemoVScroll\\(Memo1, 'SB_TOP', 0\\)",
+    "function GeneratedFMXMemoVScroll"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.StdCtrls\\b",
+    "SendMessage\\(Memo1\\.Handle, WM_VSCROLL, SB_TOP, 0\\)"
+  ],
+  "expected_report_patterns": [
+    "Windows message Perform/SendMessage pattern converted to generated FMX helper"
+  ],
+  "forbidden_report_patterns": []
+}

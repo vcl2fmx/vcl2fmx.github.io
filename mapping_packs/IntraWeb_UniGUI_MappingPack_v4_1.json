@@ -1,0 +1,172 @@
+{
+  "pack_name": "IntraWeb_UniGUI_MappingPack_v2",
+  "pack_id": "intraweb.unigui.detectonly.v2",
+  "vendor": "Atozed IntraWeb / uniGUI",
+  "version": "2.0.0",
+  "description": "Detect-only pack for Delphi web frameworks. IntraWeb and uniGUI are not VCL-to-FMX UI libraries; they require architecture-level web or FMX redesign instead of automatic component substitution.",
+  "mode": "detection",
+  "rules": [
+    {
+      "vcl_class": "TIWAppForm",
+      "action": "detect_only",
+      "confidence": 5,
+      "manual_review_reason": "IntraWeb forms are web forms, not FMX forms. Migration requires architecture-level redesign."
+    },
+    {
+      "vcl_class": "TIWButton",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "IntraWeb controls execute in a browser/server lifecycle and should not be automatically converted to FMX controls."
+    },
+    {
+      "vcl_class": "TIWEdit",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "IntraWeb edit controls require web-framework or app-architecture migration."
+    },
+    {
+      "vcl_class": "TIWMemo",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "IntraWeb memo controls require web-framework or app-architecture migration."
+    },
+    {
+      "vcl_class": "TIWLabel",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "IntraWeb labels render HTML and should be reviewed in the web/app migration plan."
+    },
+    {
+      "vcl_class": "TIWCheckBox",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "IntraWeb controls use browser/server state and should not be auto-converted."
+    },
+    {
+      "vcl_class": "TIWComboBox",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "IntraWeb combo boxes require web-framework or app-architecture migration."
+    },
+    {
+      "vcl_class": "TIWListBox",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "IntraWeb list controls require web-framework or app-architecture migration."
+    },
+    {
+      "vcl_class": "TIWImage",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "IntraWeb image/resource handling requires manual migration."
+    },
+    {
+      "vcl_class": "TIWRegion",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "IntraWeb layout regions require manual FMX or web layout redesign."
+    },
+    {
+      "vcl_class": "TIWGrid",
+      "action": "detect_only",
+      "confidence": 5,
+      "manual_review_reason": "IntraWeb grids require web-framework or app-architecture migration."
+    },
+    {
+      "vcl_class": "TIWDBGrid",
+      "action": "detect_only",
+      "confidence": 5,
+      "manual_review_reason": "IntraWeb data grids require web-framework/data architecture migration."
+    },
+    {
+      "vcl_class": "TUniForm",
+      "action": "detect_only",
+      "confidence": 5,
+      "manual_review_reason": "uniGUI forms are web application forms, not FMX forms. Migration requires architecture-level redesign."
+    },
+    {
+      "vcl_class": "TUniButton",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "uniGUI controls use Ext JS/web lifecycle and should not be automatically converted to FMX."
+    },
+    {
+      "vcl_class": "TUniEdit",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "uniGUI edit controls require web-framework or app-architecture migration."
+    },
+    {
+      "vcl_class": "TUniMemo",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "uniGUI memo controls require web-framework or app-architecture migration."
+    },
+    {
+      "vcl_class": "TUniLabel",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "uniGUI labels are browser-rendered controls and require migration planning."
+    },
+    {
+      "vcl_class": "TUniCheckBox",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "uniGUI controls use web state and should not be auto-converted."
+    },
+    {
+      "vcl_class": "TUniComboBox",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "uniGUI combo boxes require web-framework or app-architecture migration."
+    },
+    {
+      "vcl_class": "TUniDBComboBox",
+      "action": "detect_only",
+      "confidence": 5,
+      "manual_review_reason": "uniGUI data-aware controls require web/data architecture migration."
+    },
+    {
+      "vcl_class": "TUniDBEdit",
+      "action": "detect_only",
+      "confidence": 5,
+      "manual_review_reason": "uniGUI data-aware controls require web/data architecture migration."
+    },
+    {
+      "vcl_class": "TUniDBGrid",
+      "action": "detect_only",
+      "confidence": 5,
+      "manual_review_reason": "uniGUI data grids require web/data architecture migration."
+    },
+    {
+      "vcl_class": "TUniPanel",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "uniGUI panels are web layout controls and require manual UI redesign."
+    },
+    {
+      "vcl_class": "TUniPageControl",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "uniGUI page controls require web/app architecture migration."
+    },
+    {
+      "vcl_class": "TUniTabSheet",
+      "action": "detect_only",
+      "confidence": 10,
+      "manual_review_reason": "uniGUI tab sheets require web/app architecture migration."
+    },
+    {
+      "vcl_class": "TUniMainModule",
+      "action": "detect_only",
+      "confidence": 5,
+      "manual_review_reason": "uniGUI application modules are architecture-level web framework components."
+    },
+    {
+      "vcl_class": "TUniServerModule",
+      "action": "detect_only",
+      "confidence": 5,
+      "manual_review_reason": "uniGUI server modules are architecture-level web framework components."
+    }
+  ]
+}

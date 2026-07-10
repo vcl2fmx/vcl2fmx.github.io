@@ -1,0 +1,19 @@
+{
+  "input_file": "contracts\\uses_clause\\14_system_units_retained.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "System.Generics.Collections",
+    "System.Rtti",
+    "TObjectList<TObject>",
+    "TValue.From<Integer>"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

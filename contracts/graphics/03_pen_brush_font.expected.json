@@ -1,0 +1,18 @@
+{
+  "input_file": "contracts\\graphics\\03_pen_brush_font.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractPenBrushFont",
+    "Canvas\\.Stroke\\.Color := claRed;",
+    "Canvas\\.Fill\\.Kind := TBrushKind\\.None;",
+    "GeneratedSetCanvasTextColor\\(Canvas, claBlue\\);"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Graphics\\b",
+    "Pen\\.Color",
+    "Brush\\.Style\\s*:=\\s*bsClear",
+    "Font\\.Color"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

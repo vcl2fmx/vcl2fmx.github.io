@@ -1,0 +1,16 @@
+{
+  "input_file": "contracts\\colors\\14_color_to_rgb_usage.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractColorToRGBUsage",
+    "GeneratedColorToRGB\\(claRed\\)",
+    "System\\.UIConsts",
+    "System\\.UITypes",
+    "Winapi\\.Windows"
+  ],
+  "forbidden_output_patterns": [
+    "ColorToRGB\\(clRed\\)"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

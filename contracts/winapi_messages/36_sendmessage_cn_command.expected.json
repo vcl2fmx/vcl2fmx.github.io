@@ -1,0 +1,1 @@
+{"input_file":"contracts\\winapi_messages\\36_sendmessage_cn_command.pas","expected_status":"converted","expected_output_patterns":["CN_COMMAND","Use FMX control events"],"expected_report_patterns":["Windows messaging","CN_COMMAND"],"forbidden_output_patterns":[],"forbidden_report_patterns":[]}

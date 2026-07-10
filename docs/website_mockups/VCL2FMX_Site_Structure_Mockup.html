@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>VCL2FMX Site Structure Mockup</title>
+  <style>
+    body {
+      margin: 0;
+      background: #eaf1f8;
+      color: #17314f;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .page {
+      width: 1180px;
+      margin: 28px auto;
+      background: #fff;
+      border: 1px solid #d7e2f0;
+      box-shadow: 0 20px 40px rgba(20, 54, 90, 0.16);
+    }
+
+    header {
+      padding: 44px 54px;
+      background: #102b47;
+      color: #fff;
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: 46px;
+      line-height: 1.1;
+    }
+
+    header p {
+      margin: 0;
+      max-width: 900px;
+      color: #d8e6f4;
+    }
+
+    section {
+      padding: 44px 54px;
+      border-top: 1px solid #d7e2f0;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      padding: 22px;
+      border: 1px solid #d7e2f0;
+      border-radius: 8px;
+      background: #f8fbff;
+      min-height: 190px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      color: #102b47;
+      font-size: 22px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #566d86;
+      font-size: 16px;
+    }
+
+    .keep-remove {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 22px;
+      color: #415d7b;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    .panel {
+      padding: 24px;
+      border: 1px solid #d7e2f0;
+      border-radius: 8px;
+      background: #f8fbff;
+    }
+
+    .remove {
+      border-left: 5px solid #9b3a2f;
+    }
+
+    .keep {
+      border-left: 5px solid #2e7d62;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <h1>Suggested Site Structure</h1>
+      <p>A calmer, smaller technical site for a free Delphi utility. This avoids a commercial sales-page feel and gives developers the information they need quickly.</p>
+    </header>
+
+    <section>
+      <h2>Recommended top-level pages or sections</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Home</h3>
+          <p>Short explanation, current version, primary download, key conversion areas, and honest limitations.</p>
+        </div>
+        <div class="card">
+          <h3>Downloads</h3>
+          <p>Stable source ZIP, guides, mapping packs, optional tools, and license. Keep this page very clear.</p>
+        </div>
+        <div class="card">
+          <h3>Mapping Packs</h3>
+          <p>Explain JSON packs, included vendors, rule actions, and how users can modify or contribute packs.</p>
+        </div>
+        <div class="card">
+          <h3>Documentation</h3>
+          <p>User Guide, Engineering Guide, rules references, and conversion-report examples.</p>
+        </div>
+        <div class="card">
+          <h3>Release Notes</h3>
+          <p>Plain version history. Make the current stable release obvious and avoid mixing stable and development versions.</p>
+        </div>
+        <div class="card">
+          <h3>Contact</h3>
+          <p>Bug reports, test results, suggestions, and the information users should include when reporting problems.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>What to keep and what to remove</h2>
+      <div class="keep-remove">
+        <div class="panel keep">
+          <h3>Keep</h3>
+          <ul>
+            <li>Free and open-source message</li>
+            <li>Current stable version and download button</li>
+            <li>Mapping-pack explanation</li>
+            <li>User Guide and Engineering Guide</li>
+            <li>Honest limitations and manual-review expectations</li>
+            <li>Contact instructions for useful bug reports</li>
+          </ul>
+        </div>
+        <div class="panel remove">
+          <h3>Remove or soften</h3>
+          <ul>
+            <li>Old v4.0 references</li>
+            <li>"Up to 95%" conversion claims</li>
+            <li>Repeated marketing phrases</li>
+            <li>Large commercial-style hero language</li>
+            <li>Duplicate download links</li>
+            <li>Anything implying guaranteed full conversion</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

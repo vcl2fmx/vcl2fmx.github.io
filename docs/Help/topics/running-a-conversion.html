@@ -1,0 +1,15 @@
+﻿<!doctype html><html><head><meta charset="utf-8"><title>Running a Conversion</title><link rel="stylesheet" href="../style.css"></head><body class="topic-page"><main><div class="doc-topic" style="display:block;">
+<h1>8. Running a Conversion</h1>
+
+<ol start="1"><li>Enter or browse to the source folder.</li></ol>
+<ol start="2"><li>Enter or browse to the target folder. A convenience folder name is provided if you wish to use it.</li></ol>
+<ol start="3"><li>Choose PAS only, DFM only, or both.</li></ol>
+<ol start="4"><li>Set the include-subfolders option and the four rule toggles as needed.</li></ol>
+<ol start="5"><li>Review the specialized rule choices if your workflow needs a focused retest.</li></ol>
+<ol start="6"><li>Click Convert and allow the process to complete.</li></ol>
+<p>Read the log before opening the output in Delphi. When the HTML report exists, use Open Report or Print Report directly from the converter, and use Open Output Folder when you need the generated files immediately.</p>
+
+<p>For full project migrations, the normal choice is to convert both PAS and DFM files recursively into a clean output folder. Targeted runs are useful only when you already know that a specific phase is the thing under review.</p>
+
+<p>During the same run, the generator can inventory real support files in the source root and in existing build-output folders. That makes the report more trustworthy because helper executables, DLLs, library files, sound-font files, and similar runtime companions are reported from real locations instead of being guessed from quoted Pascal strings.</p>
+</div><div class="page-nav"><a href="../index.html" target="_top">Contents</a><a href="preparing-a-source-project-for-best-results.html" onclick="try{parent.setActiveTopic('topics/preparing-a-source-project-for-best-results.html');}catch(e){}">Previous</a><a href="reading-the-log-and-the-conversion-report.html" onclick="try{parent.setActiveTopic('topics/reading-the-log-and-the-conversion-report.html');}catch(e){}">Next</a></div></main><script>try{parent.postMessage({helpTopic:"topics/running-a-conversion.html"},"*");}catch(e){}</script></body></html>

@@ -1,0 +1,12 @@
+{
+  "input_file": "contracts\\winapi_messages\\27_sendmessage_assignment_result.pas",
+  "expected_status": "converted",
+  "expected_conversions": ["EM_LINEFROMCHAR helper conversion"],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": ["Vcl.StdCtrls"],
+  "expected_output_patterns": ["GeneratedFMXMemoLineFromChar|EM_LINEFROMCHAR|Original: SendMessage|SendMessage\\("],
+  "forbidden_output_patterns": ["\\bVcl\\.StdCtrls\\b"],
+  "expected_report_patterns": ["EM_LINEFROMCHAR|SendMessage|Windows message"],
+  "forbidden_report_patterns": []
+}

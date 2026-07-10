@@ -1,0 +1,233 @@
+﻿
+==================================================
+CONVERSION SUMMARY
+==================================================
+
+Total time: < 1 second
+Files processed: 2
+Files converted: 2
+Files with errors: 0
+Files skipped: 0
+Mapping packs loaded: 22
+
+OUTPUT FILES
+----------------------------------------
+Output folder: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\output
+Text report: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\output\VCL_to_FMX_Conversion_Report.txt
+HTML report: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\output\VCL_to_FMX_Conversion_Report.html
+Converted Pascal files are written beside converted source names in the output folder.
+Converted FMX files are written beside converted source names in the output folder.
+
+Total issues: 12
+Distinct files needing attention: 2
+Final status: Manual review required
+Manual fixes required: 8
+Blocking items: 0
+Files with conversion errors: 0
+Recommended next step: Open the grouped manual-review section, inspect each affected file in the IDE, and apply the required FMX decisions before relying on the output.
+
+Review note: Generated output should be reviewed in the IDE. Projects with manual-review or blocking items may not run until those items are fixed or mitigated.
+
+CONVERSION HEALTH
+----------------------------------------
+Compile readiness: possible, but manual-review items may still block reliable behavior.
+Runtime behavior review: Yes
+Visual review: No
+Data binding review: No
+Manual code review: Yes
+
+MAPPING PACKS LOADED
+----------------------------------------
+1. CleverComponents_MappingPack_v4_1 (clevercomponents.mapping.v2) - 14 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\CleverComponents_MappingPack_v4_1.json
+2. DatabaseEngines_MappingPack_v4_1 (databaseengines.mapping.v2) - 27 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\DatabaseEngines_MappingPack_v4_1.json
+3. Devart_MappingPack_v4_1 (devart.dataaccess.preserve.v2) - 24 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\Devart_MappingPack_v4_1.json
+4. DevExpress_MappingPack_v4_1 (devexpress.complete.v2) - 89 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\DevExpress_MappingPack_v4_1.json
+5. EhLib_MappingPack_v4_1 (ehlib.complete.v2) - 20 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\EhLib_MappingPack_v4_1.json
+6. FastReport_MappingPack_v4_1 (fastreport.detection.v2) - 17 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\FastReport_MappingPack_v4_1.json
+7. Imaging_PDF_MappingPack_v4_1 (imaging.pdf.mapping.v2) - 16 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\Imaging_PDF_MappingPack_v4_1.json
+8. InfoPower_MappingPack_v4_1 (woll2woll.infopower.complete.v2) - 20 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\InfoPower_MappingPack_v4_1.json
+9. IntraWeb_UniGUI_MappingPack_v4_1 (intraweb.unigui.detectonly.v2) - 27 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\IntraWeb_UniGUI_MappingPack_v4_1.json
+10. JVCL_MappingPack_v4_1 (jvcl.complete.v2) - 32 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\JVCL_MappingPack_v4_1.json
+11. LegacyOpenSource_MappingPack_v4_1 (legacyopensource.mapping.v2) - 22 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\LegacyOpenSource_MappingPack_v4_1.json
+12. LMD_MappingPack_v4_1 (lmd.complete.v2) - 26 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\LMD_MappingPack_v4_1.json
+13. nSoftware_MappingPack_v4_1 (nsoftware.mapping.v2) - 16 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\nSoftware_MappingPack_v4_1.json
+14. QuickReport_MappingPack_v4_1 (quickreport.mapping.v2) - 10 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\QuickReport_MappingPack_v4_1.json
+15. Raize_Konopka_MappingPack_v4_1 (raize.konopka.complete.v2) - 29 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\Raize_Konopka_MappingPack_v4_1.json
+16. RemObjects_MappingPack_v4_1 (remobjects.mapping.v2) - 12 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\RemObjects_MappingPack_v4_1.json
+17. ReportBuilder_MappingPack_v4_1 (reportbuilder.mapping.v2) - 12 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\ReportBuilder_MappingPack_v4_1.json
+18. Skia4Delphi_MappingPack_v4_1 (skia4delphi.mapping.v2) - 6 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\Skia4Delphi_MappingPack_v4_1.json
+19. TeeChart_MappingPack_v4_1 (steema.teechart.basic.detection.v2) - 16 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\TeeChart_MappingPack_v4_1.json
+20. TMS_MappingPack_v4_1 (tms.complete.v2) - 41 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\TMS_MappingPack_v4_1.json
+21. TRichView_MappingPack_v4_1 (trichview.mapping.v2) - 10 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\TRichView_MappingPack_v4_1.json
+22. VirtualTreeView_MappingPack_v4_1 (virtualtreeview.detection.v2) - 7 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\VirtualTreeView_MappingPack_v4_1.json
+
+THIRD-PARTY COMPONENTS CONVERTED
+----------------------------------------
+No third-party mapping-pack components were fully converted.
+
+THIRD-PARTY COMPONENTS PARTIALLY CONVERTED
+----------------------------------------
+No third-party mapping-pack components were partially converted.
+
+THIRD-PARTY COMPONENTS DETECTED ONLY
+----------------------------------------
+No detect-only third-party mapping-pack components were found.
+
+MAPPINGS USED
+----------------------------------------
+No mapping-pack rules were used during this run.
+
+UNKNOWN THIRD-PARTY COMPONENTS
+----------------------------------------
+None detected.
+
+DETAILED ISSUES
+----------------------------------------
+[INFO] Method WindowsMessagingMain.TWindowsMessagingForm.Run uses Windows message-based behavior.
+  File: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas
+  Line: 28
+  Problem type: Windows messages or message handlers
+  Risk category: Runtime behavior risk
+  Original: procedure TWindowsMessagingForm.Run; | var |   Count: Integer; |   TextValue: string; | begin |   Count := SendMessage(FHandle, LVM_GETITEMCOUNT, 0, 0); |   PostMessage(FHandle, WM_USER + 42, Count, 0); |   Memo1.Perform(EM_SETSEL, 0, -1); |   TextValue := 'SendMessage WM_CLOSE in a string is not active code'; |                                                              |   SendMessage(TextValue); | end;
+  Recommendation: Review this method in the IDE. FMX may need an event-based or platform-specific replacement for the original VCL message flow.
+
+[INFO] Method WindowsMessagingMain.TWindowsMessagingForm.WMSize uses Windows message-based behavior.
+  File: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas
+  Line: 46
+  Problem type: Windows messages or message handlers
+  Risk category: Runtime behavior risk
+  Original: procedure TWindowsMessagingForm.WMSize(var Message: TWMSize); | begin |   inherited; | end;
+  Recommendation: Review this method in the IDE. FMX may need an event-based or platform-specific replacement for the original VCL message flow.
+
+[INFO] Method WindowsMessagingMain.TWindowsMessagingForm.WndProc uses Windows message-based behavior.
+  File: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas
+  Line: 51
+  Problem type: Windows messages or message handlers
+  Risk category: Runtime behavior risk
+  Original: procedure TWindowsMessagingForm.WndProc(var Message: TMessage); | begin |   inherited; | end;
+  Recommendation: Review this method in the IDE. FMX may need an event-based or platform-specific replacement for the original VCL message flow.
+
+[WARNING] WM_USER message subscription code was generated but could not be inserted automatically.
+  File: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas
+  Problem type: Windows messaging
+  Risk category: Runtime behavior risk
+  Original: TWindowsMessagingForm.FormCreate not found or has no begin block
+  Recommendation: Create or review FormCreate and add the generated TMessageManager subscription code manually.
+
+MANUAL REVIEW ITEMS
+----------------------------------------
+
+1. Pascal structure message handler declaration
+Risk category: Runtime behavior risk
+Occurrences: 1
+Detail: Structured Pascal analysis found WM_SIZE message handler TWindowsMessagingForm.WMSize.
+Affected locations:
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas -> procedure WMSize(var Message: TWMSize); message WM_SIZE;
+Recommended solution:
+  Replace the VCL message handler with FMX events, form lifecycle events, System.Messaging, or platform-specific services where needed.
+
+2. Windows messages or message handlers
+Risk category: Runtime behavior risk
+Occurrences: 11
+Detail: Windows message-based behavior needs FMX manual review.
+Affected locations:
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas:13 -> procedure WMSize(var Message: TWMSize); message WM_SIZE;
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas:46 -> procedure TWindowsMessagingForm.WMSize(var Message: TWMSize);
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas:47 -> begin
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas:48 -> inherited;
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas:49 -> end;
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas:55
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas:56 -> { FMX: WndProc replaced by TMessageManager - see FormCreate for subscriptions }
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas:57 -> { begin }
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas:58 -> { inherited; }
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas:59 -> { end; }
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas:60
+Recommended solution:
+  Replace the VCL message handler with FMX events, form lifecycle events, or platform-specific services where needed.
+
+3. Windows messaging
+Risk category: Runtime behavior risk
+Occurrences: 1
+Detail: Windows WndProc override converted to TMessageManager subscription pattern.
+Affected locations:
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas:51 -> procedure TWindowsMessagingForm.WndProc(var Message: TMessage);
+Recommended solution:
+  Review the generated TMessageManager subscriptions in FormCreate/Destroy.
+
+4. Windows messaging
+Risk category: Runtime behavior risk
+Occurrences: 1
+Detail: Windows message API replaced - review LVM_GETITEMCOUNT intent in generated code.
+Affected locations:
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas -> Count := SendMessage(FHandle, LVM_GETITEMCOUNT, 0, 0);
+Recommended solution:
+  Use FMX list view, tree view, tab control, or adapter APIs instead of common-control messages.
+
+5. Windows messaging
+Risk category: Runtime behavior risk
+Occurrences: 1
+Detail: Windows message API replaced - review WM_USER intent in generated code.
+Affected locations:
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas -> PostMessage(FHandle, WM_USER + 42, Count, 0);
+Recommended solution:
+  Use System.Messaging with a typed TMessage descendant for custom application messages.
+
+6. Windows messaging
+Risk category: Runtime behavior risk
+Occurrences: 1
+Detail: Windows message API replaced - review EM_SETSEL intent in generated code.
+Affected locations:
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source\WindowsMessagingMain.pas -> Memo1.Perform(EM_SETSEL, 0, -1);
+Recommended solution:
+  Use FMX edit/memo text, selection, caret, and clipboard APIs instead of edit control messages.
+
+7. Generated manual-review note
+Risk category: Runtime behavior risk
+Occurrences: 1
+Detail: Generated code includes a converter manual-review note: { FMX: WndProc replaced by TMessageManager - see FormCreate for subscriptions }
+Affected locations:
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\output\WindowsMessagingMain.pas:56 -> // FMX manual review: { FMX: WndProc replaced by TMessageManager - see FormCreate for subscriptions }
+Recommended solution:
+  Review this note in the IDE and complete the missing FMX behavior manually where needed.
+
+8. Generated manual-review note
+Risk category: Manual code review
+Occurrences: 1
+Detail: Generated code includes a converter manual-review note: { begin }
+Affected locations:
+  C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\output\WindowsMessagingMain.pas:57 -> // FMX manual review: { begin }
+Recommended solution:
+  Review this note in the IDE and complete the missing FMX behavior manually where needed.
+
+
+ISSUE SUMMARY
+------------------------------
+Informational: 3
+Warnings: 1
+Manual review required: 8
+Errors: 0
+Blocking items: 0
+
+CONVERSION LOG
+--------------------------------------------------------------------------------
+[15:55:54] WARNING: ScreenMemo not assigned - UI updates disabled
+[15:55:54] 
+[15:55:54] VCL TO FMX CONVERSION STARTED
+[15:55:54] ========================================
+[15:55:54] Source: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\source
+[15:55:54] Output: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output_project_integration\contracts_project_integration_02_windows_messaging_project_WindowsMessagingProject_dpr\output
+[15:55:54] 
+[15:55:54] Found 2 files to process
+[15:55:54] 
+[15:55:54] [1/2] Processing: WindowsMessagingMain.dfm
+[15:55:54] Processing DFM: WindowsMessagingMain.dfm
+[15:55:54]   Detecting DFM stream format...
+[15:55:54]   Converted
+[15:55:54] [2/2] Processing: WindowsMessagingMain.pas
+[15:55:54] Processing Pascal: WindowsMessagingMain.pas
+[15:55:54]   Reading WindowsMessagingMain.pas...
+[15:55:54]   Encoding: 20127 (US-ASCII)
+[15:55:54]   Converted
+[15:55:54] 
+[15:55:54] Generating project files...
+[15:55:54] Project files generated

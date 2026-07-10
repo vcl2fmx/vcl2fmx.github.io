@@ -1,0 +1,638 @@
+﻿object frmGPSControl: TfrmGPSControl
+  Position = ScreenCenter
+  Left = 0
+  Top = 0
+  ClientWidth = 927
+  ClientHeight = 712
+  Caption = 'GPS Time Sync'
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  object lblLatLong: TLabel
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 13
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 147.000000000000000000
+    Position.X = 0.000000000000000000
+    Position.Y = 218.000000000000000000
+    WordWrap = True
+    Size.Height = 46.000000000000000000
+    Text = 'Latitude and'#13#10'Longitude:'
+    TextSettings.HorzAlign = Trailing
+    Size.PlatformDefault = False
+  end
+
+  object lblFixQuality: TLabel
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 13
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 85.000000000000000000
+    Position.X = 447.000000000000000000
+    Position.Y = 225.000000000000000000
+    WordWrap = True
+    Size.Height = 27.000000000000000000
+    Text = 'Fix quality:'
+    TextSettings.HorzAlign = Trailing
+    Size.PlatformDefault = False
+  end
+
+  object lblFixMode: TLabel
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 13
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 69.000000000000000000
+    Position.X = 465.000000000000000000
+    Position.Y = 272.000000000000000000
+    WordWrap = True
+    Size.Height = 27.000000000000000000
+    Text = 'Fix mode:'
+    TextSettings.HorzAlign = Trailing
+    Size.PlatformDefault = False
+  end
+
+  object lblSatInUse: TLabel
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 13
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 102.000000000000000000
+    Position.X = 672.000000000000000000
+    Position.Y = 214.000000000000000000
+    WordWrap = True
+    Size.Height = 46.000000000000000000
+    Text = 'Satellites in use:'
+    TextSettings.HorzAlign = Trailing
+    Size.PlatformDefault = False
+  end
+
+  object lblSatInView: TLabel
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 13
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 102.000000000000000000
+    Position.X = 672.000000000000000000
+    Position.Y = 260.000000000000000000
+    WordWrap = True
+    Size.Height = 46.000000000000000000
+    Text = 'Satellites in view:'
+    TextSettings.HorzAlign = Trailing
+    Size.PlatformDefault = False
+  end
+
+  object lblAltitude: TLabel
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 13
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 111.000000000000000000
+    Position.X = 37.000000000000000000
+    Position.Y = 265.000000000000000000
+    WordWrap = True
+    Size.Height = 46.000000000000000000
+    Text = 'Approximate  Elevation:'
+    TextSettings.HorzAlign = Trailing
+    Size.PlatformDefault = False
+  end
+
+  object lblBaudRate: TLabel
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 13
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claBlack
+    AutoSize = True
+    WordWrap = False
+    Position.X = 780.000000000000000000
+    Position.Y = 352.000000000000000000
+    Text = 'Baud Rate'
+  end
+
+  object Label4: TLabel
+    StyledSettings = [Family, Size, Style, FontColor]
+    Size.Width = 162.000000000000000000
+    Text = 'Note: This changes with satellite movement'
+    Position.X = 280.000000000000000000
+    Position.Y = 267.000000000000000000
+    WordWrap = True
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+  end
+
+  object Panel1: TPanel
+    Size.Width = 449.000000000000000000
+    Position.X = 232.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Height = 73.000000000000000000
+    TabOrder = 0
+    Size.PlatformDefault = False
+    object lblHeader: TLabel
+      StyledSettings = []
+      TextSettings.Font.Family = 'Segoe UI'
+      TextSettings.Font.Size = 33
+      TextSettings.Font.Style = []
+      TextSettings.FontColor = claNavy
+      AutoSize = True
+      WordWrap = False
+      Position.X = 106.000000000000000000
+      Position.Y = -3.000000000000000000
+      Text = 'GPS Time Sync'
+      TextSettings.HorzAlign = Center
+    end
+
+    object Label1: TLabel
+      StyledSettings = []
+      TextSettings.Font.Family = 'Segoe UI'
+      TextSettings.Font.Size = 13
+      TextSettings.Font.Style = []
+      TextSettings.FontColor = claNavy
+      AutoSize = True
+      WordWrap = False
+      Position.X = 166.000000000000000000
+      Position.Y = 50.000000000000000000
+      Text = 'Version 1.20 02/01/2026  17:41'
+    end
+
+  end
+
+  object btnHideToTray: TButton
+    StyledSettings = [Other]
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 15
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 100.000000000000000000
+    Position.X = 765.000000000000000000
+    Position.Y = 510.000000000000000000
+    Size.Height = 32.000000000000000000
+    TabOrder = 1
+    Text = 'Hide To Tray'
+    Size.PlatformDefault = False
+    OnClick = btnHideToTrayClick
+  end
+
+  object btnSave: TButton
+    StyledSettings = [Other]
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 15
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 100.000000000000000000
+    Position.X = 765.000000000000000000
+    Position.Y = 541.000000000000000000
+    Size.Height = 32.000000000000000000
+    TabOrder = 2
+    Text = 'Save'
+    Size.PlatformDefault = False
+    OnClick = btnSaveClick
+  end
+
+  object btnClose: TButton
+    StyledSettings = [Other]
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 15
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 100.000000000000000000
+    Position.X = 765.000000000000000000
+    Position.Y = 579.000000000000000000
+    Size.Height = 32.000000000000000000
+    TabOrder = 3
+    Text = 'Close'
+    Size.PlatformDefault = False
+    OnClick = btnCloseClick
+  end
+
+  object GroupBox1: TGroupBox
+    StyledSettings = [Other]
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 19
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Position.X = 60.000000000000000000
+    Size.Width = 665.000000000000000000
+    Position.Y = 331.000000000000000000
+    Size.Height = 184.000000000000000000
+    TabOrder = 4
+    Text = 'Sync Settings'
+    Size.PlatformDefault = False
+    object lblCOMPort: TLabel
+      StyledSettings = []
+      TextSettings.Font.Family = 'Segoe UI Semibold'
+      TextSettings.Font.Size = 15
+      TextSettings.Font.Style = [fsBold]
+      TextSettings.FontColor = claNavy
+      AutoSize = True
+      WordWrap = False
+      Position.X = 27.000000000000000000
+      Position.Y = 69.000000000000000000
+      Text = 'COM Port:'
+    end
+
+    object lblInterval: TLabel
+      StyledSettings = []
+      TextSettings.Font.Family = 'Segoe UI Semibold'
+      TextSettings.Font.Size = 16
+      TextSettings.Font.Style = [fsBold]
+      TextSettings.FontColor = claNavy
+      AutoSize = True
+      WordWrap = False
+      Position.X = 293.000000000000000000
+      Position.Y = 68.000000000000000000
+      Text = 'Interval (Seconds):'
+    end
+
+    object lblDriftSeconds: TLabel
+      StyledSettings = []
+      TextSettings.Font.Family = 'Segoe UI Semibold'
+      TextSettings.Font.Size = 16
+      TextSettings.Font.Style = [fsBold]
+      TextSettings.FontColor = claNavy
+      AutoSize = True
+      WordWrap = False
+      Position.X = 529.000000000000000000
+      Position.Y = 64.000000000000000000
+      Text = 'Drift ≥:'
+    end
+
+    object lblTimeType: TLabel
+      StyledSettings = []
+      TextSettings.Font.Family = 'Segoe UI Semibold'
+      TextSettings.Font.Size = 16
+      TextSettings.Font.Style = [fsBold]
+      TextSettings.FontColor = claNavy
+      AutoSize = True
+      WordWrap = False
+      Position.X = 40.000000000000000000
+      Position.Y = 108.000000000000000000
+      Text = 'UTC/Local Time:'
+    end
+
+    object lblEnableLogging: TLabel
+      StyledSettings = []
+      TextSettings.Font.Family = 'Segoe UI Semibold'
+      TextSettings.Font.Size = 16
+      TextSettings.Font.Style = [fsBold]
+      TextSettings.FontColor = claNavy
+      AutoSize = True
+      WordWrap = False
+      Position.X = 41.000000000000000000
+      Position.Y = 139.000000000000000000
+      Text = 'Enable Logging:'
+    end
+
+    object Label2: TLabel
+      StyledSettings = []
+      TextSettings.Font.Family = 'Segoe UI Semibold'
+      TextSettings.Font.Size = 16
+      TextSettings.Font.Style = [fsBold]
+      TextSettings.FontColor = claNavy
+      AutoSize = True
+      WordWrap = False
+      Position.X = 199.000000000000000000
+      Position.Y = 110.000000000000000000
+      Text = 'Set UTC'
+    end
+
+    object Label3: TLabel
+      StyledSettings = []
+      TextSettings.Font.Family = 'Segoe UI Semibold'
+      TextSettings.Font.Size = 16
+      TextSettings.Font.Style = [fsBold]
+      TextSettings.FontColor = claNavy
+      AutoSize = True
+      WordWrap = False
+      Position.X = 307.000000000000000000
+      Position.Y = 110.000000000000000000
+      Text = 'Set Local'
+    end
+
+    object edtComPort: TComboBox
+      Size.Width = 100.000000000000000000
+      Position.X = 103.000000000000000000
+      Position.Y = 66.000000000000000000
+      Size.Height = 32.000000000000000000
+      TabOrder = 0
+      Size.PlatformDefault = False
+    end
+
+    object edtSyncInterval: TEdit
+      StyledSettings = []
+      TextSettings.Font.Family = 'Segoe UI'
+      TextSettings.Font.Size = 15
+      TextSettings.Font.Style = []
+      TextSettings.FontColor = claBlack
+      Size.Width = 46.000000000000000000
+      Position.X = 439.000000000000000000
+      Position.Y = 68.000000000000000000
+      Size.Height = 32.000000000000000000
+      TabOrder = 1
+      Text = '60'
+      TextSettings.HorzAlign = Center
+      MaxLength = 2
+      Size.PlatformDefault = False
+    end
+
+    object edtDriftSeconds: TEdit
+      StyledSettings = []
+      TextSettings.Font.Family = 'Segoe UI'
+      TextSettings.Font.Size = 15
+      TextSettings.Font.Style = []
+      TextSettings.FontColor = claBlack
+      Size.Width = 48.000000000000000000
+      Position.X = 591.000000000000000000
+      Position.Y = 68.000000000000000000
+      Size.Height = 32.000000000000000000
+      TabOrder = 2
+      Text = '2'
+      TextSettings.HorzAlign = Center
+      MaxLength = 2
+      Size.PlatformDefault = False
+    end
+
+    object edtEnableLogging: TCheckBox
+      StyledSettings = [Other]
+      TextSettings.Font.Family = 'Segoe UI'
+      TextSettings.Font.Size = 15
+      TextSettings.Font.Style = []
+      TextSettings.FontColor = claBlack
+      IsChecked = True
+      Size.Width = 26.000000000000000000
+      Position.X = 168.000000000000000000
+      Position.Y = 143.000000000000000000
+      Size.Height = 25.000000000000000000
+      TabOrder = 3
+      Size.PlatformDefault = False
+    end
+
+    object rdoSetUTC: TRadioButton
+      StyledSettings = [Other]
+      TextSettings.Font.Family = 'Segoe UI'
+      TextSettings.Font.Size = 15
+      TextSettings.Font.Style = []
+      TextSettings.FontColor = claWhite
+      Size.Width = 25.000000000000000000
+      Position.X = 168.000000000000000000
+      Position.Y = 113.000000000000000000
+      Size.Height = 25.000000000000000000
+      TabOrder = 4
+      Size.PlatformDefault = False
+    end
+
+    object rdoSetLocal: TRadioButton
+      StyledSettings = [Other]
+      TextSettings.Font.Family = 'Segoe UI'
+      TextSettings.Font.Size = 15
+      TextSettings.Font.Style = []
+      TextSettings.FontColor = claWhite
+      IsChecked = True
+      Size.Width = 25.000000000000000000
+      Position.X = 276.000000000000000000
+      Position.Y = 113.000000000000000000
+      Size.Height = 25.000000000000000000
+      TabOrder = 5
+      TabStop = True
+      Size.PlatformDefault = False
+    end
+
+  end
+
+  object edtFixQuality: TEdit
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 19
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 120.000000000000000000
+    Position.X = 538.000000000000000000
+    Position.Y = 219.000000000000000000
+    Size.Height = 37.000000000000000000
+    TabOrder = 8
+    ReadOnly = True
+    TextSettings.HorzAlign = Center
+    Size.PlatformDefault = False
+  end
+
+  object edtFixMode: TEdit
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 19
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 120.000000000000000000
+    Position.X = 540.000000000000000000
+    Position.Y = 266.000000000000000000
+    Size.Height = 37.000000000000000000
+    TabOrder = 9
+    ReadOnly = True
+    TextSettings.HorzAlign = Center
+    Size.PlatformDefault = False
+  end
+
+  object edtSatInUse: TEdit
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 19
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 85.000000000000000000
+    Position.X = 780.000000000000000000
+    Position.Y = 219.000000000000000000
+    Size.Height = 37.000000000000000000
+    TabOrder = 10
+    ReadOnly = True
+    TextSettings.HorzAlign = Center
+    Size.PlatformDefault = False
+  end
+
+  object edtSatInView: TEdit
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 19
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 85.000000000000000000
+    Position.X = 780.000000000000000000
+    Position.Y = 266.000000000000000000
+    Size.Height = 37.000000000000000000
+    TabOrder = 11
+    ReadOnly = True
+    TextSettings.HorzAlign = Center
+    Size.PlatformDefault = False
+  end
+
+  object GroupBox2: TGroupBox
+    StyledSettings = [Other]
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 19
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 665.000000000000000000
+    Position.X = 61.000000000000000000
+    Position.Y = 515.000000000000000000
+    Size.Height = 190.000000000000000000
+    TabOrder = 5
+    Text = 'Logging'
+    Size.PlatformDefault = False
+    object shpLED: TEllipse
+      Fill.Color = claRed
+      Size.Width = 20.000000000000000000
+      Position.X = 625.000000000000000000
+      Position.Y = 90.000000000000000000
+      Stroke.Kind = None
+      Size.Height = 20.000000000000000000
+      Size.PlatformDefault = False
+    end
+
+    object memLogWindow: TMemo
+      StyledSettings = [Other]
+      TextSettings.Font.Family = 'Segoe UI'
+      TextSettings.Font.Size = 16
+      TextSettings.Font.Style = []
+      TextSettings.FontColor = claNavy
+      Size.Width = 587.000000000000000000
+      Position.X = 26.000000000000000000
+      Position.Y = 35.000000000000000000
+      Size.Height = 142.000000000000000000
+      TabOrder = 0
+      ReadOnly = True
+      ShowScrollBars = True
+      Size.PlatformDefault = False
+    end
+
+  end
+
+  object txtLatLong: TEdit
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 19
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 279.000000000000000000
+    Position.X = 154.000000000000000000
+    Position.Y = 219.000000000000000000
+    Size.Height = 37.000000000000000000
+    TabOrder = 6
+    ReadOnly = True
+    TextSettings.HorzAlign = Center
+    Size.PlatformDefault = False
+  end
+
+  object GroupBox4: TGroupBox
+    StyledSettings = [Other]
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 16
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 624.000000000000000000
+    Position.X = 146.000000000000000000
+    Position.Y = 107.000000000000000000
+    Size.Height = 80.000000000000000000
+    TabOrder = 7
+    Text = 'Current Date                                                      Current Time'
+    Size.PlatformDefault = False
+    object lblSystemTime: TLabel
+      StyledSettings = []
+      TextSettings.Font.Family = 'Segoe UI Semibold'
+      TextSettings.Font.Size = 35
+      TextSettings.Font.Style = [fsBold]
+      TextSettings.FontColor = claNavy
+      AutoSize = True
+      WordWrap = False
+      Position.X = 405.000000000000000000
+      Position.Y = 25.000000000000000000
+      Text = '00:00:00'
+      TextSettings.HorzAlign = Center
+    end
+
+    object txtDate: TEdit
+      StyledSettings = []
+      TextSettings.Font.Family = 'Segoe UI Semibold'
+      TextSettings.Font.Size = 35
+      TextSettings.Font.Style = [fsBold]
+      TextSettings.FontColor = claNavy
+      Size.Width = 289.000000000000000000
+      Position.X = 15.000000000000000000
+      Position.Y = 25.000000000000000000
+      Size.Height = 53.000000000000000000
+      TabOrder = 0
+      Text = '00/00/0000'
+      ReadOnly = True
+      TextSettings.HorzAlign = Center
+      Size.PlatformDefault = False
+    end
+
+  end
+
+  object edtAltitude: TEdit
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI Semibold'
+    TextSettings.Font.Size = 19
+    TextSettings.Font.Style = [fsBold]
+    TextSettings.FontColor = claNavy
+    Size.Width = 109.000000000000000000
+    Position.X = 154.000000000000000000
+    Position.Y = 266.000000000000000000
+    Hint = 'This figure will fluctuate '#13#10'due to satellite altitude'
+    Size.Height = 37.000000000000000000
+    TabOrder = 12
+    ShowHint = True
+    TextSettings.HorzAlign = Center
+    Size.PlatformDefault = False
+  end
+
+  object edtBaudRate: TEdit
+    StyledSettings = []
+    TextSettings.Font.Family = 'Segoe UI'
+    TextSettings.Font.Size = 19
+    TextSettings.Font.Style = []
+    TextSettings.FontColor = claBlack
+    Size.Width = 101.000000000000000000
+    Position.X = 780.000000000000000000
+    Position.Y = 373.000000000000000000
+    Size.Height = 37.000000000000000000
+    TabOrder = 13
+    ReadOnly = True
+    TextSettings.HorzAlign = Center
+    Size.PlatformDefault = False
+  end
+
+  object tmTimeCheck: TTimer
+    Top = 16
+    Interval = 60000
+    Left = 32
+    OnTimer = tmTimeCheckTimer
+  end
+
+  object tmClock: TTimer
+    Top = 16
+    Left = 104
+    OnTimer = tmClockTimer
+  end
+
+  object LEDFlashTimer: TTimer
+    Top = 80
+    Enabled = False
+    Interval = 150
+    Left = 848
+    OnTimer = LEDFlashTimerTimer
+  end
+
+  object ComPortReadTimer: TTimer
+    Top = 152
+    Left = 840
+  end
+
+end

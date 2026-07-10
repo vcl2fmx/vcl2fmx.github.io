@@ -1,0 +1,9 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\07_case_statement_after_message_call.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["case statement after message call"],
+  "expected_output_patterns": ["WM_CLOSE|Original: SendMessage|case AValue of"],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": ["WM_CLOSE|SendMessage|Windows messaging"],
+  "forbidden_report_patterns": []
+}

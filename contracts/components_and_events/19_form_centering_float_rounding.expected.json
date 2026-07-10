@@ -1,0 +1,20 @@
+{
+  "input_file": "contracts\\components_and_events\\19_form_centering_float_rounding.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": ["FMX.Forms"],
+  "expected_units_absent": ["Vcl.Forms"],
+  "expected_output_patterns": [
+    "ScreenWidth := Round\\(Screen\\.WorkAreaWidth\\)",
+    "ScreenHeight := Round\\(Screen\\.WorkAreaHeight\\)",
+    "AForm\\.[Ll]eft := Round\\(\\(ScreenWidth - AForm\\.Width\\) / 2\\)",
+    "AForm\\.Top := Round\\(\\(ScreenHeight - AForm\\.Height\\) / 2\\)"
+  ],
+  "forbidden_output_patterns": [
+    "AForm\\.[Ll]eft := \\(ScreenWidth - AForm\\.Width\\) / 2",
+    "AForm\\.Top := \\(ScreenHeight - AForm\\.Height\\) / 2"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

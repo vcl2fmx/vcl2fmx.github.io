@@ -1,0 +1,66 @@
+﻿VCL2FMXConverter V3 Release Readiness Audit
+===========================================
+
+Generated: 2026-04-12 21:06:22
+Project root: C:\New Delphi Projects\VCL2FMXConverterV3
+Source files scanned: 17
+Support files scanned: 23
+
+Summary: 20 blocker(s), 23 warning(s), 0 info item(s)
+
+BLOCKER - IDE artifact
+  - ..\\VCL2FMXConverter.dproj.local :: Delphi local project settings file should not ship.
+  - ..\\VCL2FMXConverter.identcache :: Delphi ident cache file should not ship.
+
+BLOCKER - IDE build output
+  - ..\\Win32 :: IDE build output directory is present in the live workspace.
+
+BLOCKER - Local path reference
+  - ..\\Converter.Core.Integration.pas:2281 :: Absolute path reference found in live source/project file: n:\s*TColumn\);
+  - ..\\Converter.Core.Integration.pas:4057 :: Absolute path reference found in live source/project file: w:\s*)?\w*MediaPlayer\w*\.OnNotify\s*:=
+  - ..\\Converter.Core.Integration.pas:4060 :: Absolute path reference found in live source/project file: w:\s*)?\w*MediaPlayer\w*\.Notify\s*:=
+  - ..\\Converter.Core.Integration.pas:5929 :: Absolute path reference found in live source/project file: w:\s*)?(\w*MediaPlayer\w*)\.OnNotify\s*:=\s*([A-Za-z_][A-Za-z0-9_]*)\s*;
+  - ..\\Converter.Core.Integration.pas:5939 :: Absolute path reference found in live source/project file: w:\s*)?(\w*MediaPlayer\w*)\.Notify\s*:=\s*(True
+  - ..\\Converter.Core.Integration.pas:5954 :: Absolute path reference found in live source/project file: w:\s*)?(\w*MediaPlayer\w*)\.OnNotify\s*:=\s*([A-Za-z_][A-Za-z0-9_]*)\s*;
+  - ..\\Converter.Core.Integration.pas:5972 :: Absolute path reference found in live source/project file: w:\s*)?(\w*MediaPlayer\w*)\.Notify\s*:=\s*(True
+  - ..\\Converter.Core.Integration.pas:8160 :: Absolute path reference found in live source/project file: w:\s*)?([A-Za-z_][A-Za-z0-9_\.]*)\.Brush\.Style\s*:=\s*bsClear\s*;
+  - ..\\Converter.Core.Integration.pas:8165 :: Absolute path reference found in live source/project file: w:\s*)?([A-Za-z_][A-Za-z0-9_\.]*)\.Brush\.Color\s*:=\s*([^;\r\n]+)\s*;
+  - ..\\Converter.Core.Integration.pas:8170 :: Absolute path reference found in live source/project file: w:\s*)?([A-Za-z_][A-Za-z0-9_\.]*)\.Pen\.Color\s*:=\s*([^;\r\n]+)\s*;
+  - ..\\Converter.Core.Integration.pas:8175 :: Absolute path reference found in live source/project file: w:\s*)?([A-Za-z_][A-Za-z0-9_\.]*)\.Pen\.Width\s*:=\s*([^;\r\n]+)\s*;
+  - ..\\Converter.Core.Integration.pas:8180 :: Absolute path reference found in live source/project file: w:\s*)?([A-Za-z_][A-Za-z0-9_\.]*)\.Font\.Color\s*:=\s*([^;\r\n]+)\s*;
+  - ..\\Converter.Core.Integration.pas:8185 :: Absolute path reference found in live source/project file: w:\s*)?([A-Za-z_][A-Za-z0-9_\.]*)\.TextSettings\.FontColor\s*:=\s*([^;\r\n]+)\s*;
+  - ..\\Converter.Core.Integration.pas:8190 :: Absolute path reference found in live source/project file: w:\s*)?([A-Za-z_][A-Za-z0-9_\.]*)\.Font\.Height\s*:=\s*-?MulDiv\(\s*([^,]+)\s*,\s*Screen\.PixelsPerInch\s*,\s*96\s*\)\s*;
+  - ..\\VCL2FMXConverter.dproj:130 :: Absolute path reference found in live source/project file: C:\Downloads\vcl2fmx.png
+  - ..\\VCL2FMXConverter.dproj:131 :: Absolute path reference found in live source/project file: C:\Downloads\vcl2fmx.png
+  - ..\\VCL2FMXConverter.dproj:197 :: Absolute path reference found in live source/project file: C:\Downloads\vcl2fmx.png
+
+WARNING - Compiled artifact
+  - ..\\Win32\\Release\\Converter.Advanced.CriticalAreas.dcu :: Compiled binary found inside the live workspace.
+  - ..\\Win32\\Release\\Converter.Advanced.DataAware.dcu :: Compiled binary found inside the live workspace.
+  - ..\\Win32\\Release\\Converter.Advanced.ThirdParty.dcu :: Compiled binary found inside the live workspace.
+  - ..\\Win32\\Release\\Converter.Advanced.WinAPI.dcu :: Compiled binary found inside the live workspace.
+  - ..\\Win32\\Release\\Converter.Core.Engine.dcu :: Compiled binary found inside the live workspace.
+  - ..\\Win32\\Release\\Converter.Core.FileManager.dcu :: Compiled binary found inside the live workspace.
+  - ..\\Win32\\Release\\Converter.Core.Integration.dcu :: Compiled binary found inside the live workspace.
+  - ..\\Win32\\Release\\Converter.Core.Types.dcu :: Compiled binary found inside the live workspace.
+  - ..\\Win32\\Release\\Converter.Mapper.Component.dcu :: Compiled binary found inside the live workspace.
+  - ..\\Win32\\Release\\Converter.Parser.DFM.dcu :: Compiled binary found inside the live workspace.
+  - ..\\Win32\\Release\\Converter.Parser.Pascal.dcu :: Compiled binary found inside the live workspace.
+  - ..\\Win32\\Release\\Converter.Project.Generator.dcu :: Compiled binary found inside the live workspace.
+  - ..\\Win32\\Release\\MainForm.dcu :: Compiled binary found inside the live workspace.
+  - ..\\Win32\\Release\\VCL2FMXConverter.exe :: Compiled binary found inside the live workspace.
+
+WARNING - Support-file debug marker
+  - ..\\tools\\run_release_readiness_audit.ps1:136 :: Debug-oriented marker found in tool/reference file: debug log
+  - ..\\tools\\run_release_readiness_audit.ps1:136 :: Debug-oriented marker found in tool/reference file: grid_binding_debug
+  - ..\\tools\\run_release_readiness_audit.ps1:148 :: Debug-oriented marker found in tool/reference file: debug log
+  - ..\\tools\\run_release_readiness_audit.ps1:148 :: Debug-oriented marker found in tool/reference file: DebugBreak
+  - ..\\tools\\run_release_readiness_audit.ps1:148 :: Debug-oriented marker found in tool/reference file: grid_binding_debug
+  - ..\\tools\\run_release_readiness_audit.ps1:148 :: Debug-oriented marker found in tool/reference file: IsDebuggerPresent
+  - ..\\tools\\run_release_readiness_audit.ps1:148 :: Debug-oriented marker found in tool/reference file: OutputDebugString
+  - ..\\tools\\run_release_readiness_audit.ps1:148 :: Debug-oriented marker found in tool/reference file: trace log
+
+WARNING - Support-file local path reference
+  - ..\\tools\\run_full_corpus_audit_2026_03_22.ps1:7 :: Absolute path reference found in tool/reference file: \\Old files\\
+
+

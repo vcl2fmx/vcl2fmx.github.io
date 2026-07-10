@@ -1,0 +1,20 @@
+{
+  "input_file": "contracts\\uses_clause\\15_fmx_units_not_duplicated.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "FMX.Forms",
+    "FMX.Controls",
+    "Caption := 'fmx'"
+  ],
+  "forbidden_output_patterns": [
+    "FMX\\.Forms,\\s*FMX\\.Forms"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

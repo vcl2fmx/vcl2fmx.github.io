@@ -1,0 +1,15 @@
+{
+  "input_file": "contracts\\third_party\\03_unknown_vendor_component.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractUnknownVendorComponent",
+    "VendorControl1: TVendorControl"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\."
+  ],
+  "expected_report_patterns": [
+    "UNKNOWN THIRD-PARTY COMPONENTS"
+  ],
+  "forbidden_report_patterns": []
+}

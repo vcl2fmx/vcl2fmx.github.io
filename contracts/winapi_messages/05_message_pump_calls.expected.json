@@ -1,0 +1,24 @@
+{
+  "input_file": "contracts\\winapi_messages\\05_message_pump_calls.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [
+    "message pump APIs"
+  ],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "GetMessage\\(Msg, 0, 0, 0\\)",
+    "TranslateMessage\\(Msg\\)",
+    "DispatchMessage\\(Msg\\)"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Forms\\b"
+  ],
+  "expected_report_patterns": [
+    "GetMessage|DispatchMessage|TranslateMessage|Windows message"
+  ],
+  "forbidden_report_patterns": []
+}

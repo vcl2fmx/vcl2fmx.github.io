@@ -1,0 +1,29 @@
+﻿object ContractDfmFidelityCaptionWhitespaceForm: TContractDfmFidelityCaptionWhitespaceForm
+  Caption = 'Caption Whitespace Fidelity'
+  Left = 0
+  Top = 0
+  ClientWidth = 320
+  ClientHeight = 240
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+  object Label1: TLabel
+    AutoSize = True
+    WordWrap = False
+    Text = 'User Name:'
+    Position.X = 16.000000000000000000
+    Position.Y = 16.000000000000000000
+  end
+
+  object CheckBox1: TCheckBox
+    Size.Width = 160.000000000000000000
+    Text = 'Enable Schedule'
+    Position.X = 16.000000000000000000
+    Position.Y = 48.000000000000000000
+    Size.Height = 28.000000000000000000
+    Size.PlatformDefault = False
+  end
+
+end

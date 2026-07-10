@@ -1,0 +1,22 @@
+﻿object ContractShapeCircleQuietForm: TContractShapeCircleQuietForm
+  Caption = 'Contract Shape Circle Quiet'
+  Left = 0
+  Top = 0
+  ClientWidth = 220
+  ClientHeight = 120
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+  OnCreate = FormCreate
+  object shpLED: TEllipse
+    Fill.Color = claRed
+    Size.Width = 20.000000000000000000
+    Position.X = 24.000000000000000000
+    Position.Y = 24.000000000000000000
+    Size.Height = 20.000000000000000000
+    Size.PlatformDefault = False
+  end
+
+end

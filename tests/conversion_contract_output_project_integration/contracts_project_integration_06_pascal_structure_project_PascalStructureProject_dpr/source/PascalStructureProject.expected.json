@@ -1,0 +1,24 @@
+{
+  "input_file": "contracts\\project_integration\\06_pascal_structure_project\\PascalStructureProject.dpr",
+  "copy_case_directory": true,
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "IPascalStructureWorker = interface",
+    "TPascalStructureState = record",
+    "procedure ResetState;",
+    "procedure WMSysCommand\\(var Msg: TWMSysCommand\\); message WM_SYSCOMMAND",
+    "procedure TPascalStructureForm.Execute\\(const AText: string\\);"
+  ],
+  "expected_report_patterns": [
+    "Conversion health",
+    "Runtime behavior review",
+    "Pascal structure message handler declaration",
+    "WM_SYSCOMMAND",
+    "Manual review"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Forms\\b",
+    "\\bVcl\\.StdCtrls\\b"
+  ],
+  "forbidden_report_patterns": []
+}

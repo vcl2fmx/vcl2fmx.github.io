@@ -1,0 +1,21 @@
+{
+  "input_file": "contracts\\uses_clause\\21_conditional_vcl_themes_removed.pas",
+  "expected_status": "success",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.Themes",
+    "Winapi.Messages"
+  ],
+  "expected_output_patterns": [
+    "\\{\\$IFDEF USE_VCL_STYLES\\}",
+    "\\{\\$ENDIF\\}",
+    "System.Classes"
+  ],
+  "forbidden_output_patterns": [
+    "Vcl\\.Themes"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

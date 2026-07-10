@@ -1,0 +1,1 @@
+{"input_file":"contracts\\include_analysis\\10_utf8_include\\IncludeUtf8.pas","expected_status":"converted","expected_output_patterns":["unit IncludeUtf8"],"expected_report_patterns":["Pascal include directive","Utf8Text\\.inc"],"forbidden_output_patterns":[],"forbidden_report_patterns":["Pascal include read failure"]}

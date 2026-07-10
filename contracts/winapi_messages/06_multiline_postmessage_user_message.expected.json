@@ -1,0 +1,22 @@
+{
+  "input_file": "contracts\\winapi_messages\\06_multiline_postmessage_user_message.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [
+    "WM_USER PostMessage"
+  ],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "WM_USER|TMessageManager|Original: PostMessage|PostMessage\\("
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Forms\\b"
+  ],
+  "expected_report_patterns": [
+    "WM_USER|PostMessage|Windows messaging"
+  ],
+  "forbidden_report_patterns": []
+}

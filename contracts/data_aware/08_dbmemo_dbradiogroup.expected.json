@@ -1,0 +1,14 @@
+{
+  "input_file": "contracts\\data_aware\\08_dbmemo_dbradiogroup.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractDBMemoDBRadioGroup",
+    "DBMemo1: TDBMemo",
+    "DBRadioGroup1: TDBRadioGroup"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.DBCtrls\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

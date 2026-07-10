@@ -1,0 +1,12 @@
+﻿<!doctype html><html><head><meta charset="utf-8"><title>Opening the Converted Project in Delphi</title><link rel="stylesheet" href="../style.css"></head><body class="topic-page"><main><div class="doc-topic" style="display:block;">
+<h1>11. Opening the Converted Project in Delphi</h1>
+
+<ol start="1"><li>Open the generated project in Delphi.</li></ol>
+<ol start="2"><li>Let Delphi load the forms and watch for form-reader errors first.</li></ol>
+<ol start="3"><li>Build the project and capture the real compiler results.</li></ol>
+<ol start="4"><li>Fix structural problems before pursuing visual polish.</li></ol>
+<ol start="5"><li>Rebuild and rerun after each significant converter improvement.</li></ol>
+<p>The converter now strips or remaps several common VCL-only form properties before Delphi sees the FMX output, so some earlier reader failures no longer appear. Even so, form-reader errors still deserve first priority because they block every later stage of validation.</p>
+
+<p>The first successful load of the project is a major milestone, but it is not the end of validation. A project can open and still fail at compile time, or compile and still fail at runtime. Treat these as separate checkpoints.</p>
+</div><div class="page-nav"><a href="../index.html" target="_top">Contents</a><a href="understanding-the-output-folder-and-files.html" onclick="try{parent.setActiveTopic('topics/understanding-the-output-folder-and-files.html');}catch(e){}">Previous</a><a href="validating-the-converted-application.html" onclick="try{parent.setActiveTopic('topics/validating-the-converted-application.html');}catch(e){}">Next</a></div></main><script>try{parent.postMessage({helpTopic:"topics/opening-the-converted-project-in-delphi.html"},"*");}catch(e){}</script></body></html>

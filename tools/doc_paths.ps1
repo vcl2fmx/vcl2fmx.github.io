@@ -1,0 +1,23 @@
+﻿$ProjectRoot = Split-Path -Parent $PSScriptRoot
+$DocsRoot = Join-Path $ProjectRoot 'docs'
+$GuidesRoot = Join-Path $DocsRoot 'guides'
+$GuideGraphicsRoot = Join-Path $GuidesRoot 'graphics'
+$ReferencesRoot = Join-Path $DocsRoot 'references'
+$ReferencesDocxRoot = Join-Path $ReferencesRoot 'docx'
+$ReferencesHtmlRoot = Join-Path $ReferencesRoot 'html'
+$NotesRoot = Join-Path $DocsRoot 'notes'
+$BrandingRoot = Join-Path $DocsRoot 'branding'
+
+$UserGuidePath = Join-Path $GuidesRoot 'VCL2FMXConverter_v5_0_User_Guide.docx'
+$EngineeringGuidePath = Join-Path $GuidesRoot 'VCL2FMXConverter_v5_0_Engineering_Guide.docx'
+$EngineeringGuideDiagnosticPath = Join-Path $GuidesRoot 'VCL2FMXConverter_Engineering_Guide_Diagnostic.docx'
+$ComponentMappingReferencePath = Join-Path $ReferencesDocxRoot 'VCL2FMXConverter_Component_Mapping_Reference_v5_0.docx'
+$GenericRulesReferenceDocxPath = Join-Path $ReferencesDocxRoot 'VCL2FMXConverter_Generic_Rules_Reference_v5_0.docx'
+$GenericRulesReferenceHtmlPath = Join-Path $ReferencesHtmlRoot 'VCL2FMXConverter_Generic_Rules_Reference_v5_0.html'
+$LogoPath = Join-Path $BrandingRoot 'VCL2FMXConverter_Logo.svg'
+$UserGuideGraphicPath = Join-Path $GuideGraphicsRoot 'VCL2FMXConverter_User_Guide_Graphic.svg'
+$EngineeringGuideGraphicPath = Join-Path $GuideGraphicsRoot 'VCL2FMXConverter_Engineering_Guide_Graphic.svg'
+$ExhaustiveMappingWorklistPath = Join-Path $NotesRoot 'EXHAUSTIVE_MAPPING_WORKLIST_2026-03-23.md'
+$CoverageAuditPath = Join-Path $NotesRoot 'VCL_COMPONENT_COVERAGE_AUDIT_2026-03-21.md'
+$ProjectOverviewPath = Join-Path $NotesRoot 'VCL2FMX_Delphi_Conversion_Project_Overview.docx'
+

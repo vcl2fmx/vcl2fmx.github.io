@@ -1,0 +1,22 @@
+{
+  "input_file": "contracts\\winapi_messages\\11_postmessage_wm_close.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [
+    "WM_CLOSE PostMessage"
+  ],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "WM_CLOSE|Close|OnCloseQuery|Original: PostMessage"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Forms\\b"
+  ],
+  "expected_report_patterns": [
+    "WM_CLOSE|PostMessage|Windows messaging"
+  ],
+  "forbidden_report_patterns": []
+}

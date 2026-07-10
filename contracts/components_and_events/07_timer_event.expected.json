@@ -1,0 +1,24 @@
+{
+  "input_file": "contracts\\components_and_events\\07_timer_event.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [
+    "FMX.Forms"
+  ],
+  "expected_units_absent": [
+    "Vcl.Forms",
+    "Vcl.ExtCtrls"
+  ],
+  "expected_output_patterns": [
+    "Timer1: TTimer",
+    "procedure Timer1Timer\\(Sender: TObject\\)",
+    "Caption := TimeToStr\\(Now\\)"
+  ],
+  "forbidden_output_patterns": [
+    "Vcl\\.Forms",
+    "Vcl\\.ExtCtrls"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

@@ -1,0 +1,18 @@
+{
+  "input_file": "contracts\\uses_clause\\19_var_in_uses_cleanup.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "System.SysUtils",
+    "System.Classes",
+    "type TContractVarInUsesCleanup"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

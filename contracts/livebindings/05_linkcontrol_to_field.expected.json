@@ -1,0 +1,15 @@
+{
+  "input_file": "contracts\\livebindings\\05_linkcontrol_to_field.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractLinkControlToField",
+    "LinkControlToField1: TLinkControlToField",
+    "Data\\.Bind\\.Components",
+    "Fmx\\.Bind\\.Editors"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\."
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

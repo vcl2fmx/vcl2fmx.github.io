@@ -1,0 +1,51 @@
+# Delphi build output
+*.dcu
+*.exe
+*.dll
+*.bpl
+*.dcp
+*.map
+*.rsm
+*.tds
+*.identcache
+*.local
+*.stat
+*.drc
+*.dres
+*.skincfg
+
+# Delphi temporary/history files
+__history/
+__recovery/
+*.~*
+*.bak
+*.tmp
+
+# Common build folders
+bin/
+dcu/
+Win32/
+Win64/
+Debug/
+Release/
+
+# Generated/source distribution output
+Source Distributions/
+Exports/
+MySetups/
+*.zip
+*.7z
+*.rar
+
+# Local databases and logs
+*.db
+*.sqlite
+*.sqlite3
+*.log
+
+# Local Codex/agent state
+.agents/
+
+# OS/editor clutter
+Thumbs.db
+Desktop.ini

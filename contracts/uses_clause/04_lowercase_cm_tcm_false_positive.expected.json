@@ -1,0 +1,10 @@
+{
+  "input_file": "contracts\\uses_clause\\04_lowercase_cm_tcm_false_positive.pas",
+  "expected_status": "converted",
+  "expected_units_added": [],
+  "expected_units_absent": ["Winapi.Messages", "Winapi.Windows"],
+  "expected_output_patterns": ["cm_custom_mode := 1", "tcmWidgetName := 'not a Windows message type'"],
+  "forbidden_output_patterns": ["\\bWinapi\\.Messages\\b", "\\bWinapi\\.Windows\\b"],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": ["Windows messaging", "message-based behavior"]
+}

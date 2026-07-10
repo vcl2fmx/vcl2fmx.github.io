@@ -1,0 +1,23 @@
+{
+  "input_file": "contracts\\components_and_events\\05_key_events.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [
+    "FMX.Forms"
+  ],
+  "expected_units_absent": [
+    "Vcl.Forms",
+    "Vcl.Controls"
+  ],
+  "expected_output_patterns": [
+    "procedure FormKeyDown\\(Sender: TObject; var Key: Word; Shift: TShiftState\\)",
+    "Caption := 'enter'"
+  ],
+  "forbidden_output_patterns": [
+    "Vcl\\.Forms",
+    "Vcl\\.Controls"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

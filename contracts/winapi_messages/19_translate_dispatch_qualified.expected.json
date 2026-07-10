@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\winapi_messages\\19_translate_dispatch_qualified.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["qualified message pump APIs"],
+  "expected_units_added": [],
+  "expected_units_absent": [],
+  "expected_output_patterns": ["TranslateMessage|DispatchMessage|Message pump|Original:"],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": "TranslateMessage|DispatchMessage|Windows messaging|Message pump",
+  "forbidden_report_patterns": []
+}

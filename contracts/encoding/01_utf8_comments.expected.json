@@ -1,0 +1,14 @@
+{
+  "input_file": "contracts\\encoding\\01_utf8_comments.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractUTF8Comments",
+    "// accents: cafe naive facade resume",
+    "Writeln\\('utf8'\\);"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\."
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

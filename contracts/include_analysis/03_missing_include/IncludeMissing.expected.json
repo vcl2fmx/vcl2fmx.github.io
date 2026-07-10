@@ -1,0 +1,1 @@
+{"input_file":"contracts\\include_analysis\\03_missing_include\\IncludeMissing.pas","expected_status":"converted","expected_output_patterns":["unit IncludeMissing"],"expected_report_patterns":["Pascal include file missing","MissingIncludeFile\\.inc"],"forbidden_output_patterns":[],"forbidden_report_patterns":[]}

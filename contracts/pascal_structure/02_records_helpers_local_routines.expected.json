@@ -1,0 +1,27 @@
+{
+  "input_file": "contracts\\pascal_structure\\02_records_helpers_local_routines.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.Forms",
+    "Winapi.Messages"
+  ],
+  "expected_output_patterns": [
+    "TContractRecord = record",
+    "TContractRecordHelper = record helper for TContractRecord",
+    "procedure ResetField;",
+    "ResetField;",
+    "Value := AValue"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Forms\\b",
+    "\\bWinapi\\.Messages\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": [
+    "Windows message-based behavior",
+    "VCL/GDI drawing"
+  ]
+}

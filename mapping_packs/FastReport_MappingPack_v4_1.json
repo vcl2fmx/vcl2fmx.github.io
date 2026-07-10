@@ -1,0 +1,112 @@
+{
+  "pack_name": "FastReport_MappingPack_v2",
+  "pack_id": "fastreport.detection.v2",
+  "vendor": "Fast Reports",
+  "version": "2.0.0",
+  "description": "Detection and cautious preservation guidance for FastReport VCL components. FastReport has FMX offerings, but reports, datasets, exporters, previews, and server components require package/license verification and report-template review.",
+  "mode": "detection",
+  "rules": [
+    {
+      "vcl_class": "TfrxReport",
+      "action": "manual_review",
+      "confidence": 60,
+      "manual_review_reason": "FastReport reports may be portable only if the target project owns a compatible FastReport FMX/runtime package and report templates are reviewed."
+    },
+    {
+      "vcl_class": "TfrxDBDataSet",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Dataset connectors must be reviewed with the target data layer and FastReport package."
+    },
+    {
+      "vcl_class": "TfrxUserDataSet",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "User dataset callbacks and report data feeding are application-specific."
+    },
+    {
+      "vcl_class": "TfrxIBODataSet",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "IB Objects connector behavior depends on the source data-access stack."
+    },
+    {
+      "vcl_class": "TfrxPreview",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "Preview UI must be matched to the FastReport FMX viewer or redesigned."
+    },
+    {
+      "vcl_class": "TfrxDesigner",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Report designer integration is package/version/license-specific."
+    },
+    {
+      "vcl_class": "TfrxPDFExport",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Exporter may have a compatible runtime class, but output settings and package references require review."
+    },
+    {
+      "vcl_class": "TfrxXLSExport",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "Legacy XLS export settings and package references require review."
+    },
+    {
+      "vcl_class": "TfrxXLSXExport",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "XLSX export settings and package references require review."
+    },
+    {
+      "vcl_class": "TfrxHTMLExport",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "HTML export settings and package references require review."
+    },
+    {
+      "vcl_class": "TfrxRTFExport",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "RTF export settings and package references require review."
+    },
+    {
+      "vcl_class": "TfrxCSVExport",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "CSV export settings and package references require review."
+    },
+    {
+      "vcl_class": "TfrxMailExport",
+      "action": "detect_only",
+      "confidence": 30,
+      "manual_review_reason": "Mail export depends on platform mail/network behavior and package support."
+    },
+    {
+      "vcl_class": "TfrxReportServer",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "FastReport server components require architecture-level review."
+    },
+    {
+      "vcl_class": "TfrxServerConnection",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Client/server report connection behavior requires architecture-level review."
+    },
+    {
+      "vcl_class": "TfrxReportClient",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Report client behavior depends on FastReport server/client architecture."
+    },
+    {
+      "vcl_class": "TfrxHTTPClient",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "HTTP report client behavior requires manual network/runtime review."
+    }
+  ]
+}

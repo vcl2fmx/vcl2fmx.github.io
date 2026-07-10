@@ -1,0 +1,22 @@
+{
+  "input_file": "contracts\\winapi_messages\\13_sendmessage_lb_selectstring.pas",
+  "expected_status": "converted",
+  "expected_conversions": [
+    "LB_SELECTSTRING SendMessage converted to FMX helper"
+  ],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.StdCtrls"
+  ],
+  "expected_output_patterns": [
+    "GeneratedFMXListBoxSelectString|LB_SELECTSTRING|Original: SendMessage|SendMessage\\("
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.StdCtrls\\b"
+  ],
+  "expected_report_patterns": [
+    "LB_SELECTSTRING|SendMessage|Windows message"
+  ],
+  "forbidden_report_patterns": []
+}

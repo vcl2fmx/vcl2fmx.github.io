@@ -1,0 +1,57 @@
+object FormDevExpressMock: TFormDevExpressMock
+  Caption = 'DevExpress Mapping Pack Mock Test'
+  Left = 0
+  Top = 0
+  ClientWidth = 560
+  ClientHeight = 360
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+  object cxButton1: TButton
+    Size.Width = 120.000000000000000000
+    Text = 'Click Me'
+    Visible = True
+    Position.X = 24.000000000000000000
+    Position.Y = 24.000000000000000000
+    Enabled = True
+    Hint = 'Button hint'
+    Size.Height = 36.000000000000000000
+    Size.PlatformDefault = False
+    OnClick = cxButton1Click
+  end
+
+  object cxTextEdit1: TEdit
+    Text = 'Sample text'
+    Size.Width = 180.000000000000000000
+    Visible = True
+    Position.X = 24.000000000000000000
+    Position.Y = 72.000000000000000000
+    Enabled = True
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+    OnChange = cxTextEdit1Change
+  end
+
+  object cxMemo1: TMemo
+    Text = 'Sample memo'
+    Size.Width = 220.000000000000000000
+    Visible = True
+    Position.X = 24.000000000000000000
+    Position.Y = 112.000000000000000000
+    Enabled = True
+    Size.Height = 80.000000000000000000
+    Size.PlatformDefault = False
+  end
+
+  object cxMaskEdit1: TEdit
+    Text = '12345'
+    Size.Width = 180.000000000000000000
+    Position.X = 24.000000000000000000
+    Position.Y = 208.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+  end
+
+end

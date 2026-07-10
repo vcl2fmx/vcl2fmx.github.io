@@ -1,0 +1,119 @@
+﻿
+==================================================
+CONVERSION SUMMARY
+==================================================
+
+Total time: < 1 second
+Files processed: 1
+Files converted: 1
+Files with errors: 0
+Files skipped: 0
+Mapping packs loaded: 22
+
+OUTPUT FILES
+----------------------------------------
+Output folder: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output\contracts_livebindings_06_bindsource_db_pas\output
+Text report: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output\contracts_livebindings_06_bindsource_db_pas\output\VCL_to_FMX_Conversion_Report.txt
+HTML report: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output\contracts_livebindings_06_bindsource_db_pas\output\VCL_to_FMX_Conversion_Report.html
+Converted Pascal files are written beside converted source names in the output folder.
+Converted FMX files are written beside converted source names in the output folder.
+
+Total issues: 0
+Informational notices: 1
+Distinct files needing attention: 0
+Final status: Clean conversion
+Manual fixes required: 0
+Blocking items: 0
+Files with conversion errors: 0
+Recommended next step: Open the report for a final sanity check, then compile and smoke-test the generated project in the IDE.
+
+Review note: Generated output should be reviewed in the IDE. Projects with manual-review or blocking items may not run until those items are fixed or mitigated.
+
+CONVERSION HEALTH
+----------------------------------------
+Compile readiness: no blocking or manual-review categories were detected by the converter.
+Runtime behavior review: No
+Visual review: No
+Data binding review: No
+Manual code review: No
+
+MAPPING PACKS LOADED
+----------------------------------------
+1. CleverComponents_MappingPack_v4_1 (clevercomponents.mapping.v2) - 14 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\CleverComponents_MappingPack_v4_1.json
+2. DatabaseEngines_MappingPack_v4_1 (databaseengines.mapping.v2) - 27 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\DatabaseEngines_MappingPack_v4_1.json
+3. Devart_MappingPack_v4_1 (devart.dataaccess.preserve.v2) - 24 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\Devart_MappingPack_v4_1.json
+4. DevExpress_MappingPack_v4_1 (devexpress.complete.v2) - 89 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\DevExpress_MappingPack_v4_1.json
+5. EhLib_MappingPack_v4_1 (ehlib.complete.v2) - 20 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\EhLib_MappingPack_v4_1.json
+6. FastReport_MappingPack_v4_1 (fastreport.detection.v2) - 17 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\FastReport_MappingPack_v4_1.json
+7. Imaging_PDF_MappingPack_v4_1 (imaging.pdf.mapping.v2) - 16 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\Imaging_PDF_MappingPack_v4_1.json
+8. InfoPower_MappingPack_v4_1 (woll2woll.infopower.complete.v2) - 20 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\InfoPower_MappingPack_v4_1.json
+9. IntraWeb_UniGUI_MappingPack_v4_1 (intraweb.unigui.detectonly.v2) - 27 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\IntraWeb_UniGUI_MappingPack_v4_1.json
+10. JVCL_MappingPack_v4_1 (jvcl.complete.v2) - 32 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\JVCL_MappingPack_v4_1.json
+11. LegacyOpenSource_MappingPack_v4_1 (legacyopensource.mapping.v2) - 22 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\LegacyOpenSource_MappingPack_v4_1.json
+12. LMD_MappingPack_v4_1 (lmd.complete.v2) - 26 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\LMD_MappingPack_v4_1.json
+13. nSoftware_MappingPack_v4_1 (nsoftware.mapping.v2) - 16 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\nSoftware_MappingPack_v4_1.json
+14. QuickReport_MappingPack_v4_1 (quickreport.mapping.v2) - 10 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\QuickReport_MappingPack_v4_1.json
+15. Raize_Konopka_MappingPack_v4_1 (raize.konopka.complete.v2) - 29 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\Raize_Konopka_MappingPack_v4_1.json
+16. RemObjects_MappingPack_v4_1 (remobjects.mapping.v2) - 12 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\RemObjects_MappingPack_v4_1.json
+17. ReportBuilder_MappingPack_v4_1 (reportbuilder.mapping.v2) - 12 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\ReportBuilder_MappingPack_v4_1.json
+18. Skia4Delphi_MappingPack_v4_1 (skia4delphi.mapping.v2) - 6 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\Skia4Delphi_MappingPack_v4_1.json
+19. TeeChart_MappingPack_v4_1 (steema.teechart.basic.detection.v2) - 16 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\TeeChart_MappingPack_v4_1.json
+20. TMS_MappingPack_v4_1 (tms.complete.v2) - 41 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\TMS_MappingPack_v4_1.json
+21. TRichView_MappingPack_v4_1 (trichview.mapping.v2) - 10 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\TRichView_MappingPack_v4_1.json
+22. VirtualTreeView_MappingPack_v4_1 (virtualtreeview.detection.v2) - 7 rules - C:\New Delphi Projects\VCL2FMXConverterV5\mapping_packs\VirtualTreeView_MappingPack_v4_1.json
+
+THIRD-PARTY COMPONENTS CONVERTED
+----------------------------------------
+No third-party mapping-pack components were fully converted.
+
+THIRD-PARTY COMPONENTS PARTIALLY CONVERTED
+----------------------------------------
+No third-party mapping-pack components were partially converted.
+
+THIRD-PARTY COMPONENTS DETECTED ONLY
+----------------------------------------
+No detect-only third-party mapping-pack components were found.
+
+MAPPINGS USED
+----------------------------------------
+No mapping-pack rules were used during this run.
+
+UNKNOWN THIRD-PARTY COMPONENTS
+----------------------------------------
+None detected.
+
+DETAILED ISSUES
+----------------------------------------
+[INFO] Cross-unit semantic index built: 1 classes, 0 methods.
+  Problem type: Pascal semantic index
+  Risk category: Information
+  Recommendation: The converter used this project-wide index to reduce false positives when checking declarations and implementations across units.
+
+
+ISSUE SUMMARY
+------------------------------
+Informational: 1
+Warnings: 0
+Manual review required: 0
+Errors: 0
+Blocking items: 0
+
+CONVERSION LOG
+--------------------------------------------------------------------------------
+[16:54:08] WARNING: ScreenMemo not assigned - UI updates disabled
+[16:54:08] 
+[16:54:08] VCL TO FMX CONVERSION STARTED
+[16:54:08] ========================================
+[16:54:08] Source: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output\contracts_livebindings_06_bindsource_db_pas\source
+[16:54:08] Output: C:\New Delphi Projects\VCL2FMXConverterV5\tests\conversion_contract_output\contracts_livebindings_06_bindsource_db_pas\output
+[16:54:08] 
+[16:54:08] Found 1 files to process
+[16:54:08] 
+[16:54:08] [1/1] Processing: 06_bindsource_db.pas
+[16:54:08] Processing Pascal: 06_bindsource_db.pas
+[16:54:08]   Reading 06_bindsource_db.pas...
+[16:54:08]   Encoding: 20127 (US-ASCII)
+[16:54:08]   Converted
+[16:54:08] 
+[16:54:08] Generating project files...
+[16:54:08] Project files generated

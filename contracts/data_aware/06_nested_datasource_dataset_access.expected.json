@@ -1,0 +1,19 @@
+{
+  "input_file": "contracts\\data_aware\\06_nested_datasource_dataset_access.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractNestedDataSourceDataSetAccess",
+    "DBEdit1: TEdit",
+    "// FMX manual review: DBEdit1\\.DataSource\\.DataSet\\.First;"
+  ],
+  "forbidden_output_patterns": [
+    "^\\s*DBEdit1\\.DataSource\\.DataSet\\.First;",
+    "\\bTDBEdit\\b"
+  ],
+  "expected_report_patterns": [
+    "Nested VCL DataSource\\.DataSet access needs FMX manual review",
+    "Review the dataset access and replace control-bound assumptions with LiveBindings or direct dataset logic",
+    "Data binding review: Yes"
+  ],
+  "forbidden_report_patterns": []
+}

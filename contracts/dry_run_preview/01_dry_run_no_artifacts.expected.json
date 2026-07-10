@@ -1,0 +1,13 @@
+{
+  "input_file": "contracts\\dry_run_preview\\01_dry_run_no_artifacts.pas",
+  "expected_status": "converted",
+  "engine_args": ["--dry-run"],
+  "expected_no_output_files": true,
+  "expected_output_patterns": [],
+  "forbidden_output_patterns": ["unit ContractDryRunPreview"],
+  "expected_report_patterns": [
+    "Dry-run preview",
+    "would save"
+  ],
+  "forbidden_report_patterns": []
+}

@@ -1,0 +1,101 @@
+{
+  "pack_name": "RemObjects_MappingPack_v2",
+  "pack_id": "remobjects.mapping.v2",
+  "vendor": "RemObjects Software",
+  "version": "2.0.0",
+  "description": "Conservative preservation pack for RemObjects Data Abstract and Remoting SDK components. Most components are nonvisual service/data-access components and may be preserved when the target project references compatible RemObjects packages.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TDARemoteDataAdapter",
+      "fmx_class": "TDARemoteDataAdapter",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "Remote data adapter is nonvisual and may be preserved with compatible Data Abstract packages.",
+      "manual_review_reason": "Verify schema, service names, login flow, dataset usage, and target-platform support."
+    },
+    {
+      "vcl_class": "TDAMemDataTable",
+      "fmx_class": "TDAMemDataTable",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "Memory table is nonvisual and may be preserved.",
+      "manual_review_reason": "Review fields, indexes, update logic, and binding strategy."
+    },
+    {
+      "vcl_class": "TDADataTable",
+      "fmx_class": "TDADataTable",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "Data table component may be preserved with Data Abstract packages.",
+      "manual_review_reason": "Review data adapters, field definitions, and update behavior."
+    },
+    {
+      "vcl_class": "TDASchema",
+      "fmx_class": "TDASchema",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "Schema component is nonvisual and may be preserved.",
+      "manual_review_reason": "Verify schema resource deployment and compatibility."
+    },
+    {
+      "vcl_class": "TROBinMessage",
+      "fmx_class": "TROBinMessage",
+      "action": "preserve",
+      "confidence": 78,
+      "notes": "Message component is nonvisual and usually portable within RemObjects-supported targets.",
+      "manual_review_reason": "Verify package references and channel compatibility."
+    },
+    {
+      "vcl_class": "TROSOAPMessage",
+      "fmx_class": "TROSOAPMessage",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "SOAP message component is nonvisual and may be preserved.",
+      "manual_review_reason": "Verify service endpoints, serialization, and deployment requirements."
+    },
+    {
+      "vcl_class": "TROIndyHTTPChannel",
+      "fmx_class": "TROIndyHTTPChannel",
+      "action": "preserve",
+      "confidence": 72,
+      "notes": "HTTP channel may be preserved when Indy/RemObjects packages support the target.",
+      "manual_review_reason": "Review TLS, certificates, proxy behavior, and platform networking permissions."
+    },
+    {
+      "vcl_class": "TROWinInetHTTPChannel",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "WinInet is Windows-specific and may not be appropriate for cross-platform FMX targets."
+    },
+    {
+      "vcl_class": "TROIndyTCPChannel",
+      "fmx_class": "TROIndyTCPChannel",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "TCP channel may be preserved with compatible packages.",
+      "manual_review_reason": "Review network permissions, TLS, timeouts, and platform behavior."
+    },
+    {
+      "vcl_class": "TROLocalChannel",
+      "fmx_class": "TROLocalChannel",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "Local channel may be preserved in compatible application architectures.",
+      "manual_review_reason": "Verify server/client lifetime and threading model."
+    },
+    {
+      "vcl_class": "TROEventReceiver",
+      "fmx_class": "TROEventReceiver",
+      "action": "manual_review",
+      "confidence": 60,
+      "manual_review_reason": "Event receiver threading and UI synchronization must be reviewed for FMX."
+    },
+    {
+      "vcl_class": "TROPoweredByButton",
+      "action": "manual_review",
+      "confidence": 35,
+      "manual_review_reason": "Visual branding/button component should be replaced or rebuilt in FMX."
+    }
+  ]
+}

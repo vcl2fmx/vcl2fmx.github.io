@@ -1,0 +1,13 @@
+﻿{
+  "input_file": "contracts\\dfm_fidelity\\03_caption_whitespace_normalized.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "Text = 'User Name:'",
+    "Text = 'Enable Schedule'"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": [
+    "DFM/FMXL property fidelity check"
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "pack_name": "EhLib_MappingPack_v2",
+  "pack_id": "ehlib.complete.v2",
+  "vendor": "EhLib",
+  "version": "2.0.0",
+  "description": "Complete merged mapping pack for EhLib VCL controls. Combines the original base pack with supplemental entries covering data-aware label, datetime edit, calculator edit, popup date picker, and standalone lookup control.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TEditEh",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Plain text entry can map to TEdit. Edit buttons, masks, lookup behavior, and validation require review.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TDBEditEh",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 60,
+      "notes": "Visual edit can map to TEdit, but data binding and EhLib validation require review.",
+      "manual_review_reason": "Verify DataSource/DataField conversion and LiveBindings output."
+    },
+    {
+      "vcl_class": "TComboBoxEh",
+      "fmx_class": "TComboBox",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Basic item list can map. MRU, edit buttons, lookup behavior, and custom dropdowns require review.",
+      "properties": [
+        {
+          "vcl": "Items",
+          "fmx": "Items"
+        },
+        {
+          "vcl": "ItemIndex",
+          "fmx": "ItemIndex"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TDBComboBoxEh",
+      "fmx_class": "TComboBox",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Combo box UI can map, but DB value semantics require review.",
+      "manual_review_reason": "Verify field values, lookup lists, and LiveBindings."
+    },
+    {
+      "vcl_class": "TDBDateTimeEditEh",
+      "fmx_class": "TDateEdit",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Date editor UI can map. Time, null value, mask, and DB semantics require review.",
+      "manual_review_reason": "Verify date/time formatting and data binding."
+    },
+    {
+      "vcl_class": "TDBNumberEditEh",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 50,
+      "notes": "Plain edit generated. Numeric formatting, display masks, and DB semantics require review.",
+      "manual_review_reason": "Use TSpinBox/TNumberBox/custom validation where appropriate."
+    },
+    {
+      "vcl_class": "TDBCheckBoxEh",
+      "fmx_class": "TCheckBox",
+      "action": "partial",
+      "confidence": 60,
+      "notes": "Checkbox UI can map. DB checked/unchecked values require review.",
+      "manual_review_reason": "Verify field values and LiveBindings."
+    },
+    {
+      "vcl_class": "TDBGridEh",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "EhLib DBGrid has rich columns, editors, footers, filters, and data behavior requiring a grid-specific migration plan."
+    },
+    {
+      "vcl_class": "TDBVertGridEh",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Vertical data grid requires manual redesign."
+    },
+    {
+      "vcl_class": "TDBLookupComboboxEh",
+      "action": "manual_review",
+      "confidence": 40,
+      "manual_review_reason": "Lookup key/display/list-source semantics are too application-specific for automatic conversion."
+    },
+    {
+      "vcl_class": "TDBLookupListBoxEh",
+      "action": "manual_review",
+      "confidence": 40,
+      "manual_review_reason": "Lookup list semantics require manual migration."
+    },
+    {
+      "vcl_class": "TMemTableEh",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "In-memory dataset may need FireDAC TFDMemTable or another FMX-compatible replacement; review fields, indexes, and persistence."
+    },
+    {
+      "vcl_class": "TDataSetDriverEh",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "Dataset driver/update behavior requires data-layer review."
+    },
+    {
+      "vcl_class": "TPlannerControlEh",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Planner controls require manual scheduler/data migration."
+    },
+    {
+      "vcl_class": "TDBPlannerControlEh",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Data-aware planner controls require manual scheduler/data migration."
+    },
+    {
+      "vcl_class": "TDBLabelEh",
+      "fmx_class": "TLabel",
+      "action": "partial",
+      "confidence": 60,
+      "notes": "Data-aware label maps to FMX TLabel for display. DataSource and DataField binding requires LiveBindings review.",
+      "manual_review_reason": "Verify DataSource/DataField conversion and LiveBindings output for label field display.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TDateTimeEditEh",
+      "fmx_class": "TDateEdit",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Datetime edit maps partially to FMX TDateEdit. Time portion, null value handling, mask formatting, and DB binding require review.",
+      "manual_review_reason": "Verify date/time formatting, null date behavior, and DataSource/DataField if data-aware."
+    },
+    {
+      "vcl_class": "TCalcEditEh",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 45,
+      "notes": "Calculator-style edit maps to plain TEdit for text entry. Popup calculator, numeric formatting, and validation are not recreated.",
+      "manual_review_reason": "Replace calculator popup with a custom numeric input approach or TSpinBox/TNumberBox with appropriate range and format."
+    },
+    {
+      "vcl_class": "TPopupDateTimePickerEh",
+      "fmx_class": "TDateEdit",
+      "action": "partial",
+      "confidence": 50,
+      "notes": "Popup date picker maps to FMX TDateEdit for basic date display and selection. Popup calendar customization and time handling require review.",
+      "manual_review_reason": "Verify popup behavior, date formatting, and time portion handling after conversion."
+    },
+    {
+      "vcl_class": "TLookupEh",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "EhLib standalone lookup control with dataset/key/display semantics requires manual FMX redesign. Consider a TComboBox with LiveBindings lookup or a custom FMX lookup editor."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\winapi_messages\\30_sendmessage_in_comment_and_code.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["active SendMessage only"],
+  "expected_units_added": [],
+  "expected_units_absent": [],
+  "expected_output_patterns": ["WM_SIZE|Original: SendMessage|SendMessage\\("],
+  "forbidden_output_patterns": ["Original: // SendMessage"],
+  "expected_report_patterns": ["WM_SIZE|SendMessage|Windows messaging"],
+  "forbidden_report_patterns": []
+}

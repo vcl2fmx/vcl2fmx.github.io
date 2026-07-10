@@ -1,0 +1,15 @@
+{
+  "input_file": "contracts\\components_and_events\\23_numeric_math_simple_div.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractNumericMathSimpleDiv",
+    "Panel1\\.Width := Panel2\\.Width / 2;",
+    "Panel1\\.Height := ClientHeight / 2;"
+  ],
+  "forbidden_output_patterns": [
+    "\\bdiv\\b",
+    "Round\\(Round\\("
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

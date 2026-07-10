@@ -1,0 +1,484 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VCL to FMX Conversion Report</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --page-bg: #eef5fd;
+      --card-bg: #ffffff;
+      --hero-a: #2f6fcd;
+      --hero-b: #5d95e2;
+      --text: #13314f;
+      --muted: #58708d;
+      --line: #d6e4f3;
+      --info: #2f6fcd;
+      --warning: #c98a19;
+      --manual: #b25f2c;
+      --error: #c24141;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #f6faff 0%, var(--page-bg) 100%);
+    }
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    .hero {
+      border-radius: 24px;
+      padding: 28px 32px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--hero-a) 0%, var(--hero-b) 100%);
+      box-shadow: 0 20px 40px rgba(30, 72, 123, 0.15);
+    }
+    .eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      opacity: 0.8;
+    }
+    h1 {
+      margin: 10px 0 8px;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+    .hero p {
+      margin: 0;
+      max-width: 900px;
+      color: rgba(255,255,255,0.92);
+    }
+    .status-chip {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      font-weight: 600;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .meta-card, .section, .manual-card {
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 12px 28px rgba(17, 49, 79, 0.06);
+    }
+    .meta-card {
+      padding: 16px 18px;
+    }
+    .meta-card .label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .meta-card .value {
+      margin-top: 8px;
+      font-size: 25px;
+      font-weight: 700;
+    }
+    .section {
+      margin-top: 22px;
+      padding: 22px 24px;
+    }
+    .section h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+    .section p.section-note {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px 10px;
+      text-align: left;
+      vertical-align: top;
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+    th.row-index {
+      width: 42px;
+      min-width: 42px;
+      white-space: nowrap;
+      text-align: right;
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+    th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      border-top: none;
+      padding-top: 0;
+    }
+    .severity {
+      display: inline-block;
+      min-width: 76px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .detailed-issues-wrap {
+      overflow-x: auto;
+    }
+    .detailed-issues-table {
+      min-width: 1040px;
+      table-layout: fixed;
+    }
+    .detailed-issues-table th:nth-child(1), .detailed-issues-table td:nth-child(1) { width: 100px; min-width: 100px; }
+    .detailed-issues-table th:nth-child(2), .detailed-issues-table td:nth-child(2) { width: 260px; }
+    .detailed-issues-table th:nth-child(3), .detailed-issues-table td:nth-child(3) { width: 260px; }
+    .detailed-issues-table th:nth-child(4), .detailed-issues-table td:nth-child(4) {
+      width: 68px;
+      min-width: 68px;
+      text-align: right;
+      white-space: nowrap;
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+    .detailed-issues-table th:nth-child(5), .detailed-issues-table td:nth-child(5) { width: 160px; }
+    .detailed-issues-table th:nth-child(6), .detailed-issues-table td:nth-child(6) { width: 300px; }
+    .issues-table th:first-child, .issues-table td:first-child {
+      width: 100px;
+      min-width: 100px;
+    }
+    .severity.info { background: var(--info); }
+    .severity.warning { background: var(--warning); }
+    .severity.manual { background: var(--manual); }
+    .severity.error { background: var(--error); }
+    .severity.neutral { background: #7a8ea7; }
+    .manual-list {
+      display: grid;
+      gap: 16px;
+    }
+    .manual-card {
+      padding: 18px 20px;
+    }
+    .manual-card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+    .usage-list {
+      display: grid;
+      gap: 12px;
+    }
+    .usage-card {
+      border-top: 1px solid var(--line);
+      padding: 14px 0 16px;
+    }
+    .usage-card:first-child { border-top: none; padding-top: 0; }
+    .usage-title {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: baseline;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .usage-title span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .usage-map {
+      margin-top: 6px;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 13px;
+    }
+    .usage-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .usage-path {
+      margin-top: 10px;
+      padding: 9px 10px;
+      border-radius: 8px;
+      background: #f7fbff;
+      border: 1px solid #e4eef8;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+    .usage-notes {
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .compact-list {
+      display: grid;
+      gap: 8px;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 13px;
+    }
+    .compact-list div {
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      overflow-wrap: anywhere;
+    }
+    .compact-list div:first-child { border-top: none; padding-top: 0; }
+    .mapping-pack-list {
+      border-top: 1px solid var(--line);
+    }
+    .mapping-pack-row {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr);
+      column-gap: 12px;
+      align-items: start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .mapping-pack-index {
+      color: var(--muted);
+      font-weight: 700;
+      text-align: right;
+      white-space: nowrap;
+      overflow-wrap: normal;
+      word-break: keep-all;
+      font-variant-numeric: tabular-nums;
+    }
+    .mapping-pack-text {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+    .empty-state {
+      color: var(--muted);
+      padding: 8px 0;
+    }
+    .manual-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .block {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #f7fbff;
+      border: 1px solid #e4eef8;
+    }
+    .block-label {
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .pre {
+      white-space: pre-wrap;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .footer-note {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media print {
+      body { background: #ffffff; padding: 0; }
+      .page { max-width: none; }
+      .hero, .meta-card, .section, .manual-card { box-shadow: none; }
+      .section, .manual-card, .meta-card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">VCL to FMX Converter</div>
+      <h1>Conversion Report</h1>
+      <p>Generated 2026-06-23 15:10:42</p>
+      <p>Source: C:\New Delphi Projects\VCL2FMXConverterV4\samples\fmx_utf8_accent_regression<br>Output: C:\New Delphi Projects\VCL2FMXConverterV4\samples\fmx_utf8_accent_regression\output</p>
+      <div class="status-chip">Clean conversion</div>
+      <p>Next step: Open the report for a final sanity check, then compile and smoke-test the generated project in the IDE.</p>
+    </div>
+    <div class="meta">
+      <div class="meta-card"><div class="label">Files processed</div><div class="value">2</div></div>
+      <div class="meta-card"><div class="label">Files converted</div><div class="value">2</div></div>
+      <div class="meta-card"><div class="label">Distinct files needing attention</div><div class="value">0</div></div>
+      <div class="meta-card"><div class="label">Manual review items</div><div class="value">0</div></div>
+      <div class="meta-card"><div class="label">Blocking items</div><div class="value">0</div></div>
+      <div class="meta-card"><div class="label">Files with errors</div><div class="value">0</div></div>
+      <div class="meta-card"><div class="label">Warnings</div><div class="value">0</div></div>
+      <div class="meta-card"><div class="label">Errors</div><div class="value">0</div></div>
+      <div class="meta-card"><div class="label">Total issues</div><div class="value">0</div></div>
+      <div class="meta-card"><div class="label">Mapping packs loaded</div><div class="value">22</div></div>
+      <div class="meta-card"><div class="label">Run time</div><div class="value">&lt; 1 second</div></div>
+    </div>
+    <div class="section">
+      <h2>Output files</h2>
+      <p class="section-note">Files and folders produced or updated by this conversion run.</p>
+      <table class="issues-table">
+        <tbody>
+          <tr><th>Output folder</th><td>C:\New Delphi Projects\VCL2FMXConverterV4\samples\fmx_utf8_accent_regression\output</td></tr>
+          <tr><th>Text report</th><td>C:\New Delphi Projects\VCL2FMXConverterV4\samples\fmx_utf8_accent_regression\output\VCL_to_FMX_Conversion_Report.txt</td></tr>
+          <tr><th>HTML report</th><td>C:\New Delphi Projects\VCL2FMXConverterV4\samples\fmx_utf8_accent_regression\output\VCL_to_FMX_Conversion_Report.html</td></tr>
+          <tr><th>Converted source files</th><td>Generated Pascal and FMX files are written beside converted source names in the output folder.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="section">
+      <h2>Mapping packs loaded</h2>
+      <p class="section-note">External mapping packs loaded for this conversion run.</p>
+      <div class="mapping-pack-list">
+        <div class="mapping-pack-row"><div class="mapping-pack-index">1</div><div class="mapping-pack-text">CleverComponents_MappingPack_v4_1 (clevercomponents.mapping.v2) - 14 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\CleverComponents_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">2</div><div class="mapping-pack-text">DatabaseEngines_MappingPack_v4_1 (databaseengines.mapping.v2) - 27 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\DatabaseEngines_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">3</div><div class="mapping-pack-text">Devart_MappingPack_v4_1 (devart.dataaccess.preserve.v2) - 24 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\Devart_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">4</div><div class="mapping-pack-text">DevExpress_MappingPack_v4_1 (devexpress.complete.v2) - 89 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\DevExpress_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">5</div><div class="mapping-pack-text">EhLib_MappingPack_v4_1 (ehlib.complete.v2) - 20 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\EhLib_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">6</div><div class="mapping-pack-text">FastReport_MappingPack_v4_1 (fastreport.detection.v2) - 17 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\FastReport_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">7</div><div class="mapping-pack-text">Imaging_PDF_MappingPack_v4_1 (imaging.pdf.mapping.v2) - 16 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\Imaging_PDF_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">8</div><div class="mapping-pack-text">InfoPower_MappingPack_v4_1 (woll2woll.infopower.complete.v2) - 20 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\InfoPower_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">9</div><div class="mapping-pack-text">IntraWeb_UniGUI_MappingPack_v4_1 (intraweb.unigui.detectonly.v2) - 27 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\IntraWeb_UniGUI_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">10</div><div class="mapping-pack-text">JVCL_MappingPack_v4_1 (jvcl.complete.v2) - 32 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\JVCL_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">11</div><div class="mapping-pack-text">LegacyOpenSource_MappingPack_v4_1 (legacyopensource.mapping.v2) - 22 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\LegacyOpenSource_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">12</div><div class="mapping-pack-text">LMD_MappingPack_v4_1 (lmd.complete.v2) - 26 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\LMD_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">13</div><div class="mapping-pack-text">nSoftware_MappingPack_v4_1 (nsoftware.mapping.v2) - 16 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\nSoftware_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">14</div><div class="mapping-pack-text">QuickReport_MappingPack_v4_1 (quickreport.mapping.v2) - 10 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\QuickReport_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">15</div><div class="mapping-pack-text">Raize_Konopka_MappingPack_v4_1 (raize.konopka.complete.v2) - 29 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\Raize_Konopka_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">16</div><div class="mapping-pack-text">RemObjects_MappingPack_v4_1 (remobjects.mapping.v2) - 12 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\RemObjects_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">17</div><div class="mapping-pack-text">ReportBuilder_MappingPack_v4_1 (reportbuilder.mapping.v2) - 12 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\ReportBuilder_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">18</div><div class="mapping-pack-text">Skia4Delphi_MappingPack_v4_1 (skia4delphi.mapping.v2) - 6 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\Skia4Delphi_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">19</div><div class="mapping-pack-text">TeeChart_MappingPack_v4_1 (steema.teechart.basic.detection.v2) - 16 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\TeeChart_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">20</div><div class="mapping-pack-text">TMS_MappingPack_v4_1 (tms.complete.v2) - 41 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\TMS_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">21</div><div class="mapping-pack-text">TRichView_MappingPack_v4_1 (trichview.mapping.v2) - 10 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\TRichView_MappingPack_v4_1.json</div></div>
+        <div class="mapping-pack-row"><div class="mapping-pack-index">22</div><div class="mapping-pack-text">VirtualTreeView_MappingPack_v4_1 (virtualtreeview.detection.v2) - 7 rules - C:\New Delphi Projects\VCL2FMXConverterV4\mapping_packs\VirtualTreeView_MappingPack_v4_1.json</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Third-party components converted</h2>
+      <p class="section-note">Mapping-pack components that generated FMX output with a convert action.</p>
+      <div class="usage-list">
+        <div class="empty-state">No third-party mapping-pack components were fully converted.</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Third-party components partially converted</h2>
+      <p class="section-note">Mapping-pack components that generated FMX output but still require review.</p>
+      <div class="usage-list">
+        <div class="empty-state">No third-party mapping-pack components were partially converted.</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Third-party components detected only</h2>
+      <p class="section-note">Mapping-pack components intentionally reported without generated FMX output.</p>
+      <div class="usage-list">
+        <div class="empty-state">No detect-only third-party mapping-pack components were found.</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Mappings used</h2>
+      <p class="section-note">Compact list of mapping-pack rules that fired during this conversion run.</p>
+      <div class="compact-list">
+        <div>No mapping-pack rules were used during this run.</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Unknown third-party components</h2>
+      <p class="section-note">Third-party-looking components that did not have a mapping-pack rule.</p>
+      <table><tbody><tr><td>None detected.</td></tr></tbody></table>
+    </div>
+    <div class="section">
+      <h2>Detailed issues</h2>
+      <p class="section-note">Non-manual-review informational items, warnings, and errors are listed below. Manual-review items are grouped in their own section.</p>
+      <div class="detailed-issues-wrap">
+      <table class="detailed-issues-table">
+        <thead>
+          <tr>
+            <th>Severity</th>
+            <th>Message</th>
+            <th>File</th>
+            <th>Line</th>
+            <th>Problem type</th>
+            <th>Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="6">No non-manual-review informational, warning, or error items were recorded.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="section">
+      <h2>Manual review items</h2>
+      <p class="section-note">These items usually require an IDE review or a deliberate FMX design decision before the converted output is production-ready.</p>
+      <div class="manual-list">
+        <div class="manual-card">No grouped manual-review items were recorded.</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Conversion log</h2>
+      <p class="section-note">Screen log captured during this conversion run.</p>
+      <div class="pre">[15:10:42] WARNING: ScreenMemo not assigned - UI updates disabled
+[15:10:42] 
+[15:10:42] VCL TO FMX CONVERSION STARTED
+[15:10:42] ========================================
+[15:10:42] Source: C:\New Delphi Projects\VCL2FMXConverterV4\samples\fmx_utf8_accent_regression
+[15:10:42] Output: C:\New Delphi Projects\VCL2FMXConverterV4\samples\fmx_utf8_accent_regression\output
+[15:10:42] 
+[15:10:42] Found 2 files to process
+[15:10:42] 
+[15:10:42] [1/2] Processing: UnitUtf8Accents.dfm
+[15:10:42] Processing DFM: UnitUtf8Accents.dfm
+[15:10:42]   Detecting DFM stream format...
+[15:10:42]   Converted
+[15:10:42] [2/2] Processing: UnitUtf8Accents.pas
+[15:10:42] Processing Pascal: UnitUtf8Accents.pas
+[15:10:42]   Reading UnitUtf8Accents.pas...
+[15:10:42]   Encoding: 20127 (US-ASCII)
+[15:10:42]   Converted
+[15:10:42] 
+[15:10:42] Generating project files...
+[15:10:42] Project files generated
+[15:10:42] Report saved to: C:\New Delphi Projects\VCL2FMXConverterV4\samples\fmx_utf8_accent_regression\output\VCL_to_FMX_Conversion_Report.txt
+</div>
+    </div>
+    <div class="section">
+      <h2>Issue summary</h2>
+      <p class="section-note">Use this section for a quick print-friendly tally of the result.</p>
+      <table>
+        <tbody>
+          <tr><th>Informational</th><td>0</td></tr>
+          <tr><th>Warnings</th><td>0</td></tr>
+          <tr><th>Manual review required</th><td>0</td></tr>
+          <tr><th>Errors</th><td>0</td></tr>
+          <tr><th>Blocking items</th><td>0</td></tr>
+          <tr><th>Distinct files needing attention</th><td>0</td></tr>
+          <tr><th>Files with conversion errors</th><td>0</td></tr>
+        </tbody>
+      </table>
+      <div class="footer-note">Next step: Open the report for a final sanity check, then compile and smoke-test the generated project in the IDE.</div>
+      <div class="footer-note">Generated output should still be reviewed in the IDE. Projects with manual-review or blocking items may not run until those items are fixed or mitigated.</div>
+    </div>
+  </div>
+</body>
+</html>

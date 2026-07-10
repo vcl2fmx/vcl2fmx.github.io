@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VCL2FMXConverter Website Mockup</title>
+  <style>
+    :root {
+      --ink: #17314f;
+      --muted: #566d86;
+      --blue: #2f6fcd;
+      --blue-dark: #1e4f99;
+      --line: #d7e2f0;
+      --panel: #f6f9fd;
+      --soft: #eef4fb;
+      --white: #ffffff;
+      --green: #2e7d62;
+      --amber: #9b6a00;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #eaf1f8;
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .print-note {
+      max-width: 1180px;
+      margin: 24px auto 0;
+      padding: 14px 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .page {
+      width: 1180px;
+      margin: 28px auto;
+      background: var(--white);
+      border: 1px solid var(--line);
+      box-shadow: 0 20px 40px rgba(20, 54, 90, 0.16);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 42px;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0;
+      color: var(--ink);
+    }
+
+    .nav {
+      display: flex;
+      gap: 22px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.16fr 0.84fr;
+      min-height: 520px;
+      background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+    }
+
+    .hero-copy {
+      padding: 72px 50px 64px 54px;
+    }
+
+    .eyebrow {
+      color: var(--blue);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0 0 20px;
+      font-size: 48px;
+      line-height: 1.08;
+      letter-spacing: 0;
+      color: #102b47;
+    }
+
+    .hero-copy p {
+      margin: 0 0 18px;
+      max-width: 660px;
+      color: #334f6e;
+      font-size: 19px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: 6px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid transparent;
+    }
+
+    .button.primary {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .button.secondary {
+      background: #fff;
+      color: var(--blue-dark);
+      border-color: #abc4e4;
+    }
+
+    .release-card {
+      margin: 76px 44px 64px 0;
+      padding: 30px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      align-self: start;
+    }
+
+    .release-card h2 {
+      margin: 0 0 12px;
+      font-size: 24px;
+    }
+
+    .release-card .version {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--blue-dark);
+      margin-bottom: 8px;
+    }
+
+    .release-card ul {
+      margin: 18px 0 0;
+      padding-left: 22px;
+      color: #385574;
+    }
+
+    .band {
+      padding: 48px 54px;
+      border-top: 1px solid var(--line);
+    }
+
+    .band.alt {
+      background: var(--soft);
+    }
+
+    .section-head {
+      margin-bottom: 24px;
+    }
+
+    .section-head h2 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    .section-head p {
+      margin: 0;
+      max-width: 880px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      min-height: 150px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #496582;
+      font-size: 16px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .download-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .download-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+      padding: 18px 20px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .download-row h3 {
+      margin: 0 0 3px;
+      font-size: 19px;
+    }
+
+    .download-row p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .small-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 128px;
+      min-height: 40px;
+      padding: 0 16px;
+      border-radius: 6px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .note {
+      padding: 18px 20px;
+      border-left: 5px solid var(--amber);
+      background: #fff8e9;
+      color: #4e3a10;
+    }
+
+    .status {
+      display: inline-flex;
+      padding: 5px 10px;
+      border-radius: 99px;
+      background: #e3f3ec;
+      color: var(--green);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .footer {
+      padding: 34px 54px;
+      background: #102b47;
+      color: #dce8f5;
+      font-size: 15px;
+    }
+
+    .footer strong {
+      color: #fff;
+    }
+
+    .mockup-title {
+      padding: 34px 54px;
+      background: #102b47;
+      color: #fff;
+    }
+
+    .mockup-title h2 {
+      margin: 0 0 6px;
+      font-size: 34px;
+    }
+
+    .mockup-title p {
+      margin: 0;
+      color: #c8d8ea;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .print-note {
+        display: none;
+      }
+
+      .page {
+        width: 100%;
+        margin: 0 0 24px;
+        box-shadow: none;
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="print-note">
+    Print-friendly mockup for rebuilding the VCL2FMXConverter website. Suggested public release wording assumes v4.1.8 is stable and v4.2 is development/testing.
+  </div>
+
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">VCL2FMXConverter</div>
+      <nav class="nav">
+        <span>Overview</span>
+        <span>Downloads</span>
+        <span>Mapping Packs</span>
+        <span>Documentation</span>
+        <span>Contact</span>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">Free open-source Delphi migration utility</div>
+        <h1>Convert VCL projects toward FireMonkey with clear reports and editable mapping packs.</h1>
+        <p>
+          VCL2FMXConverter helps Delphi developers move VCL projects toward FMX by converting many common forms,
+          components, properties, events, and project structures into FireMonkey equivalents.
+        </p>
+        <p>
+          The converter is designed to reduce repetitive migration work and produce a strong FMX starting point.
+          Items that cannot be converted safely are reported for manual review instead of being hidden.
+        </p>
+        <div class="hero-actions">
+          <span class="button primary">Download Current Stable Source</span>
+          <span class="button secondary">Read the User Guide</span>
+        </div>
+      </div>
+
+      <aside class="release-card">
+        <h2>Current Stable Release</h2>
+        <div class="version">v4.1.8</div>
+        <span class="status">Stable source release</span>
+        <ul>
+          <li>Mapping-pack support for third-party components</li>
+          <li>Binary and text DFM handling</li>
+          <li>Improved Windows message and GDI reporting</li>
+          <li>Cleaner conversion reports and source safeguards</li>
+          <li>Source distribution for Delphi users to build and modify</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="band">
+      <div class="section-head">
+        <h2>What the converter does</h2>
+        <p>
+          The project focuses on practical VCL-to-FMX migration assistance, not unrealistic one-click conversion.
+          It converts what it can handle safely and documents the rest.
+        </p>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <h3>Forms and components</h3>
+          <p>Converts many standard VCL visual controls to FMX equivalents and preserves layout information where practical.</p>
+        </div>
+        <div class="card">
+          <h3>Properties and events</h3>
+          <p>Maps common VCL properties and events into FMX names and structures when the conversion is safe.</p>
+        </div>
+        <div class="card">
+          <h3>Reports and review</h3>
+          <p>Generates readable reports for unsupported APIs, third-party controls, manual review items, and conversion risks.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band alt">
+      <div class="section-head">
+        <h2>Downloads</h2>
+        <p>Keep this section short and direct. Developers should not have to hunt for the source package or documentation.</p>
+      </div>
+
+      <div class="download-list">
+        <div class="download-row">
+          <div>
+            <h3>VCL2FMXConverter v4.1.8 Source Code</h3>
+            <p>Complete source package with mapping packs. Build and run with Delphi/RAD Studio.</p>
+          </div>
+          <div class="small-button">Download ZIP</div>
+        </div>
+
+        <div class="download-row">
+          <div>
+            <h3>User Guide</h3>
+            <p>Operator-focused instructions for building, running, converting, and reviewing reports.</p>
+          </div>
+          <div class="small-button">Open PDF</div>
+        </div>
+
+        <div class="download-row">
+          <div>
+            <h3>Engineering Guide</h3>
+            <p>Technical notes for developers, maintainers, and contributors.</p>
+          </div>
+          <div class="small-button">Open PDF</div>
+        </div>
+
+        <div class="download-row">
+          <div>
+            <h3>Additional Mapping Packs</h3>
+            <p>Optional JSON mapping packs for third-party Delphi component families.</p>
+          </div>
+          <div class="small-button">Download ZIP</div>
+        </div>
+
+        <div class="download-row">
+          <div>
+            <h3>JSON Mapping Pack Studio</h3>
+            <p>Optional companion tool for creating and editing mapping-pack JSON files.</p>
+          </div>
+          <div class="small-button">Download</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="section-head">
+        <h2>Mapping packs</h2>
+        <p>
+          Mapping packs are optional JSON rule files that let users inspect, modify, and extend third-party component support.
+        </p>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <h3>Transparent rules</h3>
+          <p>
+            A mapping pack can convert simple components, partially convert components with warnings,
+            detect complex controls, or preserve selected references when appropriate.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Community-extensible</h3>
+          <p>
+            Developers can create or adjust packs for component libraries they own and understand,
+            without forcing unsafe assumptions into the converter core.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band alt">
+      <div class="section-head">
+        <h2>Known limits</h2>
+        <p>
+          This section should stay visible. It makes the project more trustworthy and reduces unrealistic expectations.
+        </p>
+      </div>
+      <div class="note">
+        No automated converter can safely convert every VCL application to FMX. VCL and FMX differ in rendering,
+        Windows message handling, data binding, platform behavior, and component libraries. VCL2FMXConverter converts
+        what it can safely handle and reports uncertain or unsafe items for manual review.
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="section-head">
+        <h2>Contact and feedback</h2>
+        <p>
+          Bug reports, test results, and suggestions are welcome. Please include the converter version, Delphi version,
+          and a short description of the project or error.
+        </p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <strong>VCL2FMXConverter</strong><br>
+      Free and open-source Delphi VCL-to-FMX migration assistance.
+    </footer>
+  </main>
+
+  <section class="page">
+    <div class="mockup-title">
+      <h2>Suggested Page Structure</h2>
+      <p>A simpler site map for Wix, WordPress, or another static page builder.</p>
+    </div>
+    <div class="band">
+      <div class="grid">
+        <div class="card">
+          <h3>Home</h3>
+          <p>Short description, current release, main download, key features, limitations.</p>
+        </div>
+        <div class="card">
+          <h3>Downloads</h3>
+          <p>Stable source ZIP, guides, mapping packs, JSON Mapping Pack Studio, license.</p>
+        </div>
+        <div class="card">
+          <h3>Mapping Packs</h3>
+          <p>What they are, included vendors, how they work, and how users can modify them.</p>
+        </div>
+        <div class="card">
+          <h3>Documentation</h3>
+          <p>User Guide, Engineering Guide, rules references, and conversion report examples.</p>
+        </div>
+        <div class="card">
+          <h3>Release Notes</h3>
+          <p>Version history written plainly, with stable/current release clearly identified.</p>
+        </div>
+        <div class="card">
+          <h3>Contact</h3>
+          <p>Feedback instructions, email/contact form, and what details to include in bug reports.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="mockup-title">
+      <h2>Text to Remove or Replace</h2>
+      <p>Use this as a practical editing checklist.</p>
+    </div>
+    <div class="band">
+      <div class="two-col">
+        <div class="card">
+          <h3>Remove or soften</h3>
+          <p>
+            Avoid claims such as "up to 95%" or wording that implies guaranteed full conversion.
+            Remove repeated marketing phrases and old v4.0 references.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Use instead</h3>
+          <p>
+            "The converter reduces repetitive migration work and provides a strong FMX starting point.
+            Some projects will require manual review depending on APIs, controls, and custom code."
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "input_file": "contracts\\project_integration\\03_uses_cleanup_project\\UsesCleanupProject.dpr",
+  "copy_case_directory": true,
+  "expected_status": "converted",
+  "expected_units_added": [
+    "FMX.Forms",
+    "FMX.Controls",
+    "FMX.StdCtrls"
+  ],
+  "expected_units_absent": [
+    "Vcl.Themes",
+    "Vcl.Forms",
+    "Vcl.StdCtrls",
+    "Winapi.Messages",
+    "FireDAC.VCLUI.Wait"
+  ],
+  "expected_output_patterns": [
+    "\\{\\$IFDEF USE_VCL_STYLES\\}",
+    "\\{\\$ENDIF\\}",
+    "unit UsesCleanupMain"
+  ],
+  "forbidden_output_patterns": [
+    "Vcl\\.Themes",
+    "Winapi\\.Messages",
+    "FireDAC\\.VCLUI\\.Wait"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

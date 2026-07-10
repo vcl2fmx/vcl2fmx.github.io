@@ -1,0 +1,34 @@
+﻿object frmUtf8Accents: TfrmUtf8Accents
+  Caption = 'été à Noël où mûr île café'
+  Left = 0
+  Top = 0
+  ClientWidth = 420
+  ClientHeight = 240
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+  object LabelAccent: TLabel
+    AutoSize = True
+    WordWrap = False
+    Text = 'é à û î ê ç œ É À'
+    Position.X = 24.000000000000000000
+    Position.Y = 24.000000000000000000
+  end
+
+  object MemoAccent: TMemo
+    Lines.Strings = (
+      'été à Noël'
+      'où mûr île café'
+      'é à û î ê ç œ É À'
+    )
+    Size.Width = 260.000000000000000000
+    Position.X = 24.000000000000000000
+    Position.Y = 64.000000000000000000
+    Size.Height = 120.000000000000000000
+    TabOrder = 0
+    Size.PlatformDefault = False
+  end
+
+end

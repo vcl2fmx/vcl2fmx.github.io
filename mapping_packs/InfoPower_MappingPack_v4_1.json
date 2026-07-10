@@ -1,0 +1,188 @@
+{
+  "pack_name": "InfoPower_MappingPack_v2",
+  "pack_id": "woll2woll.infopower.complete.v2",
+  "vendor": "Woll2Woll InfoPower",
+  "version": "2.0.0",
+  "description": "Complete merged mapping pack for Woll2Woll InfoPower VCL controls. Combines the original base pack with supplemental entries covering label, image, data-aware image, status bar, and calendar.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TwwDBEdit",
+      "fmx_class": "TEdit",
+      "action": "partial",
+      "confidence": 60,
+      "notes": "Visual text edit can map, but InfoPower masks, validation, and DB binding require review.",
+      "manual_review_reason": "Verify DataSource/DataField conversion and any PictureMask behavior."
+    },
+    {
+      "vcl_class": "TwwDBRichEdit",
+      "action": "detect_only",
+      "confidence": 15,
+      "manual_review_reason": "Rich text data-aware editing requires manual document/editor migration."
+    },
+    {
+      "vcl_class": "TwwDBMemo",
+      "fmx_class": "TMemo",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Memo UI can map to TMemo, but DB binding and rich memo options require review.",
+      "manual_review_reason": "Verify LiveBindings and memo field behavior."
+    },
+    {
+      "vcl_class": "TwwDBComboBox",
+      "fmx_class": "TComboBox",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Combo UI can map, but DB values, mapped lists, and lookup behavior require review.",
+      "manual_review_reason": "Verify item/value mapping and LiveBindings."
+    },
+    {
+      "vcl_class": "TwwCheckBox",
+      "fmx_class": "TCheckBox",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Checkbox UI can map. Database checked/unchecked values require review.",
+      "manual_review_reason": "Verify DB value mapping."
+    },
+    {
+      "vcl_class": "TwwDBDateTimePicker",
+      "fmx_class": "TDateEdit",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Date picker UI can map. Time/null formatting and DB binding require review.",
+      "manual_review_reason": "Verify date/time field behavior."
+    },
+    {
+      "vcl_class": "TwwDBLookupCombo",
+      "action": "manual_review",
+      "confidence": 40,
+      "manual_review_reason": "Lookup combo table/key/display/filter behavior is too application-specific for automatic conversion."
+    },
+    {
+      "vcl_class": "TwwDBLookupComboDlg",
+      "action": "manual_review",
+      "confidence": 35,
+      "manual_review_reason": "Lookup dialog behavior requires explicit FMX UI and data-binding redesign."
+    },
+    {
+      "vcl_class": "TwwDBGrid",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "InfoPower DBGrid has rich columns, embedded controls, lookup editors, filtering, and searching that need a grid-specific migration plan."
+    },
+    {
+      "vcl_class": "TwwRecordViewPanel",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Record view layout is application-specific and should be redesigned manually."
+    },
+    {
+      "vcl_class": "TwwDBNavigator",
+      "action": "manual_review",
+      "confidence": 40,
+      "manual_review_reason": "Navigator commands should be reviewed with the target data-binding approach."
+    },
+    {
+      "vcl_class": "TwwIncrementalSearch",
+      "action": "manual_review",
+      "confidence": 35,
+      "manual_review_reason": "Incremental dataset search behavior needs manual data-layer review."
+    },
+    {
+      "vcl_class": "TwwFilterDialog",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Visual filtering dialog and SQL/filter generation require manual migration."
+    },
+    {
+      "vcl_class": "TwwLocateDialog",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Locate/search dialogs require manual migration."
+    },
+    {
+      "vcl_class": "TwwSearchDialog",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Search dialog behavior requires manual migration."
+    },
+    {
+      "vcl_class": "TwwLabel",
+      "fmx_class": "TLabel",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Basic label text maps to FMX TLabel. InfoPower HTML text rendering and styling require review.",
+      "manual_review_reason": "Verify that any HTML-formatted caption content is reviewed and replaced with plain text or an FMX HTML-capable label.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TwwImage",
+      "fmx_class": "TImage",
+      "action": "partial",
+      "confidence": 60,
+      "notes": "Image display maps to FMX TImage. InfoPower DB binding, stretch options, and visual effects require review.",
+      "manual_review_reason": "Verify image resource loading and any DataSource/DataField wiring if data-aware.",
+      "properties": [
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TwwDBImage",
+      "fmx_class": "TImage",
+      "action": "partial",
+      "confidence": 50,
+      "notes": "Data-aware image maps to FMX TImage for display. DataSource, DataField, and blob field LiveBindings require review.",
+      "manual_review_reason": "Verify LiveBindings setup for blob/image fields and review image loading from dataset.",
+      "properties": [
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TwwStatusBar",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "InfoPower status bar panels and owner-drawn panes require manual FMX layout redesign using TLayout and TLabel combinations at the bottom of the form."
+    },
+    {
+      "vcl_class": "TwwCalendar",
+      "fmx_class": "TCalendar",
+      "action": "partial",
+      "confidence": 50,
+      "notes": "Calendar date selection maps conceptually to FMX TCalendar. InfoPower multi-select, event display, and formatting require review.",
+      "manual_review_reason": "Verify date selection events and any custom day rendering or highlighting behavior.",
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    }
+  ]
+}

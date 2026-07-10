@@ -1,0 +1,24 @@
+{
+  "input_file": "contracts\\components_and_events\\24_image_picture_assign_save.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": ["FMX.Forms", "FMX.Objects"],
+  "expected_units_absent": ["Vcl.Forms", "Vcl.ExtCtrls"],
+  "expected_output_patterns": [
+    "Image1: TImage",
+    "Image2: TImage",
+    "Image1\\.Bitmap\\.Assign\\(Image2\\.Bitmap\\)",
+    "Image1\\.Bitmap\\.SaveToFile\\('out\\.png'\\)"
+  ],
+  "forbidden_output_patterns": [
+    "\\.Picture\\b",
+    "Vcl\\.Forms",
+    "Vcl\\.ExtCtrls"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": [
+    "Leftover VCL image API",
+    "Leftover VCL image property"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "input_file": "contracts\\winapi_messages\\09_postmessage_system_command_minimize.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [
+    "WM_SYSCOMMAND minimize"
+  ],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "SC_MINIMIZE",
+    "Original: PostMessage\\(Handle, WM_SYSCOMMAND, SC_MINIMIZE, 0\\)",
+    "Preserve async behavior"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Forms\\b",
+    "WindowState\\s*:=\\s*TWindowState\\.wsMinimized"
+  ],
+  "expected_report_patterns": [
+    "SC_MINIMIZE|WM_SYSCOMMAND|Windows messaging|PostMessage"
+  ],
+  "forbidden_report_patterns": []
+}

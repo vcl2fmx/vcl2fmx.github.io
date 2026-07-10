@@ -1,0 +1,15 @@
+{
+  "input_file": "contracts\\components_and_events\\22_numeric_math_div_multiply_chain.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractNumericMathDivMultiplyChain",
+    "Panel1\\.Width := Round\\(Panel2\\.Width / 2 \\* 3\\);",
+    "Panel1\\.Height := Round\\(ClientHeight / 3 \\* 2\\);"
+  ],
+  "forbidden_output_patterns": [
+    "\\bdiv\\b",
+    "Round\\(Round\\("
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

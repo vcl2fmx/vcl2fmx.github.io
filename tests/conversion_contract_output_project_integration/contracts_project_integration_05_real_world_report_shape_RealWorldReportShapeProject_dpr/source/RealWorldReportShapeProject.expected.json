@@ -1,0 +1,21 @@
+{
+  "input_file": "contracts\\project_integration\\05_real_world_report_shape\\RealWorldReportShapeProject.dpr",
+  "copy_case_directory": true,
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "program RealWorldReportShapeProject",
+    "unit RealWorldMain",
+    "RealWorldHelperText",
+    "WM_CLOSE"
+  ],
+  "expected_report_patterns": [
+    "Final status",
+    "Windows messaging",
+    "Pascal include directive",
+    "Generated output should be reviewed in the IDE"
+  ],
+  "forbidden_output_patterns": [],
+  "forbidden_report_patterns": [
+    "Pascal include file missing"
+  ]
+}

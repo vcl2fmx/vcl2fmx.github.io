@@ -1,0 +1,14 @@
+{
+  "input_file": "contracts\\colors\\08_message_dlg_needs_uitypes.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractMessageDlgNeedsUITypes",
+    "FMX\\.Dialogs",
+    "System\\.UITypes",
+    "TMsgDlgType\\.mtConfirmation",
+    "mbOKCancel"
+  ],
+  "forbidden_output_patterns": ["Vcl\\.Dialogs"],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

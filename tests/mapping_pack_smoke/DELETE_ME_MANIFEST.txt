@@ -1,0 +1,21 @@
+Self-contained mapping-pack smoke test harness.
+
+Safe-to-delete root:
+C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke
+
+Files intentionally created for this harness:
+C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\README.md
+C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\DELETE_ME_MANIFEST.txt
+C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\run_manual_test_checklist.txt
+C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\source\UnitDevExpressMock.pas
+C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\source\UnitDevExpressMock.dfm
+C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\output\.gitkeep
+
+Expected generated files after a converter run:
+C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\output\UnitDevExpressMock.pas
+C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\output\UnitDevExpressMock.fmx
+C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\output\VCL_to_FMX_Conversion_Report.txt
+C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke\output\VCL_to_FMX_Conversion_Report.html
+
+Cleanup command, if you want to remove the harness later:
+Remove-Item 'C:\New Delphi Projects\VCL2FMXConverterV4\tests\mapping_pack_smoke' -Recurse -Force

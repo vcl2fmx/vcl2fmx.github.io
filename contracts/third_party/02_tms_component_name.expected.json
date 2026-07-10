@@ -1,0 +1,16 @@
+{
+  "input_file": "contracts\\third_party\\02_tms_component_name.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractTMSComponentName",
+    "AdvStringGrid1: TAdvStringGrid",
+    "\\bAdvGrid\\b"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\."
+  ],
+  "expected_report_patterns": [
+    "TMS_MappingPack_v4_1"
+  ],
+  "forbidden_report_patterns": []
+}

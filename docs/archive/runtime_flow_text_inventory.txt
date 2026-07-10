@@ -1,0 +1,790 @@
+P	2	VCL2FMX Converter and Migration Assistant
+P	7	v4.1.6 Runtime Flow
+P	24	Operational pipeline, mapping-pack flow, conversion stages, reporting, and verification
+P	25	Version v4.1.6 | Updated 2026-06-12
+P	29	The current v4.1.6 runtime flow is based on these active source units:
+P	30	Introduction
+P	32	This is not a marketing description. It is the operational flow from program startup through conversion, mapping-pack loading, Pascal and DFM conversion, project generation, report generation, and post-run UI state as of v4.1.6.
+P	34	v4.1.6 Current Standing
+P	35	The v4.1.6 line is the current v4 development/test line.
+P	36	The converter is split across 18 active Pascal source units at the project root.
+P	37	Mapping packs are enabled by default and are loaded from the mapping_packs folder beside the executable unless the context points elsewhere.
+P	38	The current mapping-pack loader validates actions, loads packs deterministically, records loaded packs, and reports pack usage during conversion.
+P	39	The current acceptance gate passes with 60 checks.
+P	42	System at a glance
+P	45	1. Startup Sequence
+P	47	When the program launches, the main form is created first. The first major runtime event is `TfrmMain.FormCreate`.
+P	49	`FormCreate` does all of the initial bootstrapping for the user interface and the converter session state.
+P	51	It explicitly wires runtime event handlers:
+P	53	`OnCloseQuery := FormCloseQuery`
+P	54	`OnShow := FormShow`
+P	55	`OnResize := FormResize`
+P	56	`TabControlMain.OnChange := TabControlMainChange`
+P	58	It then initializes the file-type selector:
+P	60	clears the combo box
+P	61	adds `PAS files only`
+P	62	adds `DFM files only`
+P	63	adds `Both PAS and DFM`
+P	64	sets the default selection to `Both PAS and DFM`
+P	66	It clears the source and target folder edits:
+P	68	`edtSource.Text := ''`
+P	69	`edtTarget.Text := ''`
+P	71	It enables the main conversion option checkboxes by default:
+P	73	recursive scanning = on
+P	74	critical areas = on
+P	75	data-aware conversion = on
+P	76	third-party handling = on
+P	77	WinAPI handling = on
+P	79	It seeds the live log with the startup instruction text:
+P	81	`Choose a VCL source folder and an FMX output folder, then start the conversion.`
+P	83	It makes the built-in reference memos read-only, then generates and loads the reference-page content for:
+P	85	component mappings
+P	86	property mappings
+P	87	event mappings
+P	89	It then resets all run artifacts and summary fields by calling `ResetArtifacts`, updates the rule summary, marks the UI as not currently converting with `UpdateUIForConversion(False)`, builds the tab chrome, sets the active tab to `tabProjectScan`, updates the tab chrome again, and applies the responsive layout.
+P	91	That means that by the time `FormCreate` finishes, the converter is already in a clean "ready for first use" state.
+P	93	2. What `FormShow` Does
+P	95	After creation, FMX raises `FormShow`.
+P	97	`FormShow` does additional startup work that is display-related rather than data-entry-related:
+P	99	marks the form as shown
+P	100	maximizes the window
+P	101	applies responsive layout again
+P	102	applies the tab theme
+P	103	updates the tab chrome
+P	104	ensures the embedded web-browser controls exist for the reference pages
+P	105	reloads the component, property, and event reference content into those viewers
+P	107	One important detail:
+P	109	`FormCreate` already set the active tab to `tabProjectScan`, so the `FormShow` fallback that would choose `tabDashboard` usually does not change anything. In normal use, the application opens on the Project Scan tab, not the Dashboard tab.
+P	111	At that point, the form is visible and waits for user activity.
+P	113	3. Idle Ready State After Startup
+P	115	Once startup is complete, the program is effectively sitting in a ready state.
+P	117	The converter is not yet running.
+P	119	The UI state at this point is:
+P	121	source folder is blank
+P	122	target folder is blank
+P	123	convert options are all on by default
+P	124	file-type filter is `Both PAS and DFM`
+P	125	status text says the converter is ready
+P	126	no report path exists yet
+P	127	no output folder path exists yet
+P	128	open-report, print-report, and open-output actions are disabled because there is nothing to open yet
+P	130	4. Source Folder Selection Flow
+P	132	When the user clicks `Browse Source`, `btnBrowseSourceClick` runs.
+P	134	This handler:
+P	136	copies the current `edtSource.Text` into a local `Dir` variable
+P	137	opens `SelectDirectory('Select Source Folder', '', Dir)`
+P	138	if the user confirms a folder, it assigns that folder back into `edtSource.Text`
+P	139	it then calls `SuggestTargetFromSource(Dir)`
+P	141	`SuggestTargetFromSource` does not create a folder. It only proposes a default target path in the target edit box.
+P	143	It works like this:
+P	145	if `edtTarget` already contains text, it does nothing
+P	146	it strips any trailing delimiter from the source path
+P	147	it gets the source folder's parent directory
+P	148	it gets the source folder name itself
+P	149	it builds:
+P	151	`<ParentFolder>\<SourceFolderName> - FMX Output`
+P	153	So if the source is:
+P	155	`C:\New Delphi Projects\Carillon7_2_4 - Portable`
+P	157	the suggested target becomes:
+P	159	`C:\New Delphi Projects\Carillon7_2_4 - Portable - FMX Output`
+P	161	Important detail:
+P	163	The target folder is only suggested here. It is not created yet.
+P	165	5. Target Folder Selection Flow
+P	167	When the user clicks `Browse Target`, `btnBrowseTargetClick` runs.
+P	169	This handler:
+P	171	copies `edtTarget.Text` into a local `Dir` variable
+P	172	opens `SelectDirectory('Select Target Folder', '', Dir)`
+P	173	if the user confirms a folder, it writes that folder into `edtTarget.Text`
+P	175	Again, this does not create the folder yet. It only captures the intended output path.
+P	177	6. What Happens When the User Clicks Convert
+P	179	When the user clicks `Convert Project`, `btnConvertClick` runs.
+P	181	This is the handoff point from the user-facing UI into the real conversion pipeline.
+P	183	The convert handler performs a strict set of validations before it starts any worker thread.
+P	185	6.1. It first blocks duplicate runs
+P	187	If `FConversionThread` is already assigned, it shows:
+P	189	`A conversion is already running.`
+P	191	and exits immediately.
+P	193	6.2. It reads and trims the source and target edits
+P	195	It stores:
+P	197	`Src := edtSource.Text.Trim`
+P	198	`Dst := edtTarget.Text.Trim`
+P	200	6.3. It validates the source and target paths
+P	202	It stops and shows a message if:
+P	204	source folder is blank
+P	205	target folder is blank
+P	206	source folder does not exist
+P	207	source folder and target folder resolve to the same actual path
+P	209	If source and target are the same, it shows:
+P	211	`Please choose a different output folder. The source and target folders should not be the same.`
+P	213	It also switches the tab back to `tabProjectScan` when path validation fails, so the operator returns to the folder-selection screen.
+P	215	6.4. It resets the visible run state
+P	217	Once validation passes, it:
+P	219	clears the log
+P	220	adds `Preparing conversion...`
+P	221	switches the active tab to `tabIssues`
+P	223	That means the user is moved from the selection screen to the live run screen immediately before the worker thread starts.
+P	225	6.5. It captures the current conversion options
+P	227	It reads:
+P	229	selected file type
+P	230	recursive on/off
+P	231	critical-areas on/off
+P	232	data-aware on/off
+P	233	third-party on/off
+P	234	WinAPI on/off
+P	235	mapping packs enabled by default, with the folder resolved from the executable-side mapping_packs directory unless overridden in the conversion context
+P	237	6.6. It primes the run-summary fields
+P	239	Before the thread starts, it resets all pending counters and display fields:
+P	241	last output path becomes the chosen target path
+P	242	last report paths are cleared
+P	243	pending files processed = 0
+P	244	pending files converted = 0
+P	245	pending files with errors = 0
+P	246	pending files skipped = 0
+P	247	pending manual review count = 0
+P	248	pending blocking count = 0
+P	249	pending duration text = empty
+P	251	It then updates the dashboard and issues-tab labels so the operator can already see where output and report files are expected to land.
+P	253	It also calls `UpdateConversionOutputSummary(True)`, which changes the summary text to:
+P	255	`Conversion is running. The live log below is updating in real time, and run totals will appear here when the pass finishes.`
+P	257	6.7. It disables the interactive controls
+P	259	`UpdateUIForConversion(True)` disables:
+P	261	Convert
+P	262	Reset
+P	263	Browse Source
+P	264	Browse Target
+P	265	file-type combo
+P	266	all main option checkboxes
+P	268	It also:
+P	270	changes the convert button text to `Converting...`
+P	271	sets status text to `Running conversion`
+P	272	disables open-report
+P	273	disables print-report
+P	274	disables open-output
+P	276	6.8. It creates the worker thread
+P	278	The actual conversion work does not happen on the UI thread.
+P	280	`btnConvertClick` creates an anonymous thread and starts it. That thread calls:
+P	282	`ConversionThreadProc(Src, Dst, FileTypeIndex, Recursive, EnableCritical, EnableDataAware, EnableThirdParty, EnableWinAPI)`
+P	284	Inside the thread wrapper:
+P	286	`StatusText` starts as `Conversion failed`
+P	287	the thread runs `ConversionThreadProc`
+P	288	regardless of success or failure, it stores:
+P	289	- `FPendingCompletionTargetPath := Dst`
+P	290	- `FPendingCompletionStatusText := StatusText`
+P	291	it then queues `CompleteConversionOnUIThread` back to the main thread using `TThread.Queue`
+P	293	So the heavy work is done in the background, but the final UI update is always returned safely to the main thread.
+P	295	7. What `ConversionThreadProc` Does
+P	297	`ConversionThreadProc` is the thread-side entrypoint for the conversion session.
+P	299	It creates two major objects:
+P	301	`TConversionContext`
+P	302	`TConverterEngine`
+P	304	7.1. It builds the conversion context
+P	306	The context receives the selected run options:
+P	308	`SourcePath`
+P	309	`OutputPath`
+P	310	`ProcessSubdirectories`
+P	311	`CreateReport := True`
+P	312	`EnableCriticalAreas`
+P	313	`EnableDataAware`
+P	314	`EnableThirdParty`
+P	315	`EnableWinAPI`
+P	316	`EnableMappingPacks` and `MappingPackFolder`
+P	317	file-type filter:
+P	318	- `ftPas`
+P	319	- `ftDfm`
+P	320	- or `ftBoth`
+P	322	7.2. It logs that the engine is starting
+P	324	It sends:
+P	326	`Starting conversion engine...`
+P	328	to the log.
+P	330	7.3. It creates the engine and runs it
+P	332	It instantiates `TConverterEngine`, assigns the screen memo for live log updates, and calls:
+P	334	`Engine.Convert(Context)`
+P	336	7.4. It captures post-run totals
+P	338	After `Engine.Convert` returns, it copies the final counts from the engine and context into the formâ€™s pending summary fields:
+P	340	files processed
+P	341	files converted
+P	342	files with errors
+P	343	files skipped
+P	344	manual review count
+P	345	blocking count
+P	346	formatted duration text
+P	348	7.5. It decides the final status text
+P	350	The final run status shown back in the UI is decided like this:
+P	352	if the engine recorded file errors, or the context contains blocking issues:
+P	353	`Blocking issues present`
+P	354	else if the context contains manual-review issues:
+P	355	`Manual review required`
+P	356	else:
+P	357	`Clean conversion`
+P	359	If an exception escapes the thread procedure, it shows an error through the synchronized UI path and leaves the final status as:
+P	361	`Conversion failed`
+P	363	8. What the Engine Builds Internally Before the Run
+P	365	`TConverterEngine.Create` constructs the main subsystems used during a run:
+P	367	`TFileManager`
+P	368	`TConversionOrchestrator`
+P	369	`TProjectGenerator`
+P	370	the component mapper loads built-in mappings, user mappings when supplied, and external JSON mapping packs when enabled
+P	372	Those three objects are the core of the conversion pipeline.
+P	374	In practical terms:
+P	376	the file manager decides what source files are eligible and where output files are saved
+P	377	the orchestrator converts Pascal and DFM content
+P	378	the project generator creates the output-side project files and copies/stages companion assets
+P	380	9. Engine Run Flow: `TConverterEngine.Convert`
+P	382	The engineâ€™s `Convert` method is the central pipeline controller.
+P	384	9.1. It resets internal run state
+P	386	At the beginning of every run it clears:
+P	388	cancellation flag
+P	389	processed count
+P	390	converted count
+P	391	error count
+P	392	skipped count
+P	393	start time
+P	394	context issues
+P	395	internal conversion log
+P	397	It also records the start time into the conversion context.
+P	399	9.2. It initializes live logging
+P	401	If no screen memo is attached, it logs that UI updates are disabled.
+P	403	Normally, because the main form assigned `Engine.ScreenMemo := MemoLog`, the live log is active.
+P	405	It then writes the conversion header:
+P	407	blank line
+P	408	`VCL TO FMX CONVERSION STARTED`
+P	409	separator line
+P	410	source path
+P	411	output path
+P	413	9.3. It resets and prepares the file manager
+P	415	The engine calls:
+P	417	10. Mapping-Pack Load Rules
+P	418	Mapping-pack action matrix
+P	419	Before conversion work relies on mappings, `TComponentMapper.LoadMappings` loads the built-in mapper database and then calls `LoadMappingPacks`.
+P	420	Mapping packs are optional external JSON files. In v4.1.6 they live in `mapping_packs` and are transparent in the text and HTML reports.
+P	421	Each pack rule must use a valid action: `convert`, `partial`, `manual_review`, `detect_only`, or `preserve`.
+P	422	Malformed packs are reported instead of crashing the conversion. Duplicate rules are handled deterministically by sorted file loading and normal mapper precedence.
+P	423	During DFM generation, mapping-pack rules can convert, partially convert, preserve, detect only, or force manual review. Each use is recorded in `FContext.MappingPackUsages` for report output.
+P	424	Low-confidence rules are not silently converted; they are reported for manual review.
+P	426	`FFileManager.Reset`
+P	427	`FFileManager.PrepareOutput`
+P	429	These are not the same thing.
+P	431	`Reset` scans the source side and builds the list of candidate files.
+P	433	`PrepareOutput` prepares the target side.
+P	435	11. Source Scan Rules: What Files Are Collected
+P	437	The file manager starts by clearing its internal file list and resetting its index.
+P	439	It then verifies that the source directory exists. If it does not, it adds an error issue and stops.
+P	441	11.1. The output folder is excluded from scanning
+P	443	If the output folder sits under the source tree, the file manager deliberately skips it so the converter does not re-read its own generated output as input.
+P	445	11.2. Excluded folders
+P	447	The file manager excludes any path segment matching:
+P	449	`backup`
+P	450	`backup copy`
+P	451	`win32`
+P	452	`win64`
+P	453	`deploy`
+P	454	`__history`
+P	455	`.git`
+P	456	`.svn`
+P	457	`recovery_generic`
+P	458	`debug`
+P	459	`release`
+P	461	11.3. Recursive vs top-only scan
+P	463	If recursive mode is on, subdirectories are scanned.
+P	465	If recursive mode is off, only the top directory is scanned.
+P	467	11.4. File-type filtering
+P	469	After a file is found, it must match the currently selected file type:
+P	471	`.pas` only
+P	472	`.dfm` only
+P	473	both `.pas` and `.dfm`
+P	475	11.5. File order
+P	477	After collection, the file list is sorted.
+P	479	That means the converter processes files in sorted order, not raw filesystem discovery order.
+P	481	12. Output Preparation Rules
+P	483	`PrepareOutput` is where the converter actually makes the output directory real if it does not exist already.
+P	485	This is the point where the target folder can be created.
+P	487	It does the following:
+P	489	validates that an output path exists in the options
+P	490	if the output folder does not exist, calls `ForceDirectories`
+P	491	removes stale build-artifact folders from the output path if they exist:
+P	492	- `Win32`
+P	493	- `Win64`
+P	494	- `Debug`
+P	495	- `Release`
+P	496	- `__history`
+P	498	So the output path is not just created. It is also cleaned of the most common stale build subfolders before file conversion begins.
+P	500	13. File-Processing Loop
+P	502	After scan and output preparation, the engine asks the file manager for the file count and logs:
+P	504	`Found X files to process`
+P	506	It then loops while:
+P	508	more files exist
+P	509	the run has not been cancelled
+P	511	For each file it:
+P	513	gets the next full file path
+P	514	increments the processed counter
+P	515	logs `[n/total] Processing: filename`
+P	516	routes the file by extension:
+P	517	- `.pas` -> `ProcessPasFile`
+P	518	- `.dfm` -> `ProcessDfmFile`
+P	520	If an exception occurs around a file-level pass, the engine:
+P	522	increments file-error count
+P	523	logs a failed message
+P	524	adds a blocking issue to the context
+P	526	14. Pascal File Flow
+P	528	When a Pascal file is processed, this is the actual sequence.
+P	530	14.1. The file is read
+P	532	The engine:
+P	534	logs that it is processing the Pascal file
+P	535	sets `FContext.CurrentFile`
+P	536	tries to read the file using encoding detection and fallback logic
+P	538	If the read fails:
+P	540	the file is counted as skipped
+P	541	a failure is logged
+P	542	no conversion is attempted
+P	544	14.2. The orchestrator converts the Pascal code
+P	546	If reading succeeds, the engine calls:
+P	548	`FOrchestrator.ConvertPascal(AFileName, Code)`
+P	550	Inside the orchestrator, the Pascal pass runs in this order:
+P	551	That is the real Pascal conversion chain in the live v4.1.6 code.
+P	553	14.3. The converted Pascal file is saved
+P	555	If conversion succeeds:
+P	557	the engine increments `FilesConverted`
+P	558	the file manager computes the output file name using the path relative to the source root
+P	559	it creates any needed subdirectories in the output tree
+P	560	it sanitizes invalid control characters from the output text
+P	561	it writes the file while preserving the source encoding style as closely as possible
+P	562	it adds an informational issue describing what was saved
+P	564	If conversion fails:
+P	566	the engine increments file errors
+P	567	logs the failure
+P	568	adds a warning or error issue to the context
+P	569	does not save the converted file
+P	571	15. DFM File Flow
+P	572	DFM pipeline summary
+P	574	When a DFM file is processed, this is the actual sequence.
+P	576	15.1. The DFM is loaded
+P	578	The engine logs that it is processing the DFM and sets `FContext.CurrentFile`.
+P	580	Inside the orchestrator, the DFM parser loads the file through `LoadDFM`.
+P	582	If the DFM is binary:
+P	584	it detects binary DFM streams using Delphi stream-format detection, including modern resource-header forms and raw `TPF0` streams
+P	585	converts binary DFM to text with the parser-side binary conversion path, trying the resource and binary stream conversion routes before failing explicitly
+P	587	If the DFM is already text:
+P	589	it uses the shared safe text-read path and tries UTF-8
+P	590	falls back to ANSI when needed
+P	592	15.2. The DFM text is parsed into a component tree
+P	594	The parser:
+P	596	clears the old component list
+P	597	resets the current component and collection state
+P	598	walks the DFM line by line
+P	599	parses `object` / `inherited` declarations
+P	600	parses collections and subcomponents
+P	601	parses properties and events
+P	602	records original line numbers for properties and events
+P	604	The result is an internal tree of `TDFMComponent` objects describing the source form.
+P	606	15.3. Component analysis happens before FMX output is generated
+P	608	The orchestrator then:
+P	610	recursively analyzes components for third-party detection if third-party handling is enabled
+P	611	runs data-aware analysis if data-aware handling is enabled
+P	612	clears old data-binding metadata if data-aware handling is disabled
+P	614	15.4. The FMX form text is generated
+P	616	The parser then converts the parsed DFM tree into FMX text by calling:
+P	618	`FDfmParser.Convert(FComponentMapper)`
+P	620	The FMX generator:
+P	622	takes the parsed root component
+P	623	generates the FMX object tree
+P	624	uses the component mapper to translate VCL classes, properties, and events
+P	625	records third-party and mapping-pack usage for the final report
+P	626	honors mapping-pack actions such as convert, partial, manual_review, detect_only, and preserve
+P	627	normalizes generated FMX values such as align constants
+P	628	emits FMX text for the output form
+P	630	After that, the orchestrator applies the full-text memo promotion pass to the generated FMX text and replaces the original DFM text with the generated FMX version.
+P	632	It then logs:
+P	634	`DFM conversion successful: <file>`
+P	636	15.5. The output filename is changed from `.dfm` to `.fmx`
+P	638	When the file manager saves a converted DFM, it automatically changes the output extension from `.dfm` to `.fmx`.
+P	640	That means:
+P	642	`SomeForm.dfm`
+P	644	becomes:
+P	646	`SomeForm.fmx`
+P	648	in the FMX output tree.
+P	650	16. What Happens After All Source Files Are Converted
+P	652	After the file loop finishes, the engine logs:
+P	654	`Generating project files...`
+P	656	It then runs:
+P	658	`FProjectGenerator.GenerateProject`
+P	659	`AuditGeneratedOutput`
+P	660	`GenerateReport`
+P	662	in that order.
+P	664	17. Project Generation Flow
+P	666	`TProjectGenerator.GenerateProject` performs four major actions:
+P	668	`CopyDPR`
+P	669	`CopyDPROJ`
+P	670	`CopyDeployProj`
+P	671	`CopyProjectCompanionFiles`
+P	673	It then adds an informational issue:
+P	675	`Delphi project files generated for FMX output`
+P	677	17.1. DPR generation
+P	679	The generator:
+P	681	finds the original `.dpr`
+P	682	reads it
+P	683	transforms the startup content
+P	684	writes the transformed `.dpr` into the FMX output folder as UTF-8
+P	686	17.2. DPROJ generation
+P	688	The generator:
+P	690	finds the original `.dproj`
+P	691	reads it
+P	692	transforms project metadata and namespaces
+P	693	writes the transformed `.dproj` into the FMX output folder as UTF-8
+P	695	17.3. DEPLOYPROJ generation
+P	697	If a `.deployproj` exists, it is likewise found, transformed, and written into the output folder.
+P	699	17.4. Companion-file and runtime-support pass
+P	701	The project generator then:
+P	703	copies root-level project companion files such as `.res`, `.ico`, `.manifest`, `.png`, and `.bmp`
+P	704	inspects project metadata for additional referenced assets
+P	705	stages referenced assets into the output tree when possible
+P	706	records warnings when referenced assets cannot be copied
+P	707	scans the source tree for runtime-support files such as `.exe`, `.dll`, `.lib`, and `.sf2`
+P	708	identifies stageable runtime companions such as `.exe`, `.dll`, and `.sf2`
+P	709	stages selected runtime companions into the FMX output directory
+P	710	records informational notes in the report about what was staged and what still requires deployment review
+P	712	18. Output Audit Pass
+P	714	After project generation, the engine audits the generated output.
+P	716	This pass walks the output tree looking at:
+P	718	`.pas`
+P	719	`.dpr`
+P	720	`.fmx`
+P	722	Important detail:
+P	724	It only audits files touched during the current run. That is done by comparing file write times against the run start time. This is specifically meant to avoid stale leftovers in reused output folders from polluting the report for the current conversion.
+P	726	19. Report Generation Flow
+P	728	If report creation is enabled, the engine generates both:
+P	730	`VCL_to_FMX_Conversion_Report.txt`
+P	731	`VCL_to_FMX_Conversion_Report.html`
+P	733	Both are written directly into the output folder root.
+P	735	19.1. The report calculates counts and status
+P	737	The report pass calculates:
+P	739	informational issue count
+P	740	warning count
+P	741	manual-review group count
+P	742	error count
+P	743	blocking-item count
+P	744	total visible issue count
+P	745	distinct files needing attention
+P	747	19.2. The final status is assigned
+P	749	The final status text inside the report is:
+P	751	`Blocking issues present` if there were file errors or blocking issues
+P	752	`Manual review required` if there were manual-review items but no blocking outcome
+P	753	`Clean conversion` otherwise
+P	755	19.3. The text report contents
+P	757	The text report includes:
+P	759	conversion summary
+P	760	total time
+P	761	files processed
+P	762	files converted
+P	763	files with errors
+P	764	files skipped
+P	765	total issues
+P	766	distinct files needing attention
+P	767	final status
+P	768	manual fixes required
+P	769	blocking items
+P	770	files with conversion errors
+P	771	recommended next step
+P	772	mapping packs loaded and mapping-pack usage summaries
+P	773	detailed issues
+P	774	grouped manual-review section
+P	775	issue summary table
+P	777	19.4. The HTML report contents
+P	779	The HTML report contains the same logical data in a styled HTML dashboard format, including:
+P	781	hero summary/status area
+P	782	metric cards
+P	783	detailed issue cards
+P	784	grouped manual-review cards
+P	785	issue summary table
+P	786	recommended next-step guidance
+P	787	mapping-pack summary sections and grouped mapping-pack manual-review/detect-only cards
+P	789	20. Engine Completion Logic
+P	791	After the report is written, the engine decides how to log completion.
+P	793	If blocking issues exist:
+P	795	it logs a message saying blocking issues are present
+P	796	it returns `False`
+P	798	If there are no blocking issues but manual-review issues exist:
+P	800	it logs that manual review is required
+P	801	it returns `True`
+P	803	If neither blocking nor manual-review issues exist:
+P	805	it logs that conversion completed cleanly
+P	806	it returns `True`
+P	808	Important detail:
+P	810	The worker-thread status string shown back in the main form is decided separately in `ConversionThreadProc`, but it uses the same basic logic.
+P	812	21. How the UI Is Restored After the Worker Thread Finishes
+P	814	When the background thread ends, it does not directly update the UI.
+P	816	Instead it queues `CompleteConversionOnUIThread`.
+P	818	That method runs back on the main thread and does exactly three things:
+P	820	frees the conversion thread object
+P	821	calls `UpdateUIForConversion(False)` to re-enable controls
+P	822	calls `UpdateArtifactsAfterConversion(TargetPath, StatusText)`
+P	824	22. What `UpdateArtifactsAfterConversion` Does
+P	826	This is the method that makes the finished run visible to the operator.
+P	828	It:
+P	830	marks that a run has completed
+P	831	copies all pending counters into the last-run fields
+P	832	stores the last output path
+P	833	computes the expected text and HTML report paths
+P	834	picks the preferred report path, preferring HTML over text
+P	835	updates the status labels
+P	836	updates dashboard output and report labels
+P	837	updates issues-tab output and report labels
+P	838	rebuilds the summary sentence
+P	839	re-enables open-report, print-report, and open-output actions as appropriate
+P	841	So this is the moment when the UI leaves the "running" state and becomes a post-run review screen.
+P	843	23. What the User Can Do After the Run
+P	845	Once conversion is complete and the UI is unlocked, the operator can:
+P	847	open the output folder
+P	848	open the preferred report
+P	849	print the preferred report
+P	850	reset the converter back to its startup state
+P	852	23.1. Open Output
+P	854	`btnOpenOutputClick`:
+P	856	checks whether `FLastOutputPath` exists
+P	857	if not, shows `There is no converted output folder to open yet.`
+P	858	otherwise uses Windows `ShellExecute('open', path)` to open the folder
+P	860	23.2. Open Report
+P	862	`btnOpenReportClick`:
+P	864	asks for the preferred report path
+P	865	prefers HTML if it exists
+P	866	otherwise uses the text report if it exists
+P	867	if neither exists, shows `There is no generated report to open yet.`
+P	868	otherwise opens the report with `ShellExecute('open', path)`
+P	870	23.3. Print Report
+P	872	`btnPrintReportClick`:
+P	874	resolves the preferred report path
+P	875	if none exists, shows `There is no generated report to print yet.`
+P	876	attempts `ShellExecute('print', reportPath, hideWindow=True)`
+P	877	if direct print is not available, it opens the report instead and tells the user that direct printing was not available
+P	879	24. Reset Flow
+P	881	If the user clicks `Reset`, `btnResetClick` runs.
+P	883	If a conversion thread is still active, reset is blocked with:
+P	885	`Please wait for the current conversion to finish before resetting.`
+P	887	If no conversion is running, `ResetToStartupState` is called.
+P	889	That method:
+P	891	clears source and target edits
+P	892	restores file type to `Both PAS and DFM`
+P	893	re-enables all main option checkboxes to their default checked state
+P	894	clears pending completion and message fields
+P	895	restores the startup log text
+P	896	rebuilds and reloads the reference-page content
+P	897	resets artifacts and run summary
+P	898	updates the rule summary
+P	899	marks the UI as not converting
+P	900	scrolls the tab scroll boxes back to the top
+P	901	returns the active tab to `tabProjectScan`
+P	902	applies responsive layout
+P	903	moves focus back to the source edit if possible
+P	905	So reset is a full UI-state reset, not just a log clear.
+P	907	25. Close Protection While a Run Is Active
+P	909	If the user tries to close the program while a conversion is still running, `FormCloseQuery` blocks the close.
+P	911	It only allows the program to close when `FConversionThread` is not assigned.
+P	913	If a run is active, it shows:
+P	915	`A conversion is still running. Please wait for it to finish before closing the program.`
+P	917	That means the converter deliberately prevents shutdown in the middle of an active conversion pass.
+P	919	26. Thread Boundary Summary
+P	921	There are two major runtime domains in the program:
+P	923	26.1. UI thread
+P	925	The UI thread handles:
+P	927	form startup
+P	928	folder selection
+P	929	validation
+P	930	starting the worker thread
+P	931	log display updates
+P	932	synchronized error dialogs
+P	933	final completion UI updates
+P	934	post-run actions like open-report, print-report, open-output, and reset
+P	936	26.2. Worker thread
+P	938	The worker thread handles:
+P	940	conversion context creation
+P	941	engine construction
+P	942	source scan
+P	943	output preparation
+P	944	per-file Pascal conversion
+P	945	per-file DFM conversion
+P	946	project generation
+P	947	generated-output audit
+P	948	report generation
+P	949	final run-status determination
+P	951	The worker thread never directly finalizes the UI. It hands completion back through `TThread.Queue`.
+P	953	27. Exact Start-to-Finish Narrative in Plain English
+P	955	If you want the whole thing in one straight-through human narrative, this is it:
+P	957	The program starts.
+P	958	`FormCreate` runs.
+P	959	The form wires its runtime events, loads the file-type options, defaults all major conversion modules to on, loads the mapping-reference material, resets all run artifacts, and sets the active tab to Project Scan.
+P	960	`FormShow` runs.
+P	961	The window maximizes, the theme/layout pass runs, and the embedded reference browsers are prepared.
+P	962	The form is displayed and waits for user activity.
+P	963	The user chooses a source folder.
+P	964	The converter writes that folder into `edtSource`.
+P	965	If the target folder is still blank, the converter suggests a sibling folder named `<SourceName> - FMX Output`.
+P	966	The user can accept that target or browse for another target folder.
+P	967	Nothing is created yet just from selecting folders.
+P	968	The user clicks `Convert Project`.
+P	969	The converter validates source and target.
+P	970	It rejects blank paths, missing source folders, or a source path equal to the target path.
+P	971	If validation succeeds, it clears the log, switches to the Issues tab, resets pending counters, updates output/report labels, disables interactive controls, changes the button text to `Converting...`, and starts a worker thread.
+P	972	The worker thread creates a conversion context and copies in all selected options, including mapping-pack settings.
+P	973	The worker thread creates the engine.
+P	974	The engine resets its counters and issues, loads built-in/user/pack mappings through the mapper path, and logs the start banner.
+P	975	The file manager scans the source tree, skipping excluded directories and skipping the output tree if it sits under the source tree.
+P	976	The output directory is created if needed, and stale build subfolders under the output folder are deleted.
+P	977	The engine loops through the sorted list of eligible `.pas` and `.dfm` files.
+P	978	Each Pascal file is read, parsed, transformed through the orchestratorâ€™s multi-step pipeline, and saved into the output tree in relative position.
+P	979	Each DFM file is loaded through the parser, converted from binary to text if needed, parsed into components, translated into FMX text with built-in and mapping-pack rules, renamed to `.fmx`, and saved into the output tree in relative position.
+P	980	After source files finish, the project generator creates transformed `.dpr`, `.dproj`, and `.deployproj` files and copies or stages project assets and runtime companion files.
+P	981	The engine audits the generated output that was touched during the current run.
+P	982	The engine writes both the text and HTML conversion reports into the output folder, including loaded mapping packs, mapping-pack usage, grouped manual-review items, and ordinary issues.
+P	983	The engine decides whether the run was clean, manual-review, or blocking.
+P	984	The worker thread stores the final status and queues the completion handler back to the main thread.
+P	985	The UI thread receives that completion callback.
+P	986	The UI re-enables all controls, stores the final output and report paths, updates the dashboard and issues panels, and enables the report/output actions.
+P	987	The user can now open the output folder, open the HTML report, print the report, inspect the generated FMX project, or reset the converter for another run.
+P	989	28. v4.1.6 Verification State
+P	990	Verification matrix
+P	992	Release MSBuild currently passes with 0 errors and 0 warnings.
+P	993	The project acceptance gate currently passes 60 checks with 0 failures.
+P	994	The latest v4.1.6 source beta export includes 18 Pascal source files, required project/resource files, documentation/help content, and mapping-pack JSON files; it excludes tools, tests, Win32 build output, PowerShell scripts, `.dproj.local`, and `.identcache` files.
+P	996	29. Bottom Line
+P	997	At a practical level, the converter is a two-stage system:
+P	999	a UI/controller stage in `MainForm.pas`
+P	1000	a background conversion pipeline stage driven by `TConverterEngine`
+P	1002	The user-facing screen never directly performs the actual conversion. It validates inputs, starts the worker thread, and then later publishes the result of that thread back into the UI.
+P	1004	The actual conversion pipeline is:
+P	1006	collect options
+P	1007	scan eligible files
+P	1008	prepare output
+P	1009	load built-in mappings, user mappings, and enabled JSON mapping packs
+P	1010	convert Pascal
+P	1011	convert DFM to FMX
+P	1012	generate project files
+P	1013	copy/stage assets and runtime companions
+P	1014	audit generated output
+P	1015	generate reports
+P	1016	include mapping-pack summaries and grouped manual-review guidance in the reports
+P	1017	return status and counts to the UI
+P	1019	That is the complete operational flow of the converter from startup to completed conversion.
+T	0	0	0	Unit
+T	0	0	1	Runtime responsibility
+T	0	1	0	MainForm.pas
+T	0	1	1	FMX user interface, run setup, thread launch, completion UI, report/output actions.
+T	0	2	0	Converter.Core.Types.pas
+T	0	2	1	Shared context, options, issue records, mapping-pack usage records, constants.
+T	0	3	0	Converter.Core.Engine.pas
+T	0	3	1	Top-level conversion run controller, file loop, report generation, run status.
+T	0	4	0	Converter.Core.FileManager.pas
+T	0	4	1	Source scan, output preparation, relative output paths, encoding-aware saves.
+T	0	5	0	Converter.Core.Integration.pas
+T	0	5	1	Conversion orchestrator coordinating Pascal, DFM, rewrite, and advanced passes.
+T	0	6	0	Converter.Mapper.Component.pas
+T	0	6	1	Built-in mappings, user mappings, JSON mapping-pack loading, property/event inventories.
+T	0	7	0	Converter.Parser.Pascal.pas
+T	0	7	1	Pascal parse support and structural analysis.
+T	0	8	0	Converter.Parser.DFM.pas
+T	0	8	1	DFM load/parse/generate pipeline, binary DFM handling, FMX output generation.
+T	0	9	0	Converter.Project.Generator.pas
+T	0	9	1	DPR/DPROJ/deploy/project companion generation and FMX support files.
+T	0	10	0	Advanced and Rewrite units
+T	0	10	1	Specialized conversion passes for WinAPI, data-aware controls, compatibility helpers, LiveBindings, runtime normalization, and uses clauses.
+T	1	0	0	Layer
+T	1	0	1	Primary unit(s)
+T	1	0	2	Purpose
+T	1	1	0	UI/controller
+T	1	1	1	MainForm.pas
+T	1	1	2	Collect options, start worker thread, show live log, publish completed artifacts.
+T	1	2	0	Engine
+T	1	2	1	Converter.Core.Engine.pas
+T	1	2	2	Run scan/convert/generate/audit/report sequence and final status logic.
+T	1	3	0	Mapping
+T	1	3	1	Converter.Mapper.Component.pas
+T	1	3	2	Resolve classes, properties, events, JSON packs, actions, confidence and source.
+T	1	4	0	DFM conversion
+T	1	4	1	Converter.Parser.DFM.pas
+T	1	4	2	Load binary/text DFM, parse component tree, emit FMX object text.
+T	1	5	0	Pascal conversion
+T	1	5	1	Converter.Core.Integration.pas + rewrite units
+T	1	5	2	Run ordered rewrite pipeline and compatibility/lifecycle helpers.
+T	1	6	0	Reporting
+T	1	6	1	Converter.Core.Engine.pas
+T	1	6	2	Generate text/HTML reports with grouped manual-review and mapping-pack sections.
+T	2	0	0	Action
+T	2	0	1	Conversion behavior
+T	2	0	2	Report behavior
+T	2	1	0	convert
+T	2	1	1	Generate the target FMX class when confidence and rule data are sufficient.
+T	2	1	2	Record as third-party/mapping-pack converted usage.
+T	2	2	0	partial
+T	2	2	1	Generate an approximate FMX class and preserve limitations.
+T	2	2	2	Record partial conversion and manual-review note.
+T	2	3	0	manual_review
+T	2	3	1	Do not generate an unsafe replacement.
+T	2	3	2	Group as mapping-pack manual review with reason.
+T	2	4	0	detect_only
+T	2	4	1	Identify vendor/component only.
+T	2	4	2	Group as detection-only; no FMX replacement is emitted.
+T	2	5	0	preserve
+T	2	5	1	Keep original class/reference only where preservation is intentional.
+T	2	5	2	Record preserved component and review guidance.
+T	3	0	0	Step
+T	3	0	1	Stage
+T	3	0	2	Purpose
+T	3	1	0	1
+T	3	1	1	Parse Pascal
+T	3	1	2	Deep-parse the unit and extract method structure.
+T	3	2	0	2
+T	3	2	1	Process method bodies
+T	3	2	2	Handle message, GDI, synchronize, and similar patterns.
+T	3	3	0	3
+T	3	3	1	Automatic fixes
+T	3	3	2	Apply safe early rewrites before advanced converters.
+T	3	4	0	4
+T	3	4	1	Structural wrapper sync
+T	3	4	2	Keep wrapper panels aligned with DFM-side TLayout mapping.
+T	3	5	0	5
+T	3	5	1	Advanced converters
+T	3	5	2	Run critical-area, data-aware, third-party, WinAPI, and graphics passes.
+T	3	6	0	6
+T	3	6	1	Second automatic fixes
+T	3	6	2	Sanitize generated compatibility code; pass is intentional and idempotent.
+T	3	7	0	7-9
+T	3	7	1	Runtime graphics/text/data prep
+T	3	7	2	Wrap canvas scenes, normalize colors, promote memo fields.
+T	3	8	0	10
+T	3	8	1	LiveBindings preflight
+T	3	8	2	Warn about uncommon layouts, then inject generated bindings.
+T	3	9	0	11-13
+T	3	9	1	Compatibility/lifecycle
+T	3	9	2	Reduce cleanup noise and inject compatibility/lifecycle helpers.
+T	3	10	0	14-16
+T	3	10	1	Structure and uses cleanup
+T	3	10	2	Normalize resource directive, check implementation, remove duplicate implementation uses.
+T	3	11	0	17-20
+T	3	11	1	Late runtime/final cleanup
+T	3	11	2	Root double-click adapters, text-layout math, helper reinjection, guarded final uses cleanup.
+T	4	0	0	Stage
+T	4	0	1	Behavior
+T	4	1	0	Load
+T	4	1	1	Use parser-side `LoadDFM`, not generic text reading.
+T	4	2	0	Binary detection
+T	4	2	1	Detect modern resource-header binary DFM and raw `TPF0` streams.
+T	4	3	0	Text conversion
+T	4	3	1	Try binary/resource conversion paths and fail explicitly instead of saving empty FMX.
+T	4	4	0	Parse
+T	4	4	1	Build a component tree with properties, events, collections, subcomponents, and line numbers.
+T	4	5	0	Analyze
+T	4	5	1	Run third-party and data-aware analysis according to selected options.
+T	4	6	0	Generate
+T	4	6	1	Apply built-in and mapping-pack rules, validate actions/confidence, and emit FMX text.
+T	4	7	0	Save
+T	4	7	1	Write `.fmx` output in relative position under the target folder.
+T	5	0	0	Check
+T	5	0	1	Current v4.1.6 result
+T	5	1	0	Release MSBuild
+T	5	1	1	Passes with 0 errors and 0 warnings.
+T	5	2	0	Acceptance gate
+T	5	2	1	60 pass, 0 fail.
+T	5	3	0	Mapping-pack smoke test
+T	5	3	1	Covers conversion, partial/manual/detect-only reporting, and loaded-pack reporting.
+T	5	4	0	French beta regression guard
+T	5	4	1	Protects comments, binary DFM output, conditional uses blocks, colors, and report behavior.
+T	5	5	0	Source beta export
+T	5	5	1	Includes source/project/docs/help/mapping packs; excludes tools, tests, Win32 output, scripts, local cache files.

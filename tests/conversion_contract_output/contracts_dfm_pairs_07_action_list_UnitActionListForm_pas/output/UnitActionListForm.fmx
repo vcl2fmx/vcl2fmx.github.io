@@ -1,0 +1,19 @@
+﻿object ActionListForm: TActionListForm
+  ClientWidth = 320
+  Caption = 'Actions'
+  ClientHeight = 240
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
+  DesignerMasterStyle = 0
+  object ActionList1: TActionList
+    Top = 16
+    Left = 16
+    object Action1: TAction
+      Text = 'Do'
+    end
+
+  end
+
+end

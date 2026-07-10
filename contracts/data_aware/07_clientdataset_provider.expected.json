@@ -1,0 +1,15 @@
+{
+  "input_file": "contracts\\data_aware\\07_clientdataset_provider.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractClientDataSetProvider",
+    "\\bClientDataSet1: TClientDataSet",
+    "\\bDataSource1: TDataSource",
+    "Datasnap\\.DBClient"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\."
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

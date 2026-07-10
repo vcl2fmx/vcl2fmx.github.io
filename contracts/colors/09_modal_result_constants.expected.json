@@ -1,0 +1,12 @@
+{
+  "input_file": "contracts\\colors\\09_modal_result_constants.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractModalResultConstants",
+    "System\\.UITypes",
+    "ModalResult := mrCancel"
+  ],
+  "forbidden_output_patterns": ["Vcl\\.Forms"],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

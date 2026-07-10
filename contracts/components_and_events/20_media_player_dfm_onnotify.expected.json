@@ -1,0 +1,21 @@
+﻿{
+  "input_file": "contracts\\components_and_events\\20_media_player_dfm_onnotify.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": ["FMX.Forms"],
+  "expected_units_absent": ["Vcl.Forms", "Vcl.MPlayer"],
+  "expected_output_patterns": [
+    "MediaPlayer1: TMediaPlayer"
+  ],
+  "forbidden_output_patterns": [
+    "OnNotify = MediaPlayer1Notify",
+    "Vcl\\.Forms",
+    "Vcl\\.MPlayer"
+  ],
+  "expected_report_patterns": [
+    "DFM/FMXL fidelity check",
+    "OnNotify = MediaPlayer1Notify"
+  ],
+  "forbidden_report_patterns": []
+}

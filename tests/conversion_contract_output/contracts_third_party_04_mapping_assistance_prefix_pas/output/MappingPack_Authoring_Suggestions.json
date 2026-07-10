@@ -1,0 +1,11 @@
+﻿[
+  {
+    "vcl_class": "TAdvDoesNotExist",
+    "component_name": "AdvMystery1",
+    "problem_type": "Mapping assistance",
+    "source_file": "C:\\New Delphi Projects\\VCL2FMXConverterV5\\tests\\conversion_contract_output\\contracts_third_party_04_mapping_assistance_prefix_pas\\source\\04_mapping_assistance_prefix.dfm",
+    "line": 7,
+    "original_code": "object AdvMystery1: TAdvDoesNotExist",
+    "suggested_authoring_action": "Likely TMS/FNC component. Review the TMS mapping pack first; if this component appears in multiple screens, add a tested mapping-pack rule with property/event expectations."
+  }
+]

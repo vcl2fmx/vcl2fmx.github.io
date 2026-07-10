@@ -1,0 +1,436 @@
+{
+  "pack_name": "JVCL_MappingPack_v2",
+  "pack_id": "jvcl.complete.v2",
+  "vendor": "JEDI Visual Component Library",
+  "version": "2.0.0",
+  "description": "Complete merged mapping pack for JVCL controls. Combines the original base pack with supplemental entries covering label, image, splitter, scroll box, calendar, date/time picker, status bar, toolbar, bevel, and hint manager.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TJvButton",
+      "fmx_class": "TButton",
+      "action": "convert",
+      "confidence": 85,
+      "notes": "Basic button behavior maps. JVCL glyph/layout extras require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        },
+        {
+          "vcl": "Hint",
+          "fmx": "Hint"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvBitBtn",
+      "fmx_class": "TButton",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Button action maps. Glyph/kind/layout behavior requires review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnClick",
+          "fmx": "OnClick"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvEdit",
+      "fmx_class": "TEdit",
+      "action": "convert",
+      "confidence": 85,
+      "notes": "Basic text edit maps. JVCL validation and visual extras require review.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ],
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvMemo",
+      "fmx_class": "TMemo",
+      "action": "convert",
+      "confidence": 80,
+      "notes": "Basic memo text maps. JVCL additions require review.",
+      "properties": [
+        {
+          "vcl": "Text",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Lines",
+          "fmx": "Lines"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvCheckBox",
+      "fmx_class": "TCheckBox",
+      "action": "convert",
+      "confidence": 85,
+      "notes": "Basic checked/caption behavior maps. JVCL visual extras require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Checked",
+          "fmx": "IsChecked"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvRadioButton",
+      "fmx_class": "TRadioButton",
+      "action": "convert",
+      "confidence": 80,
+      "notes": "Basic checked/caption behavior maps. Group semantics require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Checked",
+          "fmx": "IsChecked"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvComboBox",
+      "fmx_class": "TComboBox",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Basic items and item index map. Auto-complete, owner-draw, and JVCL extras require review.",
+      "properties": [
+        {
+          "vcl": "Items",
+          "fmx": "Items"
+        },
+        {
+          "vcl": "ItemIndex",
+          "fmx": "ItemIndex"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvListBox",
+      "fmx_class": "TListBox",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Basic items map. Owner-draw and special list behavior require review."
+    },
+    {
+      "vcl_class": "TJvPanel",
+      "fmx_class": "TLayout",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Container behavior maps. Borders, bevels, and JVCL appearance require review."
+    },
+    {
+      "vcl_class": "TJvGroupBox",
+      "fmx_class": "TGroupBox",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Caption/container behavior maps. Styling requires review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvPageControl",
+      "fmx_class": "TTabControl",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Page structure maps. JVCL tab extras require review."
+    },
+    {
+      "vcl_class": "TJvTabSheet",
+      "fmx_class": "TTabItem",
+      "action": "partial",
+      "confidence": 80,
+      "notes": "Tab caption maps.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvProgressBar",
+      "fmx_class": "TProgressBar",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Progress value maps conceptually. Text and visual style require review."
+    },
+    {
+      "vcl_class": "TJvTrackBar",
+      "fmx_class": "TTrackBar",
+      "action": "partial",
+      "confidence": 75,
+      "notes": "Trackbar value maps conceptually. Tick marks and style require review."
+    },
+    {
+      "vcl_class": "TJvSpinEdit",
+      "fmx_class": "TSpinBox",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Numeric spin edit can map. Formatting and validation require review."
+    },
+    {
+      "vcl_class": "TJvDBGrid",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Data-aware grid behavior requires a grid/data-binding migration plan."
+    },
+    {
+      "vcl_class": "TJvDBLookupCombo",
+      "action": "manual_review",
+      "confidence": 40,
+      "manual_review_reason": "Lookup dataset/key/display semantics need manual migration."
+    },
+    {
+      "vcl_class": "TJvDBDateEdit",
+      "action": "manual_review",
+      "confidence": 45,
+      "manual_review_reason": "Date editor plus data binding requires review."
+    },
+    {
+      "vcl_class": "TJvTreeView",
+      "action": "detect_only",
+      "confidence": 30,
+      "manual_review_reason": "Tree node population, images, and state require manual review."
+    },
+    {
+      "vcl_class": "TJvWizard",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "Wizard/page flow should be redesigned explicitly in FMX."
+    },
+    {
+      "vcl_class": "TJvAppStorage",
+      "action": "manual_review",
+      "confidence": 50,
+      "manual_review_reason": "Application storage may be portable but persistence paths and platform behavior must be reviewed."
+    },
+    {
+      "vcl_class": "TJvFormStorage",
+      "action": "manual_review",
+      "confidence": 40,
+      "manual_review_reason": "Form storage depends on VCL form/control names and should be reviewed after conversion."
+    },
+    {
+      "vcl_class": "TJvLabel",
+      "fmx_class": "TLabel",
+      "action": "partial",
+      "confidence": 80,
+      "notes": "Basic label text and visibility map well to FMX TLabel. JVCL font effects, color, and hot-track behavior require review.",
+      "properties": [
+        {
+          "vcl": "Caption",
+          "fmx": "Text"
+        },
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvImage",
+      "fmx_class": "TImage",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Image display maps to FMX TImage. JVCL image format support, stretch/center options, and effects require review.",
+      "manual_review_reason": "Verify image resource loading, stretch mode, and any JVCL transparency or effect properties.",
+      "properties": [
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvSplitter",
+      "fmx_class": "TSplitter",
+      "action": "partial",
+      "confidence": 70,
+      "notes": "Splitter resize behavior maps to FMX TSplitter. JVCL visual extras and live resize options require review.",
+      "properties": [
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvScrollBox",
+      "fmx_class": "TScrollBox",
+      "action": "partial",
+      "confidence": 65,
+      "notes": "Scroll container behavior maps to FMX TScrollBox. JVCL scroll bar styling and extras require review.",
+      "properties": [
+        {
+          "vcl": "Enabled",
+          "fmx": "Enabled"
+        },
+        {
+          "vcl": "Visible",
+          "fmx": "Visible"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvCalendar",
+      "fmx_class": "TCalendar",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Calendar date selection maps conceptually to FMX TCalendar. JVCL multi-select, day rendering, and event indicators require review.",
+      "manual_review_reason": "Verify date selection events, formatting, and any custom day highlighting.",
+      "events": [
+        {
+          "vcl": "OnChange",
+          "fmx": "OnChange"
+        }
+      ]
+    },
+    {
+      "vcl_class": "TJvDateTimePicker",
+      "fmx_class": "TDateEdit",
+      "action": "partial",
+      "confidence": 55,
+      "notes": "Date/time picker UI maps to FMX TDateEdit for basic date selection. Time portion, null date behavior, and JVCL extras require review.",
+      "manual_review_reason": "Verify date/time formatting and null date handling after conversion."
+    },
+    {
+      "vcl_class": "TJvStatusBar",
+      "action": "detect_only",
+      "confidence": 30,
+      "manual_review_reason": "JVCL status bar panels and owner-drawn panes require manual FMX layout redesign using TLayout and TLabel combinations."
+    },
+    {
+      "vcl_class": "TJvToolBar",
+      "action": "detect_only",
+      "confidence": 30,
+      "manual_review_reason": "JVCL toolbar button layout and action wiring require manual FMX redesign using TToolBar or TLayout with TSpeedButton controls."
+    },
+    {
+      "vcl_class": "TJvBevel",
+      "action": "detect_only",
+      "confidence": 25,
+      "manual_review_reason": "VCL bevel controls have no direct FMX equivalent. Replace with TLine for a simple separator or TRectangle with no fill for a box bevel."
+    },
+    {
+      "vcl_class": "TJvHint",
+      "action": "detect_only",
+      "confidence": 20,
+      "manual_review_reason": "JVCL custom hint manager is Windows-specific. FMX uses the Hint property on controls with ShowHint enabled; advanced balloon/delay customization requires a custom FMX hint window."
+    }
+  ]
+}

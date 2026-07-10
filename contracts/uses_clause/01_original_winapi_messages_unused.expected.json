@@ -1,0 +1,22 @@
+{
+  "input_file": "contracts\\uses_clause\\01_original_winapi_messages_unused.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Winapi.Messages",
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "Caption := 'No active Windows message usage'"
+  ],
+  "forbidden_output_patterns": [
+    "\\bWinapi\\.Messages\\b",
+    "\\bVcl\\.Forms\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": [
+    "Windows messaging"
+  ]
+}

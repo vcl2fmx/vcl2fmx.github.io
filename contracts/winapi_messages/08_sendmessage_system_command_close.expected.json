@@ -1,0 +1,23 @@
+{
+  "input_file": "contracts\\winapi_messages\\08_sendmessage_system_command_close.pas",
+  "expected_status": "converted",
+  "expected_conversions": [
+    "WM_SYSCOMMAND close converted to FMX close path"
+  ],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "Close|OnCloseQuery|WM_SYSCOMMAND"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Forms\\b",
+    "SendMessage\\(Handle, WM_SYSCOMMAND, SC_CLOSE, 0\\)"
+  ],
+  "expected_report_patterns": [
+    "Windows system command converted automatically|SC_CLOSE|WM_SYSCOMMAND"
+  ],
+  "forbidden_report_patterns": []
+}

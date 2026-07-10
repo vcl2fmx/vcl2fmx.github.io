@@ -1,0 +1,194 @@
+{
+  "pack_name": "Devart_MappingPack_v2",
+  "pack_id": "devart.dataaccess.preserve.v2",
+  "vendor": "Devart",
+  "version": "2.0.0",
+  "description": "Conservative preservation/review pack for Devart data-access components. Nonvisual data access components may be preserved only when the target owns compatible Devart packages and platform support; UI dialogs and provider-specific behavior require review.",
+  "mode": "conservative",
+  "rules": [
+    {
+      "vcl_class": "TUniConnection",
+      "fmx_class": "TUniConnection",
+      "action": "preserve",
+      "confidence": 80,
+      "notes": "UniDAC connection is nonvisual and may be usable in FMX with compatible Devart packages.",
+      "manual_review_reason": "Verify provider packages, connection options, deployment libraries, and target-platform support."
+    },
+    {
+      "vcl_class": "TUniQuery",
+      "fmx_class": "TUniQuery",
+      "action": "preserve",
+      "confidence": 80,
+      "notes": "UniDAC query is nonvisual and may be preserved with compatible Devart packages.",
+      "manual_review_reason": "Verify SQL, parameters, update behavior, and connection references."
+    },
+    {
+      "vcl_class": "TUniTable",
+      "fmx_class": "TUniTable",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "UniDAC table component is nonvisual and may be preserved with compatible Devart packages.",
+      "manual_review_reason": "Verify table names, indexes, update behavior, and target-platform support."
+    },
+    {
+      "vcl_class": "TUniStoredProc",
+      "fmx_class": "TUniStoredProc",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "UniDAC stored procedure component is nonvisual and may be preserved.",
+      "manual_review_reason": "Verify parameter metadata and provider behavior."
+    },
+    {
+      "vcl_class": "TUniSQL",
+      "fmx_class": "TUniSQL",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "UniDAC SQL execution component is nonvisual and may be preserved.",
+      "manual_review_reason": "Verify SQL statements and provider-specific options."
+    },
+    {
+      "vcl_class": "TUniScript",
+      "fmx_class": "TUniScript",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "UniDAC script component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review script execution, delimiters, error handling, and deployment."
+    },
+    {
+      "vcl_class": "TUniTransaction",
+      "fmx_class": "TUniTransaction",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "UniDAC transaction component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review transaction scope and connection references."
+    },
+    {
+      "vcl_class": "TUniUpdateSQL",
+      "fmx_class": "TUniUpdateSQL",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "Update SQL helper is nonvisual and may be preserved.",
+      "manual_review_reason": "Review generated/handwritten update SQL and dataset references."
+    },
+    {
+      "vcl_class": "TUniDataSource",
+      "fmx_class": "TUniDataSource",
+      "action": "manual_review",
+      "confidence": 60,
+      "manual_review_reason": "DataSource preservation depends on FMX LiveBindings/data-aware strategy and component package support."
+    },
+    {
+      "vcl_class": "TUniMetaData",
+      "fmx_class": "TUniMetaData",
+      "action": "preserve",
+      "confidence": 70,
+      "notes": "Metadata component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review provider support and runtime usage."
+    },
+    {
+      "vcl_class": "TUniLoader",
+      "fmx_class": "TUniLoader",
+      "action": "preserve",
+      "confidence": 65,
+      "notes": "Bulk loader is nonvisual and may be preserved.",
+      "manual_review_reason": "Review platform-specific provider libraries and bulk-load behavior."
+    },
+    {
+      "vcl_class": "TUniDump",
+      "fmx_class": "TUniDump",
+      "action": "preserve",
+      "confidence": 65,
+      "notes": "Dump/restore component is nonvisual and may be preserved.",
+      "manual_review_reason": "Review file paths, platform storage, and provider support."
+    },
+    {
+      "vcl_class": "TUniSQLMonitor",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Monitoring/logging integration may be platform/package-specific."
+    },
+    {
+      "vcl_class": "TUniConnectDialog",
+      "action": "manual_review",
+      "confidence": 35,
+      "manual_review_reason": "Connection dialog UI is VCL-specific and should be rebuilt or replaced for FMX."
+    },
+    {
+      "vcl_class": "TUniAlerter",
+      "fmx_class": "TUniAlerter",
+      "action": "preserve",
+      "confidence": 60,
+      "notes": "Database event alerter may be preserved with compatible packages.",
+      "manual_review_reason": "Verify provider event support and platform behavior."
+    },
+    {
+      "vcl_class": "TVirtualTable",
+      "fmx_class": "TVirtualTable",
+      "action": "manual_review",
+      "confidence": 60,
+      "manual_review_reason": "In-memory dataset may be preserved with Devart packages, but fields, indexes, persistence, and FMX binding should be reviewed."
+    },
+    {
+      "vcl_class": "TVirtualDataSet",
+      "fmx_class": "TVirtualDataSet",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Custom virtual dataset callbacks and binding behavior require review."
+    },
+    {
+      "vcl_class": "TVirtualQuery",
+      "fmx_class": "TVirtualQuery",
+      "action": "manual_review",
+      "confidence": 55,
+      "manual_review_reason": "Virtual query behavior and in-memory source datasets require review."
+    },
+    {
+      "vcl_class": "TOracleUniProvider",
+      "fmx_class": "TOracleUniProvider",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "Provider component can usually be preserved with compatible Devart packages.",
+      "manual_review_reason": "Verify deployment libraries and target-platform support."
+    },
+    {
+      "vcl_class": "TSQLServerUniProvider",
+      "fmx_class": "TSQLServerUniProvider",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "Provider component can usually be preserved with compatible Devart packages.",
+      "manual_review_reason": "Verify deployment libraries and target-platform support."
+    },
+    {
+      "vcl_class": "TMySQLUniProvider",
+      "fmx_class": "TMySQLUniProvider",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "Provider component can usually be preserved with compatible Devart packages.",
+      "manual_review_reason": "Verify deployment libraries and target-platform support."
+    },
+    {
+      "vcl_class": "TInterBaseUniProvider",
+      "fmx_class": "TInterBaseUniProvider",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "Provider component can usually be preserved with compatible Devart packages.",
+      "manual_review_reason": "Verify deployment libraries and target-platform support."
+    },
+    {
+      "vcl_class": "TPostgreSQLUniProvider",
+      "fmx_class": "TPostgreSQLUniProvider",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "Provider component can usually be preserved with compatible Devart packages.",
+      "manual_review_reason": "Verify deployment libraries and target-platform support."
+    },
+    {
+      "vcl_class": "TSQLiteUniProvider",
+      "fmx_class": "TSQLiteUniProvider",
+      "action": "preserve",
+      "confidence": 75,
+      "notes": "Provider component can usually be preserved with compatible Devart packages.",
+      "manual_review_reason": "Verify deployment libraries and target-platform support."
+    }
+  ]
+}

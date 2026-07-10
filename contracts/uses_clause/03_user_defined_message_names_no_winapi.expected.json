@@ -1,0 +1,26 @@
+{
+  "input_file": "contracts\\uses_clause\\03_user_defined_message_names_no_winapi.pas",
+  "expected_status": "success",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [
+    "Winapi.Messages",
+    "Winapi.Windows",
+    "System.Messaging",
+    "FMXMessageBridge"
+  ],
+  "expected_output_patterns": [
+    "procedure TContractUserDefinedMessageNamesNoWinapi.SendMessage",
+    "procedure TContractUserDefinedMessageNamesNoWinapi.PostMessage",
+    "function TContractUserDefinedMessageNamesNoWinapi.GetMessage: string;"
+  ],
+  "forbidden_output_patterns": [
+    "FMX manual review: Winapi call requires redesign or platform service",
+    "System.Messaging"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": [
+    "Windows messaging conversion needed"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\winapi_messages\\28_sendmessage_if_condition.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["SendMessage in condition"],
+  "expected_units_added": [],
+  "expected_units_absent": [],
+  "expected_output_patterns": ["WM_USER|Original: if SendMessage|SendMessage\\("],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": ["WM_USER|SendMessage|Windows messaging"],
+  "forbidden_report_patterns": []
+}

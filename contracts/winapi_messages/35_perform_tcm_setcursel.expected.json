@@ -1,0 +1,1 @@
+{"input_file":"contracts\\winapi_messages\\35_perform_tcm_setcursel.pas","expected_status":"converted","expected_output_patterns":["TCM_SETCURSEL","Use FMX list view, tree view, tab control"],"expected_report_patterns":["Windows messaging","TCM_SETCURSEL"],"forbidden_output_patterns":[],"forbidden_report_patterns":[]}

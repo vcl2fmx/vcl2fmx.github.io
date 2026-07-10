@@ -1,0 +1,15 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Conversion Contracts in v5.0</title><link rel="stylesheet" href="../style.css"></head><body class="topic-page"><main><div class="doc-topic" style="display:block;">
+<h1>Conversion Contracts in v5.0</h1>
+<p>Version 5.0 adds an executable conversion-contract system. A contract is a small Delphi sample input paired with an expectation file. The expectation records the required output, report behavior, uses-clause result, and validation rules for one known converter behavior.</p>
+<p>The contract runner is the engineering test utility that finds each expectation file, runs the converter against the matching sample input, and fails if the generated result differs from the expected result. It is not runtime data for normal user conversions.</p>
+<table class="doc-table">
+<tbody><tr><th>Contract Area</th><th>What It Protects</th></tr>
+<tr><td>Include analysis</td><td>Beside-source, subfolder, missing, outside-tree, nested, recursive, conditional, commented, and UTF-8 Pascal include directives.</td></tr>
+<tr><td>Windows messaging</td><td>SendMessage, PostMessage, Perform, WndProc, message declarations, WM/CM/CN/common-control families, WM_USER, system commands, and false positives.</td></tr>
+<tr><td>Uses cleanup</td><td>Removal or preservation of VCL and Winapi units, including protected/conditional uses blocks and Vcl.Themes cleanup.</td></tr>
+<tr><td>DFM/FMXL generation</td><td>TMemo string collections, TStringGrid event ordering, accented text, paired Pascal/DFM form behavior, and DFM/FMXL fidelity reporting.</td></tr>
+<tr><td>Reporting and dry run</td><td>Total-issue accounting, informational notices, dry-run notices, report-card layout, and manual-review group prompts.</td></tr>
+<tr><td>Graphics and GDI</td><td>FMX canvas substitutions where reliable, plus visual-review reporting where drawing still needs inspection.</td></tr>
+</tbody></table>
+<p>The current v5.0 contract suite contains 194 executable expectations. The current verification run passed with 194 passing and 0 failing contracts.</p>
+</div><div class="page-nav"><a href="../index.html" target="_top">Contents</a></div></main></body></html>

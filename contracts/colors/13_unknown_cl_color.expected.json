@@ -1,0 +1,16 @@
+{
+  "input_file": "contracts\\colors\\13_unknown_cl_color.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": [
+    "Unknown VCL color constant preserved for manual review"
+  ],
+  "expected_output_patterns": [
+    "unit ContractUnknownClColor",
+    "clCompanyBrandColor"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "Unknown VCL color constant preserved for manual review: clCompanyBrandColor"
+  ],
+  "forbidden_report_patterns": []
+}

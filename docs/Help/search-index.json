@@ -1,0 +1,184 @@
+[
+  {
+    "title": "VCL2FMXConverter_v5_0_User_Guide",
+    "url": "topics/vcl2fmxconverter-v5-0-user-guide.html",
+    "tags": "imported,docx",
+    "helpId": "IDH_VCL2FMXCONVERTER_V5_0_USER_GUIDE",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Purpose and Audience",
+    "url": "topics/purpose-and-audience.html",
+    "tags": "imported,docx",
+    "helpId": "IDH_PURPOSE_AND_AUDIENCE",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "What the Converter Is, and What It Is Not",
+    "url": "topics/what-the-converter-is-and-what-it-is-not.html",
+    "tags": "imported,docx,procedure,reference",
+    "helpId": "IDH_WHAT_THE_CONVERTER_IS_AND_WHAT_IT_IS_NOT",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Mapping Packs: Optional Third-Party Component Support",
+    "url": "topics/mapping-packs-optional-third-party-component-support.html",
+    "tags": "imported,docx,procedure,reference",
+    "helpId": "IDH_MAPPING_PACKS_OPTIONAL_THIRD_PARTY_COMPONENT_SUPPORT",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "System Requirements and Workspace Preparation",
+    "url": "topics/system-requirements-and-workspace-preparation.html",
+    "tags": "imported,docx,troubleshooting,procedure",
+    "helpId": "IDH_SYSTEM_REQUIREMENTS_AND_WORKSPACE_PREPARATION",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Building and Launching the Converter",
+    "url": "topics/building-and-launching-the-converter.html",
+    "tags": "imported,docx",
+    "helpId": "IDH_BUILDING_AND_LAUNCHING_THE_CONVERTER",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Main Window and Control-by-Control Walkthrough",
+    "url": "topics/main-window-and-control-by-control-walkthrough.html",
+    "tags": "imported,docx,procedure,reference",
+    "helpId": "IDH_MAIN_WINDOW_AND_CONTROL_BY_CONTROL_WALKTHROUGH",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Run the converted app and validate real user workflows.",
+    "url": "topics/run-the-converted-app-and-validate-real-user-workflows.html",
+    "tags": "imported,docx",
+    "helpId": "IDH_RUN_THE_CONVERTED_APP_AND_VALIDATE_REAL_USER_WORKFLOWS",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Practical Operator Workflow",
+    "url": "topics/practical-operator-workflow.html",
+    "tags": "imported,docx,procedure,reference",
+    "helpId": "IDH_PRACTICAL_OPERATOR_WORKFLOW",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Preparing a Source Project for Best Results",
+    "url": "topics/preparing-a-source-project-for-best-results.html",
+    "tags": "imported,docx,procedure",
+    "helpId": "IDH_PREPARING_A_SOURCE_PROJECT_FOR_BEST_RESULTS",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Running a Conversion",
+    "url": "topics/running-a-conversion.html",
+    "tags": "imported,docx,reference",
+    "helpId": "IDH_RUNNING_A_CONVERSION",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Reading the Log and the Conversion Report",
+    "url": "topics/reading-the-log-and-the-conversion-report.html",
+    "tags": "imported,docx,troubleshooting,procedure,reference",
+    "helpId": "IDH_READING_THE_LOG_AND_THE_CONVERSION_REPORT",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Understanding the Output Folder and Files",
+    "url": "topics/understanding-the-output-folder-and-files.html",
+    "tags": "imported,docx,troubleshooting,procedure,reference",
+    "helpId": "IDH_UNDERSTANDING_THE_OUTPUT_FOLDER_AND_FILES",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Opening the Converted Project in Delphi",
+    "url": "topics/opening-the-converted-project-in-delphi.html",
+    "tags": "imported,docx,troubleshooting",
+    "helpId": "IDH_OPENING_THE_CONVERTED_PROJECT_IN_DELPHI",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Validating the Converted Application",
+    "url": "topics/validating-the-converted-application.html",
+    "tags": "imported,docx,troubleshooting,procedure",
+    "helpId": "IDH_VALIDATING_THE_CONVERTED_APPLICATION",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Test startup and shutdown behavior.",
+    "url": "topics/test-startup-and-shutdown-behavior.html",
+    "tags": "imported,docx,procedure",
+    "helpId": "IDH_TEST_STARTUP_AND_SHUTDOWN_BEHAVIOR",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Troubleshooting and Recovery Procedures",
+    "url": "topics/troubleshooting-and-recovery-procedures.html",
+    "tags": "imported,docx,troubleshooting,procedure,reference",
+    "helpId": "IDH_TROUBLESHOOTING_AND_RECOVERY_PROCEDURES",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Making Changes to the Converter Software",
+    "url": "topics/making-changes-to-the-converter-software.html",
+    "tags": "imported,docx",
+    "helpId": "IDH_MAKING_CHANGES_TO_THE_CONVERTER_SOFTWARE",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Operational Best Practices",
+    "url": "topics/operational-best-practices.html",
+    "tags": "imported,docx,troubleshooting",
+    "helpId": "IDH_OPERATIONAL_BEST_PRACTICES",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Frequently Asked Questions",
+    "url": "topics/frequently-asked-questions.html",
+    "tags": "imported,docx,troubleshooting",
+    "helpId": "IDH_FREQUENTLY_ASKED_QUESTIONS",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Appendix A. Quick Start Checklist",
+    "url": "topics/appendix-a-quick-start-checklist.html",
+    "tags": "imported,docx,procedure",
+    "helpId": "IDH_APPENDIX_A_QUICK_START_CHECKLIST",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Appendix B. Pre-Conversion Checklist",
+    "url": "topics/appendix-b-pre-conversion-checklist.html",
+    "tags": "imported,docx",
+    "helpId": "IDH_APPENDIX_B_PRE_CONVERSION_CHECKLIST",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Appendix C. Post-Conversion Review Checklist",
+    "url": "topics/appendix-c-post-conversion-review-checklist.html",
+    "tags": "imported,docx,troubleshooting,procedure",
+    "helpId": "IDH_APPENDIX_C_POST_CONVERSION_REVIEW_CHECKLIST",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Appendix D. Glossary",
+    "url": "topics/appendix-d-glossary.html",
+    "tags": "imported,docx,troubleshooting,reference",
+    "helpId": "IDH_APPENDIX_D_GLOSSARY",
+    "owner": "Auto Import"
+  },
+  {
+    "title": "Index",
+    "url": "topics/index.html",
+    "tags": "imported,docx,troubleshooting,reference",
+    "helpId": "IDH_INDEX",
+    "owner": "Thomas H Martin"
+  },
+  {
+    "title": "Conversion Contracts in v5.0",
+    "url": "topics/conversion-contracts-in-v5-0.html",
+    "tags": "contracts,regression,testing,v5",
+    "helpId": "IDH_CONVERSION_CONTRACTS_IN_V5_0",
+    "owner": "Auto Import"
+  }
+]

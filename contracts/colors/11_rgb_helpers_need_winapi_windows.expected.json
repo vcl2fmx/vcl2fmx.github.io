@@ -1,0 +1,15 @@
+{
+  "input_file": "contracts\\colors\\11_rgb_helpers_need_winapi_windows.pas",
+  "expected_status": "converted",
+  "expected_units_added": ["Winapi.Windows"],
+  "expected_output_patterns": [
+    "unit ContractRGBHelpersNeedWinapiWindows",
+    "Winapi\\.Windows",
+    "RGB\\(GeneratedGetRValue\\(0\\), GeneratedGetGValue\\(0\\), GeneratedGetBValue\\(0\\)\\)"
+  ],
+  "forbidden_output_patterns": [
+    "RGB\\(GetRValue\\(0\\), GetGValue\\(0\\), GetBValue\\(0\\)\\)"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

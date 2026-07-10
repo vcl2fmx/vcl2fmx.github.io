@@ -1,0 +1,18 @@
+{
+  "input_file": "contracts\\colors\\03_vcl_cl_color_conversion.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractVclClColorConversion",
+    "C: TAlphaColor",
+    "C := claRed;",
+    "System\\.UIConsts",
+    "System\\.UITypes"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\.Graphics\\b",
+    "C: TColor",
+    "C := clRed;"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}
