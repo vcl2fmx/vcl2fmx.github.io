@@ -43,18 +43,18 @@ Open `VCL2FMXConverter.dproj` in RAD Studio, select the desired Windows target, 
 
 ```text
 .
-??? VCL2FMXConverter.dpr / .dproj   Main Delphi project files
-??? MainForm.pas / .fmx             Main application form
-??? Converter.*.pas                 Converter engine, parser, mapper, rewrite, and generator units
-??? src/                            Additional Delphi source organized by module
-??? contracts/                      Schema/contracts used by converter workflows
-??? mapping_packs/                  Component mapping data
-??? samples/                        Sample projects and payloads
-??? tests/                          Test and regression assets
-??? tools/                          Build, test, and maintenance scripts
-??? docs/                           Project documentation and branding assets
-??? .gitignore                      Files intentionally excluded from Git
-??? .gitattributes                  Git text/binary handling rules
+|-- VCL2FMXConverter.dpr / .dproj   Main Delphi project files
+|-- MainForm.pas / .fmx             Main application form
+|-- Converter.*.pas                 Converter engine, parser, mapper, rewrite, and generator units
+|-- src/                            Additional Delphi source organized by module
+|-- contracts/                      Schema/contracts used by converter workflows
+|-- mapping_packs/                  Component mapping data
+|-- samples/                        Sample projects and payloads
+|-- tests/                          Test and regression assets
+|-- tools/                          Build, test, and maintenance scripts
+|-- docs/                           Project documentation and branding assets
+|-- .gitignore                      Files intentionally excluded from Git
+`-- .gitattributes                  Git text/binary handling rules
 ```
 
 ## Files Not Included in Git
@@ -75,3 +75,4 @@ Copyright (c) Tommy Martin.
 ## Author
 
 Tommy Martin
+
