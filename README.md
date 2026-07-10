@@ -70,7 +70,7 @@ This repository intentionally excludes generated and local-only files such as:
 
 VCL2FMXConverter is licensed under the Apache License, Version 2.0. See the `LICENSE` file for details.
 
-Copyright (c) Tommy Martin.
+Copyright (c) 2026 Tommy Martin.
 
 ## Author
 
