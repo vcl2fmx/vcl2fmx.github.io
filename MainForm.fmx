@@ -262,10 +262,6 @@ object frmMain: TfrmMain
                 92CC2C2F16544C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C
                 4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4CCCF8E0FF0362C02695EB4783A9
                 0000000049454E44AE426082}
-              FileName = 
-                'C:\New Delphi Projects\VCL2FMXConverterV5\Logos and Icons\Concep' +
-                't 04 - Faceted Cube Arrow\VCL2FMX_Concept04_FacetedCubeArrow_150' +
-                '.png'
             end>
           Position.X = 440.000000000000000000
           Position.Y = 8.000000000000000000

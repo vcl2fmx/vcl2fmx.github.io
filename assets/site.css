@@ -135,11 +135,22 @@ h3 { margin-bottom: 10px; font-size: 1.25rem; }
 .check-list li::before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 900; }
 .section { padding: 82px 0; }
 .section.alt { background: var(--mist); }
+.product-preview { background: linear-gradient(180deg, #ffffff, #f5f8fc); }
 .section-head { max-width: 780px; margin-bottom: 38px; }
 .section-head p { margin-bottom: 0; color: var(--muted); font-size: 1.08rem; }
 .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .card { padding: 28px; border: 1px solid var(--line); border-radius: 16px; background: white; box-shadow: 0 9px 25px rgba(16, 34, 58, .05); }
 .card p { margin-bottom: 0; color: var(--muted); }
+.product-shot {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: white;
+  box-shadow: var(--shadow);
+}
+.product-shot img { width: 100%; height: auto; }
+.product-shot figcaption { padding: 14px 20px 17px; color: var(--muted); font-size: .92rem; }
 .icon-box { width: 48px; height: 48px; margin-bottom: 20px; display: grid; place-items: center; border-radius: 13px; background: var(--blue-soft); color: var(--blue); font-size: 1.35rem; font-weight: 900; }
 .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; counter-reset: steps; }
 .step { position: relative; padding: 32px; border-top: 5px solid var(--blue); border-radius: 0 0 16px 16px; background: white; box-shadow: var(--shadow); }

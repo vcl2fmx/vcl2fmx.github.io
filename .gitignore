@@ -21,6 +21,9 @@ __recovery/
 *.bak
 *.tmp
 
+# Microsoft Office temporary lock files
+~$*
+
 # Common build folders
 bin/
 dcu/
