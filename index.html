@@ -143,7 +143,29 @@
       </div>
     </section>
 
-    <section class="section alt" id="limits" aria-labelledby="limits-title">
+    <section class="section alt" id="contracts" aria-labelledby="contracts-title">
+      <div class="shell split">
+        <div>
+          <p class="eyebrow">Repeatable engineering safeguards</p>
+          <h2 id="contracts-title">Contracts turn known conversion problems into tests that must keep passing.</h2>
+          <p>Each contract pairs a small Delphi fixture with an expected JSON definition. Together they describe the generated Pascal, FMX, project, and report behavior that the converter must produce—or must deliberately avoid.</p>
+          <ul class="tag-list" aria-label="Conversion contract coverage areas">
+            <li>Pascal structure</li><li>DFM and FMX forms</li><li>Project generation</li><li>Uses clauses</li><li>Windows messages</li><li>Data-aware controls</li><li>Graphics</li><li>LiveBindings</li><li>Reporting</li>
+          </ul>
+        </div>
+        <aside class="callout">
+          <p class="eyebrow">Version 5.0 validation</p>
+          <h3>194 executable conversion contracts</h3>
+          <p>The suite checks required and forbidden output patterns, report messages, added or removed units, generated files, and blocking status. Contracts run during engineering validation—not during an ordinary user conversion.</p>
+          <div class="actions">
+            <a class="button orange" href="docs/pdf/VCL2FMXConverter_v5_Contract_System_Overview.pdf">Read the Contract Overview</a>
+            <a class="button secondary" href="https://github.com/tmartindub/VCL2FMX-V-5.0/tree/main/contracts">Browse Contract Fixtures</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="limits" aria-labelledby="limits-title">
       <div class="shell">
         <div class="section-head">
           <p class="eyebrow">Know the boundaries</p>
