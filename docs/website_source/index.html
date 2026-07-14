@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="VCL2FMXConverter helps Delphi developers move VCL projects toward FireMonkey with transparent conversion reports and editable mapping packs.">
+  <meta name="theme-color" content="#0757b8">
+  <title>VCL2FMXConverter | Practical VCL-to-FMX Migration</title>
+  <link rel="icon" href="assets/vcl2fmx-icon.png" type="image/png">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="index.html" aria-label="VCL2FMXConverter home" aria-current="page">
+        <img src="assets/vcl2fmx-logo.png" alt="VCL2FMXConverter">
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="#features">Features</a>
+        <a href="downloads.html">Downloads</a>
+        <a class="nav-cta" href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="shell hero-grid">
+        <div>
+          <p class="eyebrow">Open-source Delphi migration utility</p>
+          <h1 id="hero-title">Move VCL projects toward FireMonkey with a clearer starting point.</h1>
+          <p class="lede">VCL2FMXConverter handles much of the repetitive work in a VCL-to-FMX migration—forms, components, properties, events, and project structure—then clearly reports the items that still need a developer's judgment.</p>
+          <div class="actions">
+            <a class="button orange" href="downloads.html#current-release">Download v4.1.8</a>
+            <a class="button secondary" href="https://9e2085fb-1f54-4040-a0a9-bd30c72ec162.filesusr.com/ugd/015e9d_71cb122363534715864ab601d351cea8.pdf">Read the User Guide</a>
+          </div>
+        </div>
+        <aside class="release-card" aria-label="Current stable release">
+          <p class="eyebrow">Current stable source release</p>
+          <div class="version">v4.1.8</div>
+          <span class="status">Stable</span>
+          <ul class="check-list">
+            <li>Built with Delphi 13.1</li>
+            <li>Complete Delphi source distribution</li>
+            <li>Third-party mapping packs included</li>
+            <li>Apache 2.0 licensed</li>
+          </ul>
+          <p><a href="https://9e2085fb-1f54-4040-a0a9-bd30c72ec162.filesusr.com/ugd/015e9d_f1fc37a81a5541729336563139164057.pdf">Read the v4.1.8 release notes</a></p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="features" aria-labelledby="features-title">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow">What the converter does</p>
+          <h2 id="features-title">Automate the routine work. Keep the important decisions visible.</h2>
+          <p>The converter produces an editable FMX-oriented project and an honest report—not a black-box promise of one-click conversion.</p>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <div class="icon-box" aria-hidden="true">F</div>
+            <h3>Forms and components</h3>
+            <p>Converts many standard VCL controls to FMX equivalents and preserves layout information where practical.</p>
+          </article>
+          <article class="card">
+            <div class="icon-box" aria-hidden="true">{ }</div>
+            <h3>Properties and events</h3>
+            <p>Maps common VCL properties and event names when the translation is safe and meaningful.</p>
+          </article>
+          <article class="card">
+            <div class="icon-box" aria-hidden="true">!</div>
+            <h3>Reports and review</h3>
+            <p>Highlights unsupported APIs, third-party controls, conversion risks, and work that needs manual review.</p>
+          </article>
+          <article class="card">
+            <div class="icon-box" aria-hidden="true">J</div>
+            <h3>Editable mapping packs</h3>
+            <p>Uses readable JSON rules so developers can inspect and extend support for component libraries they understand.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" aria-labelledby="workflow-title">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow">A practical workflow</p>
+          <h2 id="workflow-title">From original VCL source to a reviewable FMX project</h2>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <h3>Select the source project</h3>
+            <p>Point the converter at a Delphi VCL project. The original project remains the source of truth.</p>
+          </article>
+          <article class="step">
+            <h3>Convert to a separate folder</h3>
+            <p>The converter analyzes Pascal and DFM files, applies supported mappings, and generates FMX-oriented output.</p>
+          </article>
+          <article class="step">
+            <h3>Compile, review, and test</h3>
+            <p>Open the generated project in Delphi, work through the report, and validate real application behavior.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="mapping-packs" aria-labelledby="mapping-title">
+      <div class="shell split">
+        <div>
+          <p class="eyebrow">Third-party component support</p>
+          <h2 id="mapping-title">Mapping packs make the rules transparent.</h2>
+          <p>Optional JSON mapping packs can convert simple components, partially convert controls with warnings, detect complex controls, or preserve selected references. Developers can adjust packs without forcing unsafe assumptions into the converter core.</p>
+          <ul class="tag-list" aria-label="Included component families">
+            <li>DevExpress</li><li>FastReport</li><li>FireDAC</li><li>JVCL</li><li>ReportBuilder</li><li>Skia4Delphi</li><li>TeeChart</li><li>TMS</li><li>VirtualTreeView</li><li>and more</li>
+          </ul>
+        </div>
+        <aside class="callout">
+          <p class="eyebrow">Included with v4.1.8</p>
+          <h3>Complete mapping pack collection</h3>
+          <p>Start with the included packs, then use JSON Mapping Pack Studio or a text editor to tailor rules to your libraries and projects.</p>
+          <div class="actions">
+            <a class="button orange" href="downloads.html#companion-tools">Get the mapping packs</a>
+            <a class="button secondary" href="downloads.html#references">View references</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section alt" id="limits" aria-labelledby="limits-title">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow">Know the boundaries</p>
+          <h2 id="limits-title">FMX is a different framework, so developer review still matters.</h2>
+          <p>Generated output is a migration starting point. Compiling, testing, UI inspection, and programmer review remain essential.</p>
+        </div>
+        <ul class="limit-list">
+          <li><strong>No direct FMX equivalent:</strong> some VCL and third-party controls must be replaced or redesigned.</li>
+          <li><strong>Windows-specific code:</strong> handles, messages, GDI, and Windows API calls may need manual work.</li>
+          <li><strong>Custom drawing:</strong> owner-draw and VCL canvas logic do not map directly to FMX rendering.</li>
+          <li><strong>Behavior and layout:</strong> focus, scaling, keyboard handling, painting, and platform behavior can differ.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="contact-band" id="contact" aria-labelledby="contact-title">
+      <div class="shell contact-inner">
+        <div>
+          <p class="eyebrow">Contact and feedback</p>
+          <h2 id="contact-title">Found an issue or a conversion edge case?</h2>
+          <p>Include the converter version, Delphi version, a short project description, and the generated HTML report when possible.</p>
+        </div>
+        <a class="button" href="mailto:churchesite@gmail.com?subject=VCL2FMXConverter%20Feedback">Email churchesite@gmail.com</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <p>&copy; 2026 VCL2FMXConverter</p>
+      <p>Free and open-source Delphi VCL-to-FMX migration assistance &middot; Apache License 2.0</p>
+    </div>
+  </footer>
+</body>
+</html>
