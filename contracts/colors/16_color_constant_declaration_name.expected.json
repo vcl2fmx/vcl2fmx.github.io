@@ -1,0 +1,20 @@
+{
+  "input_file": "contracts\\colors\\16_color_constant_declaration_name.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": ["System.UITypes"],
+  "expected_units_absent": ["Vcl.Graphics"],
+  "expected_output_patterns": [
+    "clSalmon = \\$00C5E6FA;",
+    "ColorINeForm: TAlphaColor;",
+    "ColorINeForm := \\$FFFA8072;"
+  ],
+  "forbidden_output_patterns": [
+    "\\$FFFA8072\\s*=\\s*\\$00C5E6FA",
+    "\\bTColor\\b",
+    "\\bVcl\\.Graphics\\b"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

@@ -24,14 +24,14 @@ The original VCL project remains the source of truth. Generated output is writte
 - Compatibility, autofix, LiveBindings, and runtime-normalization passes
 - Data-aware, WinAPI, Windows-message, GDI, and third-party review support
 - 22 editable JSON mapping packs for common Delphi component families
-- 194 executable conversion contracts plus regression and release-readiness guards
+- 198 executable conversion contracts plus regression and release-readiness guards
 - Complete user, engineering, rules, mapping, runtime-flow, and contract documentation
 
 ## Requirements
 
 - Windows
 - Embarcadero Delphi/RAD Studio with FireMonkey support
-- Delphi 12 or later; the current project is built with Delphi 13.1
+- Delphi 12 or later; the current project is built with Delphi 13.1. Very old Delphi projects, such as Delphi 3-era source, may need manual modernization before conversion.
 
 The primary project file is `VCL2FMXConverter.dproj`, and the program entry point is `VCL2FMXConverter.dpr`.
 

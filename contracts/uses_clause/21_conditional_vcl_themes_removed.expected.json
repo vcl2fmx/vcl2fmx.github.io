@@ -10,8 +10,7 @@
   ],
   "expected_output_patterns": [
     "\\{\\$IFDEF USE_VCL_STYLES\\}",
-    "\\{\\$ENDIF\\}",
-    "System.Classes"
+    "\\{\\$ENDIF\\}"
   ],
   "forbidden_output_patterns": [
     "Vcl\\.Themes"

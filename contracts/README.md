@@ -44,10 +44,10 @@ Default behavior:
 `-EnforceCoverage` requires every discovered `.pas` and `.dpr` fixture to have
 an expectation file or be covered by a project-level expectation.
 
-Current verified status after the image-API contract expansion:
+Current verified status after the field-test regression expansion:
 
 ```text
-Summary: 194 pass, 0 fail
+Summary: 198 pass, 0 fail
 ```
 
 ## Expectation Fields

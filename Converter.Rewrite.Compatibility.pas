@@ -506,6 +506,7 @@ var
   DialogFieldMap: TStringList;
   OriginalCode: string;
   AnalysisCode: string;
+  AnalysisNoStrings: string;
 
   procedure InsertBlock(const AIndex: Integer; const ABlock: string);
   var
@@ -834,15 +835,71 @@ var
 
     Result := AdvancePastDeclarationBlocks(CandidateIdx);
   end;
+
+  function StripStringLiterals(const ACode: string): string;
+  var
+    I: Integer;
+    InString: Boolean;
+    Ch: Char;
+  begin
+    Result := '';
+    InString := False;
+    I := 1;
+    while I <= Length(ACode) do
+    begin
+      Ch := ACode[I];
+      if InString then
+      begin
+        if (Ch = #13) or (Ch = #10) then
+          Result := Result + Ch
+        else
+          Result := Result + ' ';
+        if Ch = '''' then
+        begin
+          if (I < Length(ACode)) and (ACode[I + 1] = '''') then
+          begin
+            Result := Result + ' ';
+            Inc(I, 2);
+            Continue;
+          end;
+          InString := False;
+        end;
+        Inc(I);
+        Continue;
+      end;
+
+      if Ch = '''' then
+      begin
+        InString := True;
+        Result := Result + ' ';
+        Inc(I);
+        Continue;
+      end;
+
+      Result := Result + Ch;
+      Inc(I);
+    end;
+  end;
+
+  function HasRealMemoReference(const ACode: string): Boolean;
+  begin
+    Result :=
+      TRegEx.IsMatch(ACode,
+        '\b[A-Za-z_][A-Za-z0-9_]*(?:\s*,\s*[A-Za-z_][A-Za-z0-9_]*)*\s*:\s*TMemo\b',
+        [roIgnoreCase]) or
+      TRegEx.IsMatch(ACode, '\bTMemo\s*[\.\(]', [roIgnoreCase]) or
+      TRegEx.IsMatch(ACode, '\bclass\s*\(\s*TMemo\s*\)', [roIgnoreCase]);
+  end;
 begin
   Assert(Assigned(FContext));
 
   OriginalCode := Code;
   AnalysisCode := VCL2FMXStripCommentsForAnalysis(Code);
+  AnalysisNoStrings := StripStringLiterals(AnalysisCode);
   NeedRadioGroup := ContainsText(AnalysisCode, 'TRadioGroup');
   NeedFontDialog := ContainsText(AnalysisCode, 'TFontDialog');
   NeedColorDialog := ContainsText(AnalysisCode, 'TColorDialog');
-  NeedMemoCompat := ContainsText(AnalysisCode, 'TMemo') and
+  NeedMemoCompat := HasRealMemoReference(AnalysisNoStrings) and
     not ContainsText(AnalysisCode, 'FMX.Memo');
   NeedTrackBarCompat := ContainsText(AnalysisCode, 'TTrackBar') and
     not ContainsText(AnalysisCode, 'FMX.StdCtrls') and
@@ -908,7 +965,8 @@ begin
     ResourceInsertIdx := FindResourceInsertIdx;
     if ResourceInsertIdx <> -1 then
     begin
-      if NeedMemoCompat and not ContainsText(AnalysisCode, 'procedure TMemo.Clear;') then
+      if NeedMemoCompat and ContainsText(Lines.Text, 'TMemo = class(FMX.Memo.TMemo)') and
+         not ContainsText(AnalysisCode, 'procedure TMemo.Clear;') then
         InsertBlock(ResourceInsertIdx, MemoCompatImplCode);
       if NeedTrackBarCompat and not ContainsText(AnalysisCode, 'function TTrackBar.GetPosition') then
         InsertBlock(ResourceInsertIdx, TrackBarCompatImplCode);

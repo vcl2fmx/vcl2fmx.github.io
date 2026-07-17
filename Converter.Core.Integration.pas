@@ -1415,12 +1415,18 @@ var
   Component: TDFMComponent;
   TargetClass: string;
 
-  function GetTargetShapeClass(const AComponent: TDFMComponent): string;
+  function GetTargetFieldClass(const AComponent: TDFMComponent): string;
   var
     ShapeKind: string;
   begin
     Result := '';
-    if (AComponent = nil) or not SameText(AComponent.ComponentClass, 'TShape') then
+    if AComponent = nil then
+      Exit;
+
+    if SameText(AComponent.ComponentClass, 'TBevel') then
+      Exit('TRectangle');
+
+    if not SameText(AComponent.ComponentClass, 'TShape') then
       Exit;
 
     ShapeKind := Trim(AComponent.GetPropertyValue('Shape', ''));
@@ -1449,13 +1455,13 @@ begin
     begin
       Line := Lines[I];
       Match := TRegEx.Match(Line,
-        '^(\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:\s*TShape\s*;\s*$',
+        '^(\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:\s*(TShape|TBevel)\s*;\s*$',
         [roIgnoreCase]);
       if not Match.Success then
         Continue;
 
       Component := LocalParser.FindComponent(Match.Groups[2].Value);
-      TargetClass := GetTargetShapeClass(Component);
+      TargetClass := GetTargetFieldClass(Component);
       if TargetClass <> '' then
         Lines[I] := Match.Groups[1].Value + Match.Groups[2].Value + ': ' + TargetClass + ';';
     end;

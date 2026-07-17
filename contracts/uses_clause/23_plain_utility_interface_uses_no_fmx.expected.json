@@ -1,0 +1,16 @@
+{
+  "input_file": "contracts\\uses_clause\\23_plain_utility_interface_uses_no_fmx.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [],
+  "expected_output_patterns": [
+    "unit ContractPlainUtilityInterfaceUsesNoFMX",
+    "unit ContractPlainUtilityInterfaceUsesNoFMX;\\s*interface\\s*uses System\\.SysUtils;",
+    "function FirstCharUpperCase\\(const AValue: string\\): string;"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

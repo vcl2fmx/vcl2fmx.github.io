@@ -66,7 +66,7 @@
           <span class="status">Vanguard</span>
           <ul class="check-list">
             <li>Delphi 12+; built with Delphi 13.1</li>
-            <li>194 executable conversion contracts</li>
+            <li>198 executable conversion contracts</li>
             <li>22 editable mapping packs</li>
             <li>Apache 2.0 licensed</li>
           </ul>
@@ -115,7 +115,7 @@
           <article class="card">
             <div class="icon-box" aria-hidden="true">J</div>
             <h3>Executable contracts</h3>
-            <p>Uses 194 focused expectations to guard generated code, report behavior, project integration, and known conversion boundaries.</p>
+            <p>Uses 198 focused expectations to guard generated code, report behavior, project integration, and known conversion boundaries.</p>
           </article>
         </div>
       </div>
@@ -171,14 +171,14 @@
         <div>
           <p class="eyebrow">Repeatable engineering safeguards</p>
           <h2 id="contracts-title">Contracts turn known conversion problems into tests that must keep passing.</h2>
-          <p>Each contract pairs a small Delphi fixture with an expected JSON definition. Together they describe the generated Pascal, FMX, project, and report behavior that the converter must produce—or must deliberately avoid.</p>
+          <p>Each contract is a small Delphi test case plus an expected JSON result. Together they describe the generated Pascal, FMX, project, and report behavior that the converter must produce—or must deliberately avoid. Contracts are engineering safeguards, not files that normal conversions compare against at runtime.</p>
           <ul class="tag-list" aria-label="Conversion contract coverage areas">
             <li>Pascal structure</li><li>DFM and FMX forms</li><li>Project generation</li><li>Uses clauses</li><li>Windows messages</li><li>Data-aware controls</li><li>Graphics</li><li>LiveBindings</li><li>Reporting</li>
           </ul>
         </div>
         <aside class="callout">
           <p class="eyebrow">Version 5.0 validation</p>
-          <h3>194 executable conversion contracts</h3>
+          <h3>198 executable conversion contracts</h3>
           <p>The suite checks required and forbidden output patterns, report messages, added or removed units, generated files, and blocking status. Contracts run during engineering validation—not during an ordinary user conversion.</p>
           <div class="actions">
             <a class="button orange" href="docs/pdf/VCL2FMXConverter_v5_Contract_System_Overview.pdf">Read the Contract Overview</a>
@@ -196,6 +196,7 @@
           <p>Generated output is a migration starting point. Compiling, testing, UI inspection, and programmer review remain essential.</p>
         </div>
         <ul class="limit-list">
+          <li><strong>Supported Delphi baseline:</strong> v5.0 is intended for modern Delphi/RAD Studio projects with FireMonkey support, specifically Delphi 12 or later. Very old source such as Delphi 3 may require manual modernization before the converter can be useful.</li>
           <li><strong>No direct FMX equivalent:</strong> some VCL and third-party controls must be replaced or redesigned.</li>
           <li><strong>Windows-specific code:</strong> handles, messages, GDI, and Windows API calls may need manual work.</li>
           <li><strong>Custom drawing:</strong> owner-draw and VCL canvas logic do not map directly to FMX rendering.</li>

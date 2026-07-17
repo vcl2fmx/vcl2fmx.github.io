@@ -534,6 +534,7 @@ var
   NeedsWinapiActiveX: Boolean;
   NeedsWinapiMMSystem: Boolean;
   NeedsSystemWinComObj: Boolean;
+  NeedsFMXCoreUnits: Boolean;
   InterfaceIdx: Integer;
   OriginalCode: string;
   AnalysisCode: string;
@@ -866,6 +867,17 @@ begin
                            (Pos('MMSYSERR_', AnalysisCode) > 0);
     NeedsSystemWinComObj := (Pos('CreateOleObject', AnalysisCode) > 0) or
                             (Pos('GetActiveOleObject', AnalysisCode) > 0);
+    NeedsFMXCoreUnits :=
+      NeedsFMXObjects or NeedsFMXStdCtrls or NeedsFMXEdit or
+      NeedsFMXComboEdit or NeedsFMXMemo or NeedsFMXSpinBox or
+      NeedsFMXNumberBox or NeedsFMXColors or NeedsFMXListBox or
+      NeedsFMXLayouts or NeedsFMXMenus or NeedsFMXGrid or
+      NeedsFMXImgList or NeedsFMXDateTimeCtrls or NeedsFMXDialogs or
+      NeedsFMXMedia or
+      TRegEx.IsMatch(AnalysisCode,
+        '\b(TForm|TFrame|TDataModule|TControl|TFmxObject|TCanvas|TBitmap)\b',
+        [roIgnoreCase]) or
+      ContainsText(AnalysisCode, 'FMX.');
 
     // Find the interface uses clause (skip implementation uses)
     for i := 0 to AnalysisLines.Count - 1 do
@@ -1022,21 +1034,16 @@ begin
           UnitList.Add(UnitName);
       end;
 
-      // Ensure required FMX units are present
-      if UnitList.IndexOf('FMX.Forms') = -1 then
+      // Ensure required FMX core units are present only for visual/FMX units.
+      // Plain utility units should not receive form/control infrastructure.
+      if NeedsFMXCoreUnits and (UnitList.IndexOf('FMX.Forms') = -1) then
         UnitList.Add('FMX.Forms');
-      if UnitList.IndexOf('FMX.Controls') = -1 then
+      if NeedsFMXCoreUnits and (UnitList.IndexOf('FMX.Controls') = -1) then
         UnitList.Add('FMX.Controls');
-      if UnitList.IndexOf('FMX.Graphics') = -1 then
+      if NeedsFMXCoreUnits and (UnitList.IndexOf('FMX.Graphics') = -1) then
         UnitList.Add('FMX.Graphics');
-      if UnitList.IndexOf('FMX.Types') = -1 then
+      if NeedsFMXCoreUnits and (UnitList.IndexOf('FMX.Types') = -1) then
         UnitList.Add('FMX.Types');
-      if UnitList.IndexOf('System.SysUtils') = -1 then
-        UnitList.Add('System.SysUtils');
-      if UnitList.IndexOf('System.Classes') = -1 then
-        UnitList.Add('System.Classes');
-      if UnitList.IndexOf('System.Variants') = -1 then
-        UnitList.Add('System.Variants');
       if NeedsSystemRtti and (UnitList.IndexOf('System.Rtti') = -1) then
         UnitList.Add('System.Rtti');
       if NeedsSystemGenericsCollections and (UnitList.IndexOf('System.Generics.Collections') = -1) then

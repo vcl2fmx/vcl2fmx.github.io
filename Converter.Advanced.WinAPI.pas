@@ -1119,6 +1119,7 @@ var
   Line: string;
   Words: TArray<string>;
   W: string;
+  EqualsPos: Integer;
 begin
   Lines := TStringList.Create;
   AnalysisLines := TStringList.Create;
@@ -1134,12 +1135,17 @@ begin
       Line := Lines[I];
       if Pos('cl', Line) > 0 then
       begin
+        EqualsPos := Pos('=', Line);
         Words := Line.Split([' ', ':', '=', ',', ';', '.', '(', ')', '[', ']', '+', '-']);
         for J := 0 to High(Words) do
         begin
           W := Trim(Words[J]);
           if W.StartsWith('cl', True) and (Length(W) > 2) and
-             IsValidColorConstant(W) then
+             IsValidColorConstant(W) and
+             not ((EqualsPos > 0) and
+               TRegEx.IsMatch(Line,
+                 '^\s*' + TRegEx.Escape(W) + '\s*=',
+                 [roIgnoreCase])) then
             Line := StringReplace(Line, W, ConvertColor(W),
               [rfReplaceAll, rfIgnoreCase]);
         end;

@@ -1,0 +1,21 @@
+{
+  "input_file": "contracts\\components_and_events\\25_memo_name_string_no_helper.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [],
+  "expected_units_absent": [],
+  "expected_output_patterns": [
+    "unit ContractMemoNameStringNoHelper;\\s*interface\\s*uses System\\.SysUtils;",
+    "Result := SameText\\(AClassName, 'TMemo'\\);"
+  ],
+  "forbidden_output_patterns": [
+    "TMemo = class\\(FMX\\.Memo\\.TMemo\\)",
+    "procedure TMemo\\.Clear",
+    "Lines\\.Clear"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": [
+    "Injected TMemo compatibility helper"
+  ]
+}

@@ -18,6 +18,7 @@ Each sample is intended to become an input fixture with assertions against conve
 - `02_implementation_only_winapi_units.pas`: implementation-only Winapi units should be dropped or re-added by active need.
 - `03_user_defined_message_names_no_winapi.pas`: domain methods should not inject `Winapi.Messages`.
 - `04_lowercase_cm_tcm_false_positive.pas`: lowercase/third-party identifiers should not trigger message units.
+- `23_plain_utility_interface_uses_no_fmx.pas`: plain non-form utility units should not receive default FMX form/control units.
 
 ## Comments And Boundaries
 
@@ -31,6 +32,7 @@ Each sample is intended to become an input fixture with assertions against conve
 - `01_class_should_not_add_uiconsts.pas`: `class`/`declare`/`TClassName` should not trigger `System.UIConsts`.
 - `02_real_cla_color_should_add_uiconsts.pas`: real `cla*` FMX color usage should trigger required units.
 - `03_vcl_cl_color_conversion.pas`: VCL `cl*` colors should convert/review correctly.
+- `16_color_constant_declaration_name.pas`: VCL color constant declarations should preserve the declared identifier while converting safe usage sites.
 
 ## Components And Events
 
@@ -41,6 +43,8 @@ Each sample is intended to become an input fixture with assertions against conve
 - `22_numeric_math_div_multiply_chain.pas`: mixed FMX size math with `div` and multiplication should be converted to compile-safe floating-point math.
 - `23_numeric_math_simple_div.pas`: simple dotted FMX size `div` expressions should use `/` without unnecessary `Round()`.
 - `24_image_picture_assign_save.pas`: `TImage.Picture.Assign`, `SaveToFile`, and `Graphic` usage should convert to `TImage.Bitmap` equivalents with no `.Picture` residue.
+- `25_memo_name_string_no_helper.pas`: string-only references to `TMemo` should not inject a generated memo compatibility helper.
+- `26_bevel_field_alignment.pas`: DFM `TBevel` to FMX `TRectangle` conversion should also update the Pascal form field declaration.
 
 ## Additional Coverage Added
 
