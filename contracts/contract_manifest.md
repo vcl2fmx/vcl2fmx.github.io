@@ -46,6 +46,19 @@ Each sample is intended to become an input fixture with assertions against conve
 - `25_memo_name_string_no_helper.pas`: string-only references to `TMemo` should not inject a generated memo compatibility helper.
 - `26_bevel_field_alignment.pas`: DFM `TBevel` to FMX `TRectangle` conversion should also update the Pascal form field declaration.
 
+## Pascal Structure
+
+- `05_keyword_boundary_identifiers.pas`: identifiers beginning with Delphi section keywords should not be treated as real `interface`, `implementation`, `uses`, or type-section boundaries.
+
+## DFM Fidelity
+
+- `04_mixed_case_dfm_property_lookup.pas`: mixed-case DFM object and property names should compare case-insensitively during fidelity checks.
+
+## Uses-Clause Field Fixes
+
+- `24_user_appmenus_preserved.pas`: user units whose names contain legacy VCL unit words, such as `AppMenus` or `MyDBGridsHelper`, should be preserved.
+- `25_blank_lines_preserved.pas`: uses-clause cleanup should not collapse unrelated blank lines between routines.
+
 ## Additional Coverage Added
 
 The expanded contract suite now includes:

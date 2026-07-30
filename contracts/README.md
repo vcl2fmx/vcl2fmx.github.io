@@ -47,7 +47,7 @@ an expectation file or be covered by a project-level expectation.
 Current verified status after the field-test regression expansion:
 
 ```text
-Summary: 198 pass, 0 fail
+Summary: 202 pass, 0 fail
 ```
 
 ## Expectation Fields
@@ -82,17 +82,17 @@ unit and include search paths so copied include files can be resolved.
 ## Contract Folders
 
 - `colors`: VCL and FMX color constants, UI constants, modal results, dialog units,
-  and color-helper edge cases. 15 expectations.
+  and color-helper edge cases. 16 expectations.
 - `comments_and_boundaries`: comments, string literals, disabled blocks, routine
   boundaries, initialization/finalization boundaries, and message false positives.
   21 expectations.
 - `components_and_events`: component declarations, events, form lifecycle,
   coordinate conversion, media, images, status bars, and custom-component cases.
-  24 expectations.
+  26 expectations.
 - `data_aware`: DB-aware controls, runtime datasource access, lookup controls,
   navigator behavior, and dataset-binding review cases. 8 expectations.
 - `dfm_fidelity`: DFM/FMXL object, event, and property fidelity checks.
-  3 expectations.
+  4 expectations.
 - `dfm_pairs`: paired Pascal/DFM form fixtures for FMX generation behavior.
   7 expectations.
 - `dry_run_preview`: dry-run preview behavior and no-artifact guarantees.
@@ -108,7 +108,7 @@ unit and include search paths so copied include files can be resolved.
 - `livebindings`: existing LiveBindings and generated binding edge cases.
   6 expectations.
 - `pascal_structure`: Pascal structure parsing, methods, helpers, attributes, and
-  message-handler rules. 4 expectations.
+  message-handler rules. 5 expectations.
 - `project_files`: DPR and startup/project-resource behavior. 5 expectations.
 - `project_integration`: mini-project contracts that exercise include, Windows
   messaging, uses cleanup, DFM/FMXL, and report-shape workflows as whole projects.
@@ -120,7 +120,8 @@ unit and include search paths so copied include files can be resolved.
 - `third_party`: third-party and unknown component mapping behavior.
   4 expectations.
 - `uses_clause`: uses-clause cleanup, Windows/VCL unit preservation and removal,
-  conditional uses blocks, and leftover `Vcl.Themes` cleanup. 22 expectations.
+  conditional uses blocks, user-unit preservation, formatting preservation, and
+  leftover `Vcl.Themes` cleanup. 25 expectations.
 - `winapi_messages`: Windows messaging APIs, message constants, message records,
   `WndProc`, message declarations, system commands, common control-message families,
   and false-positive guards. 40 expectations.
@@ -146,7 +147,7 @@ Use this sequence:
 
 ```powershell
 & 'C:\Program Files (x86)\Embarcadero\Studio\37.0\bin\DCC32.EXE' -B -Q '-$O+' '-EWin32\Release' '-N0dcu\Win32\Release' VCL2FMXConverter.dpr
-& 'C:\Program Files (x86)\Embarcadero\Studio\37.0\bin\DCC32.EXE' -B -Q '-UC:\New Delphi Projects\VCL2FMXConverterV5' '-EC:\New Delphi Projects\VCL2FMXConverterV5\tools' '-N0C:\New Delphi Projects\VCL2FMXConverterV5\tools\dcu' RunConversionEngine.dpr
+& 'C:\Program Files (x86)\Embarcadero\Studio\37.0\bin\DCC32.EXE' -B -Q '-UC:\New Delphi Projects\VCL2FMXConverterV5' '-EC:\New Delphi Projects\VCL2FMXConverterV5\tools' '-N0C:\New Delphi Projects\VCL2FMXConverterV5\tools\dcu' tools\RunConversionEngine.dpr
 powershell.exe -ExecutionPolicy Bypass -File .\tools\run_conversion_contracts.ps1 -EnforceCoverage
 powershell.exe -ExecutionPolicy Bypass -File .\tools\run_regression_guards.ps1 -FailOnBlockers
 ```

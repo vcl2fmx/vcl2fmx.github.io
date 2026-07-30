@@ -18,7 +18,7 @@ Compile verification completed on June 29, 2026:
 
 - `VCL2FMXConverter.dpr` compiled to `Win32\Release`.
 - `tools\RunConversionEngine.dpr` compiled to `tools`.
-- Full contract suite: 198 pass, 0 fail.
+- Full contract suite: 202 pass, 0 fail.
 - Regression guards: 0 blockers, 0 warnings, 41 pass items.
 
 ## 2. Improvement Backlog

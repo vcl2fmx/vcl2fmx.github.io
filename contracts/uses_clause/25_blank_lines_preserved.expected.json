@@ -1,0 +1,20 @@
+{
+  "input_file": "contracts\\uses_clause\\25_blank_lines_preserved.pas",
+  "expected_status": "converted",
+  "expected_conversions": [],
+  "expected_manual_reviews": [],
+  "expected_units_added": [
+    "FMX.Forms"
+  ],
+  "expected_units_absent": [
+    "Vcl.Forms"
+  ],
+  "expected_output_patterns": [
+    "procedure TContractUsesBlankLinesPreserved\\.First;\\s*begin\\s*Writeln\\('first'\\);\\s*end;\\s+procedure TContractUsesBlankLinesPreserved\\.Second;"
+  ],
+  "forbidden_output_patterns": [
+    "end;\\r?\\nprocedure TContractUsesBlankLinesPreserved\\.Second;"
+  ],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

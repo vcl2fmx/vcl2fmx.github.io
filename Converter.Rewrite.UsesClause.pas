@@ -410,12 +410,12 @@ begin
           Continue;
         end;
         if SameText(UnitName, 'ActiveX') then Continue;
-        if ContainsText(UnitName, 'DBGrids') then Continue;
-        if ContainsText(UnitName, 'DBCtrls') then Continue;
-        if ContainsText(UnitName, 'ComCtrls') then Continue;
-        if ContainsText(UnitName, 'Menus') then Continue;
-        if ContainsText(UnitName, 'ShellAPI') then Continue;
-        if ContainsText(UnitName, 'SqlExpr') then Continue;
+        if SameText(UnitName, 'DBGrids') then Continue;
+        if SameText(UnitName, 'DBCtrls') then Continue;
+        if SameText(UnitName, 'ComCtrls') then Continue;
+        if SameText(UnitName, 'Menus') then Continue;
+        if SameText(UnitName, 'ShellAPI') then Continue;
+        if SameText(UnitName, 'SqlExpr') then Continue;
         if SameText(UnitName, 'FireDAC.VCLUI.Wait') then
           UnitName := 'FireDAC.FMXUI.Wait';
 
@@ -440,20 +440,15 @@ begin
       else
         UsesLine := '';
 
-      // Replace the old uses clause with the new one
-      for j := UsesStart to UsesEnd do
-        Lines[j] := '';
+      for j := UsesEnd downto UsesStart + 1 do
+        Lines.Delete(j);
 
       if UsesLine <> '' then
-        Lines[UsesStart] := UsesLine;
+        Lines[UsesStart] := UsesLine
+      else
+        Lines.Delete(UsesStart);
 
-      // Rebuild the code
-      Code := '';
-      for j := 0 to Lines.Count - 1 do
-      begin
-        if Lines[j] <> '' then
-          Code := Code + Lines[j] + sLineBreak;
-      end;
+      Code := Lines.Text;
 
       if (UsesLine <> '') and (TrailingCode.Count > 0) then
         Code := StringReplace(Code, UsesLine + sLineBreak,
@@ -884,7 +879,7 @@ begin
     begin
       Line := Trim(AnalysisLines[i]);
 
-      if Line.StartsWith('interface') then
+      if VCL2FMXIsPascalKeywordLine(Line, 'interface') then
       begin
         InterfaceIdx := i;
         // Reset flags when we hit interface
@@ -892,13 +887,13 @@ begin
         Continue;
       end;
 
-      if Line.StartsWith('implementation') then
+      if VCL2FMXIsPascalKeywordLine(Line, 'implementation') then
       begin
         // Stop searching - we're past interface
         Break;
       end;
 
-      if Line.StartsWith('uses', True) and not InUses then
+      if VCL2FMXIsPascalKeywordLine(Line, 'uses') and not InUses then
       begin
         InUses := True;
         StartIdx := i;
@@ -1023,11 +1018,11 @@ begin
         if SameText(UnitName, 'FireDAC.VCLUI.Wait') then
           UnitName := 'FireDAC.FMXUI.Wait';
         if IsLegacyVCLUnit(UnitName) then Continue;
-        if ContainsText(UnitName, 'DBGrids') then Continue;
-        if ContainsText(UnitName, 'DBCtrls') then Continue;
-        if ContainsText(UnitName, 'ComCtrls') and not SameText(UnitName, 'FMX.StdCtrls') then Continue;
-        if ContainsText(UnitName, 'Menus') then Continue;
-        if ContainsText(UnitName, 'SqlExpr') then Continue;
+        if SameText(UnitName, 'DBGrids') then Continue;
+        if SameText(UnitName, 'DBCtrls') then Continue;
+        if SameText(UnitName, 'ComCtrls') then Continue;
+        if SameText(UnitName, 'Menus') then Continue;
+        if SameText(UnitName, 'SqlExpr') then Continue;
 
         // Keep FMX, FireDAC, and System units
         if (UnitName <> '') then
@@ -1134,19 +1129,10 @@ begin
         UsesLine := UsesLine + sLineBreak + ConditionalLine + sLineBreak + ';';
       end;
 
-      // Replace the old uses clause with the new one
-      for i := StartIdx to EndIdx do
-        Lines[i] := '';
-
+      for i := EndIdx downto StartIdx + 1 do
+        Lines.Delete(i);
       Lines[StartIdx] := UsesLine;
-
-      // Rebuild the code
-      Code := '';
-      for i := 0 to Lines.Count - 1 do
-      begin
-        if Lines[i] <> '' then
-          Code := Code + Lines[i] + sLineBreak;
-      end;
+      Code := Lines.Text;
     end
     else if InterfaceIdx <> -1 then
     begin

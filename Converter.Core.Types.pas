@@ -47,6 +47,7 @@ function VCL2FMXIsValidUTF8Bytes(const Bytes: TBytes): Boolean;
 function VCL2FMXDetectTextEncoding(const AFileName: string): TEncoding;
 function VCL2FMXTryReadTextFile(const AFileName: string; out Text: string;
   out EncodingName: string): Boolean;
+function VCL2FMXIsPascalKeywordLine(const Line, Keyword: string): Boolean;
 function VCL2FMXStripCommentsForAnalysis(const Code: string): string;
 function VCL2FMXStripLineCommentOutsideString(const Value: string): string;
 
@@ -364,6 +365,7 @@ var
   Bytes: TBytes;
   Encoding: TEncoding;
   CodePage: Integer;
+  OwnsEncoding: Boolean;
 begin
   Text := '';
   EncodingName := '';
@@ -379,11 +381,17 @@ begin
     Encoding := VCL2FMXDetectTextEncoding(AFileName);
     if Assigned(Encoding) then
     begin
-      Text := Encoding.GetString(Bytes);
-      if (Length(Text) > 0) and (Text[1] = #$FEFF) then
-        Delete(Text, 1, 1);
-      EncodingName := Encoding.EncodingName;
-      Exit(True);
+      OwnsEncoding := not TEncoding.IsStandardEncoding(Encoding);
+      try
+        Text := Encoding.GetString(Bytes);
+        if (Length(Text) > 0) and (Text[1] = #$FEFF) then
+          Delete(Text, 1, 1);
+        EncodingName := Encoding.EncodingName;
+        Exit(True);
+      finally
+        if OwnsEncoding then
+          Encoding.Free;
+      end;
     end;
   except
     Text := '';
@@ -394,11 +402,16 @@ begin
   begin
     try
       Encoding := TEncoding.GetEncoding(CodePage);
-      Text := Encoding.GetString(Bytes);
-      if (Length(Text) > 0) and (Text[1] = #$FEFF) then
-        Delete(Text, 1, 1);
-      EncodingName := Encoding.EncodingName;
-      Exit(True);
+      try
+        Text := Encoding.GetString(Bytes);
+        if (Length(Text) > 0) and (Text[1] = #$FEFF) then
+          Delete(Text, 1, 1);
+        EncodingName := Encoding.EncodingName;
+        Exit(True);
+      finally
+        if not TEncoding.IsStandardEncoding(Encoding) then
+          Encoding.Free;
+      end;
     except
     end;
   end;
@@ -410,6 +423,23 @@ begin
   except
     Result := False;
   end;
+end;
+
+function VCL2FMXIsPascalKeywordLine(const Line, Keyword: string): Boolean;
+var
+  L: string;
+  KLen: Integer;
+  NextChar: Char;
+begin
+  L := TrimLeft(Line);
+  KLen := Length(Keyword);
+  Result := SameText(Copy(L, 1, KLen), Keyword);
+  if not Result then
+    Exit;
+  if Length(L) = KLen then
+    Exit;
+  NextChar := L[KLen + 1];
+  Result := not CharInSet(NextChar, ['A'..'Z', 'a'..'z', '0'..'9', '_']);
 end;
 
 function VCL2FMXStripCommentsForAnalysis(const Code: string): string;

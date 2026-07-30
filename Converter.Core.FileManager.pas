@@ -1,4 +1,4 @@
-{VCL2FMX � 2026 echurchsites.wixsite.com
+﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
  Version v5.0 Vanguard
  Written and built in the USA}
@@ -161,10 +161,10 @@ var
 begin
   Result := False;
 
-  RelativePath := ExpandFileName(FileName);
   SourceRoot := IncludeTrailingPathDelimiter(ExpandFileName(FContext.Options.SourcePath));
-  if StartsText(SourceRoot, RelativePath) then
-    RelativePath := Copy(RelativePath, Length(SourceRoot) + 1, MaxInt);
+  RelativePath := ExtractRelativePath(SourceRoot, ExpandFileName(FileName));
+  if (RelativePath = '') or SameText(RelativePath, '.') then
+    Exit(False);
 
   Parts := RelativePath.Split(['\', '/']);
   for Part in Parts do
@@ -280,6 +280,16 @@ end;
 
 procedure TFileManager.SaveTextPreservingSourceEncoding(const OriginalFile,
   OutputFile, Text: string);
+
+  function ShouldWriteUTF8BOM(const AFileName: string): Boolean;
+  var
+    Ext: string;
+  begin
+    Ext := LowerCase(ExtractFileExt(AFileName));
+    Result := (Ext = '.pas') or (Ext = '.dpr') or (Ext = '.dpk') or
+      (Ext = '.inc') or (Ext = '.dfm') or (Ext = '.fmx');
+  end;
+
 var
   SourceBytes: TBytes;
   OutputBytes: TBytes;
@@ -287,7 +297,7 @@ var
   Combined: TBytes;
   i: Integer;
 begin
-  if SameText(ExtractFileExt(OutputFile), '.fmx') then
+  if ShouldWriteUTF8BOM(OutputFile) then
   begin
     Preamble := TEncoding.UTF8.GetPreamble;
     OutputBytes := TEncoding.UTF8.GetBytes(Text);

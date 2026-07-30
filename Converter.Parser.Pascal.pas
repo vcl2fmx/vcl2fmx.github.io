@@ -1,4 +1,4 @@
-{VCL2FMX � 2026 echurchsites.wixsite.com
+﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
  Version v5.0 Vanguard
  Written and built in the USA}
@@ -237,7 +237,7 @@ begin
     Line := LowerCase(FBody[i]);
 
     // Do not flag code that is already using FMX-style canvas APIs.
-    if (Pos('canvas.beginScene', Line) > 0) or
+    if (Pos('canvas.beginscene', Line) > 0) or
        (Pos('canvas.endscene', Line) > 0) or
        (Pos('canvas.filltext', Line) > 0) or
        (Pos('canvas.drawline', Line) > 0) or
@@ -245,8 +245,8 @@ begin
        (Pos('canvas.fillrect', Line) > 0) or
        (Pos('canvas.drawellipse', Line) > 0) or
        (Pos('canvas.fillellipse', Line) > 0) or
-       (Pos('talphaColor', Line) > 0) or
-       (Pos('talphaColorRec', Line) > 0) then
+       (Pos('talphacolor', Line) > 0) or
+       (Pos('talphacolorrec', Line) > 0) then
       Continue;
 
     if (Pos('bitblt', Line) > 0) or
@@ -285,8 +285,8 @@ begin
         (Pos('framerect', Line) > 0) or
         (Pos('polygon', Line) > 0) or
         (Pos('polyline', Line) > 0) or
-        (Pos('pie', Line) > 0) or
-        (Pos('arc', Line) > 0) or
+        TRegEx.IsMatch(Line, '\bpie\b') or
+        TRegEx.IsMatch(Line, '\barc\b') or
         (Pos('chord', Line) > 0) or
         (Pos('canvas.rectangle', Line) > 0) or
         (Pos('canvas.ellipse', Line) > 0)) then
@@ -563,7 +563,7 @@ begin
       FCurrentUnit.SourceUnitName := Copy(Line, 6, Length(Line) - 5).Replace(';', '').Trim;
       Inc(i);
     end
-    else if Line.StartsWith('interface', True) then
+    else if VCL2FMXIsPascalKeywordLine(Line, 'interface') then
     begin
       FCurrentUnit.CurrentSection := psInterface;
       ParseInterface;
@@ -580,7 +580,7 @@ var
   Line: string;
 begin
   i := 0;
-  while (i < FLines.Count) and not Trim(FLines[i]).StartsWith('interface', True) do
+  while (i < FLines.Count) and not VCL2FMXIsPascalKeywordLine(FLines[i], 'interface') do
     Inc(i);
 
   if i < FLines.Count then
@@ -590,7 +590,7 @@ begin
   begin
     Line := Trim(FLines[i]);
 
-    if Line.StartsWith('implementation', True) then
+    if VCL2FMXIsPascalKeywordLine(Line, 'implementation') then
     begin
       FClassStack.Clear;
       FCurrentUnit.CurrentClass := nil;
@@ -599,25 +599,25 @@ begin
       Break;
     end;
 
-    if Line.StartsWith('uses', True) then
+    if VCL2FMXIsPascalKeywordLine(Line, 'uses') then
     begin
       ParseUsesClause(i, i, True);
       Continue;
     end;
 
-    if Line.StartsWith('type', True) then
+    if VCL2FMXIsPascalKeywordLine(Line, 'type') then
     begin
       ParseTypeSection(i, i);
       Continue;
     end;
 
-    if Line.StartsWith('var', True) then
+    if VCL2FMXIsPascalKeywordLine(Line, 'var') then
     begin
       ParseVarSection(i, i);
       Continue;
     end;
 
-    if Line.StartsWith('const', True) then
+    if VCL2FMXIsPascalKeywordLine(Line, 'const') then
     begin
       ParseConstSection(i, i);
       Continue;
@@ -646,7 +646,7 @@ var
   Line: string;
 begin
   i := 0;
-  while (i < FLines.Count) and not Trim(FLines[i]).StartsWith('implementation', True) do
+  while (i < FLines.Count) and not VCL2FMXIsPascalKeywordLine(FLines[i], 'implementation') do
     Inc(i);
 
   if i < FLines.Count then
@@ -656,13 +656,13 @@ begin
   begin
     Line := Trim(FLines[i]);
 
-    if Line.StartsWith('initialization', True) or
-       Line.StartsWith('finalization', True) then
+    if VCL2FMXIsPascalKeywordLine(Line, 'initialization') or
+       VCL2FMXIsPascalKeywordLine(Line, 'finalization') then
     begin
       Break;
     end;
 
-    if Line.StartsWith('uses', True) then
+    if VCL2FMXIsPascalKeywordLine(Line, 'uses') then
     begin
       FCurrentUnit.ImplementationUsesStart := i;
       ParseUsesClause(i, i, False);
@@ -1229,7 +1229,11 @@ begin
   except
     on E: Exception do
     begin
-      Method.Free;
+      if (FCurrentUnit <> nil) and (FCurrentUnit.Methods <> nil) and
+         (FCurrentUnit.Methods.IndexOf(Method) >= 0) then
+        FCurrentUnit.Methods.Extract(Method).Free
+      else
+        Method.Free;
       raise;
     end;
   end;
@@ -1250,13 +1254,13 @@ begin
     Line := Trim(FLines[i]);
 
     if (FCurrentUnit.CurrentClass = nil) and
-       (Line.StartsWith('var', True) or
-        Line.StartsWith('const', True) or
-        Line.StartsWith('implementation', True) or
-        Line.StartsWith('procedure', True) or
-        Line.StartsWith('function', True) or
-        Line.StartsWith('constructor', True) or
-        Line.StartsWith('destructor', True)) then
+       (VCL2FMXIsPascalKeywordLine(Line, 'var') or
+        VCL2FMXIsPascalKeywordLine(Line, 'const') or
+        VCL2FMXIsPascalKeywordLine(Line, 'implementation') or
+        VCL2FMXIsPascalKeywordLine(Line, 'procedure') or
+        VCL2FMXIsPascalKeywordLine(Line, 'function') or
+        VCL2FMXIsPascalKeywordLine(Line, 'constructor') or
+        VCL2FMXIsPascalKeywordLine(Line, 'destructor')) then
     begin
       EndIndex := i;
       Exit;
@@ -1289,11 +1293,11 @@ begin
   begin
     Line := Trim(FLines[i]);
 
-    if Line.StartsWith('const', True) or
-       Line.StartsWith('implementation', True) or
-       Line.StartsWith('procedure', True) or
-       Line.StartsWith('function', True) or
-       (Line.StartsWith('type', True) and (FCurrentUnit.CurrentSection = psInterface)) then
+    if VCL2FMXIsPascalKeywordLine(Line, 'const') or
+       VCL2FMXIsPascalKeywordLine(Line, 'implementation') or
+       VCL2FMXIsPascalKeywordLine(Line, 'procedure') or
+       VCL2FMXIsPascalKeywordLine(Line, 'function') or
+       (VCL2FMXIsPascalKeywordLine(Line, 'type') and (FCurrentUnit.CurrentSection = psInterface)) then
     begin
       EndIndex := i;
       Exit;
@@ -1317,11 +1321,11 @@ begin
   begin
     Line := Trim(FLines[i]);
 
-    if Line.StartsWith('type', True) or
-       Line.StartsWith('var', True) or
-       Line.StartsWith('implementation', True) or
-       Line.StartsWith('procedure', True) or
-       Line.StartsWith('function', True) then
+    if VCL2FMXIsPascalKeywordLine(Line, 'type') or
+       VCL2FMXIsPascalKeywordLine(Line, 'var') or
+       VCL2FMXIsPascalKeywordLine(Line, 'implementation') or
+       VCL2FMXIsPascalKeywordLine(Line, 'procedure') or
+       VCL2FMXIsPascalKeywordLine(Line, 'function') then
     begin
       EndIndex := i;
       Exit;
@@ -1530,17 +1534,17 @@ var
   L: string;
 begin
   L := LowerCase(Trim(Declaration));
-  if L.StartsWith('class procedure') then
+  if VCL2FMXIsPascalKeywordLine(L, 'class procedure') then
     Result := 'class procedure'
-  else if L.StartsWith('class function') then
+  else if VCL2FMXIsPascalKeywordLine(L, 'class function') then
     Result := 'class function'
-  else if L.StartsWith('procedure') then
+  else if VCL2FMXIsPascalKeywordLine(L, 'procedure') then
     Result := 'procedure'
-  else if L.StartsWith('function') then
+  else if VCL2FMXIsPascalKeywordLine(L, 'function') then
     Result := 'function'
-  else if L.StartsWith('constructor') then
+  else if VCL2FMXIsPascalKeywordLine(L, 'constructor') then
     Result := 'constructor'
-  else if L.StartsWith('destructor') then
+  else if VCL2FMXIsPascalKeywordLine(L, 'destructor') then
     Result := 'destructor'
   else
     Result := 'procedure';

@@ -1,4 +1,4 @@
-{VCL2FMX � 2026 echurchsites.wixsite.com
+﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
  Version v5.0 Vanguard
  Written and built in the USA}
@@ -9,6 +9,7 @@ interface
 
 uses
   System.Classes, System.SysUtils, System.Generics.Collections,
+  System.Generics.Defaults,
   System.RTTI, System.TypInfo, System.IOUtils, System.Math,
   System.RegularExpressions, System.StrUtils,
   Converter.Core.Types, Converter.Mapper.Component;
@@ -258,10 +259,10 @@ end;
 
 constructor TDFMComponent.Create;
 begin
-  FProperties := TDictionary<string, string>.Create;
-  FEvents := TDictionary<string, string>.Create;
-  FPropertyLines := TDictionary<string, Integer>.Create;
-  FEventLines := TDictionary<string, Integer>.Create;
+  FProperties := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  FEvents := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  FPropertyLines := TDictionary<string, Integer>.Create(TIStringComparer.Ordinal);
+  FEventLines := TDictionary<string, Integer>.Create(TIStringComparer.Ordinal);
   FChildren := TObjectList<TDFMComponent>.Create(True);
   FCollectionItems := TObjectList<TDFMComponent>.Create(True);
   FIsSubComponent := False;

@@ -1,0 +1,12 @@
+{
+  "input_file": "contracts\\dfm_fidelity\\04_mixed_case_dfm_property_lookup.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "Text = 'Mixed case caption'"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": [
+    "Label1.Caption value 'Mixed case caption'"
+  ]
+}
