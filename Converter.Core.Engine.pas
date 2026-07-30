@@ -194,8 +194,6 @@ var
   LastSignificantLine: string;
   InBraceComment: Boolean;
   InParenComment: Boolean;
-  TailInBraceComment: Boolean;
-  TailInParenComment: Boolean;
   EncodingName: string;
 
   procedure AddGeneratedReview(const AProblemType, AMessage, ASuggestedFix: string;
@@ -391,6 +389,7 @@ begin
       Exit;
     end;
     Lines.Text := CodeLine;
+    LastSignificantLine := '';
     InBraceComment := False;
     InParenComment := False;
     for I := 0 to Lines.Count - 1 do
@@ -414,6 +413,8 @@ begin
 
         if Trimmed = '' then
           Continue;
+
+        LastSignificantLine := Trimmed;
 
         if TRegEx.IsMatch(Trimmed, ':\s*TBitBtn\b', [roIgnoreCase]) then
           AddGeneratedReview(
@@ -624,19 +625,6 @@ begin
 
     if MatchText(Ext, ['.pas', '.dpr']) then
     begin
-      LastSignificantLine := '';
-      TailInBraceComment := False;
-      TailInParenComment := False;
-      for I := Lines.Count - 1 downto 0 do
-      begin
-        Line := Lines[I];
-        Trimmed := Trim(StripPascalCommentsFromLine(Line, TailInBraceComment, TailInParenComment));
-        if Trimmed = '' then
-          Continue;
-        LastSignificantLine := Trimmed;
-        Break;
-      end;
-
       if (LastSignificantLine <> '') and (not SameText(LastSignificantLine, 'end.')) then
         AddGeneratedReview(
           'Generated Pascal ends unexpectedly',
@@ -692,6 +680,7 @@ var
     Result := StringReplace(Result, #13#10, '\n', [rfReplaceAll]);
     Result := StringReplace(Result, #13, '\n', [rfReplaceAll]);
     Result := StringReplace(Result, #10, '\n', [rfReplaceAll]);
+    Result := StringReplace(Result, #9, '\t', [rfReplaceAll]);
   end;
 
   function IsSuggestionIssue(const AIssue: TConversionIssue): Boolean;
@@ -2053,8 +2042,22 @@ var
     HasBlock: Boolean;
 
     function UsesCollapsedLineRanges: Boolean;
+    var
+      PrevIssue: TConversionIssue;
+      TestIssue: TConversionIssue;
     begin
       Result := False;
+      PrevIssue := nil;
+      for TestIssue in AIssues do
+      begin
+        if Assigned(PrevIssue) and
+           SameText(TestIssue.FileName, PrevIssue.FileName) and
+           (TestIssue.LineNumber > 0) and
+           (TestIssue.LineNumber <= PrevIssue.LineNumber + 1) and
+           (Trim(TestIssue.OriginalCode) <> '') then
+          Exit(True);
+        PrevIssue := TestIssue;
+      end;
     end;
 
     procedure FlushBlock;
@@ -2592,6 +2595,10 @@ begin
     AddUsageTextSection('THIRD-PARTY COMPONENTS DETECTED ONLY',
       'No detect-only third-party mapping-pack components were found.',
       'detect_only', False, True);
+    Report.Add('');
+    Report.Add('UNKNOWN THIRD-PARTY COMPONENTS');
+    Report.Add(StringOfChar('-', 40));
+    Report.Add('No unknown third-party components were found.');
     AddMappingsUsedTextSection;
 
     if DryRunPreviewCount > 0 then

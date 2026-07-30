@@ -1858,7 +1858,7 @@ begin
           Format('Structured Pascal analysis found Windows system command message handler %s.%s.',
             [PascalClass.Name, PascalClass.MessageHandlers.Names[HandlerIndex]]),
           HandlerText,
-          'Windows system command handling needs FMX review. SC_CLOSE may map to Close or OnCloseQuery, but minimize/restore/maximize handlers often carry lifecycle or timer side effects that need an explicit FMX design decision.',
+          'Windows system command handling needs FMX review. SC_CLOSE may map to Close or OnCloseQuery, but SC_MINIMIZE, SC_RESTORE, and SC_MAXIMIZE handlers often carry lifecycle or timer side effects that need an explicit FMX design decision.',
           -1,
           False)
       else

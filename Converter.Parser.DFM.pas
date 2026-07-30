@@ -176,12 +176,18 @@ uses
 function HexToBytes(const HexData: string): TBytes;
 var
   CleanHex: string;
+  Builder: TStringBuilder;
   I, ByteCount: Integer;
 begin
-  CleanHex := '';
-  for I := 1 to Length(HexData) do
-    if CharInSet(HexData[I], ['0'..'9', 'A'..'F', 'a'..'f']) then
-      CleanHex := CleanHex + HexData[I];
+  Builder := TStringBuilder.Create(Length(HexData));
+  try
+    for I := 1 to Length(HexData) do
+      if CharInSet(HexData[I], ['0'..'9', 'A'..'F', 'a'..'f']) then
+        Builder.Append(HexData[I]);
+    CleanHex := Builder.ToString;
+  finally
+    Builder.Free;
+  end;
 
   if (CleanHex = '') or Odd(Length(CleanHex)) then
   begin
@@ -198,6 +204,7 @@ end;
 function StreamToHex(Stream: TStream): string;
 var
   Bytes: TBytes;
+  Builder: TStringBuilder;
   I: Integer;
 begin
   Result := '';
@@ -208,8 +215,14 @@ begin
   Stream.Position := 0;
   Stream.ReadBuffer(Bytes[0], Length(Bytes));
 
-  for I := 0 to High(Bytes) do
-    Result := Result + IntToHex(Bytes[I], 2);
+  Builder := TStringBuilder.Create(Length(Bytes) * 2);
+  try
+    for I := 0 to High(Bytes) do
+      Builder.Append(IntToHex(Bytes[I], 2));
+    Result := Builder.ToString;
+  finally
+    Builder.Free;
+  end;
 end;
 
 function ConvertImageHexToPngHex(const HexData: string; out PngHex: string;

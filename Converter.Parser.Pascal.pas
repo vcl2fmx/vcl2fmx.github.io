@@ -1192,7 +1192,7 @@ begin
           Format('Method %s uses Windows system command message handling.', [Method.GetDisplayName]),
           'Windows messages or message handlers',
           Trim(Method.Body.Text),
-          'Windows system command handling needs FMX review. SC_CLOSE may map to Close or OnCloseQuery, but minimize/restore/maximize handlers often carry lifecycle or timer side effects that need an explicit FMX design decision.',
+          'Windows system command handling needs FMX review. SC_CLOSE may map to Close or OnCloseQuery, but SC_MINIMIZE, SC_RESTORE, and SC_MAXIMIZE handlers often carry lifecycle or timer side effects that need an explicit FMX design decision.',
           Method.StartLine + 1
         )
       else

@@ -1353,7 +1353,7 @@ begin
   end;
 
   if Pos('Font.Color', Result) > 0 then
-    Result := StringReplace(Result, 'Font.Color', 'Font.Color', [rfReplaceAll]);
+    Result := StringReplace(Result, 'Font.Color', 'TextSettings.FontColor', [rfReplaceAll]);
 end;
 
 end.

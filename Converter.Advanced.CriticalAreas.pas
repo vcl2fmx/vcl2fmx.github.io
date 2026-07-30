@@ -186,47 +186,55 @@ begin
   HandlerDepth := 0;
   SawHandlerBegin := False;
 
-  for I := 0 to PascalCode.Count - 1 do
-  begin
-    Line := Trim(PascalCode[I]);
-
-    if (Pos('procedure', Line) > 0) and
-       ((Pos('Paint', Line) > 0) or (Pos('Draw', Line) > 0)) and
-       (Pos('Sender: TObject', Line) > 0) then
+  try
+    for I := 0 to PascalCode.Count - 1 do
     begin
-      InPaintHandler := True;
-      StartLine := I;
-      HandlerDepth := 0;
-      SawHandlerBegin := False;
-      PaintLines := TStringList.Create;
-      PaintLines.Add(PascalCode[I]);
+      Line := Trim(PascalCode[I]);
 
-      FContext.AddIssue(csInfo,
-        Format('Custom paint handler detected at line %d', [I + 1]));
-    end
-    else if InPaintHandler then
-    begin
-      PaintLines.Add(PascalCode[I]);
-
-      if CriticalAreaBlockOpenCount(Line) > 0 then
+      if (Pos('procedure', Line) > 0) and
+         ((Pos('Paint', Line) > 0) or (Pos('Draw', Line) > 0)) and
+         (Pos('Sender: TObject', Line) > 0) then
       begin
-        Inc(HandlerDepth, CriticalAreaBlockOpenCount(Line));
-        SawHandlerBegin := True;
-      end;
-      Dec(HandlerDepth, CriticalAreaBlockCloseCount(Line));
-
-      if SawHandlerBegin and (HandlerDepth <= 0) and SameText(Trim(Line), 'end;') then
-      begin
-        ConvertedLines := ConvertPaintHandler(PaintLines);
-        J := PaintLines.Count;
-        ReplaceCodeBlock(PascalCode, StartLine, J, ConvertedLines);
-
         FreeAndNil(PaintLines);
-        FreeAndNil(ConvertedLines);
-        Result := True;
-        Break;
+        InPaintHandler := True;
+        StartLine := I;
+        HandlerDepth := 0;
+        SawHandlerBegin := False;
+        PaintLines := TStringList.Create;
+        PaintLines.Add(PascalCode[I]);
+
+        FContext.AddIssue(csInfo,
+          Format('Custom paint handler detected at line %d', [I + 1]));
+      end
+      else if InPaintHandler then
+      begin
+        PaintLines.Add(PascalCode[I]);
+
+        if CriticalAreaBlockOpenCount(Line) > 0 then
+        begin
+          Inc(HandlerDepth, CriticalAreaBlockOpenCount(Line));
+          SawHandlerBegin := True;
+        end;
+        Dec(HandlerDepth, CriticalAreaBlockCloseCount(Line));
+
+        if SawHandlerBegin and (HandlerDepth <= 0) and SameText(Trim(Line), 'end;') then
+        begin
+          ConvertedLines := ConvertPaintHandler(PaintLines);
+          try
+            J := PaintLines.Count;
+            ReplaceCodeBlock(PascalCode, StartLine, J, ConvertedLines);
+          finally
+            ConvertedLines.Free;
+          end;
+
+          FreeAndNil(PaintLines);
+          Result := True;
+          Break;
+        end;
       end;
     end;
+  finally
+    PaintLines.Free;
   end;
 end;
 
@@ -805,6 +813,7 @@ var
 begin
   Result := False;
   StartLine := -1;
+  HandlerLines := nil;
   Controls := DetectOwnerDrawControls(PascalCode);
 
   try
@@ -813,6 +822,7 @@ begin
       InHandler := False;
       HandlerDepth := 0;
       SawHandlerBegin := False;
+      FreeAndNil(HandlerLines);
 
       for I := 0 to PascalCode.Count - 1 do
       begin
@@ -823,6 +833,7 @@ begin
             (Pos(ControlName + 'Measure', Line) > 0) or
             ((Pos('DrawItem', Line) > 0) and (Pos('Sender: TObject', Line) > 0))) then
         begin
+          FreeAndNil(HandlerLines);
           InHandler := True;
           StartLine := I;
           HandlerDepth := 0;
@@ -852,7 +863,7 @@ begin
             if Pos('ListBox', ControlName) > 0 then
             begin
               ConvertedHandler := ConvertListBoxDraw(HandlerLines);
-              HandlerLines.Free;
+              FreeAndNil(HandlerLines);
               HandlerLines := ConvertedHandler;
             end;
 
@@ -866,6 +877,7 @@ begin
       end;
     end;
   finally
+    HandlerLines.Free;
     Controls.Free;
   end;
 end;
@@ -886,7 +898,7 @@ begin
     begin
       Line := StringReplace(Line, 'TRect', 'TRectF', [rfReplaceAll]);
       Line := StringReplace(Line, 'Rect(', 'RectF(', [rfReplaceAll]);
-      Line := StringReplace(Line, 'DrawFocusRect', 'DrawRect with Stroke.Dash := TDash.Dash', [rfReplaceAll]);
+      Line := '  // FMX manual review: DrawFocusRect has no direct FMX equivalent; draw the focus rectangle manually with Canvas.DrawRect and Stroke.Dash.';
     end;
 
     if Pos('odSelected', Line) > 0 then

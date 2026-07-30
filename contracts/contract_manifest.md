@@ -54,6 +54,10 @@ Each sample is intended to become an input fixture with assertions against conve
 
 - `04_mixed_case_dfm_property_lookup.pas`: mixed-case DFM object and property names should compare case-insensitively during fidelity checks.
 
+## Project Files
+
+- `05_manual_created_form_show_preserved.dpr`: manually shown forms immediately after `Application.CreateForm` should keep their `.Show;` call in the generated DPR.
+
 ## Uses-Clause Field Fixes
 
 - `24_user_appmenus_preserved.pas`: user units whose names contain legacy VCL unit words, such as `AppMenus` or `MyDBGridsHelper`, should be preserved.

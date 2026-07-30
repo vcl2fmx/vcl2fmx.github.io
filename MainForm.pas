@@ -184,6 +184,8 @@ type
     FLastTextReportPath: string;
     FLastHTMLReportPath: string;
     FPendingCompletion: TConversionCompletionSnapshot;
+    FActiveEngine: TConverterEngine;
+    FActiveEngineLock: TObject;
     FTabButtons: array[0..6] of TRectangle;
     FTabLabels: array[0..6] of TLabel;
     FTabScrollBoxes: array[0..6] of TVertScrollBox;
@@ -291,6 +293,7 @@ uses
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  FActiveEngineLock := TObject.Create;
   OnCloseQuery := FormCloseQuery;
   OnShow := FormShow;
   OnResize := FormResize;
@@ -434,11 +437,36 @@ begin
   FClosing := True;
   if Assigned(FConversionThread) then
   begin
-    if FConversionThread.Finished then
-      FreeAndNil(FConversionThread)
-    else
-      FConversionThread := nil;
+    if Assigned(FActiveEngineLock) then
+    begin
+      TMonitor.Enter(FActiveEngineLock);
+      try
+        if Assigned(FActiveEngine) then
+          FActiveEngine.Cancel;
+      finally
+        TMonitor.Exit(FActiveEngineLock);
+      end;
+    end;
+
+    while not FConversionThread.Finished do
+    begin
+      CheckSynchronize(50);
+      if Assigned(FActiveEngineLock) then
+      begin
+        TMonitor.Enter(FActiveEngineLock);
+        try
+          if Assigned(FActiveEngine) then
+            FActiveEngine.Cancel;
+        finally
+          TMonitor.Exit(FActiveEngineLock);
+        end;
+      end;
+    end;
+
+    TThread.RemoveQueuedEvents(FConversionThread);
+    FreeAndNil(FConversionThread);
   end;
+  FreeAndNil(FActiveEngineLock);
   FreeAndNil(FComponentMapBrowser);
   FreeAndNil(FPropertyMapBrowser);
   FreeAndNil(FEventMapBrowser);
@@ -448,7 +476,10 @@ end;
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   if Assigned(FConversionThread) and FConversionThread.Finished then
+  begin
+    TThread.RemoveQueuedEvents(FConversionThread);
     FreeAndNil(FConversionThread);
+  end;
 
   CanClose := not Assigned(FConversionThread);
   FClosing := CanClose;
@@ -2117,6 +2148,8 @@ end;
 
 procedure TfrmMain.CompleteConversionOnUIThread;
 begin
+  if FClosing then
+    Exit;
   FreeAndNil(FConversionThread);
   UpdateUIForConversion(False);
   UpdateArtifactsAfterConversion(FPendingCompletion.TargetPath,
@@ -2623,6 +2656,13 @@ begin
 
       Engine := TConverterEngine.Create(Context);
       try
+        TMonitor.Enter(FActiveEngineLock);
+        try
+          FActiveEngine := Engine;
+        finally
+          TMonitor.Exit(FActiveEngineLock);
+        end;
+
         Engine.ScreenMemo := MemoLog;
         Engine.Convert(Context);
 
@@ -2644,6 +2684,13 @@ begin
 
         Completion.StatusText := Result;
       finally
+        TMonitor.Enter(FActiveEngineLock);
+        try
+          if FActiveEngine = Engine then
+            FActiveEngine := nil;
+        finally
+          TMonitor.Exit(FActiveEngineLock);
+        end;
         Engine.Free;
       end;
     finally

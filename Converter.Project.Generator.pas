@@ -46,7 +46,6 @@ type
     function FindSplashStartupSequence(ALines: TStrings; out SplashClassName,
       SplashInstanceName: string; out SplashCreateIdx, SplashShowIdx,
       SplashFreeIdx, SplashCommentIdx: Integer; out SleepLine: string): Boolean;
-    procedure StripImmediateCreateFormShows(ALines: TStrings);
     function TransformDPRContent(const SourceCode: string): string;
     function TransformDPROJContent(const SourceCode: string): string;
     function TransformDPKContent(const SourceCode: string): string;
@@ -466,38 +465,6 @@ begin
     HasSplashIndicator and HasOnlyAllowedInterveningLines;
 end;
 
-procedure TProjectGenerator.StripImmediateCreateFormShows(ALines: TStrings);
-var
-  i: Integer;
-  ClassName: string;
-  InstanceName: string;
-  RecentCreateFormInstance: string;
-begin
-  if not Assigned(ALines) then
-    Exit;
-
-  RecentCreateFormInstance := '';
-  for i := 0 to ALines.Count - 1 do
-  begin
-    if TryParseCreateForm(ALines[i], ClassName, InstanceName) then
-    begin
-      RecentCreateFormInstance := InstanceName;
-      Continue;
-    end;
-
-    if (RecentCreateFormInstance <> '') and
-       SameText(Trim(ALines[i]), RecentCreateFormInstance + '.Show;') then
-    begin
-      ALines[i] := '';
-      RecentCreateFormInstance := '';
-      Continue;
-    end;
-
-    if Trim(ALines[i]) <> '' then
-      RecentCreateFormInstance := '';
-  end;
-end;
-
 function TProjectGenerator.TransformDPRContent(const SourceCode: string): string;
 var
   Lines: TStringList;
@@ -621,7 +588,6 @@ begin
       Result := Lines.Text;
 
     PostProcessLines.Text := Result;
-    StripImmediateCreateFormShows(PostProcessLines);
     Result := PostProcessLines.Text;
     Result := TRegEx.Replace(Result,
       '^\s*Vcl\.(Themes|Styles)\s*,\s*\r?\n',
