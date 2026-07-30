@@ -1,4 +1,4 @@
-{VCL2FMX � 2026 echurchsites.wixsite.com
+﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
  Version v5.0 Vanguard
  Written and built in the USA}
@@ -1887,7 +1887,8 @@ var
   Report: TStringList;
   Html: TStringList;
   Issue: TConversionIssue;
-  InfoCount, WarnCount, ManualCount, ErrorCount, BlockingCount: Integer;
+  InfoCount, WarnCount, ManualCount, ManualIssueCount, ErrorCount,
+    BlockingCount: Integer;
   DryRunPreviewCount: Integer;
   Duration: TDateTime;
   Secs: Integer;
@@ -2495,6 +2496,7 @@ begin
     InfoCount := 0;
     WarnCount := 0;
     ManualCount := 0;
+    ManualIssueCount := 0;
     ErrorCount := 0;
     BlockingCount := 0;
     DryRunPreviewCount := 0;
@@ -2510,7 +2512,10 @@ begin
             Inc(InfoCount);
         csWarning: Inc(WarnCount);
         csManualReview:
-          AddManualIssueToGroup(Issue);
+          begin
+            Inc(ManualIssueCount);
+            AddManualIssueToGroup(Issue);
+          end;
         csError, csCritical: Inc(ErrorCount);
       end;
 
@@ -2527,7 +2532,7 @@ begin
 
     ManualCount := ManualGroups.Count;
 
-    VisibleIssueCount := WarnCount + ManualCount + ErrorCount;
+    VisibleIssueCount := WarnCount + ManualIssueCount + ErrorCount;
     HasBlockingOutcome := (FFilesErrors > 0) or (BlockingCount > 0);
     NextStepText := BuildNextStepText;
 
@@ -2546,7 +2551,8 @@ begin
       StatusText := 'Clean conversion';
 
     Report.Add(Format('Final status: %s', [StatusText]));
-    Report.Add(Format('Manual fixes required: %d', [ManualCount]));
+    Report.Add(Format('Manual review items: %d', [ManualIssueCount]));
+    Report.Add(Format('Manual review groups: %d', [ManualCount]));
     Report.Add(Format('Blocking items: %d', [BlockingCount]));
     Report.Add(Format('Files with conversion errors: %d', [FFilesErrors]));
     Report.Add('Recommended next step: ' + NextStepText);
@@ -2587,11 +2593,6 @@ begin
       'No detect-only third-party mapping-pack components were found.',
       'detect_only', False, True);
     AddMappingsUsedTextSection;
-
-    Report.Add('');
-    Report.Add('UNKNOWN THIRD-PARTY COMPONENTS');
-    Report.Add(StringOfChar('-', 40));
-    Report.Add('None detected.');
 
     if DryRunPreviewCount > 0 then
     begin
@@ -3038,7 +3039,7 @@ begin
     Html.Add('      <div class="meta-card"><div class="label">Distinct files needing attention</div><div class="value">' +
       IntToStr(AffectedFiles.Count) + '</div></div>');
     Html.Add('      <div class="meta-card"><div class="label">Manual review items</div><div class="value">' +
-      IntToStr(ManualCount) + '</div></div>');
+      IntToStr(ManualIssueCount) + '</div></div>');
     Html.Add('      <div class="meta-card"><div class="label">Blocking items</div><div class="value">' +
       IntToStr(BlockingCount) + '</div></div>');
     Html.Add('      <div class="meta-card"><div class="label">Files with errors</div><div class="value">' +
@@ -3231,7 +3232,8 @@ begin
     Html.Add('        <tbody>');
     Html.Add('          <tr><th>Informational</th><td>' + IntToStr(InfoCount) + '</td></tr>');
     Html.Add('          <tr><th>Warnings</th><td>' + IntToStr(WarnCount) + '</td></tr>');
-    Html.Add('          <tr><th>Manual review required</th><td>' + IntToStr(ManualCount) + '</td></tr>');
+    Html.Add('          <tr><th>Manual review required</th><td>' + IntToStr(ManualIssueCount) + '</td></tr>');
+    Html.Add('          <tr><th>Manual review groups</th><td>' + IntToStr(ManualCount) + '</td></tr>');
     Html.Add('          <tr><th>Errors</th><td>' + IntToStr(ErrorCount) + '</td></tr>');
     Html.Add('          <tr><th>Blocking items</th><td>' + IntToStr(BlockingCount) + '</td></tr>');
     Html.Add('          <tr><th>Distinct files needing attention</th><td>' + IntToStr(AffectedFiles.Count) + '</td></tr>');

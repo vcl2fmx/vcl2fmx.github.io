@@ -296,6 +296,11 @@
         <DCCReference Include="Converter.Parser.DFM.pas"/>
         <DCCReference Include="Converter.Parser.Pascal.pas"/>
         <DCCReference Include="Converter.Project.Generator.pas"/>
+        <DCCReference Include="Converter.Rewrite.AutoFixes.pas"/>
+        <DCCReference Include="Converter.Rewrite.Compatibility.pas"/>
+        <DCCReference Include="Converter.Rewrite.LiveBindings.pas"/>
+        <DCCReference Include="Converter.Rewrite.RuntimeNormalization.pas"/>
+        <DCCReference Include="Converter.Rewrite.UsesClause.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

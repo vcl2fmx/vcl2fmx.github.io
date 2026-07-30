@@ -1,4 +1,4 @@
-{VCL2FMX � 2026 echurchsites.wixsite.com
+﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
  Version v5.0 Vanguard
  Written and built in the USA}
@@ -198,6 +198,7 @@ type
     FEventMapHtml: string;
     FEventMapPlainText: string;
     FHasCompletedRun: Boolean;
+    FClosing: Boolean;
     FLastRunStatusText: string;
     FLastFilesProcessed: Integer;
     FLastFilesConverted: Integer;
@@ -430,12 +431,13 @@ end;
 
 destructor TfrmMain.Destroy;
 begin
+  FClosing := True;
   if Assigned(FConversionThread) then
   begin
     if FConversionThread.Finished then
       FreeAndNil(FConversionThread)
     else
-      FConversionThread.FreeOnTerminate := True;
+      FConversionThread := nil;
   end;
   FreeAndNil(FComponentMapBrowser);
   FreeAndNil(FPropertyMapBrowser);
@@ -449,6 +451,7 @@ begin
     FreeAndNil(FConversionThread);
 
   CanClose := not Assigned(FConversionThread);
+  FClosing := CanClose;
   if not CanClose then
     TDialogService.ShowMessage(
       'A conversion is still running. Please wait for it to finish before closing the program.');
@@ -2569,9 +2572,11 @@ begin
       finally
         Completion.TargetPath := Dst;
         Completion.StatusText := StatusText;
-        TThread.Queue(nil,
+        TThread.Queue(TThread.CurrentThread,
           procedure
           begin
+            if FClosing then
+              Exit;
             FPendingCompletion := Completion;
             CompleteConversionOnUIThread;
           end);

@@ -1,4 +1,4 @@
-{VCL2FMX � 2026 echurchsites.wixsite.com
+﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
  Version v5.0 Vanguard
  Written and built in the USA}
@@ -59,7 +59,6 @@ type
     constructor Create(AContext: TConversionContext);
 
     function ConvertGraphics(const PascalCode: string): string;
-    function ConvertOnPaint(const MethodBody: TStringList): TStringList;
   end;
 
 implementation
@@ -255,45 +254,45 @@ begin
         end
         else
         begin
-        if TrimmedOriginalLine <> '' then
-          Line := '  // ' + TrimmedOriginalLine
-        else
-          Line := '  //';
+          if TrimmedOriginalLine <> '' then
+            Line := '  // ' + TrimmedOriginalLine
+          else
+            Line := '  //';
 
-        Lines[I] := Line;
+          Lines[I] := Line;
 
-        if AwaitingConditionalBegin then
-        begin
-          if SameText(TrimmedOriginalLine, 'begin') then
+          if AwaitingConditionalBegin then
           begin
-            CommentConditionalDepth := 1;
-            AwaitingConditionalBegin := False;
+            if SameText(TrimmedOriginalLine, 'begin') then
+            begin
+              CommentConditionalDepth := 1;
+              AwaitingConditionalBegin := False;
+            end
+            else if Pos(';', OriginalLine) > 0 then
+            begin
+              CommentContinuation := False;
+              AwaitingConditionalBegin := False;
+            end
+          end
+          else if CommentConditionalDepth > 0 then
+          begin
+            if SameText(TrimmedOriginalLine, 'begin') then
+              Inc(CommentConditionalDepth)
+            else if SameText(TrimmedOriginalLine, 'end;') or
+                    SameText(TrimmedOriginalLine, 'end') then
+            begin
+              Dec(CommentConditionalDepth);
+              if CommentConditionalDepth <= 0 then
+              begin
+                CommentConditionalDepth := 0;
+                CommentContinuation := False;
+              end;
+            end;
           end
           else if Pos(';', OriginalLine) > 0 then
-          begin
             CommentContinuation := False;
-            AwaitingConditionalBegin := False;
-          end;
-        end
-        else if CommentConditionalDepth > 0 then
-        begin
-          if SameText(TrimmedOriginalLine, 'begin') then
-            Inc(CommentConditionalDepth)
-          else if SameText(TrimmedOriginalLine, 'end;') or
-                  SameText(TrimmedOriginalLine, 'end') then
-          begin
-            Dec(CommentConditionalDepth);
-            if CommentConditionalDepth <= 0 then
-            begin
-              CommentConditionalDepth := 0;
-              CommentContinuation := False;
-            end;
-          end;
-        end
-        else if Pos(';', OriginalLine) > 0 then
-          CommentContinuation := False;
 
-        Continue;
+          Continue;
         end;
       end;
 
@@ -1355,58 +1354,6 @@ begin
 
   if Pos('Font.Color', Result) > 0 then
     Result := StringReplace(Result, 'Font.Color', 'Font.Color', [rfReplaceAll]);
-end;
-
-function TGraphicsConverter.ConvertOnPaint(const MethodBody: TStringList): TStringList;
-var
-  I: Integer;
-  Line: string;
-  InCanvas: Boolean;
-  Op: string;
-begin
-  Result := TStringList.Create;
-  InCanvas := False;
-
-  for I := 0 to MethodBody.Count - 1 do
-  begin
-    Line := MethodBody[I];
-
-    if Pos('Canvas.', Line) > 0 then
-    begin
-      if not InCanvas then
-      begin
-        Result.Add('  // Converted VCL Canvas operations to FMX');
-        Result.Add('  with Canvas do');
-        Result.Add('  begin');
-        InCanvas := True;
-      end;
-
-      Op := Copy(Line, Pos('Canvas.', Line) + 7, Length(Line));
-
-      if Pos('Rectangle', Op) > 0 then
-        Op := StringReplace(Op, 'Rectangle', 'DrawRect(', [rfReplaceAll])
-      else if Pos('Ellipse', Op) > 0 then
-        Op := StringReplace(Op, 'Ellipse', 'DrawEllipse(', [rfReplaceAll])
-      else if Pos('TextOut', Op) > 0 then
-        Op := StringReplace(Op, 'TextOut', 'DrawText(', [rfReplaceAll])
-      else if Pos('LineTo', Op) > 0 then
-        Op := 'DrawLine(' + StringReplace(Op, 'LineTo', '', [rfReplaceAll]);
-
-      Result.Add('    ' + Op);
-    end
-    else
-    begin
-      if InCanvas then
-      begin
-        Result.Add('  end;');
-        InCanvas := False;
-      end;
-      Result.Add(Line);
-    end;
-  end;
-
-  if InCanvas then
-    Result.Add('  end;');
 end;
 
 end.

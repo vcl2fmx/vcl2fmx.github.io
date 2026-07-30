@@ -450,17 +450,19 @@ var
   State: TCommentState;
   InString: Boolean;
   Ch: Char;
+  Builder: TStringBuilder;
 
   procedure AppendBlankFor(const AChar: Char);
   begin
     if (AChar = #10) or (AChar = #13) then
-      Result := Result + AChar
+      Builder.Append(AChar)
     else
-      Result := Result + ' ';
+      Builder.Append(' ');
   end;
 
 begin
-  Result := '';
+  Builder := TStringBuilder.Create(Length(Code));
+  try
   State := cstNone;
   InString := False;
   I := 1;
@@ -490,7 +492,7 @@ begin
         begin
           if (Ch = '*') and (I < Length(Code)) and (Code[I + 1] = ')') then
           begin
-            Result := Result + '  ';
+            Builder.Append('  ');
             Inc(I, 2);
             State := cstNone;
             Continue;
@@ -503,12 +505,12 @@ begin
 
     if InString then
     begin
-      Result := Result + Ch;
+      Builder.Append(Ch);
       if Ch = '''' then
       begin
         if (I < Length(Code)) and (Code[I + 1] = '''') then
         begin
-          Result := Result + Code[I + 1];
+          Builder.Append(Code[I + 1]);
           Inc(I, 2);
           Continue;
         end;
@@ -521,7 +523,7 @@ begin
     if Ch = '''' then
     begin
       InString := True;
-      Result := Result + Ch;
+      Builder.Append(Ch);
       Inc(I);
       Continue;
     end;
@@ -529,7 +531,7 @@ begin
     if (Ch = '/') and (I < Length(Code)) and (Code[I + 1] = '/') then
     begin
       State := cstLine;
-      Result := Result + '  ';
+      Builder.Append('  ');
       Inc(I, 2);
       Continue;
     end;
@@ -538,7 +540,7 @@ begin
     begin
       while I <= Length(Code) do
       begin
-        Result := Result + Code[I];
+        Builder.Append(Code[I]);
         if Code[I] = '}' then
         begin
           Inc(I);
@@ -560,13 +562,18 @@ begin
     if (Ch = '(') and (I < Length(Code)) and (Code[I + 1] = '*') then
     begin
       State := cstParenStar;
-      Result := Result + '  ';
+      Builder.Append('  ');
       Inc(I, 2);
       Continue;
     end;
 
-    Result := Result + Ch;
+    Builder.Append(Ch);
     Inc(I);
+  end;
+
+    Result := Builder.ToString;
+  finally
+    Builder.Free;
   end;
 end;
 

@@ -727,7 +727,7 @@ var
 begin
   L := LowerCase(Trim(StripComments(Line)));
   L := StripStringLiterals(L);
-  Result := L.StartsWith('property ');
+  Result := VCL2FMXIsPascalKeywordLine(L, 'property');
 end;
 
 function TPascalParser.IsMessageHandlerDeclarationLine(const Line: string): Boolean;
@@ -975,8 +975,8 @@ begin
   L := LowerCase(StripComments(Line));
   L := StripStringLiterals(L);
 
-  Result := (L.StartsWith('class procedure') or
-             L.StartsWith('class function')) and
+  Result := (VCL2FMXIsPascalKeywordLine(L, 'class procedure') or
+             VCL2FMXIsPascalKeywordLine(L, 'class function')) and
             (not L.Contains('= procedure')) and
             (not L.Contains('= function'));
 end;
@@ -1149,7 +1149,7 @@ begin
           Break;
         end;
 
-        if (not SawBegin) and Line.StartsWith('implementation', True) then
+        if (not SawBegin) and VCL2FMXIsPascalKeywordLine(Line, 'implementation') then
         begin
           Method.Body.Delete(Method.Body.Count - 1);
           Method.EndLine := CurrentLine - 1;
@@ -1229,6 +1229,11 @@ begin
   except
     on E: Exception do
     begin
+      if (FCurrentUnit <> nil) and (FCurrentUnit.CurrentClass <> nil) and
+         (FCurrentUnit.CurrentClass.Methods <> nil) then
+        FCurrentUnit.CurrentClass.Methods.Remove(Method);
+      if (FCurrentUnit <> nil) and (FCurrentUnit.PublishedMethods <> nil) then
+        FCurrentUnit.PublishedMethods.Remove(Method);
       if (FCurrentUnit <> nil) and (FCurrentUnit.Methods <> nil) and
          (FCurrentUnit.Methods.IndexOf(Method) >= 0) then
         FCurrentUnit.Methods.Extract(Method).Free
@@ -1345,12 +1350,12 @@ begin
   L := LowerCase(StripComments(Line));
   L := StripStringLiterals(L);
 
-  Result := (L.StartsWith('procedure ') or
-             L.StartsWith('function ') or
-             L.StartsWith('constructor ') or
-             L.StartsWith('destructor ') or
-             L.StartsWith('class procedure ') or
-             L.StartsWith('class function ')) and
+  Result := (VCL2FMXIsPascalKeywordLine(L, 'procedure') or
+             VCL2FMXIsPascalKeywordLine(L, 'function') or
+             VCL2FMXIsPascalKeywordLine(L, 'constructor') or
+             VCL2FMXIsPascalKeywordLine(L, 'destructor') or
+             VCL2FMXIsPascalKeywordLine(L, 'class procedure') or
+             VCL2FMXIsPascalKeywordLine(L, 'class function')) and
             (not L.Contains('= procedure')) and
             (not L.Contains('= function'));
 end;

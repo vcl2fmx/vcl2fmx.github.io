@@ -1,4 +1,4 @@
-{VCL2FMX � 2026 echurchsites.wixsite.com
+﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
  Version v5.0 Vanguard
  Written and built in the USA}
@@ -137,6 +137,17 @@ type
 
 implementation
 
+function CriticalAreaBlockOpenCount(const Line: string): Integer;
+begin
+  Result := TRegEx.Matches(Line, '\b(begin|case|try|repeat)\b',
+    [roIgnoreCase]).Count;
+end;
+
+function CriticalAreaBlockCloseCount(const Line: string): Integer;
+begin
+  Result := TRegEx.Matches(Line, '\b(end|until)\b', [roIgnoreCase]).Count;
+end;
+
 procedure ReplaceCodeBlock(Lines: TStringList; StartLine, OldCount: Integer;
   const NewLines: TStringList);
 var
@@ -197,18 +208,15 @@ begin
     begin
       PaintLines.Add(PascalCode[I]);
 
-      if TRegEx.IsMatch(Line, '^(begin|case\b|try\b|repeat\b)', [roIgnoreCase]) then
+      if CriticalAreaBlockOpenCount(Line) > 0 then
       begin
-        Inc(HandlerDepth);
+        Inc(HandlerDepth, CriticalAreaBlockOpenCount(Line));
         SawHandlerBegin := True;
       end;
-      if TRegEx.IsMatch(Line, '^(end\b|until\b|finally\b|except\b)', [roIgnoreCase]) then
-        Dec(HandlerDepth);
+      Dec(HandlerDepth, CriticalAreaBlockCloseCount(Line));
 
       if SawHandlerBegin and (HandlerDepth <= 0) and SameText(Trim(Line), 'end;') then
       begin
-        InPaintHandler := False;
-
         ConvertedLines := ConvertPaintHandler(PaintLines);
         J := PaintLines.Count;
         ReplaceCodeBlock(PascalCode, StartLine, J, ConvertedLines);
@@ -216,6 +224,7 @@ begin
         FreeAndNil(PaintLines);
         FreeAndNil(ConvertedLines);
         Result := True;
+        Break;
       end;
     end;
   end;
@@ -520,13 +529,12 @@ begin
             CleanLine := Trim(AnalysisLines[J])
           else
             CleanLine := Trim(PascalCode[J]);
-          if TRegEx.IsMatch(CleanLine, '^(begin|case\b|try\b|repeat\b)', [roIgnoreCase]) then
+          if CriticalAreaBlockOpenCount(CleanLine) > 0 then
           begin
-            Inc(HandlerDepth);
+            Inc(HandlerDepth, CriticalAreaBlockOpenCount(CleanLine));
             SawHandlerBegin := True;
           end;
-          if TRegEx.IsMatch(CleanLine, '^(end\b|until\b)', [roIgnoreCase]) then
-            Dec(HandlerDepth);
+          Dec(HandlerDepth, CriticalAreaBlockCloseCount(CleanLine));
 
           if SawHandlerBegin and (HandlerDepth <= 0) and SameText(CleanLine, 'end;') then
           begin
@@ -830,17 +838,15 @@ begin
         begin
           HandlerLines.Add(Line);
 
-          if TRegEx.IsMatch(Trim(Line), '^(begin|case\b|try\b|repeat\b)', [roIgnoreCase]) then
+          if CriticalAreaBlockOpenCount(Trim(Line)) > 0 then
           begin
-            Inc(HandlerDepth);
+            Inc(HandlerDepth, CriticalAreaBlockOpenCount(Trim(Line)));
             SawHandlerBegin := True;
           end;
-          if TRegEx.IsMatch(Trim(Line), '^(end\b|until\b|finally\b|except\b)', [roIgnoreCase]) then
-            Dec(HandlerDepth);
+          Dec(HandlerDepth, CriticalAreaBlockCloseCount(Trim(Line)));
 
           if SawHandlerBegin and (HandlerDepth <= 0) and SameText(Trim(Line), 'end;') then
           begin
-            InHandler := False;
             OriginalCount := HandlerLines.Count;
 
             if Pos('ListBox', ControlName) > 0 then
@@ -854,6 +860,7 @@ begin
 
             FreeAndNil(HandlerLines);
             Result := True;
+            Break;
           end;
         end;
       end;

@@ -711,7 +711,6 @@ begin
     NeedsFMXListBox := False;
     NeedsFMXLayouts := False;
     NeedsFMXMenus := False;
-    NeedsFMXGrid := False;
     NeedsFMXImgList := False;
     NeedsFMXDateTimeCtrls := False;
     NeedsFMXDialogs := False;

@@ -180,6 +180,8 @@ function TFileManager.PrepareOutput: Boolean;
 var
   FolderName: string;
   FolderPath: string;
+  SourcePath: string;
+  OutputPath: string;
 begin
   Result := True;
 
@@ -190,6 +192,35 @@ begin
   end;
 
   try
+    SourcePath := ExpandFileName(FContext.Options.SourcePath);
+    OutputPath := ExpandFileName(FContext.Options.OutputPath);
+
+    if SameText(ExcludeTrailingPathDelimiter(SourcePath),
+      ExcludeTrailingPathDelimiter(OutputPath)) then
+    begin
+      FContext.AddIssue(csError,
+        'Output directory must be different from the source directory.',
+        'Unsafe output directory',
+        OutputPath,
+        'Choose a separate output folder so source files and build folders cannot be deleted during preparation.',
+        -1,
+        True);
+      Exit(False);
+    end;
+
+    if IsSameOrChildPath(SourcePath, OutputPath) or
+       IsSameOrChildPath(OutputPath, SourcePath) then
+    begin
+      FContext.AddIssue(csError,
+        'Output directory must not be inside the source tree, and the source tree must not be inside the output directory.',
+        'Unsafe output directory',
+        OutputPath,
+        'Choose a separate sibling output folder before converting.',
+        -1,
+        True);
+      Exit(False);
+    end;
+
     if not DirectoryExists(FContext.Options.OutputPath) then
       ForceDirectories(FContext.Options.OutputPath);
 
