@@ -1288,6 +1288,7 @@ function TCriticalAreasConverter.ConvertAllCriticalAreas(
   var PascalCode: TStringList): Boolean;
 begin
   Result := False;
+  FIssuesFound.Clear;
 
   if FCustomDrawing.ConvertCustomDrawing(PascalCode) then
   begin

@@ -47,7 +47,7 @@ an expectation file or be covered by a project-level expectation.
 Current verified status after the field-test regression expansion:
 
 ```text
-Summary: 218 pass, 0 fail
+Summary: 219 pass, 0 fail
 ```
 
 ## Expectation Fields
@@ -88,7 +88,7 @@ unit and include search paths so copied include files can be resolved.
   and color-helper edge cases. 16 expectations.
 - `comments_and_boundaries`: comments, string literals, disabled blocks, routine
   boundaries, initialization/finalization boundaries, and message false positives.
-  21 expectations.
+  22 expectations.
 - `components_and_events`: component declarations, events, form lifecycle,
   coordinate conversion, media, images, status bars, and custom-component cases.
   26 expectations.

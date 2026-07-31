@@ -1469,35 +1469,8 @@ begin
 end;
 
 function TPascalParser.StripStringLiterals(const Line: string): string;
-var
-  i: Integer;
-  InString: Boolean;
 begin
-  Result := '';
-  InString := False;
-  i := 1;
-
-  while i <= Length(Line) do
-  begin
-    if Line[i] = '''' then
-    begin
-      if not InString then
-        InString := True
-      else if (i < Length(Line)) and (Line[i + 1] = '''') then
-      begin
-        Inc(i, 2);
-        Continue;
-      end
-      else
-        InString := False;
-      Inc(i);
-      Continue;
-    end;
-
-    if not InString then
-      Result := Result + Line[i];
-    Inc(i);
-  end;
+  Result := VCL2FMXStripStringLiteralsForAnalysis(Line);
 end;
 
 function TPascalParser.ExtractMethodName(const Declaration: string; out ClassName: string): string;

@@ -570,9 +570,6 @@ begin
     on E: Exception do
     begin
       // A failed probe must fail closed instead of treating uncertain binary data as text.
-      FContext.AddIssue(csError, 'Failed to check DFM format: ' + E.Message,
-        'DFM format detection', '',
-        'Save the form as a text DFM in Delphi and rerun the conversion.', -1, True);
       raise;
     end;
   end;

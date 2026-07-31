@@ -836,51 +836,6 @@ var
     Result := AdvancePastDeclarationBlocks(CandidateIdx);
   end;
 
-  function StripStringLiterals(const ACode: string): string;
-  var
-    I: Integer;
-    InString: Boolean;
-    Ch: Char;
-  begin
-    Result := '';
-    InString := False;
-    I := 1;
-    while I <= Length(ACode) do
-    begin
-      Ch := ACode[I];
-      if InString then
-      begin
-        if (Ch = #13) or (Ch = #10) then
-          Result := Result + Ch
-        else
-          Result := Result + ' ';
-        if Ch = '''' then
-        begin
-          if (I < Length(ACode)) and (ACode[I + 1] = '''') then
-          begin
-            Result := Result + ' ';
-            Inc(I, 2);
-            Continue;
-          end;
-          InString := False;
-        end;
-        Inc(I);
-        Continue;
-      end;
-
-      if Ch = '''' then
-      begin
-        InString := True;
-        Result := Result + ' ';
-        Inc(I);
-        Continue;
-      end;
-
-      Result := Result + Ch;
-      Inc(I);
-    end;
-  end;
-
   function HasRealMemoReference(const ACode: string): Boolean;
   begin
     Result :=
@@ -895,7 +850,7 @@ begin
 
   OriginalCode := Code;
   AnalysisCode := VCL2FMXStripCommentsForAnalysis(Code);
-  AnalysisNoStrings := StripStringLiterals(AnalysisCode);
+  AnalysisNoStrings := VCL2FMXStripStringLiteralsForAnalysis(AnalysisCode);
   NeedRadioGroup := ContainsText(AnalysisCode, 'TRadioGroup');
   NeedFontDialog := ContainsText(AnalysisCode, 'TFontDialog');
   NeedColorDialog := ContainsText(AnalysisCode, 'TColorDialog');

@@ -50,6 +50,7 @@ function VCL2FMXTryReadTextFile(const AFileName: string; out Text: string;
   out EncodingName: string): Boolean;
 function VCL2FMXIsPascalKeywordLine(const Line, Keyword: string): Boolean;
 function VCL2FMXStripCommentsForAnalysis(const Code: string): string;
+function VCL2FMXStripStringLiteralsForAnalysis(const Code: string): string;
 function VCL2FMXStripLineCommentOutsideString(const Value: string): string;
 
 type
@@ -587,6 +588,56 @@ begin
     Inc(I);
   end;
 
+    Result := Builder.ToString;
+  finally
+    Builder.Free;
+  end;
+end;
+
+function VCL2FMXStripStringLiteralsForAnalysis(const Code: string): string;
+var
+  I: Integer;
+  InString: Boolean;
+  Ch: Char;
+  Builder: TStringBuilder;
+begin
+  Builder := TStringBuilder.Create(Length(Code));
+  try
+    InString := False;
+    I := 1;
+    while I <= Length(Code) do
+    begin
+      Ch := Code[I];
+      if InString then
+      begin
+        if (Ch = #10) or (Ch = #13) then
+          Builder.Append(Ch)
+        else
+          Builder.Append(' ');
+
+        if Ch = '''' then
+        begin
+          if (I < Length(Code)) and (Code[I + 1] = '''') then
+          begin
+            Builder.Append(' ');
+            Inc(I, 2);
+            Continue;
+          end;
+          InString := False;
+        end;
+        Inc(I);
+        Continue;
+      end;
+
+      if Ch = '''' then
+      begin
+        InString := True;
+        Builder.Append(' ');
+      end
+      else
+        Builder.Append(Ch);
+      Inc(I);
+    end;
     Result := Builder.ToString;
   finally
     Builder.Free;

@@ -1,0 +1,20 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\22_shared_tokenizer_string_comment_directive.pas",
+  "expected_status": "converted",
+  "expected_manual_reviews": ["Windows messages or message handlers"],
+  "expected_units_added": [],
+  "expected_units_absent": ["FMXMessageBridge", "System.Messaging"],
+  "expected_output_patterns": [
+    "Writeln\\('PostMessage\\(FHandle, WM_CLOSE, 0, 0\\)'\\)",
+    "SendMessage\\(FHandle, WM_CLOSE, 0, 0\\)"
+  ],
+  "forbidden_output_patterns": [
+    "FMXMessageBridge",
+    "System\\.Messaging"
+  ],
+  "expected_report_patterns": [
+    "Windows messages or message handlers",
+    "SendMessage"
+  ],
+  "forbidden_report_patterns": []
+}

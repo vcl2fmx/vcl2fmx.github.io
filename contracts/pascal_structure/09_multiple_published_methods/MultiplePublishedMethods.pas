@@ -5,6 +5,9 @@ interface
 type
   TContractMultiplePublishedMethods = class
   published
+    PublishedCount: Integer;
+    PublishedLabel: string;
+
     procedure FirstPublished;
     procedure SecondPublished;
   end;

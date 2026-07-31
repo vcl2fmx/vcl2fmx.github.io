@@ -26,6 +26,7 @@ Each sample is intended to become an input fixture with assertions against conve
 - `02_comment_only_lines_inside_continuation.pas`: comment-only lines inside disabled blocks should stay inside the disabled block.
 - `03_comments_should_not_trigger_uses.pas`: comments containing message APIs should not affect uses detection.
 - `21_unsupported_message_try_except_depth.pas`: unsupported message handlers containing `try..except..end` blocks should keep the full outer routine marked for FMX manual review.
+- `22_shared_tokenizer_string_comment_directive.pas`: shared analysis tokenization must ignore message-like text in comments, string literals, and disabled directives while retaining the active call for review.
 
 ## Colors
 

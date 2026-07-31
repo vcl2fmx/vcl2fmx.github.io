@@ -813,7 +813,21 @@ begin
   else
     SearchOption := TSearchOption.soTopDirectoryOnly;
 
-  Files := TDirectory.GetFiles(FContext.Options.SourcePath, '*.pas', SearchOption);
+  try
+    Files := TDirectory.GetFiles(FContext.Options.SourcePath, '*.pas', SearchOption);
+  except
+    on E: Exception do
+    begin
+      FContext.AddIssue(csWarning,
+        'Cross-unit semantic index could not enumerate Pascal files: ' + E.Message,
+        'Pascal semantic index',
+        FContext.Options.SourcePath,
+        'Verify that the source tree remains accessible and rerun the conversion. The normal file conversion pass may still process accessible files.',
+        -1,
+        False);
+      Exit;
+    end;
+  end;
   for FileName in Files do
   begin
     if FCancelled then

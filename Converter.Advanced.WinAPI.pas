@@ -155,38 +155,6 @@ var
   CommentContinuation: Boolean;
   CommentConditionalDepth: Integer;
   AwaitingConditionalBegin: Boolean;
-  function StripStringLiteralsForAnalysis(const S: string): string;
-  var
-    K: Integer;
-    InString: Boolean;
-  begin
-    Result := '';
-    InString := False;
-    K := 1;
-    while K <= Length(S) do
-    begin
-      if S[K] = '''' then
-      begin
-        if not InString then
-          InString := True
-        else if (K < Length(S)) and (S[K + 1] = '''') then
-        begin
-          Result := Result + '  ';
-          Inc(K, 2);
-          Continue;
-        end
-        else
-          InString := False;
-        Result := Result + ' ';
-      end
-      else if InString then
-        Result := Result + ' '
-      else
-        Result := Result + S[K];
-      Inc(K);
-    end;
-  end;
-
   function IsRoutineDeclaration(const S: string): Boolean;
   begin
     Result := TRegEx.IsMatch(Trim(S),
@@ -236,9 +204,9 @@ begin
     begin
       Line := Lines[I];
       if I < AnalysisLines.Count then
-        AnalysisLine := StripStringLiteralsForAnalysis(AnalysisLines[I])
+        AnalysisLine := VCL2FMXStripStringLiteralsForAnalysis(AnalysisLines[I])
       else
-        AnalysisLine := StripStringLiteralsForAnalysis(Line);
+        AnalysisLine := VCL2FMXStripStringLiteralsForAnalysis(Line);
       OriginalLine := Line;
       TrimmedOriginalLine := Trim(OriginalLine);
       Modified := False;
