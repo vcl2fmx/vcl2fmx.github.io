@@ -1095,8 +1095,7 @@ begin
     if StartIndex > 0 then
     begin
       PrevLine := Trim(FLines[StartIndex - 1]);
-      Method.IsPublished := (PrevLine = 'published') or
-                            (Pos('published', PrevLine) > 0);
+      Method.IsPublished := VCL2FMXIsPascalKeywordLine(PrevLine, 'published');
     end;
 
     Method.Body.Add(Line);
@@ -1258,15 +1257,30 @@ begin
   begin
     Line := Trim(FLines[i]);
 
-    if (FCurrentUnit.CurrentClass = nil) and
-       (VCL2FMXIsPascalKeywordLine(Line, 'var') or
-        VCL2FMXIsPascalKeywordLine(Line, 'const') or
-        VCL2FMXIsPascalKeywordLine(Line, 'implementation') or
-        VCL2FMXIsPascalKeywordLine(Line, 'procedure') or
-        VCL2FMXIsPascalKeywordLine(Line, 'function') or
-        VCL2FMXIsPascalKeywordLine(Line, 'constructor') or
-        VCL2FMXIsPascalKeywordLine(Line, 'destructor')) then
+    if ((FCurrentUnit.CurrentClass = nil) and
+        (VCL2FMXIsPascalKeywordLine(Line, 'var') or
+         VCL2FMXIsPascalKeywordLine(Line, 'const') or
+         VCL2FMXIsPascalKeywordLine(Line, 'implementation') or
+         VCL2FMXIsPascalKeywordLine(Line, 'procedure') or
+         VCL2FMXIsPascalKeywordLine(Line, 'function') or
+         VCL2FMXIsPascalKeywordLine(Line, 'constructor') or
+         VCL2FMXIsPascalKeywordLine(Line, 'destructor'))) or
+       ((FCurrentUnit.CurrentClass <> nil) and
+        (VCL2FMXIsPascalKeywordLine(Line, 'var') or
+         VCL2FMXIsPascalKeywordLine(Line, 'const') or
+         VCL2FMXIsPascalKeywordLine(Line, 'implementation'))) then
     begin
+      if FCurrentUnit.CurrentClass <> nil then
+      begin
+        FContext.AddIssue(csError,
+          'Pascal class declaration ended without a valid terminator before ' + Line,
+          'Pascal class boundary',
+          FLines[i],
+          'Review the class declaration terminator and rerun the conversion.',
+          i + 1,
+          True);
+        CloseCurrentClass(i - 1);
+      end;
       EndIndex := i;
       Exit;
     end;
@@ -1275,7 +1289,8 @@ begin
     begin
       ParseClassDeclaration(Line, i);
     end
-    else if SameText(Line, 'end;') and (FCurrentUnit.CurrentClass <> nil) then
+    else if TRegEx.IsMatch(Line, '^end\s*;', [roIgnoreCase]) and
+            (FCurrentUnit.CurrentClass <> nil) then
       CloseCurrentClass(i)
     else if FCurrentUnit.CurrentClass <> nil then
       ParseClassMember(Line);
@@ -1500,7 +1515,11 @@ begin
     Exit;
   end;
 
-  DotPos := Pos('.', L);
+  ParenPos := Pos('(', L);
+  if ParenPos > 0 then
+    DotPos := Pos('.', Copy(L, 1, ParenPos - 1))
+  else
+    DotPos := Pos('.', L);
   if DotPos > 0 then
   begin
     ClassName := Copy(L, 1, DotPos - 1);
@@ -1509,7 +1528,6 @@ begin
   end;
 
   SpacePos := Pos(' ', L);
-  ParenPos := Pos('(', L);
   SemicolonPos := Pos(';', L);
 
   if (ParenPos > 0) and ((SpacePos = 0) or (ParenPos < SpacePos)) then
@@ -1599,13 +1617,35 @@ var
   ColonPos: Integer;
   SemiPos: Integer;
   AfterParen: string;
+  ParenPos: Integer;
+  ParenLevel: Integer;
+  i: Integer;
 begin
   L := StripComments(Declaration);
   L := StripStringLiterals(L);
 
   AfterParen := L;
-  if Pos(')', L) > 0 then
-    AfterParen := Copy(L, Pos(')', L) + 1, Length(L));
+  ParenPos := Pos('(', L);
+  if ParenPos > 0 then
+  begin
+    ParenLevel := 1;
+    i := ParenPos + 1;
+    while i <= Length(L) do
+    begin
+      if L[i] = '(' then
+        Inc(ParenLevel)
+      else if L[i] = ')' then
+      begin
+        Dec(ParenLevel);
+        if ParenLevel = 0 then
+        begin
+          AfterParen := Copy(L, i + 1, Length(L));
+          Break;
+        end;
+      end;
+      Inc(i);
+    end;
+  end;
 
   ColonPos := Pos(':', AfterParen);
   if ColonPos = 0 then

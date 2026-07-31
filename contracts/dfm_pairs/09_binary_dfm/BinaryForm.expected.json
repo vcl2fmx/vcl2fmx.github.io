@@ -1,0 +1,8 @@
+{
+  "input_file": "contracts\\dfm_pairs\\09_binary_dfm\\BinaryForm.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": ["unit ContractBinaryDfm"],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": ["Failed to convert binary DFM|DFM format detection"],
+  "forbidden_report_patterns": ["Failed to load text DFM"]
+}

@@ -9,7 +9,10 @@
     "\\bVcl\\."
   ],
   "expected_report_patterns": [
-    "UNKNOWN THIRD-PARTY COMPONENTS"
+    "UNKNOWN THIRD-PARTY COMPONENTS",
+    "TVendorControl"
   ],
-  "forbidden_report_patterns": []
+  "forbidden_report_patterns": [
+    "No unknown third-party components were found"
+  ]
 }

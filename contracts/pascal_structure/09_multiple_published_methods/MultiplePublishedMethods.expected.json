@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\pascal_structure\\09_multiple_published_methods\\MultiplePublishedMethods.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "procedure TContractMultiplePublishedMethods\\.FirstPublished",
+    "procedure TContractMultiplePublishedMethods\\.SecondPublished"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

@@ -49,14 +49,26 @@ Each sample is intended to become an input fixture with assertions against conve
 ## Pascal Structure
 
 - `05_keyword_boundary_identifiers.pas`: identifiers beginning with Delphi section keywords should not be treated as real `interface`, `implementation`, `uses`, or type-section boundaries.
+- `06_class_terminator_comment.pas`: a class terminator followed by a comment must still close the class and allow later methods to be parsed.
+- `07_float_default_parameter.pas`: a decimal default parameter must not be mistaken for a qualified method name.
+- `08_nested_default_parentheses.pas`: nested parameter parentheses must be matched before extracting a function return type.
+- `09_multiple_published_methods.pas`: multiple methods in a published section must remain visible to structure analysis.
 
 ## DFM Fidelity
 
 - `04_mixed_case_dfm_property_lookup.pas`: mixed-case DFM object and property names should compare case-insensitively during fidelity checks.
+- `09_binary_dfm`: uncertain or invalid binary DFM input must fail closed rather than being parsed as text.
+- `10_collection_dfm`: collection-valued DFM properties must maintain collection scope while parsing items.
 
 ## Project Files
 
 - `05_manual_created_form_show_preserved.dpr`: manually shown forms immediately after `Application.CreateForm` should keep their `.Show;` call in the generated DPR.
+
+## Encoding
+
+- `05_cp1252_source.pas`: legacy Windows-1252 source accents must survive conversion as UTF-8 with BOM.
+- `06_utf8_bom_source.pas`: UTF-8 BOM source must remain intact and generate UTF-8 with BOM output.
+- `07_utf8_no_bom_source.pas`: UTF-8 source without a BOM must generate UTF-8 with BOM output without mojibake.
 
 ## Uses-Clause Field Fixes
 

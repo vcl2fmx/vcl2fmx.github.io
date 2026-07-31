@@ -1,4 +1,4 @@
-{VCL2FMX Â© 2026 echurchsites.wixsite.com
+﻿{VCL2FMX Â© 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
  Version v5.0 Vanguard
  Written and built in the USA}
@@ -486,7 +486,6 @@ var
   SleepLine: string;
   Indent: string;
   IsDeferredCreateForm: Boolean;
-  IsManualCreateForm: Boolean;
   DeferredIdx: Integer;
 begin
   Lines := TStringList.Create;
@@ -553,8 +552,7 @@ begin
           Continue;
 
         IsDeferredCreateForm := (i < SplashShowIdx) and TryParseCreateForm(Lines[i], ClassName, InstanceName);
-        IsManualCreateForm := IsDeferredCreateForm and IsFormManuallyCreated(ClassName, InstanceName);
-        if IsDeferredCreateForm or IsManualCreateForm then
+        if IsDeferredCreateForm then
           Continue;
 
         if TryParseCreateForm(Lines[i], ClassName, InstanceName) and

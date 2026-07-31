@@ -800,6 +800,9 @@ begin
   Files := TDirectory.GetFiles(FContext.Options.SourcePath, '*.pas', SearchOption);
   for FileName in Files do
   begin
+    if FCancelled then
+      Exit;
+
     if IsExcludedSemanticFile(FileName) then
       Continue;
 
@@ -812,14 +815,22 @@ begin
       '\b([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(class|record|interface|class\s+helper|record\s+helper)\b',
       [roIgnoreCase]);
     for Match in Matches do
+    begin
+      if FCancelled then
+        Exit;
       AddUnique(FContext.SemanticClassIndex, Match.Groups[1].Value);
+    end;
 
     Matches := TRegEx.Matches(CleanCode,
       '\b(?:class\s+procedure|class\s+function|procedure|function|constructor|destructor)\s+([A-Za-z_][A-Za-z0-9_]*)\.([A-Za-z_][A-Za-z0-9_]*)\b',
       [roIgnoreCase]);
     for Match in Matches do
+    begin
+      if FCancelled then
+        Exit;
       AddUnique(FContext.SemanticMethodIndex,
         Match.Groups[1].Value + '.' + Match.Groups[2].Value);
+    end;
   end;
 
   FContext.AddIssue(csInfo,
@@ -1889,6 +1900,7 @@ var
   ManualGroups: TStringList;
   AffectedFiles: TStringList;
   VisibleIssueCount: Integer;
+  UnknownThirdPartyCount: Integer;
   HasDetailedIssues: Boolean;
   HasBlockingOutcome: Boolean;
 
@@ -2598,7 +2610,15 @@ begin
     Report.Add('');
     Report.Add('UNKNOWN THIRD-PARTY COMPONENTS');
     Report.Add(StringOfChar('-', 40));
-    Report.Add('No unknown third-party components were found.');
+    UnknownThirdPartyCount := 0;
+    for Issue in FContext.Issues do
+      if SameText(Issue.ProblemType, 'Unknown third-party component') then
+      begin
+        Report.Add('- ' + Issue.Message);
+        Inc(UnknownThirdPartyCount);
+      end;
+    if UnknownThirdPartyCount = 0 then
+      Report.Add('No unknown third-party components were found.');
     AddMappingsUsedTextSection;
 
     if DryRunPreviewCount > 0 then

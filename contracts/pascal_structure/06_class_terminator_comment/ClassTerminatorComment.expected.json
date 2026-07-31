@@ -1,0 +1,11 @@
+{
+  "input_file": "contracts\\pascal_structure\\06_class_terminator_comment\\ClassTerminatorComment.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractClassTerminatorComment",
+    "procedure TContractClassTerminatorComment\\.ParsedAfterCommentedTerminator"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

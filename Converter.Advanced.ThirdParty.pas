@@ -1,4 +1,4 @@
-{VCL2FMX � 2026 echurchsites.wixsite.com
+﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
  Version v5.0 Vanguard
  Written and built in the USA}
@@ -1050,8 +1050,14 @@ begin
       FContext.AddIssue(csInfo,
         Format('Sub-component: %s (%s) - auto-handled', [ComponentName, ClassName]))
     else
-      FContext.AddIssue(csInfo,
-        Format('Component: %s (%s) from %s.%s', [ComponentName, ClassName, Vendor, MappingPackHint]));
+      FContext.AddIssue(csWarning,
+        Format('Unknown third-party component: %s (%s). Vendor could not be identified.%s',
+          [ComponentName, ClassName, MappingPackHint]),
+        'Unknown third-party component',
+        ClassName,
+        'Review the component vendor and add or select an appropriate mapping-pack rule.',
+        -1,
+        False);
   end;
 end;
 function TThirdPartyHandler.GetReplacementCode(const ClassName: string): string;

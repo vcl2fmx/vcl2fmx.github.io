@@ -541,7 +541,6 @@ function TDFMParser.IsBinaryDFM(const AFileName: string): Boolean;
 var
   FileStream: TFileStream;
 begin
-  Result := False;
   try
     FileStream := TFileStream.Create(AFileName, fmOpenRead or fmShareDenyWrite);
     try
@@ -551,7 +550,13 @@ begin
     end;
   except
     on E: Exception do
-      FContext.AddIssue(csError, 'Failed to check DFM format: ' + E.Message);
+    begin
+      // A failed probe must fail closed instead of treating uncertain binary data as text.
+      FContext.AddIssue(csError, 'Failed to check DFM format: ' + E.Message,
+        'DFM format detection', '',
+        'Save the form as a text DFM in Delphi and rerun the conversion.', -1, True);
+      raise;
+    end;
   end;
 end;
 
@@ -821,7 +826,8 @@ begin
         else
           FCurrentComponent := nil;
       end;
-      if (FCurrentCollection <> nil) and (IndentLevel <= FIndentStack.Count) then
+      if (FCurrentCollection <> nil) and (FIndentStack.Count > 0) and
+         (IndentLevel <= FIndentStack.Peek) then
         FCurrentCollection := nil;
     end;
 

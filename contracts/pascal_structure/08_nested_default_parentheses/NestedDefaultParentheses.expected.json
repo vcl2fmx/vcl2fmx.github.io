@@ -1,0 +1,10 @@
+{
+  "input_file": "contracts\\pascal_structure\\08_nested_default_parentheses\\NestedDefaultParentheses.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "function TContractNestedDefaultParentheses\\.ReadValue"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

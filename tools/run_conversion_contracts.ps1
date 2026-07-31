@@ -340,8 +340,11 @@ end.
 
   $failures = New-Object 'System.Collections.Generic.List[string]'
 
-  if (($null -ne $expectation.PSObject.Properties['expected_no_output_files']) -and
-      ([bool]$expectation.expected_no_output_files)) {
+  $noGeneratedSourceFiles = (($null -ne $expectation.PSObject.Properties['expected_no_generated_source_files']) -and
+      ([bool]$expectation.expected_no_generated_source_files)) -or
+    (($null -ne $expectation.PSObject.Properties['expected_no_output_files']) -and
+      ([bool]$expectation.expected_no_output_files))
+  if ($noGeneratedSourceFiles) {
     $artifactFiles = @(Get-ChildItem -LiteralPath $caseOutput -Recurse -File -ErrorAction SilentlyContinue |
       Where-Object {
         ($_.Extension -in @('.pas', '.fmx', '.dpr', '.inc', '.json')) -and
@@ -349,6 +352,30 @@ end.
       })
     if ($artifactFiles.Count -gt 0) {
       $failures.Add("Expected no converted artifact files, but found $($artifactFiles.Count).") | Out-Null
+    }
+  }
+
+  if (($null -ne $expectation.PSObject.Properties['expected_output_encoding']) -and
+      -not [string]::IsNullOrWhiteSpace([string]$expectation.expected_output_encoding)) {
+    $encodingName = [string]$expectation.expected_output_encoding
+    if ($encodingName -eq 'utf8-bom') {
+      $encodingFiles = @(Get-ChildItem -LiteralPath $caseOutput -Recurse -File -ErrorAction SilentlyContinue |
+        Where-Object { $_.Extension -in @('.pas', '.fmx', '.dpr', '.dpk', '.dfm', '.inc') })
+      foreach ($encodingFile in $encodingFiles) {
+        $encodingBytes = [System.IO.File]::ReadAllBytes($encodingFile.FullName)
+        if (($encodingBytes.Length -lt 3) -or
+            ($encodingBytes[0] -ne 0xEF) -or
+            ($encodingBytes[1] -ne 0xBB) -or
+            ($encodingBytes[2] -ne 0xBF)) {
+          $failures.Add("Expected UTF-8 BOM in generated file '$($encodingFile.Name)'.") | Out-Null
+        }
+      }
+      if ($encodingFiles.Count -eq 0) {
+        $failures.Add('Expected at least one generated source file for UTF-8 BOM validation.') | Out-Null
+      }
+    }
+    else {
+      $failures.Add("Unsupported expected_output_encoding '$encodingName'.") | Out-Null
     }
   }
 

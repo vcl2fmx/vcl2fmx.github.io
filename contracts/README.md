@@ -47,7 +47,7 @@ an expectation file or be covered by a project-level expectation.
 Current verified status after the field-test regression expansion:
 
 ```text
-Summary: 203 pass, 0 fail
+Summary: 212 pass, 0 fail
 ```
 
 ## Expectation Fields
@@ -94,11 +94,11 @@ unit and include search paths so copied include files can be resolved.
 - `dfm_fidelity`: DFM/FMXL object, event, and property fidelity checks.
   4 expectations.
 - `dfm_pairs`: paired Pascal/DFM form fixtures for FMX generation behavior.
-  7 expectations.
-- `dry_run_preview`: dry-run preview behavior and no-artifact guarantees.
+  9 expectations.
+- `dry_run_preview`: dry-run preview behavior and no-generated-source-artifact guarantees.
   1 expectation.
 - `encoding`: UTF-8, whitespace, long-line, and include-directive encoding cases.
-  4 expectations.
+  7 expectations.
 - `graphics`: VCL Canvas and WinAPI GDI drawing cases, including FMX canvas
   conversion and visual-review reporting. 7 expectations.
 - `include_analysis`: Pascal include-file analysis, including beside-source,
@@ -109,7 +109,7 @@ unit and include search paths so copied include files can be resolved.
   6 expectations.
 - `pascal_structure`: Pascal structure parsing, methods, helpers, attributes, and
   message-handler rules. 5 expectations.
-- `project_files`: DPR and startup/project-resource behavior. 5 expectations.
+- `project_files`: DPR and startup/project-resource behavior. 6 expectations.
 - `project_integration`: mini-project contracts that exercise include, Windows
   messaging, uses cleanup, DFM/FMXL, and report-shape workflows as whole projects.
   6 expectations.

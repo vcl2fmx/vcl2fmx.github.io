@@ -1,0 +1,10 @@
+{
+  "input_file": "contracts\\pascal_structure\\07_float_default_parameter\\FloatDefaultParameter.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "procedure TContractFloatDefaultParameter\\.SetScale"
+  ],
+  "forbidden_output_patterns": ["procedure 5"],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}
