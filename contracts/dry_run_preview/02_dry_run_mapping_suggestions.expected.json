@@ -1,0 +1,17 @@
+{
+  "input_file": "contracts\\third_party\\04_mapping_assistance_prefix.pas",
+  "copy_case_directory": true,
+  "engine_args": ["--dry-run"],
+  "expected_status": "converted",
+  "expected_no_generated_source_files": true,
+  "expected_report_files": true,
+  "expected_auxiliary_files": ["MappingPack_Authoring_Suggestions.json"],
+  "expected_output_patterns": [],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "Dry-run preview",
+    "Mapping-pack authoring suggestions exported",
+    "TAdvDoesNotExist"
+  ],
+  "forbidden_report_patterns": []
+}

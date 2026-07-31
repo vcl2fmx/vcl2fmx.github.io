@@ -3,6 +3,7 @@
   "expected_status": "converted",
   "engine_args": ["--dry-run"],
   "expected_no_generated_source_files": true,
+  "expected_report_files": true,
   "expected_output_patterns": [],
   "forbidden_output_patterns": ["unit ContractDryRunPreview"],
   "expected_report_patterns": [

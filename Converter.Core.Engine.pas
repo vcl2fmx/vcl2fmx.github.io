@@ -961,12 +961,13 @@ begin
     UILog('');
     if FContext.Options.DryRunPreview then
     begin
-      UILog('Dry-run preview: project generation skipped');
+      UILog('Dry-run preview: converted source and project generation skipped');
+      UILog('Dry-run preview reports and mapping suggestions will still be written for review');
       FContext.AddIssue(csInfo,
-        'Dry-run preview skipped project file generation.',
+        'Dry-run preview skipped converted source and project file generation; reports and mapping suggestions remain enabled.',
         'Dry-run preview',
         '',
-        'Run conversion again with dry-run disabled to write converted project artifacts.',
+        'Review the generated report and any mapping suggestions, then run conversion again with dry-run disabled to write converted source and project artifacts.',
         -1,
         False);
     end

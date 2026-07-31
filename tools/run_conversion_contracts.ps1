@@ -347,11 +347,28 @@ end.
   if ($noGeneratedSourceFiles) {
     $artifactFiles = @(Get-ChildItem -LiteralPath $caseOutput -Recurse -File -ErrorAction SilentlyContinue |
       Where-Object {
-        ($_.Extension -in @('.pas', '.fmx', '.dpr', '.inc', '.json')) -and
+        ($_.Extension -in @('.pas', '.fmx', '.dpr', '.inc', '.dfm')) -and
         ($_.Name -notlike '*Report*')
       })
     if ($artifactFiles.Count -gt 0) {
       $failures.Add("Expected no converted artifact files, but found $($artifactFiles.Count).") | Out-Null
+    }
+  }
+
+  if (($null -ne $expectation.PSObject.Properties['expected_report_files']) -and
+      ([bool]$expectation.expected_report_files)) {
+    $reportFiles = @(Get-ChildItem -LiteralPath $caseOutput -Recurse -File -ErrorAction SilentlyContinue |
+      Where-Object { ($_.Name -like '*Report*.txt') -or ($_.Name -like '*Report*.html') })
+    if ($reportFiles.Count -eq 0) {
+      $failures.Add('Expected at least one conversion report file.') | Out-Null
+    }
+  }
+
+  foreach ($auxiliaryFileName in Get-JsonArray -Object $expectation -Name 'expected_auxiliary_files') {
+    $auxiliaryFiles = @(Get-ChildItem -LiteralPath $caseOutput -Recurse -File -ErrorAction SilentlyContinue |
+      Where-Object { $_.Name -eq [string]$auxiliaryFileName })
+    if ($auxiliaryFiles.Count -eq 0) {
+      $failures.Add("Expected auxiliary output file '$auxiliaryFileName' was not found.") | Out-Null
     }
   }
 

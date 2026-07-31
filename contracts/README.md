@@ -47,7 +47,7 @@ an expectation file or be covered by a project-level expectation.
 Current verified status after the field-test regression expansion:
 
 ```text
-Summary: 215 pass, 0 fail
+Summary: 216 pass, 0 fail
 ```
 
 ## Expectation Fields
@@ -64,6 +64,8 @@ Common fields in `.expected.json` files:
 - `forbidden_output_patterns`: regex patterns that must not appear in generated output.
 - `expected_report_patterns`: regex patterns that must appear in conversion reports.
 - `forbidden_report_patterns`: regex patterns that must not appear in conversion reports.
+- `expected_report_files`: requires at least one generated text or HTML report.
+- `expected_auxiliary_files`: file names that must be present as intentional non-source outputs, such as mapping-pack authoring suggestions.
 - `copy_case_directory`: optional project-level fixture mode that copies the whole
   fixture folder before conversion.
 - `skip_generated_compile`: optional flag for fixtures that intentionally preserve
@@ -93,14 +95,12 @@ unit and include search paths so copied include files can be resolved.
   navigator behavior, and dataset-binding review cases. 8 expectations.
 - `dfm_fidelity`: DFM/FMXL object, event, and property fidelity checks.
   4 expectations.
-- `dfm_pairs`: paired Pascal/DFM form fixtures for FMX generation behavior. 11 expectations.
-  9 expectations.
-- `dry_run_preview`: dry-run preview behavior and no-generated-source-artifact guarantees.
-  1 expectation.
+- `dfm_pairs`: paired Pascal/DFM form fixtures for FMX generation behavior. 10 expectations.
+- `dry_run_preview`: dry-run preview behavior, report generation, mapping suggestions,
+  and no-generated-source-artifact guarantees. 2 expectations.
 - `encoding`: UTF-8, whitespace, long-line, and include-directive encoding cases.
   7 expectations.
 - `graphics`: VCL Canvas and WinAPI GDI drawing cases, including FMX canvas and ScaleBy fidelity review. 8 expectations.
-  conversion and visual-review reporting. 7 expectations.
 - `include_analysis`: Pascal include-file analysis, including beside-source,
   subfolder, missing, outside-tree, nested, recursive, VCL uses, Winapi message,
   conditional, UTF-8 include, and commented-out include directive cases.
@@ -116,7 +116,6 @@ unit and include search paths so copied include files can be resolved.
 - `reporting`: leftover-code detection and manual-review report formatting.
   4 expectations.
 - `semantic_resolution`: cross-unit, missing-implementation, and qualified-method semantic checks. 3 expectations.
-  2 expectations.
 - `third_party`: third-party and unknown component mapping behavior.
   4 expectations.
 - `uses_clause`: uses-clause cleanup, Windows/VCL unit preservation and removal,

@@ -96,9 +96,11 @@ The expanded contract suite now includes:
 - Project integration samples for include-file, Windows messaging, protected uses cleanup, DFM/FMXL generation, and real-world report-shape conversion across complete mini projects.
 - Encoding/reporting/third-party samples for source robustness, generated issue reporting, and mapping-pack behavior.
 
-## Semantic Resolution
 
-- `03_qualified_method_parameters.pas`: qualified method implementations with parameters must retain the clean method name in generated output and reports.
+## Dry-Run Preview
+
+- `01_dry_run_no_artifacts.pas`: dry-run suppresses converted source and project artifacts while retaining the diagnostic report.
+- `02_dry_run_mapping_suggestions.expected.json`: dry-run retains reports and mapping-pack authoring suggestions while suppressing converted source artifacts.
 
 ## Semantic Resolution
 
