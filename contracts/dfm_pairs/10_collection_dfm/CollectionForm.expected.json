@@ -1,6 +1,7 @@
 {
   "input_file": "contracts\\dfm_pairs\\10_collection_dfm\\CollectionForm.pas",
   "expected_status": "converted",
+  "max_duration_ms": 15000,
   "expected_output_patterns": [
     "unit ContractCollectionDfm",
     "CollectionDfmForm"

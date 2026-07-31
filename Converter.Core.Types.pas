@@ -44,7 +44,8 @@ const
 
 function VCL2FMXIsBuildArtifactFolder(const AFolderName: string): Boolean;
 function VCL2FMXIsValidUTF8Bytes(const Bytes: TBytes): Boolean;
-function VCL2FMXDetectTextEncoding(const AFileName: string): TEncoding;
+function VCL2FMXDetectTextEncoding(const AFileName: string;
+  const ABuffer: TBytes = nil): TEncoding;
 function VCL2FMXTryReadTextFile(const AFileName: string; out Text: string;
   out EncodingName: string): Boolean;
 function VCL2FMXIsPascalKeywordLine(const Line, Keyword: string): Boolean;
@@ -208,7 +209,7 @@ type
     FSemanticMethodIndex: TStringList;
     FNeedsFMXMessageBridge: Boolean;
   public
-    property Options: TConversionOptions read FOptions write FOptions;
+    property Options: TConversionOptions read FOptions;
     property Issues: TObjectList<TConversionIssue> read FIssues;
     property CurrentFile: string read FCurrentFile write FCurrentFile;
     property MappingDatabase: TObjectList<TComponentMapping> read FMappingDatabase;
@@ -297,14 +298,20 @@ begin
   end;
 end;
 
-function VCL2FMXDetectTextEncoding(const AFileName: string): TEncoding;
+function VCL2FMXDetectTextEncoding(const AFileName: string;
+  const ABuffer: TBytes): TEncoding;
 var
   Buffer: TBytes;
   I: Integer;
   HasHighAscii: Boolean;
   HasNulls: Boolean;
+  NullAtEven: Integer;
+  NullAtOdd: Integer;
 begin
-  Buffer := TFile.ReadAllBytes(AFileName);
+  if Length(ABuffer) > 0 then
+    Buffer := ABuffer
+  else
+    Buffer := TFile.ReadAllBytes(AFileName);
 
   if (Length(Buffer) >= 3) and (Buffer[0] = $EF) and
      (Buffer[1] = $BB) and (Buffer[2] = $BF) then
@@ -319,15 +326,24 @@ begin
   end;
 
   HasNulls := False;
+  NullAtEven := 0;
+  NullAtOdd := 0;
   for I := 0 to Min(1000, Length(Buffer) - 1) do
     if Buffer[I] = 0 then
     begin
       HasNulls := True;
-      Break;
+      if Odd(I) then
+        Inc(NullAtOdd)
+      else
+        Inc(NullAtEven);
     end;
 
   if HasNulls then
+  begin
+    if NullAtEven > NullAtOdd then
+      Exit(TEncoding.BigEndianUnicode);
     Exit(TEncoding.Unicode);
+  end;
 
   HasHighAscii := False;
   for I := 0 to Min(1000, Length(Buffer) - 1) do
@@ -378,7 +394,7 @@ begin
   end;
 
   try
-    Encoding := VCL2FMXDetectTextEncoding(AFileName);
+    Encoding := VCL2FMXDetectTextEncoding(AFileName, Bytes);
     if Assigned(Encoding) then
     begin
       OwnsEncoding := not TEncoding.IsStandardEncoding(Encoding);

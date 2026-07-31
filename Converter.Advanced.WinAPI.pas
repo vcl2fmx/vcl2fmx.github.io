@@ -9,6 +9,7 @@ interface
 
 uses
   System.Classes, System.SysUtils, System.Generics.Collections,
+  System.Generics.Defaults,
   System.RegularExpressions, System.StrUtils,
   Converter.Core.Types;
 
@@ -68,7 +69,7 @@ implementation
 constructor TWinAPIConverter.Create(AContext: TConversionContext);
 begin
   FContext := AContext;
-  FAPIPatterns := TDictionary<string, string>.Create;
+  FAPIPatterns := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
   FPlatformIfdefs := TStringList.Create;
 
   InitializePatterns;

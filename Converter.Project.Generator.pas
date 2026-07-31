@@ -11,6 +11,7 @@ uses
   System.SysUtils,
   System.Classes,
   System.Generics.Collections,
+  System.Generics.Defaults,
   System.IOUtils,
   System.RegularExpressions,
   System.StrUtils,
@@ -70,8 +71,8 @@ constructor TProjectGenerator.Create(AContext: TConversionContext);
 begin
   inherited Create;
   FContext := AContext;
-  FImportedAssetPaths := TDictionary<string, string>.Create;
-  FImportedAssetTargets := TDictionary<string, string>.Create;
+  FImportedAssetPaths := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  FImportedAssetTargets := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
 end;
 
 destructor TProjectGenerator.Destroy;

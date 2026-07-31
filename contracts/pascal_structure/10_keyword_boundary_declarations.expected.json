@@ -1,0 +1,14 @@
+{
+  "input_file": "contracts\\pascal_structure\\10_keyword_boundary_declarations.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "UsesLegacyMode",
+    "ConstField",
+    "VariableCount",
+    "TypeAliasRecord",
+    "UsesField"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}

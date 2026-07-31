@@ -18,7 +18,6 @@ uses
   System.Generics.Collections,
   System.RegularExpressions,
     FMX.Forms,
-    FMX.Memo,
     System.Types,
   Converter.Core.Types,
   Converter.Core.FileManager,
@@ -42,7 +41,7 @@ type
     FConversionLog: TStringList;
     FStartTime: TDateTime;
     FEndTime: TDateTime;
-    FScreenMemo: TMemo;
+    FLogCallback: TProc<string>;
 
     procedure ProcessPasFile(const AFileName: string);
     procedure ProcessDfmFile(const AFileName: string);
@@ -71,7 +70,7 @@ type
     function Convert(AContext: TConversionContext): Boolean;
     procedure Cancel;
 
-    property ScreenMemo: TMemo read FScreenMemo write FScreenMemo;
+    property LogCallback: TProc<string> read FLogCallback write FLogCallback;
     property FilesProcessed: Integer read FFilesProcessed;
     property FilesConverted: Integer read FFilesConverted;
     property FilesWithErrors: Integer read FFilesErrors;
@@ -87,7 +86,7 @@ begin
   inherited Create;
   RebuildServicesForContext(AContext);
   FCancelled := False;
-  FScreenMemo := nil;
+  FLogCallback := nil;
   FFilesProcessed := 0;
   FFilesConverted := 0;
   FFilesErrors := 0;
@@ -142,25 +141,9 @@ end;
 
 procedure TConverterEngine.UILog(const ScreenMsg, LogMsg: string;
   const ForceScreen: Boolean = True);
-var
-  ScreenMemo: TMemo;
 begin
-  ScreenMemo := FScreenMemo;
-  if ScreenMemo <> nil then
-  begin
-    if TThread.CurrentThread.ThreadID = MainThreadID then
-    begin
-      ScreenMemo.Lines.Add(ScreenMsg);
-      ScreenMemo.GoToTextEnd;
-    end
-    else
-      TThread.Synchronize(nil,
-        procedure
-        begin
-          ScreenMemo.Lines.Add(ScreenMsg);
-          ScreenMemo.GoToTextEnd;
-        end);
-  end;
+  if Assigned(FLogCallback) and ForceScreen then
+    FLogCallback(ScreenMsg);
 
   // Also log to file
   LogToFile(LogMsg);
@@ -896,8 +879,8 @@ begin
   FContext.ClearIssues;
   FConversionLog.Clear;
 
-  if FScreenMemo = nil then
-    LogToFile('WARNING: ScreenMemo not assigned - UI updates disabled')
+  if not Assigned(FLogCallback) then
+    LogToFile('WARNING: Log callback not assigned - UI updates disabled')
   else
     UILog('Screen memo connected');
 

@@ -411,7 +411,7 @@ constructor TMessageHandlerConverter.Create(AContext: TConversionContext);
 begin
   inherited Create;
   FContext := AContext;
-  FMessageMap := TDictionary<string, string>.Create;
+  FMessageMap := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
 
   InitializeMessageMap;
 end;

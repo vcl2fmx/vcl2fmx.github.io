@@ -9,6 +9,7 @@ interface
 
 uses
   System.Classes, System.SysUtils, System.Generics.Collections,
+  System.Generics.Defaults,
   System.JSON, System.IOUtils, System.StrUtils,
   Converter.Core.Types;
 
@@ -129,7 +130,7 @@ begin
   inherited Create;
   FContext := AContext;
   FThirdPartyDB := TObjectList<TThirdPartyInfo>.Create(True);
-  FDetectedComponents := TDictionary<string, TThirdPartyInfo>.Create;
+  FDetectedComponents := TDictionary<string, TThirdPartyInfo>.Create(TIStringComparer.Ordinal);
 
   LoadThirdPartyDatabase;
 end;

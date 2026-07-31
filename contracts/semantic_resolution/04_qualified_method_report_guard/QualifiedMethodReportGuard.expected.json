@@ -1,0 +1,13 @@
+{
+  "input_file": "contracts\\semantic_resolution\\04_qualified_method_report_guard\\QualifiedMethodReportGuard.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "Semantic resolution: implementation QualifiedMethodReportGuard\\.TWidgetHost\\.Refresh has no parsed class declaration"
+  ],
+  "forbidden_report_patterns": [
+    "Semantic resolution: implementation QualifiedMethodReportGuard\\.TWidgetHost\\.Refresh\\(Sender",
+    "Semantic resolution: implementation .*Refresh\\(Sender: TObject"
+  ]
+}

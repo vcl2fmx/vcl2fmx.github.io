@@ -318,8 +318,11 @@ end.
     $engineArgs += [string]$arg
   }
 
+  $caseStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
   & $ConverterExe $caseSource $caseOutput @engineArgs
   $exitCode = $LASTEXITCODE
+  $caseStopwatch.Stop()
+  $durationMs = $caseStopwatch.ElapsedMilliseconds
 
   $generatedParts = New-Object 'System.Collections.Generic.List[string]'
   foreach ($file in Get-ChildItem -LiteralPath $caseOutput -Recurse -File -ErrorAction SilentlyContinue |
@@ -339,6 +342,11 @@ end.
   $reportText = [string]::Join("`n", $reportParts)
 
   $failures = New-Object 'System.Collections.Generic.List[string]'
+
+  if (($null -ne $expectation.PSObject.Properties['max_duration_ms']) -and
+      ($durationMs -gt [int64]$expectation.max_duration_ms)) {
+    $failures.Add("Conversion exceeded max_duration_ms ($durationMs > $($expectation.max_duration_ms)).") | Out-Null
+  }
 
   $noGeneratedSourceFiles = (($null -ne $expectation.PSObject.Properties['expected_no_generated_source_files']) -and
       ([bool]$expectation.expected_no_generated_source_files)) -or

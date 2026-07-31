@@ -373,6 +373,9 @@ begin
       Inc(SanIdx);
     end;
 
+    // Message constants are conventionally uppercase. Keeping this match
+    // case-sensitive prevents ordinary lower-case domain identifiers such as
+    // cm_custom_mode or tcmWidgetName from becoming Windows-message hits.
     if TRegEx.IsMatch(SanitizedLine,
          '\b(WM|CM|CN|EM|LB|CB|LVM|TVM|TCM)_[A-Z0-9_]+\b') or
        TRegEx.IsMatch(SanitizedLine,
@@ -380,8 +383,7 @@ begin
          [roIgnoreCase]) or
        TRegEx.IsMatch(SanitizedLine,
          '\b(dispatchmessage|peekmessage|getmessage|translatemessage)\s*\(\s*(msg|message|tmsg\b|pmsg\b|@)',
-         [roIgnoreCase]) or
-       ContainsStandaloneToken(LowerCase(SanitizedLine), 'message') then
+         [roIgnoreCase]) then
     begin
       Result := True;
       Break;
@@ -1042,10 +1044,11 @@ var
   InBody: Boolean;
   SawBegin: Boolean;
   BlockDepth: Integer;
-  PrevLine: string;
   ClassName: string;
   ContextClass: string;
   MethodName: string;
+  VisibilityIndex: Integer;
+  VisibilityLine: string;
 begin
   Method := TPascalMethod.Create;
   try
@@ -1096,10 +1099,29 @@ begin
     Method.ReturnType := ExtractReturnType(CleanLine);
     Method.IsClassMethod := IsClassMethodDeclaration(Line);
 
-    if StartIndex > 0 then
+    Method.IsPublished := False;
+    VisibilityIndex := StartIndex - 1;
+    while VisibilityIndex >= 0 do
     begin
-      PrevLine := Trim(FLines[StartIndex - 1]);
-      Method.IsPublished := VCL2FMXIsPascalKeywordLine(PrevLine, 'published');
+      VisibilityLine := Trim(FLines[VisibilityIndex]);
+      if VisibilityLine = '' then
+      begin
+        Dec(VisibilityIndex);
+        Continue;
+      end;
+
+      if IsClassVisibilityLine(VisibilityLine) then
+      begin
+        Method.IsPublished := VCL2FMXIsPascalKeywordLine(VisibilityLine, 'published');
+        Break;
+      end;
+
+      if VCL2FMXIsPascalKeywordLine(VisibilityLine, 'implementation') or
+         VCL2FMXIsPascalKeywordLine(VisibilityLine, 'interface') or
+         SameText(VisibilityLine, 'end;') then
+        Break;
+
+      Dec(VisibilityIndex);
     end;
 
     Method.Body.Add(Line);
@@ -1387,7 +1409,7 @@ begin
   L := StripStringLiterals(L);
 
   Result := (L <> '') and L.EndsWith(';') and
-            not LowerCase(L).Contains(' begin') and
+            not ContainsText(L, ' begin') and
             not SameText(L, 'end;');
 end;
 
@@ -1552,6 +1574,8 @@ begin
   end;
 
   Result := Trim(Result);
+  if Result.EndsWith(':') then
+    Result := Trim(Copy(Result, 1, Length(Result) - 1));
 
   if Result = '' then
     Result := 'UnknownMethod';

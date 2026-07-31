@@ -619,7 +619,9 @@ begin
   except
     on E: Exception do
     begin
-      FContext.AddIssue(csError, 'Failed to convert binary DFM: ' + E.Message);
+      FContext.AddIssue(csError, 'Failed to convert binary DFM: ' + E.Message,
+        'DFM format detection', '',
+        'Save the form as a text DFM in Delphi and rerun the conversion.', -1, True);
     end;
   end;
 end;
@@ -1067,7 +1069,7 @@ begin
     ClosingCollection := ClosingComponent.IsCollection;
     ClosingCollectionItem := Assigned(FCurrentCollection) and
       not ClosingComponent.IsCollection and
-      SameText(ClosingComponent.Parent, FCurrentCollection.Name);
+      (ClosingComponent.ParentComponent = FCurrentCollection);
 
     ParentComponent := ClosingComponent.ParentComponent;
   end;

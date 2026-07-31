@@ -16,6 +16,7 @@ uses
   System.Types,
   System.UITypes,
   System.Classes,
+  System.IOUtils,
   System.Variants,
   System.Threading,
   FMX.Types,
@@ -411,13 +412,10 @@ end;
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
   FFormShown := True;
-  WindowState := TWindowState.wsMaximized;
   if not Assigned(TabControlMain.ActiveTab) then
     TabControlMain.ActiveTab := tabDashboard;
   ApplyResponsiveLayout;
   ApplyTabTheme;
-  if not Assigned(TabControlMain.ActiveTab) then
-    TabControlMain.ActiveTab := tabDashboard;
   UpdateTabChrome;
   EnsureComponentMapBrowser;
   EnsurePropertyMapBrowser;
@@ -495,10 +493,14 @@ var
 begin
   BasePath := IncludeTrailingPathDelimiter(SourcePath);
   Result :=
-    FileExists(BasePath + 'VCL_to_FMX_Conversion_Report.html') or
-    FileExists(BasePath + 'VCL_to_FMX_Conversion_Report.txt') or
-    FileExists(BasePath + 'VCL_to_FMX_Compatibility_Analysis_Report.html') or
-    FileExists(BasePath + 'VCL_to_FMX_Compatibility_Analysis_Report.txt');
+    (Length(TDirectory.GetFiles(BasePath, 'VCL_to_FMX_Conversion_Report.html',
+      TSearchOption.soAllDirectories)) > 0) or
+    (Length(TDirectory.GetFiles(BasePath, 'VCL_to_FMX_Conversion_Report.txt',
+      TSearchOption.soAllDirectories)) > 0) or
+    (Length(TDirectory.GetFiles(BasePath, 'VCL_to_FMX_Compatibility_Analysis_Report.html',
+      TSearchOption.soAllDirectories)) > 0) or
+    (Length(TDirectory.GetFiles(BasePath, 'VCL_to_FMX_Compatibility_Analysis_Report.txt',
+      TSearchOption.soAllDirectories)) > 0);
 end;
 
 procedure TfrmMain.ShowInvalidConvertedSourceFolderDialog;
@@ -2011,6 +2013,9 @@ procedure TfrmMain.Log(const Msg: string);
 var
   LogMessage: string;
 begin
+  if FClosing then
+    Exit;
+
   if TThread.CurrentThread.ThreadID = MainThreadID then
   begin
     MemoLog.Lines.Add(Msg);
@@ -2032,6 +2037,9 @@ procedure TfrmMain.ShowError(const Msg: string);
 var
   ErrorMessage: string;
 begin
+  if FClosing then
+    Exit;
+
   if TThread.CurrentThread.ThreadID = MainThreadID then
     TDialogService.ShowMessage('Error: ' + Msg)
   else
@@ -2663,7 +2671,11 @@ begin
           TMonitor.Exit(FActiveEngineLock);
         end;
 
-        Engine.ScreenMemo := MemoLog;
+        Engine.LogCallback :=
+          procedure(MessageText: string)
+          begin
+            Log(MessageText);
+          end;
         Engine.Convert(Context);
 
         Completion.FilesProcessed := Engine.FilesProcessed;

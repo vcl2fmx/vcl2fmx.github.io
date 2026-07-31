@@ -49,6 +49,7 @@ Each sample is intended to become an input fixture with assertions against conve
 ## Pascal Structure
 
 - `05_keyword_boundary_identifiers.pas`: identifiers beginning with Delphi section keywords should not be treated as real `interface`, `implementation`, `uses`, or type-section boundaries.
+- `10_keyword_boundary_declarations.pas`: declaration-section identifiers beginning with Delphi section keywords must remain ordinary const, var, and type declarations.
 - `06_class_terminator_comment.pas`: a class terminator followed by a comment must still close the class and allow later methods to be parsed.
 - `07_float_default_parameter.pas`: a decimal default parameter must not be mistaken for a qualified method name.
 - `08_nested_default_parentheses.pas`: nested parameter parentheses must be matched before extracting a function return type.
@@ -105,3 +106,4 @@ The expanded contract suite now includes:
 ## Semantic Resolution
 
 - `03_qualified_method_parameters.pas`: qualified method implementations with parameters must retain the clean method name in generated output and reports.
+- `04_qualified_method_report_guard.pas`: qualified implementations with parameters must retain a clean method name in semantic-resolution report output.

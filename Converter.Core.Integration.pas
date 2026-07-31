@@ -13,6 +13,7 @@ uses
   System.RegularExpressions,
   System.StrUtils,
   System.Generics.Collections,
+  System.Generics.Defaults,
   Converter.Core.Types,
   Converter.Parser.DFM,
   Converter.Parser.Pascal,
@@ -92,7 +93,7 @@ begin
   FThirdParty := TThirdPartyHandler.Create(FContext);
   FWinAPI := TWinAPIConverter.Create(FContext);
   FGraphics := TGraphicsConverter.Create(FContext);
-  FGridDblClickHandlers := TDictionary<string, string>.Create;
+  FGridDblClickHandlers := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
   FRuntimeNormalizer := TRuntimeNormalizer.Create(FContext);
   FAutoFixes := TAutoFixRewriter.Create(FDfmParser, FContext);
   FLiveBindings := TLiveBindingInjector.Create(FContext, FDfmParser, FDataAware,

@@ -47,7 +47,7 @@ an expectation file or be covered by a project-level expectation.
 Current verified status after the field-test regression expansion:
 
 ```text
-Summary: 216 pass, 0 fail
+Summary: 218 pass, 0 fail
 ```
 
 ## Expectation Fields
@@ -66,6 +66,7 @@ Common fields in `.expected.json` files:
 - `forbidden_report_patterns`: regex patterns that must not appear in conversion reports.
 - `expected_report_files`: requires at least one generated text or HTML report.
 - `expected_auxiliary_files`: file names that must be present as intentional non-source outputs, such as mapping-pack authoring suggestions.
+- `max_duration_ms`: optional upper bound for a fixture conversion, used for scale-regression guards.
 - `copy_case_directory`: optional project-level fixture mode that copies the whole
   fixture folder before conversion.
 - `skip_generated_compile`: optional flag for fixtures that intentionally preserve
@@ -108,14 +109,14 @@ unit and include search paths so copied include files can be resolved.
 - `livebindings`: existing LiveBindings and generated binding edge cases.
   6 expectations.
 - `pascal_structure`: Pascal structure parsing, methods, helpers, attributes, and
-  message-handler rules. 5 expectations.
+  message-handler rules. 10 expectations.
 - `project_files`: DPR and startup/project-resource behavior. 6 expectations.
 - `project_integration`: mini-project contracts that exercise include, Windows
   messaging, uses cleanup, DFM/FMXL, and report-shape workflows as whole projects.
   6 expectations.
 - `reporting`: leftover-code detection and manual-review report formatting.
   4 expectations.
-- `semantic_resolution`: cross-unit, missing-implementation, and qualified-method semantic checks. 3 expectations.
+- `semantic_resolution`: cross-unit, missing-implementation, and qualified-method semantic checks. 4 expectations.
 - `third_party`: third-party and unknown component mapping behavior.
   4 expectations.
 - `uses_clause`: uses-clause cleanup, Windows/VCL unit preservation and removal,
