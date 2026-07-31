@@ -55,6 +55,7 @@ Each sample is intended to become an input fixture with assertions against conve
 - `07_float_default_parameter.pas`: a decimal default parameter must not be mistaken for a qualified method name.
 - `08_nested_default_parentheses.pas`: nested parameter parentheses must be matched before extracting a function return type.
 - `09_multiple_published_methods.pas`: multiple methods in a published section must remain visible to structure analysis.
+- `11_large_unit_analysis.pas`: a large Pascal unit should complete within the scale guard while preserving representative source statements.
 
 ## DFM Fidelity
 

@@ -47,7 +47,7 @@ an expectation file or be covered by a project-level expectation.
 Current verified status after the field-test regression expansion:
 
 ```text
-Summary: 219 pass, 0 fail
+Summary: 220 pass, 0 fail
 ```
 
 ## Expectation Fields
@@ -109,7 +109,7 @@ unit and include search paths so copied include files can be resolved.
 - `livebindings`: existing LiveBindings and generated binding edge cases.
   6 expectations.
 - `pascal_structure`: Pascal structure parsing, methods, helpers, attributes, and
-  message-handler rules. 10 expectations.
+  message-handler rules. 11 expectations.
 - `project_files`: DPR and startup/project-resource behavior. 6 expectations.
 - `project_integration`: mini-project contracts that exercise include, Windows
   messaging, uses cleanup, DFM/FMXL, and report-shape workflows as whole projects.

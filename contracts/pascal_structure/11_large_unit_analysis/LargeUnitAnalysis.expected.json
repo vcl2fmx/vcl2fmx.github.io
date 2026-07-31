@@ -1,0 +1,12 @@
+{
+  "input_file": "contracts\\pascal_structure\\11_large_unit_analysis\\LargeUnitAnalysis.pas",
+  "expected_status": "converted",
+  "max_duration_ms": 15000,
+  "expected_output_patterns": [
+    "Writeln\\('large-unit-line-1'\\)",
+    "Writeln\\('large-unit-line-2000'\\)"
+  ],
+  "forbidden_output_patterns": ["\\bVcl\\."],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": []
+}
