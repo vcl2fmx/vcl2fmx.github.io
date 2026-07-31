@@ -1,0 +1,14 @@
+{
+  "input_file": "contracts\\dfm_pairs\\11_duplicate_component_names\\DuplicateNames.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "DuplicateNamesForm",
+    "object Panel1: TPanel",
+    "(?s)object Panel1: TPanel.*object Panel1: TPanel"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "DFM/FMXL property fidelity check"
+  ],
+  "forbidden_report_patterns": []
+}

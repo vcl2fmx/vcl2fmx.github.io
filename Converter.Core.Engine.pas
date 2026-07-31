@@ -681,6 +681,35 @@ var
     Result := StringReplace(Result, #13, '\n', [rfReplaceAll]);
     Result := StringReplace(Result, #10, '\n', [rfReplaceAll]);
     Result := StringReplace(Result, #9, '\t', [rfReplaceAll]);
+    Result := StringReplace(Result, #0, '\u0000', [rfReplaceAll]);
+    Result := StringReplace(Result, #1, '\u0001', [rfReplaceAll]);
+    Result := StringReplace(Result, #2, '\u0002', [rfReplaceAll]);
+    Result := StringReplace(Result, #3, '\u0003', [rfReplaceAll]);
+    Result := StringReplace(Result, #4, '\u0004', [rfReplaceAll]);
+    Result := StringReplace(Result, #5, '\u0005', [rfReplaceAll]);
+    Result := StringReplace(Result, #6, '\u0006', [rfReplaceAll]);
+    Result := StringReplace(Result, #7, '\u0007', [rfReplaceAll]);
+    Result := StringReplace(Result, #8, '\u0008', [rfReplaceAll]);
+    Result := StringReplace(Result, #11, '\u000B', [rfReplaceAll]);
+    Result := StringReplace(Result, #12, '\u000C', [rfReplaceAll]);
+    Result := StringReplace(Result, #14, '\u000E', [rfReplaceAll]);
+    Result := StringReplace(Result, #15, '\u000F', [rfReplaceAll]);
+    Result := StringReplace(Result, #16, '\u0010', [rfReplaceAll]);
+    Result := StringReplace(Result, #17, '\u0011', [rfReplaceAll]);
+    Result := StringReplace(Result, #18, '\u0012', [rfReplaceAll]);
+    Result := StringReplace(Result, #19, '\u0013', [rfReplaceAll]);
+    Result := StringReplace(Result, #20, '\u0014', [rfReplaceAll]);
+    Result := StringReplace(Result, #21, '\u0015', [rfReplaceAll]);
+    Result := StringReplace(Result, #22, '\u0016', [rfReplaceAll]);
+    Result := StringReplace(Result, #23, '\u0017', [rfReplaceAll]);
+    Result := StringReplace(Result, #24, '\u0018', [rfReplaceAll]);
+    Result := StringReplace(Result, #25, '\u0019', [rfReplaceAll]);
+    Result := StringReplace(Result, #26, '\u001A', [rfReplaceAll]);
+    Result := StringReplace(Result, #27, '\u001B', [rfReplaceAll]);
+    Result := StringReplace(Result, #28, '\u001C', [rfReplaceAll]);
+    Result := StringReplace(Result, #29, '\u001D', [rfReplaceAll]);
+    Result := StringReplace(Result, #30, '\u001E', [rfReplaceAll]);
+    Result := StringReplace(Result, #31, '\u001F', [rfReplaceAll]);
   end;
 
   function IsSuggestionIssue(const AIssue: TConversionIssue): Boolean;
@@ -791,6 +820,10 @@ begin
 
   FContext.SemanticClassIndex.Clear;
   FContext.SemanticMethodIndex.Clear;
+  FContext.SemanticClassIndex.Sorted := True;
+  FContext.SemanticClassIndex.Duplicates := dupIgnore;
+  FContext.SemanticMethodIndex.Sorted := True;
+  FContext.SemanticMethodIndex.Duplicates := dupIgnore;
 
   if FContext.Options.ProcessSubdirectories then
     SearchOption := TSearchOption.soAllDirectories
@@ -1599,7 +1632,7 @@ begin
     begin
       Inc(FFilesErrors);
       UILog('  FAILED', Format('  FAILED: %s', [E.Message]));
-      FContext.AddIssue(csWarning,
+      FContext.AddIssue(csError,
         'Pascal conversion could not complete: ' + E.Message,
         'Pascal conversion failure',
         '',
@@ -1620,7 +1653,7 @@ begin
   else
   begin
     UILog('  SKIPPED SAVE: Pascal conversion did not produce safe output');
-    FContext.AddIssue(csWarning,
+    FContext.AddIssue(csError,
       'Pascal file was not saved because conversion did not complete safely: ' +
         ExtractFileName(AFileName),
       'Pascal save skipped',
@@ -1819,6 +1852,7 @@ begin
   if TFile.Exists(AFileName) and
      (TFile.GetSize(AFileName) > VCL2FMX_MAX_TEXT_DFM_BYTES) then
   begin
+    Inc(FFilesSkipped);
     Inc(FFilesErrors);
     UILog('  FAILED: DFM file is too large for safe automatic parsing');
     FContext.AddIssue(csError,
@@ -1833,7 +1867,21 @@ begin
   end;
 
   Code := '';
-  VCL2FMXTryReadTextFile(AFileName, SourceDfm, EncodingName);
+  if not VCL2FMXTryReadTextFile(AFileName, SourceDfm, EncodingName) then
+  begin
+    Inc(FFilesSkipped);
+    Inc(FFilesErrors);
+    UILog('  FAILED: unable to read DFM source text');
+    FContext.AddIssue(csError,
+      'DFM source could not be read with a supported encoding: ' +
+        ExtractFileName(AFileName),
+      'DFM source read failure',
+      '',
+      'Save the DFM as text or UTF-8 in Delphi and rerun the conversion.',
+      -1,
+      True);
+    Exit;
+  end;
   UILog('  Detecting DFM stream format...');
   try
     FOrchestrator.ConvertDFM(AFileName, Code);
@@ -1846,6 +1894,7 @@ begin
   except
     on E: Exception do
     begin
+      Inc(FFilesSkipped);
       Inc(FFilesErrors);
       UILog('  FAILED', Format('  FAILED: %s', [E.Message]));
       FContext.AddIssue(csError,
@@ -2065,7 +2114,8 @@ var
         if Assigned(PrevIssue) and
            SameText(TestIssue.FileName, PrevIssue.FileName) and
            (TestIssue.LineNumber > 0) and
-           (TestIssue.LineNumber <= PrevIssue.LineNumber + 1) and
+           ((TestIssue.LineNumber = PrevIssue.LineNumber) or
+            (TestIssue.LineNumber = PrevIssue.LineNumber + 1)) and
            (Trim(TestIssue.OriginalCode) <> '') then
           Exit(True);
         PrevIssue := TestIssue;
@@ -2291,6 +2341,8 @@ var
     Minutes: Integer;
     RemainingSeconds: Integer;
   begin
+    if Seconds < 0 then
+      Seconds := 0;
     if (Seconds = 0) and ((FFilesProcessed > 0) or (FFilesConverted > 0)) then
       Exit('< 1 second');
 
@@ -2476,6 +2528,8 @@ begin
   Html := TStringList.Create;
   SeenBlockingKeys := TStringList.Create;
   ManualGroups := TStringList.Create;
+  ManualGroups.Sorted := True;
+  ManualGroups.Duplicates := dupIgnore;
   AffectedFiles := TStringList.Create;
   try
     SeenBlockingKeys.Sorted := True;

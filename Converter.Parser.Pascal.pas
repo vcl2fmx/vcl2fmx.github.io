@@ -186,6 +186,7 @@ implementation
 
 constructor TPascalMethod.Create;
 begin
+  inherited Create;
   FBody := TStringList.Create;
   FLocalRoutines := TStringList.Create;
   FCalledRoutines := TStringList.Create;
@@ -380,7 +381,8 @@ begin
        TRegEx.IsMatch(SanitizedLine,
          '\b(dispatchmessage|peekmessage|getmessage|translatemessage)\s*\(\s*(msg|message|tmsg\b|pmsg\b|@)',
          [roIgnoreCase]) or
-       ContainsStandaloneToken(SanitizedLine, 'message') then    begin
+       ContainsStandaloneToken(LowerCase(SanitizedLine), 'message') then
+    begin
       Result := True;
       Break;
     end;
@@ -422,6 +424,7 @@ end;
 
 constructor TPascalClass.Create;
 begin
+  inherited Create;
   FMethods := TList<TPascalMethod>.Create;
   FFields := TStringList.Create;
   FProperties := TStringList.Create;
@@ -447,6 +450,7 @@ end;
 
 constructor TPascalUnit.Create;
 begin
+  inherited Create;
   FUsesClause := TStringList.Create;
   FInterfaceUses := TStringList.Create;
   FImplementationUses := TStringList.Create;
@@ -1383,7 +1387,7 @@ begin
   L := StripStringLiterals(L);
 
   Result := (L <> '') and L.EndsWith(';') and
-            not L.Contains(' begin') and
+            not LowerCase(L).Contains(' begin') and
             not SameText(L, 'end;');
 end;
 
@@ -1525,6 +1529,7 @@ begin
     ClassName := Copy(L, 1, DotPos - 1);
     L := Copy(L, DotPos + 1, Length(L) - DotPos);
     L := Trim(L);
+    ParenPos := Pos('(', L);
   end;
 
   SpacePos := Pos(' ', L);

@@ -1,4 +1,4 @@
-program VCL2FMXConverter;
+﻿program VCL2FMXConverter;
 
 uses
   System.StartUpCopy,

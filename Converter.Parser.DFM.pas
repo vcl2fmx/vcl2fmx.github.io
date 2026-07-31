@@ -20,6 +20,7 @@ type
     FName: string;
     FComponentClass: string;
     FParent: string;
+    FParentComponent: TDFMComponent;
     FProperties: TDictionary<string, string>;
     FEvents: TDictionary<string, string>;
     FPropertyLines: TDictionary<string, Integer>;
@@ -36,6 +37,7 @@ type
     property Name: string read FName write FName;
     property ComponentClass: string read FComponentClass write FComponentClass;
     property Parent: string read FParent write FParent;
+    property ParentComponent: TDFMComponent read FParentComponent;
     property Properties: TDictionary<string, string> read FProperties;
     property Events: TDictionary<string, string> read FEvents;
     property Children: TObjectList<TDFMComponent> read FChildren;
@@ -101,7 +103,7 @@ type
 
     function LoadDFM(const AFileName: string): string;
     procedure Parse(const DFMContent: string);
-    function Convert(AMapper: TObject = nil): string;
+    function Convert(AMapper: TComponentMapper = nil): string;
     function FindComponent(const AName: string): TDFMComponent;
     property Components: TObjectList<TDFMComponent> read FComponents;
   end;
@@ -109,7 +111,7 @@ type
   TFMXGenerator = class
   private
     FContext: TConversionContext;
-    FComponentMapper: TObject;
+    FComponentMapper: TComponentMapper;
     FIndentLevel: Integer;
     FRootComponent: TDFMComponent;
 
@@ -153,7 +155,6 @@ type
     procedure AppendHexBlock(Lines: TStringList; const Prefix, HexData: string);
     procedure HandleImageComponent(Component: TDFMComponent; Lines: TStringList);
     procedure HandleStringCollection(Component: TDFMComponent; const PropName, PropValue: string; Lines: TStringList);
-    function FindComponentByName(const AName: string): TDFMComponent;
     function FindParentComponent(const Component: TDFMComponent): TDFMComponent;
     function HasActiveAlign(const Component: TDFMComponent): Boolean;
     procedure ComputeClientAlignedSize(const Component: TDFMComponent;
@@ -162,7 +163,7 @@ type
       out WidthValue, HeightValue: Integer);
     procedure NormalizeGeneratedFMX(var Code: string);
   public
-    constructor Create(AContext: TConversionContext; AMapper: TObject);
+    constructor Create(AContext: TConversionContext; AMapper: TComponentMapper);
     destructor Destroy; override;
 
     function GenerateFMX(Components: TObjectList<TDFMComponent>): string;
@@ -272,6 +273,7 @@ end;
 
 constructor TDFMComponent.Create;
 begin
+  inherited Create;
   FProperties := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
   FEvents := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
   FPropertyLines := TDictionary<string, Integer>.Create(TIStringComparer.Ordinal);
@@ -340,6 +342,7 @@ begin
   begin
     FChildren.Add(Child);
     Child.FParent := FName;
+    Child.FParentComponent := Self;
   end;
 end;
 
@@ -349,6 +352,7 @@ begin
   begin
     FCollectionItems.Add(Item);
     Item.FParent := FName;
+    Item.FParentComponent := Self;
   end;
 end;
 
@@ -356,6 +360,7 @@ end;
 
 constructor TDFMParser.Create(AContext: TConversionContext);
 begin
+  inherited Create;
   FContext := AContext;
   FComponents := TObjectList<TDFMComponent>.Create(True);
   FSourceLines := TStringList.Create;
@@ -491,6 +496,13 @@ begin
   NewCollection.IsSubComponent := True;
   NewCollection.OriginalLine := FLineNumber;
 
+  if FIndentStack.Count >= MAX_RECURSION_DEPTH then
+  begin
+    NewCollection.Free;
+    FContext.AddIssue(csError, 'Maximum DFM nesting depth reached at line ' + IntToStr(FLineNumber));
+    Exit;
+  end;
+
   if Assigned(FCurrentComponent) then
   begin
     SafeAddChild(FCurrentComponent, NewCollection);
@@ -509,6 +521,12 @@ begin
   if FRecursionDepth >= MAX_RECURSION_DEPTH then
   begin
     FContext.AddIssue(csError, 'Maximum recursion depth reached');
+    Exit;
+  end;
+
+  if FIndentStack.Count >= MAX_RECURSION_DEPTH then
+  begin
+    FContext.AddIssue(csError, 'Maximum DFM nesting depth reached at line ' + IntToStr(FLineNumber));
     Exit;
   end;
 
@@ -601,9 +619,6 @@ begin
   except
     on E: Exception do
     begin
-      FContext.AddIssue(csWarning,
-        'Binary DFM detected but could not be converted automatically: ' +
-        AFileName + ' - ' + E.Message);
       FContext.AddIssue(csError, 'Failed to convert binary DFM: ' + E.Message);
     end;
   end;
@@ -821,8 +836,8 @@ begin
       FIndentStack.Pop;
       if Assigned(FCurrentComponent) then
       begin
-        if FCurrentComponent.Parent <> '' then
-          FCurrentComponent := SafeFindComponent(FCurrentComponent.Parent)
+        if Assigned(FCurrentComponent.ParentComponent) then
+          FCurrentComponent := FCurrentComponent.ParentComponent
         else
           FCurrentComponent := nil;
       end;
@@ -889,6 +904,12 @@ begin
   if FRecursionDepth >= MAX_RECURSION_DEPTH then
   begin
     FContext.AddIssue(csError, 'Maximum recursion depth reached at line ' + IntToStr(FLineNumber));
+    Exit(False);
+  end;
+
+  if FIndentStack.Count >= MAX_RECURSION_DEPTH then
+  begin
+    FContext.AddIssue(csError, 'Maximum DFM nesting depth reached at line ' + IntToStr(FLineNumber));
     Exit(False);
   end;
 
@@ -1048,8 +1069,7 @@ begin
       not ClosingComponent.IsCollection and
       SameText(ClosingComponent.Parent, FCurrentCollection.Name);
 
-    if ClosingComponent.Parent <> '' then
-      ParentComponent := SafeFindComponent(ClosingComponent.Parent);
+    ParentComponent := ClosingComponent.ParentComponent;
   end;
 
   if Assigned(ClosingComponent) then
@@ -1074,7 +1094,7 @@ begin
   Result := SafeFindComponent(AName);
 end;
 
-function TDFMParser.Convert(AMapper: TObject = nil): string;
+function TDFMParser.Convert(AMapper: TComponentMapper = nil): string;
 var
   FMXGen: TFMXGenerator;
 begin
@@ -1088,8 +1108,9 @@ end;
 
 { TFMXGenerator }
 
-constructor TFMXGenerator.Create(AContext: TConversionContext; AMapper: TObject);
+constructor TFMXGenerator.Create(AContext: TConversionContext; AMapper: TComponentMapper);
 begin
+  inherited Create;
   FContext := AContext;
   FComponentMapper := AMapper;
   FIndentLevel := 0;
@@ -1101,39 +1122,13 @@ begin
   inherited;
 end;
 
-function TFMXGenerator.FindComponentByName(const AName: string): TDFMComponent;
-  function FindRecursive(const Root: TDFMComponent; const TargetName: string): TDFMComponent;
-  var
-    Child: TDFMComponent;
-  begin
-    Result := nil;
-    if Root = nil then
-      Exit;
-
-    if SameText(Root.Name, TargetName) then
-      Exit(Root);
-
-    for Child in Root.Children do
-    begin
-      Result := FindRecursive(Child, TargetName);
-      if Result <> nil then
-        Exit;
-    end;
-  end;
-begin
-  if (AName = '') or (FRootComponent = nil) then
-    Exit(nil);
-
-  Result := FindRecursive(FRootComponent, AName);
-end;
-
 function TFMXGenerator.FindParentComponent(
   const Component: TDFMComponent): TDFMComponent;
 begin
-  if (Component = nil) or (Component.Parent = '') then
+  if (Component = nil) or not Assigned(Component.ParentComponent) then
     Exit(nil);
 
-  Result := FindComponentByName(Component.Parent);
+  Result := Component.ParentComponent;
 end;
 
 function TFMXGenerator.HasActiveAlign(const Component: TDFMComponent): Boolean;

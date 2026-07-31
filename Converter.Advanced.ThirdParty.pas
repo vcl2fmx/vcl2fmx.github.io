@@ -85,6 +85,7 @@ implementation
 
 constructor TThirdPartyInfo.Create;
 begin
+  inherited Create;
   FIsCommercial := False;
   FHasFMXVersion := False;
   FIsStandardVCL := False;
@@ -125,6 +126,7 @@ end;
 
 constructor TThirdPartyHandler.Create(AContext: TConversionContext);
 begin
+  inherited Create;
   FContext := AContext;
   FThirdPartyDB := TObjectList<TThirdPartyInfo>.Create(True);
   FDetectedComponents := TDictionary<string, TThirdPartyInfo>.Create;

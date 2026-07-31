@@ -148,6 +148,7 @@ end;
 
 constructor TDataBindingInfo.Create;
 begin
+  inherited Create;
   FOriginalProperties := TDictionary<string, string>.Create;
 end;
 
@@ -200,6 +201,7 @@ end;
 constructor TLiveBindingConverter.Create(AContext: TConversionContext;
   AMapper: TComponentMapper);
 begin
+  inherited Create;
   FContext := AContext;
   FComponentMapper := AMapper;
   FDataBindings := TObjectList<TDataBindingInfo>.Create(True);
@@ -750,6 +752,7 @@ end;
 
 constructor TDatabaseConverter.Create(AContext: TConversionContext);
 begin
+  inherited Create;
   FContext := AContext;
   FConnectionInfo := TDictionary<string, TJSONObject>.Create;
   FQueryInfo := TDictionary<string, TJSONObject>.Create;

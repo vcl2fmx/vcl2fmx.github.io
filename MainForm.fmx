@@ -1,4 +1,4 @@
-object frmMain: TfrmMain
+﻿object frmMain: TfrmMain
   Left = 0
   Top = 0
   ActiveControl = edtSource
@@ -1514,7 +1514,7 @@ object frmMain: TfrmMain
             TextSettings.Font.Size = 13.000000000000000000
             TextSettings.FontColor = xFF5D7693
             Text = 
-              'These four controls are back on the v4.1 screen set, and they no' +
+              'These four controls are back on the v5.0 screen set, and they no' +
               'w map to real engine behavior so the UI, manuals, and conversion' +
               ' run stay aligned.'
           end
@@ -1667,7 +1667,7 @@ object frmMain: TfrmMain
             TextSettings.Font.Size = 14.000000000000000000
             TextSettings.FontColor = xFF365674
             Text = 
-              'These defaults are all On so the starting v4.1 behavior matches ' +
+              'These defaults are all On so the starting v5.0 behavior matches ' +
               'the practical intent of the product.'#13#10#13#10'The difference now is th' +
               'at the controls are no longer decorative. Each run passes explic' +
               'it rule options into the engine so the conversion reflects the o' +

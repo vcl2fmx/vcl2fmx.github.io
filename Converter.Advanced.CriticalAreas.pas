@@ -9,6 +9,7 @@ interface
 
 uses
   System.Classes, System.SysUtils, System.StrUtils, System.Generics.Collections,
+  System.Generics.Defaults,
   System.RegularExpressions, System.RTTI, System.JSON,
   Converter.Core.Types,
   Converter.Parser.Pascal;
@@ -41,7 +42,6 @@ type
     destructor Destroy; override;
 
     function ConvertMessageHandlers(var PascalCode: TStringList): Boolean;
-    function ConvertMessageMaps(var PascalCode: TStringList): Boolean;
     function GenerateFMXMessageHandlers: TStringList;
   end;
 
@@ -164,6 +164,7 @@ end;
 
 constructor TCustomDrawingConverter.Create(AContext: TConversionContext);
 begin
+  inherited Create;
   FContext := AContext;
 end;
 
@@ -408,6 +409,7 @@ end;
 
 constructor TMessageHandlerConverter.Create(AContext: TConversionContext);
 begin
+  inherited Create;
   FContext := AContext;
   FMessageMap := TDictionary<string, string>.Create;
 
@@ -556,7 +558,7 @@ begin
             if Length(Parts) > 0 then
             begin
               MessageName := Trim(Parts[0]);
-              if FMessageMap.TryGetValue(MessageName, FMXEvent) then
+              if FMessageMap.TryGetValue(UpperCase(MessageName), FMXEvent) then
                 PascalCode[J] := Format('  { FMX: %s -> use %s event handler }',
                   [Trim(PascalCode[J]), FMXEvent])
               else
@@ -587,7 +589,7 @@ begin
               MethodName := Trim(Parts[1]);
         end;
 
-        if FMessageMap.TryGetValue(MessageName, FMXEvent) then
+        if FMessageMap.TryGetValue(UpperCase(MessageName), FMXEvent) then
         begin
           // Tier 1: direct FMX event mapping - convert declaration
           PascalCode[I] := TRegEx.Replace(Line,
@@ -728,12 +730,6 @@ begin
   end;
 end;
 
-function TMessageHandlerConverter.ConvertMessageMaps(
-  var PascalCode: TStringList): Boolean;
-begin
-  Result := ConvertMessageHandlers(PascalCode);
-end;
-
 function TMessageHandlerConverter.GenerateFMXMessageHandlers: TStringList;
 begin
   Result := TStringList.Create;
@@ -761,6 +757,7 @@ end;
 
 constructor TOwnerDrawConverter.Create(AContext: TConversionContext);
 begin
+  inherited Create;
   FContext := AContext;
 end;
 
@@ -942,6 +939,7 @@ end;
 
 constructor TActionListConverter.Create(AContext: TConversionContext);
 begin
+  inherited Create;
   FContext := AContext;
 end;
 
@@ -990,6 +988,7 @@ end;
 
 constructor TThreadSyncConverter.Create(AContext: TConversionContext);
 begin
+  inherited Create;
   FContext := AContext;
 end;
 
@@ -1086,6 +1085,7 @@ end;
 
 constructor TDPIScalingConverter.Create(AContext: TConversionContext);
 begin
+  inherited Create;
   FContext := AContext;
 end;
 
@@ -1167,6 +1167,7 @@ end;
 
 constructor TFormInheritanceConverter.Create(AContext: TConversionContext);
 begin
+  inherited Create;
   FContext := AContext;
   FInheritedForms := TDictionary<string, string>.Create;
 end;
@@ -1255,6 +1256,7 @@ end;
 
 constructor TCriticalAreasConverter.Create(AContext: TConversionContext);
 begin
+  inherited Create;
   FContext := AContext;
 
   FCustomDrawing := TCustomDrawingConverter.Create(AContext);
@@ -1293,7 +1295,7 @@ begin
     Result := True;
   end;
 
-  if FMessageHandler.ConvertMessageMaps(PascalCode) then
+  if FMessageHandler.ConvertMessageHandlers(PascalCode) then
   begin
     FIssuesFound.Add('Windows message handlers converted - verify event handlers');
     Result := True;

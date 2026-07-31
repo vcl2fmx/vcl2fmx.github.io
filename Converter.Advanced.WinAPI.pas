@@ -1098,6 +1098,13 @@ begin
           Match.Groups[3].Value + ', ' +
           Match.Groups[4].Value + ');';
         HelperNeeded := True;
+        FContext.AddIssue(csManualReview,
+          'VCL ScaleBy was replaced with a form-size helper; verify child-control scaling in the generated FMX form.',
+          'VCL ScaleBy fidelity review',
+          Match.Value,
+          'Confirm that child controls, positions, and sizes scale as intended. Add explicit child-control scaling if the form depends on VCL ScaleBy behavior.',
+          -1,
+          False);
       end;
 
       Lines[i] := Line;

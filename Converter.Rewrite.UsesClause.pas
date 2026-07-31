@@ -291,7 +291,6 @@ begin
   ProtectedLines := TStringList.Create;
   ConditionalUnits := TStringList.Create;
   try
-    UnitList.Sorted := True;
     UnitList.Duplicates := dupIgnore;
 
     Lines.Text := Code;
@@ -387,8 +386,6 @@ begin
           if ConditionalUnits.IndexOf(Trim(Copy(UnitName, 1, Pos('{$', UnitName) - 1))) <> -1 then Continue;
           UnitName := Trim(Copy(UnitName, 1, Pos('{$', UnitName) - 1));
         end;
-        if Pos(' var ', ' ' + LowerCase(UnitName) + ' ') > 0 then
-          UnitName := Trim(Copy(UnitName, 1, Pos(' var ', ' ' + LowerCase(UnitName) + ' ') - 1));
         if UnitName = '' then Continue;
         if ConditionalUnits.IndexOf(UnitName) <> -1 then Continue;
 
@@ -420,7 +417,7 @@ begin
           UnitName := 'FireDAC.FMXUI.Wait';
 
         // Keep FMX, FireDAC, and System units
-        if (UnitName <> '') then
+        if (UnitName <> '') and (UnitList.IndexOf(UnitName) = -1) then
           UnitList.Add(UnitName);
       end;
 
@@ -430,7 +427,8 @@ begin
         UsesLine := BuildWrappedUsesClause(UnitList, '  ', 100);
         if ProtectedLines.Count > 0 then
         begin
-          Delete(UsesLine, Length(UsesLine), 1);
+          if EndsText(';', TrimRight(UsesLine)) then
+            Delete(UsesLine, Length(UsesLine), 1);
           ConditionalLine := TrimRight(ProtectedLines.Text);
           if EndsText(';', ConditionalLine) then
             Delete(ConditionalLine, Length(ConditionalLine), 1);
@@ -698,7 +696,6 @@ begin
   ProtectedLines := TStringList.Create;
   ConditionalUnits := TStringList.Create;
   try
-    UnitList.Sorted := True;
     UnitList.Duplicates := dupIgnore;
     NeedsFMXObjects := False;
     NeedsFMXStdCtrls := False;
@@ -963,8 +960,6 @@ begin
           if ConditionalUnits.IndexOf(Trim(Copy(UnitName, 1, Pos('{$', UnitName) - 1))) <> -1 then Continue;
           UnitName := Trim(Copy(UnitName, 1, Pos('{$', UnitName) - 1));
         end;
-        if Pos(' var ', ' ' + LowerCase(UnitName) + ' ') > 0 then
-          UnitName := Trim(Copy(UnitName, 1, Pos(' var ', ' ' + LowerCase(UnitName) + ' ') - 1));
         if UnitName = '' then Continue;
         if ConditionalUnits.IndexOf(UnitName) <> -1 then Continue;
 
@@ -1024,7 +1019,7 @@ begin
         if SameText(UnitName, 'SqlExpr') then Continue;
 
         // Keep FMX, FireDAC, and System units
-        if (UnitName <> '') then
+        if (UnitName <> '') and (UnitList.IndexOf(UnitName) = -1) then
           UnitList.Add(UnitName);
       end;
 
@@ -1121,7 +1116,8 @@ begin
       UsesLine := BuildWrappedUsesClause(UnitList, '  ', 100);
       if ProtectedLines.Count > 0 then
       begin
-        Delete(UsesLine, Length(UsesLine), 1);
+        if EndsText(';', TrimRight(UsesLine)) then
+          Delete(UsesLine, Length(UsesLine), 1);
         ConditionalLine := TrimRight(ProtectedLines.Text);
         if EndsText(';', ConditionalLine) then
           Delete(ConditionalLine, Length(ConditionalLine), 1);

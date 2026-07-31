@@ -59,6 +59,11 @@ Each sample is intended to become an input fixture with assertions against conve
 - `04_mixed_case_dfm_property_lookup.pas`: mixed-case DFM object and property names should compare case-insensitively during fidelity checks.
 - `09_binary_dfm`: uncertain or invalid binary DFM input must fail closed rather than being parsed as text.
 - `10_collection_dfm`: collection-valued DFM properties must maintain collection scope while parsing items.
+- `11_duplicate_component_names`: nested components with duplicate names must retain their tree parent relationships.
+
+## Graphics
+
+- `08_scale_by_review.pas`: VCL ScaleBy replacements must include an explicit child-control fidelity review.
 
 ## Project Files
 
@@ -90,3 +95,11 @@ The expanded contract suite now includes:
 - Project samples for DPR startup, resources, conditionals, and `ShowMainForm`.
 - Project integration samples for include-file, Windows messaging, protected uses cleanup, DFM/FMXL generation, and real-world report-shape conversion across complete mini projects.
 - Encoding/reporting/third-party samples for source robustness, generated issue reporting, and mapping-pack behavior.
+
+## Semantic Resolution
+
+- `03_qualified_method_parameters.pas`: qualified method implementations with parameters must retain the clean method name in generated output and reports.
+
+## Semantic Resolution
+
+- `03_qualified_method_parameters.pas`: qualified method implementations with parameters must retain the clean method name in generated output and reports.

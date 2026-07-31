@@ -206,6 +206,7 @@ var
 
 constructor TComponentResearch.Create;
 begin
+  inherited Create;
   FProperties := TList<string>.Create;
   FMethods := TList<string>.Create;
   FEvents := TList<string>.Create;
@@ -224,6 +225,7 @@ end;
 
 constructor TFMXComponentInfo.Create;
 begin
+  inherited Create;
   FProperties := TList<string>.Create;
   FMethods := TList<string>.Create;
   FEvents := TList<string>.Create;
@@ -241,6 +243,7 @@ end;
 
 constructor TRttiClassInventory.Create;
 begin
+  inherited Create;
   FProperties := TDictionary<string, string>.Create;
   FEvents := TDictionary<string, string>.Create;
 end;
@@ -256,6 +259,7 @@ end;
 
 constructor TComponentMapper.Create(AContext: TConversionContext);
 begin
+  inherited Create;
   FContext := AContext;
   FMappingDatabase := TObjectList<TComponentMapping>.Create(True);
   FFMXComponents := TObjectList<TFMXComponentInfo>.Create(True);
