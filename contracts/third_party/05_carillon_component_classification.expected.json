@@ -1,0 +1,25 @@
+{
+  "input_file": "contracts\\third_party\\05_carillon_component_classification.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractCarillonComponentClassification",
+    "DatePicker1: TDateEdit",
+    "FileDialog1: TOpenDialog"
+  ],
+  "forbidden_output_patterns": [
+    "\\bVcl\\."
+  ],
+  "expected_report_patterns": [
+    "Database field object",
+    "Indy",
+    "TIdSSLIOHandlerSocketOpenSSL"
+  ],
+  "forbidden_report_patterns": [
+    "Unknown third-party component: ContractCarillonComponentClassification",
+    "Unknown third-party component: DatePicker1",
+    "Unknown third-party component: FileDialog1",
+    "Unknown third-party component: SongCount",
+    "Unknown third-party component: ScheduleTime",
+    "Unknown third-party component: SongTitle"
+  ]
+}

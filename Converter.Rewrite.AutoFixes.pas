@@ -28,7 +28,8 @@ type
     function UsesTextInsteadOfCaption(const DeclaredType: string): Boolean;
     function UsesCaptionInsteadOfText(const DeclaredType: string): Boolean;
     procedure DiscoverDeclaredTypeMaps(ALines: TStrings;
-      AControlTypes, AGenericListFields: TDictionary<string, string>);
+      AControlTypes, AGenericListFields: TDictionary<string, string>;
+      AIntegerFields: TStrings);
     function RewriteTypedMemberAccess(const S: string;
       AControlTypes: TDictionary<string, string>): string;
     function SignatureEndsDeclaration(const S: string): Boolean;
@@ -53,7 +54,7 @@ type
     procedure RestoreNonUnsupportedManualReviewSignatures(ALines: TStringList);
     procedure RewriteWindowsMessageHelperCalls(var Code: string);
     procedure InsertWindowsMessageHelperBlock(var Code: string);
-    procedure FixNumericMath(var Line: string);
+    procedure FixNumericMath(var Line: string; AIntegerFields: TStrings);
   public
     constructor Create(ADfmParser: TDFMParser; AContext: TConversionContext);
     procedure Apply(var Code: string);
@@ -169,7 +170,8 @@ begin
 end;
 
 procedure TAutoFixRewriter.DiscoverDeclaredTypeMaps(ALines: TStrings;
-  AControlTypes, AGenericListFields: TDictionary<string, string>);
+  AControlTypes, AGenericListFields: TDictionary<string, string>;
+  AIntegerFields: TStrings);
 var
   DeclIndex: Integer;
   DeclMatch: TMatch;
@@ -178,7 +180,7 @@ var
   DeclType: string;
 begin
   if not Assigned(ALines) or not Assigned(AControlTypes) or
-     not Assigned(AGenericListFields) then
+     not Assigned(AGenericListFields) or not Assigned(AIntegerFields) then
     Exit;
 
   NameParts := TStringList.Create;
@@ -203,6 +205,16 @@ begin
         for NamePart in NameParts do
           if Trim(NamePart) <> '' then
             AControlTypes.AddOrSetValue(Trim(NamePart), DeclType);
+      end;
+
+      DeclMatch := TRegEx.Match(ALines[DeclIndex],
+        '^\s*([A-Za-z_][A-Za-z0-9_,\s]*)\s*:\s*(Integer|LongInt|SmallInt|Word|Cardinal|LongWord|Int64)\s*;\s*$');
+      if DeclMatch.Success then
+      begin
+        NameParts.DelimitedText := DeclMatch.Groups[1].Value;
+        for NamePart in NameParts do
+          if Trim(NamePart) <> '' then
+            AIntegerFields.Add(Trim(NamePart));
       end;
 
       DeclMatch := TRegEx.Match(ALines[DeclIndex],
@@ -1230,6 +1242,7 @@ var
   AnalysisLines: TStringList;
   ControlTypes: TDictionary<string, string>;
   GenericListFields: TDictionary<string, string>;
+  IntegerFields: TStringList;
   i: Integer;
   L: string;
   AnalysisLine: string;
@@ -1494,10 +1507,12 @@ begin
   AnalysisLines := TStringList.Create;
   ControlTypes := TDictionary<string, string>.Create;
   GenericListFields := TDictionary<string, string>.Create;
+  IntegerFields := TStringList.Create;
+  IntegerFields.CaseSensitive := False;
   try
     Lines.Text := Code;
     AnalysisLines.Text := VCL2FMXStripCommentsForAnalysis(Code);
-    DiscoverDeclaredTypeMaps(AnalysisLines, ControlTypes, GenericListFields);
+    DiscoverDeclaredTypeMaps(AnalysisLines, ControlTypes, GenericListFields, IntegerFields);
     FixMalformedFieldEndings(Lines);
     MarkUnsupportedPascalRoutinesForReview(Lines);
     AnalysisLines.Text := VCL2FMXStripCommentsForAnalysis(Lines.Text);
@@ -1850,7 +1865,7 @@ begin
           'Verify the generated .fmx file contains the correct FMX shape component and remove this assignment if redundant.');
 
       // Fix integer/single math
-      FixNumericMath(L);
+      FixNumericMath(L, IntegerFields);
 
       L := L + TrailingComment;
       Lines[i] := L;
@@ -1875,23 +1890,63 @@ begin
   finally
     GenericListFields.Free;
     ControlTypes.Free;
+    IntegerFields.Free;
     AnalysisLines.Free;
     Lines.Free;
   end;
 end;
 
 
-procedure TAutoFixRewriter.FixNumericMath(var Line: string);
+procedure TAutoFixRewriter.FixNumericMath(var Line: string;
+  AIntegerFields: TStrings);
 var
   P: Integer;
   LHS, RHS: string;
   HasSemicolon: Boolean;
   IsFloatTarget: Boolean;
   HasFloatOperand: Boolean;
+  IsIntegerTarget: Boolean;
+  CommentSuffix: string;
+  CommentPos: Integer;
+  ScanPos: Integer;
+  InString: Boolean;
 begin
   P := Pos(':=', Line);
   if P <= 0 then
     Exit;
+
+  CommentSuffix := '';
+  CommentPos := 0;
+  InString := False;
+  ScanPos := P + 2;
+  while ScanPos <= Length(Line) do
+  begin
+    if Line[ScanPos] = '''' then
+    begin
+      if InString and (ScanPos < Length(Line)) and (Line[ScanPos + 1] = '''') then
+        Inc(ScanPos, 2)
+      else
+      begin
+        InString := not InString;
+        Inc(ScanPos);
+      end;
+      Continue;
+    end;
+
+    if not InString and (Line[ScanPos] = '/') and
+       (ScanPos < Length(Line)) and (Line[ScanPos + 1] = '/') then
+    begin
+      CommentPos := ScanPos;
+      Break;
+    end;
+    Inc(ScanPos);
+  end;
+
+  if CommentPos > 0 then
+  begin
+    CommentSuffix := Copy(Line, CommentPos, MaxInt);
+    Line := TrimRight(Copy(Line, 1, CommentPos - 1));
+  end;
 
   LHS := Trim(Copy(Line, 1, P - 1));
   RHS := Trim(Copy(Line, P + 2, Length(Line)));
@@ -1910,8 +1965,10 @@ begin
     TRegEx.IsMatch(RHS,
       '[A-Za-z_][A-Za-z0-9_\.]*\.Position\.(?:X|Y)\b',
       [roIgnoreCase]);
+  IsIntegerTarget := Assigned(AIntegerFields) and
+    (AIntegerFields.IndexOf(LHS) >= 0);
 
-  if IsFloatTarget and HasFloatOperand and
+  if (IsFloatTarget or IsIntegerTarget) and HasFloatOperand and
      TRegEx.IsMatch(RHS, '\bdiv\b', [roIgnoreCase]) then
   begin
     RHS := TRegEx.Replace(RHS, '\bdiv\b', '/', [roIgnoreCase]);
@@ -1940,8 +1997,16 @@ begin
     Line := Copy(Line, 1, P + 1) + ' Round(' + RHS + ')';
   end;
 
+  if IsIntegerTarget and HasFloatOperand and
+     (Pos('/', RHS) > 0) and (Pos('Round(', RHS) = 0) then
+  begin
+    RHS := 'Round(' + RHS + ')';
+    Line := Copy(Line, 1, P + 1) + ' ' + RHS;
+  end;
+
   if HasSemicolon and not Line.TrimRight.EndsWith(';') then
     Line := Line + ';';
+  Line := Line + CommentSuffix;
 end;
 
 

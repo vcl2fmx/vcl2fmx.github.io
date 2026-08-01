@@ -367,7 +367,7 @@ var
       if not Assigned(Comp) then
         Continue;
 
-      if FContext.Options.EnableThirdParty then
+      if FContext.Options.EnableThirdParty and (Comp.ParentComponent <> nil) then
         FThirdParty.AnalyzeComponent(Comp.ComponentClass, Comp.Name);
 
       if Assigned(Comp.Children) then

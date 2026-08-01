@@ -47,7 +47,7 @@ an expectation file or be covered by a project-level expectation.
 Current verified status after the field-test regression expansion:
 
 ```text
-Summary: 220 pass, 0 fail
+Summary: 224 pass, 0 fail
 ```
 
 ## Expectation Fields
@@ -88,7 +88,7 @@ unit and include search paths so copied include files can be resolved.
   and color-helper edge cases. 16 expectations.
 - `comments_and_boundaries`: comments, string literals, disabled blocks, routine
   boundaries, initialization/finalization boundaries, and message false positives.
-  22 expectations.
+  23 expectations.
 - `components_and_events`: component declarations, events, form lifecycle,
   coordinate conversion, media, images, status bars, and custom-component cases.
   26 expectations.
@@ -109,7 +109,7 @@ unit and include search paths so copied include files can be resolved.
 - `livebindings`: existing LiveBindings and generated binding edge cases.
   6 expectations.
 - `pascal_structure`: Pascal structure parsing, methods, helpers, attributes, and
-  message-handler rules. 11 expectations.
+  message-handler rules. 13 expectations.
 - `project_files`: DPR and startup/project-resource behavior. 6 expectations.
 - `project_integration`: mini-project contracts that exercise include, Windows
   messaging, uses cleanup, DFM/FMXL, and report-shape workflows as whole projects.
@@ -117,8 +117,8 @@ unit and include search paths so copied include files can be resolved.
 - `reporting`: leftover-code detection and manual-review report formatting.
   4 expectations.
 - `semantic_resolution`: cross-unit, missing-implementation, and qualified-method semantic checks. 4 expectations.
-- `third_party`: third-party and unknown component mapping behavior.
-  4 expectations.
+- `third_party`: third-party, standard VCL, database field, and unknown component mapping behavior.
+  5 expectations.
 - `uses_clause`: uses-clause cleanup, Windows/VCL unit preservation and removal,
   conditional uses blocks, user-unit preservation, formatting preservation, and
   leftover `Vcl.Themes` cleanup. 25 expectations.

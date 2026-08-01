@@ -1276,6 +1276,8 @@ procedure TPascalParser.ParseTypeSection(StartIndex: Integer; var EndIndex: Inte
 var
   i: Integer;
   Line: string;
+  BoundaryMessage: string;
+  BoundarySuggestion: string;
 begin
   i := StartIndex + 1;
 
@@ -1298,11 +1300,23 @@ begin
     begin
       if FCurrentUnit.CurrentClass <> nil then
       begin
+        BoundaryMessage :=
+          'Pascal class declaration ended without a valid terminator before ' + Line;
+        BoundarySuggestion :=
+          'Review the class declaration terminator and rerun the conversion.';
+        if (i > StartIndex + 1) and
+           not TRegEx.IsMatch(Trim(FLines[i - 1]), '^end\s*;', [roIgnoreCase]) then
+        begin
+          BoundaryMessage := BoundaryMessage +
+            '; the preceding class member may be missing a semicolon';
+          BoundarySuggestion :=
+            'Add the missing semicolon before end;, then rerun the conversion.';
+        end;
         FContext.AddIssue(csError,
-          'Pascal class declaration ended without a valid terminator before ' + Line,
+          BoundaryMessage,
           'Pascal class boundary',
           FLines[i],
-          'Review the class declaration terminator and rerun the conversion.',
+          BoundarySuggestion,
           i + 1,
           True);
         CloseCurrentClass(i - 1);

@@ -172,6 +172,7 @@ var
   I: Integer;
   Line: string;
   CodeLine: string;
+  FullCode: string;
   Trimmed: string;
   OriginalTrimmed: string;
   LastSignificantLine: string;
@@ -204,15 +205,43 @@ var
   var
     P: Integer;
     Ch: Char;
+    InString: Boolean;
   begin
     Result := '';
     P := 1;
+    InString := False;
     while P <= Length(S) do
     begin
       if AInBraceComment then
       begin
         if S[P] = '}' then
           AInBraceComment := False;
+        Inc(P);
+        Continue;
+      end;
+
+      if InString then
+      begin
+        Ch := S[P];
+        Result := Result + Ch;
+        if Ch = '''' then
+        begin
+          if (P < Length(S)) and (S[P + 1] = '''') then
+          begin
+            Result := Result + S[P + 1];
+            Inc(P, 2);
+            Continue;
+          end;
+          InString := False;
+        end;
+        Inc(P);
+        Continue;
+      end;
+
+      if S[P] = '''' then
+      begin
+        InString := True;
+        Result := Result + S[P];
         Inc(P);
         Continue;
       end;
@@ -371,7 +400,8 @@ begin
         False);
       Exit;
     end;
-    Lines.Text := CodeLine;
+    FullCode := CodeLine;
+    Lines.Text := FullCode;
     LastSignificantLine := '';
     InBraceComment := False;
     InParenComment := False;

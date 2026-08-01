@@ -287,6 +287,8 @@ begin
   AddStandardComponent('TTimer', 'TTimer');
   AddStandardComponent('TOpenDialog', 'TOpenDialog');
   AddStandardComponent('TSaveDialog', 'TSaveDialog');
+  AddStandardComponent('TDateTimePicker', 'TDateEdit', 'Review date/time formatting and FMX calendar behavior.');
+  AddStandardComponent('TFileOpenDialog', 'TOpenDialog');
 end;
 
 procedure TThirdPartyHandler.LoadSubComponentTypes;
@@ -949,6 +951,8 @@ begin
     Result := 'QuickReport'
   else if ClassName.StartsWith('TRave') then
     Result := 'Rave Reports'
+  else if StartsText('TId', ClassName) then
+    Result := 'Indy'
   else if IsStandardVCLComponent(ClassName) or IsStandardVCLComponent(Normalized) then
     Result := 'Embarcadero (VCL)'
   else if IsSubComponentType(ClassName) then
@@ -1015,6 +1019,37 @@ begin
     Exit;
   end;
 
+  if SameText(ClassName, 'TField') or
+     SameText(ClassName, 'TStringField') or
+     SameText(ClassName, 'TWideStringField') or
+     SameText(ClassName, 'TWideMemoField') or
+     SameText(ClassName, 'TDateField') or
+     SameText(ClassName, 'TTimeField') or
+     SameText(ClassName, 'TDateTimeField') or
+     SameText(ClassName, 'TIntegerField') or
+     SameText(ClassName, 'TSmallIntField') or
+     SameText(ClassName, 'TLargeIntField') or
+     SameText(ClassName, 'TFloatField') or
+     SameText(ClassName, 'TCurrencyField') or
+     SameText(ClassName, 'TBCDField') or
+     SameText(ClassName, 'TBooleanField') or
+     SameText(ClassName, 'TBytesField') or
+     SameText(ClassName, 'TBlobField') or
+     SameText(ClassName, 'TGraphicField') or
+     SameText(ClassName, 'TVariantField') or
+     SameText(ClassName, 'TGuidField') then
+  begin
+    FContext.AddIssue(csInfo,
+      Format('Database field object: %s (%s) is dataset metadata, not a third-party visual component.',
+        [ComponentName, ClassName]),
+      'Database field object',
+      ClassName,
+      'Treat the field as dataset metadata; review data binding separately if the generated FMX project uses it.',
+      -1,
+      False);
+    Exit;
+  end;
+
   if IsSubComponentType(ClassName) then
   begin
     FContext.AddIssue(csInfo,
@@ -1052,6 +1087,15 @@ begin
     else if Vendor = 'Sub-component' then
       FContext.AddIssue(csInfo,
         Format('Sub-component: %s (%s) - auto-handled', [ComponentName, ClassName]))
+    else if Vendor <> 'Unknown' then
+      FContext.AddIssue(csWarning,
+        Format('Unmapped third-party component: %s (%s). Vendor identified as %s.%s',
+          [ComponentName, ClassName, Vendor, MappingPackHint]),
+        'Unmapped third-party component',
+        ClassName,
+        'Review the vendor component and add or select an appropriate mapping-pack rule.',
+        -1,
+        False)
     else
       FContext.AddIssue(csWarning,
         Format('Unknown third-party component: %s (%s). Vendor could not be identified.%s',

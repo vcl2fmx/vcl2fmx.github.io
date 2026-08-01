@@ -1,0 +1,13 @@
+{
+  "input_file": "contracts\\comments_and_boundaries\\23_generated_tail_sql_string.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "SELECT COUNT\\(\\*\\) AS C FROM playlist",
+    "end\\."
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [],
+  "forbidden_report_patterns": [
+    "Generated Pascal ends unexpectedly"
+  ]
+}

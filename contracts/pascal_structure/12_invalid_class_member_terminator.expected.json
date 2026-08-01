@@ -1,0 +1,13 @@
+{
+  "input_file": "contracts\\pascal_structure\\12_invalid_class_member_terminator.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractInvalidClassMemberTerminator"
+  ],
+  "forbidden_output_patterns": [],
+  "expected_report_patterns": [
+    "Pascal class declaration ended without a valid terminator before var",
+    "missing semicolon"
+  ],
+  "forbidden_report_patterns": []
+}
