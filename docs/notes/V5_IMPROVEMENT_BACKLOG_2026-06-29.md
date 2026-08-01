@@ -1,6 +1,6 @@
 # VCL2FMXConverter v5.0 Vanguard Improvement Backlog
 
-Revision date: June 29, 2026
+Revision date: August 1, 2026
 
 This note records the first five improvement-planning steps after the v5.0 Vanguard baseline. It is an inventory and prioritization note only. It does not authorize a code change by itself.
 
@@ -18,7 +18,7 @@ Compile verification completed on June 29, 2026:
 
 - `VCL2FMXConverter.dpr` compiled to `Win32\Release`.
 - `tools\RunConversionEngine.dpr` compiled to `tools`.
-- Full contract suite: 202 pass, 0 fail.
+- Full contract suite: 227 pass, 0 fail.
 - Regression guards: 0 blockers, 0 warnings, 41 pass items.
 
 ## 2. Improvement Backlog
@@ -38,7 +38,7 @@ Candidate backlog:
 
 ## 3. Current Contract Coverage
 
-Current executable contract count: 198 expectations.
+Current executable contract count: 227 expectations as of August 1, 2026.
 
 Coverage by contract area:
 

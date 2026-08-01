@@ -40,6 +40,6 @@ Mapping-pack usage is reported in the conversion report so third-party behavior 
 
 The v5.0 distribution includes the same 22 starter mapping packs released with v4.1.8 for common Delphi third-party libraries. These packs are intentionally conservative: simple controls may convert, approximate controls may convert with review notes, and complex controls are usually report-only.
 
-Revision date: June 25, 2026
+Revision date: August 1, 2026
 
 Mapping packs are extension data, not vendor runtimes. They do not install or replace commercial component libraries. Always review the generated report and test the converted FMX project in Delphi.

@@ -24,7 +24,7 @@ The original VCL project remains the source of truth. Generated output is writte
 - Compatibility, autofix, LiveBindings, and runtime-normalization passes
 - Data-aware, WinAPI, Windows-message, GDI, and third-party review support
 - 22 editable JSON mapping packs for common Delphi component families
-- 202 executable conversion contracts plus regression and release-readiness guards
+- 227 executable conversion contracts plus regression and release-readiness guards
 - Complete user, engineering, rules, mapping, runtime-flow, and contract documentation
 
 ## Requirements
