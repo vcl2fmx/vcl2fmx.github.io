@@ -6,8 +6,7 @@
   ],
   "forbidden_output_patterns": [],
   "expected_report_patterns": [
-    "Pascal class declaration ended without a valid terminator before var",
-    "missing semicolon"
+    "Pascal class declaration ended without a valid terminator before var"
   ],
   "forbidden_report_patterns": []
 }

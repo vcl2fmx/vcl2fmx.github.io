@@ -5,7 +5,7 @@ interface
 type
   TContractInvalidClassMemberTerminator = class
   private
-    FValue: Integer end;
+    FValue: Integer;
 
   var
     GlobalValue: Integer;

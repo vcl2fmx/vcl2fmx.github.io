@@ -1276,6 +1276,11 @@ procedure TPascalParser.ParseTypeSection(StartIndex: Integer; var EndIndex: Inte
 var
   i: Integer;
   Line: string;
+  CleanLine: string;
+  MemberLine: string;
+  EndTokenMatch: TMatch;
+  PreviousLine: string;
+  HasInlineVisibility: Boolean;
   BoundaryMessage: string;
   BoundarySuggestion: string;
 begin
@@ -1284,6 +1289,7 @@ begin
   while i < FLines.Count do
   begin
     Line := Trim(FLines[i]);
+    CleanLine := StripStringLiterals(StripComments(Line));
 
     if ((FCurrentUnit.CurrentClass = nil) and
         (VCL2FMXIsPascalKeywordLine(Line, 'var') or
@@ -1304,8 +1310,15 @@ begin
           'Pascal class declaration ended without a valid terminator before ' + Line;
         BoundarySuggestion :=
           'Review the class declaration terminator and rerun the conversion.';
+        PreviousLine := StripStringLiterals(StripComments(Trim(FLines[i - 1])));
+        HasInlineVisibility :=
+          TRegEx.IsMatch(PreviousLine,
+            '^(private|protected|public|published|strict\s+(private|protected))\s+',
+            [roIgnoreCase]);
         if (i > StartIndex + 1) and
-           not TRegEx.IsMatch(Trim(FLines[i - 1]), '^end\s*;', [roIgnoreCase]) then
+           not TRegEx.IsMatch(PreviousLine, '^end\s*;', [roIgnoreCase]) and
+           not (HasInlineVisibility and
+                TRegEx.IsMatch(PreviousLine, '\bend\s*;', [roIgnoreCase])) then
         begin
           BoundaryMessage := BoundaryMessage +
             '; the preceding class member may be missing a semicolon';
@@ -1332,6 +1345,41 @@ begin
     else if TRegEx.IsMatch(Line, '^end\s*;', [roIgnoreCase]) and
             (FCurrentUnit.CurrentClass <> nil) then
       CloseCurrentClass(i)
+    else if TRegEx.IsMatch(CleanLine, '\bend\s*;', [roIgnoreCase]) and
+            (FCurrentUnit.CurrentClass <> nil) then
+    begin
+      EndTokenMatch := TRegEx.Match(CleanLine, '\bend\s*;', [roIgnoreCase]);
+      MemberLine := Trim(Copy(Line, 1, EndTokenMatch.Index));
+      HasInlineVisibility := TRegEx.IsMatch(MemberLine,
+        '^(private|protected|public|published|strict\s+(private|protected))\s+',
+        [roIgnoreCase]);
+      if HasInlineVisibility then
+      begin
+        MemberLine := TRegEx.Replace(MemberLine,
+          '^(private|protected|public|published|strict\s+(private|protected))\s+',
+          '', [roIgnoreCase]);
+        MemberLine := Trim(MemberLine);
+      end;
+      if HasInlineVisibility then
+      begin
+        if MemberLine <> '' then
+        begin
+          if not MemberLine.TrimRight.EndsWith(';') then
+            MemberLine := MemberLine + ';';
+          ParseClassMember(MemberLine);
+        end;
+        CloseCurrentClass(i);
+      end
+      else if MemberLine = '' then
+        CloseCurrentClass(i)
+      else
+      begin
+        if not MemberLine.TrimRight.EndsWith(';') then
+          MemberLine := MemberLine + ';';
+        ParseClassMember(MemberLine);
+        CloseCurrentClass(i);
+      end;
+    end
     else if FCurrentUnit.CurrentClass <> nil then
       ParseClassMember(Line);
 

@@ -57,8 +57,9 @@ Each sample is intended to become an input fixture with assertions against conve
 - `08_nested_default_parentheses.pas`: nested parameter parentheses must be matched before extracting a function return type.
 - `09_multiple_published_methods.pas`: multiple methods in a published section must remain visible to structure analysis.
 - `11_large_unit_analysis.pas`: a large Pascal unit should complete within the scale guard while preserving representative source statements.
-- `12_invalid_class_member_terminator.pas`: a malformed class member terminator should produce a precise blocking source diagnostic.
+- `12_invalid_class_member_terminator.pas`: a class missing its terminating `end;` should produce a precise blocking source diagnostic.
 - `13_integer_dimension_division.pas`: integer destinations receiving FMX dimension division should be rounded after VCL `div` is rewritten to floating-point division.
+- `14_inline_class_terminator.pas`: a standalone class `end;` token may share a line with the final member and must close the class without a false boundary error.
 
 ## Third Party Classification
 
