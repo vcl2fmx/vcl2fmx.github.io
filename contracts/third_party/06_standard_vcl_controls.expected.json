@@ -1,0 +1,20 @@
+{
+  "input_file": "contracts/third_party/06_standard_vcl_controls.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "unit ContractStandardVCLControls",
+    "object btnSave: TButton"
+  ],
+  "forbidden_output_patterns": [
+    "Unknown third-party component: btnSave",
+    "Unknown third-party component: TrayIcon1"
+  ],
+  "expected_report_patterns": [
+    "No unknown third-party components were found",
+    "source object TrayIcon1 \\(TTrayIcon\\) was not found by name in the generated FMX"
+  ],
+  "forbidden_report_patterns": [
+    "Unknown third-party component: btnSave",
+    "Unknown third-party component: TrayIcon1"
+  ]
+}

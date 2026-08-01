@@ -47,7 +47,7 @@ an expectation file or be covered by a project-level expectation.
 Current verified status after the field-test regression expansion:
 
 ```text
-Summary: 226 pass, 0 fail
+Summary: 227 pass, 0 fail
 ```
 
 ## Expectation Fields

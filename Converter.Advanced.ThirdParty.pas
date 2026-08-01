@@ -289,6 +289,8 @@ begin
   AddStandardComponent('TSaveDialog', 'TSaveDialog');
   AddStandardComponent('TDateTimePicker', 'TDateEdit', 'Review date/time formatting and FMX calendar behavior.');
   AddStandardComponent('TFileOpenDialog', 'TOpenDialog');
+  AddStandardComponent('TBitBtn', 'TButton', 'Review glyph, modal-result, and button-layout behavior in FMX.');
+  AddStandardComponent('TTrayIcon', '', 'No native FMX system-tray control; review platform-specific behavior manually.');
 end;
 
 procedure TThirdPartyHandler.LoadSubComponentTypes;

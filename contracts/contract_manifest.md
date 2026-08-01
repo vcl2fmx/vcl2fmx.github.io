@@ -65,6 +65,7 @@ Each sample is intended to become an input fixture with assertions against conve
 ## Third Party Classification
 
 - `05_carillon_component_classification.pas`: project roots, standard VCL controls, database field objects, and genuine Indy components must be classified separately.
+- `06_standard_vcl_controls.pas`: standard `TBitBtn` and `TTrayIcon` controls must not be reported as unidentified third-party components.
 
 ## DFM Fidelity
 
