@@ -1283,15 +1283,24 @@ var
   HasInlineVisibility: Boolean;
   BoundaryMessage: string;
   BoundarySuggestion: string;
+  ParenDepth: Integer;
+  LineParenDepth: Integer;
 begin
   i := StartIndex + 1;
+  ParenDepth := 0;
 
   while i < FLines.Count do
   begin
     Line := Trim(FLines[i]);
     CleanLine := StripStringLiterals(StripComments(Line));
+    LineParenDepth := ParenDepth +
+      TRegEx.Matches(CleanLine, '\(').Count -
+      TRegEx.Matches(CleanLine, '\)').Count;
+    if LineParenDepth < 0 then
+      LineParenDepth := 0;
 
-    if ((FCurrentUnit.CurrentClass = nil) and
+    if (ParenDepth = 0) and
+       (((FCurrentUnit.CurrentClass = nil) and
         (VCL2FMXIsPascalKeywordLine(Line, 'var') or
          VCL2FMXIsPascalKeywordLine(Line, 'const') or
          VCL2FMXIsPascalKeywordLine(Line, 'implementation') or
@@ -1302,7 +1311,7 @@ begin
        ((FCurrentUnit.CurrentClass <> nil) and
         (VCL2FMXIsPascalKeywordLine(Line, 'var') or
          VCL2FMXIsPascalKeywordLine(Line, 'const') or
-         VCL2FMXIsPascalKeywordLine(Line, 'implementation'))) then
+         VCL2FMXIsPascalKeywordLine(Line, 'implementation')))) then
     begin
       if FCurrentUnit.CurrentClass <> nil then
       begin
@@ -1342,10 +1351,12 @@ begin
     begin
       ParseClassDeclaration(Line, i);
     end
-    else if TRegEx.IsMatch(Line, '^end\s*;', [roIgnoreCase]) and
+    else if (LineParenDepth = 0) and
+            TRegEx.IsMatch(Line, '^end\s*;', [roIgnoreCase]) and
             (FCurrentUnit.CurrentClass <> nil) then
       CloseCurrentClass(i)
-    else if TRegEx.IsMatch(CleanLine, '\bend\s*;', [roIgnoreCase]) and
+    else if (LineParenDepth = 0) and
+            TRegEx.IsMatch(CleanLine, '\bend\s*;', [roIgnoreCase]) and
             (FCurrentUnit.CurrentClass <> nil) then
     begin
       EndTokenMatch := TRegEx.Match(CleanLine, '\bend\s*;', [roIgnoreCase]);
@@ -1384,6 +1395,7 @@ begin
       ParseClassMember(Line);
 
     FCurrentUnit.Types.Add(FLines[i]);
+    ParenDepth := LineParenDepth;
     Inc(i);
   end;
 

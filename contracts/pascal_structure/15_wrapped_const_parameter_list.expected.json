@@ -1,0 +1,13 @@
+{
+  "input_file": "contracts/pascal_structure/15_wrapped_const_parameter_list.pas",
+  "expected_status": "converted",
+  "expected_output_patterns": [
+    "function TContractWrappedConstParameterList\\.GetColor",
+    "procedure TContractWrappedConstParameterList\\.Touch",
+    "DisplayColor",
+    "Enabled"
+  ],
+  "forbidden_report_patterns": [
+    "Pascal class declaration ended without a valid terminator"
+  ]
+}

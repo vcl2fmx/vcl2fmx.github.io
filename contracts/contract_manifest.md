@@ -60,6 +60,7 @@ Each sample is intended to become an input fixture with assertions against conve
 - `12_invalid_class_member_terminator.pas`: a class missing its terminating `end;` should produce a precise blocking source diagnostic.
 - `13_integer_dimension_division.pas`: integer destinations receiving FMX dimension division should be rounded after VCL `div` is rewritten to floating-point division.
 - `14_inline_class_terminator.pas`: a standalone class `end;` token may share a line with the final member and must close the class without a false boundary error.
+- `15_wrapped_const_parameter_list.pas`: wrapped method parameter lists with `const` continuation lines must not produce a false class-boundary blocker.
 
 ## Third Party Classification
 
