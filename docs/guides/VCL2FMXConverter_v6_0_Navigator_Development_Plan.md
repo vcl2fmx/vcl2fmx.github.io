@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 014
+Current iteration: Navigator Release v6.0 Build 015
 
 ## Release Direction
 
@@ -296,3 +296,12 @@ from the application hero. The existing designer-owned `HeroNavigatorGhost`
 label is now visible and supplies the Navigator wordmark through editable FMX
 properties. The release badge retains the product line, release, build number,
 date, and time in a shorter format and a narrower designer-owned rectangle.
+
+## Iteration 015 — Hero Alignment and Isolated French Regression Work
+
+Navigator Build 015 centers the release text inside its designer-owned badge,
+applies the established translucent orange accent to the Navigator wordmark,
+and moves that wordmark farther right in both responsive layouts. The French
+beta guard now creates all generated conversion, binary-DFM, and compiler
+artifacts beneath a unique temporary directory and removes that directory
+after the run, leaving its tracked fixture tree unchanged.

@@ -452,10 +452,14 @@ if (-not [string]::IsNullOrWhiteSpace($mainFormText)) {
       ($responsiveBadgeWidths.Count -eq 2) -and
       (@($responsiveBadgeWidths | Where-Object { ($_ -lt 380) -or ($_ -gt 410) }).Count -eq 0) -and
       ($mainFormFmxText -match "(?ms)object\s+HeroNavigatorGhost:\s*TLabel.*?Text\s*=\s*'NAVIGATOR'.*?Visible\s*=\s*True") -and
+      ($mainFormFmxText -match "(?ms)object\s+HeroNavigatorGhost:\s*TLabel.*?Opacity\s*=\s*0\.14.*?Position\.X\s*=\s*600\..*?TextSettings\.FontColor\s*=\s*xFFFF8800") -and
+      ($mainFormFmxText -match "(?ms)object\s+lblVersion:\s*TLabel.*?AutoSize\s*=\s*False.*?Size\.Width\s*=\s*400\..*?TextSettings\.HorzAlign\s*=\s*Center") -and
+      ($mainFormText -match 'HeroNavigatorGhost\.Position\.X\s*:=\s*580') -and
+      ($mainFormText -match 'HeroNavigatorGhost\.Position\.X\s*:=\s*600') -and
       (-not ($mainFormText -match "FillText\([^`r`n]*'VANGUARD'"))
     ) -Area 'Build identity' -Check 'Version badge contains full build and timestamp text' `
-    -PassDetails 'The designer-owned Navigator hero is visible and the compact badge remains between 380 and 410 pixels in every responsive state.' `
-    -FailDetails 'The hero branding is not designer-owned Navigator text, Vanguard runtime painting remains, or the compact badge width is outside its protected range.'
+    -PassDetails 'The designer-owned Navigator hero is visible, orange, and right-positioned; the compact badge remains centered and between 380 and 410 pixels in every responsive state.' `
+    -FailDetails 'The hero branding, orange/right alignment, centered badge text, or protected compact badge width has regressed.'
 }
 
 Add-RuleResult -Condition (

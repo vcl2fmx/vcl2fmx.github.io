@@ -218,7 +218,7 @@
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Keys>CompanyName=;FileDescription=VCL2FMXConverter v6.0 Navigator;FileVersion=6.0.0.14;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=VCL2FMXConverter.exe;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=VCL2FMXConverter;ProductVersion=6.0.0.14;Comments=Navigator Release v6.0 Build 014 - 2026-08-02 10:44 AM</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=VCL2FMXConverter v6.0 Navigator;FileVersion=6.0.0.15;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=VCL2FMXConverter.exe;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=VCL2FMXConverter;ProductVersion=6.0.0.15;Comments=Navigator Release v6.0 Build 015 - 2026-08-02 11:03 AM</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
@@ -229,7 +229,7 @@
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Keys>CompanyName=;FileDescription=VCL2FMXConverter v6.0 Navigator;FileVersion=6.0.0.14;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=VCL2FMXConverter.exe;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=VCL2FMXConverter;ProductVersion=6.0.0.14;Comments=Navigator Release v6.0 Build 014 - 2026-08-02 10:44 AM</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=VCL2FMXConverter v6.0 Navigator;FileVersion=6.0.0.15;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=VCL2FMXConverter.exe;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=VCL2FMXConverter;ProductVersion=6.0.0.15;Comments=Navigator Release v6.0 Build 015 - 2026-08-02 11:03 AM</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
@@ -275,7 +275,7 @@
         <UWP_DelphiLogo150>Logos and Icons\Concept 04 - Faceted Cube Arrow\VCL2FMX_Concept04_FacetedCubeArrow_150.png</UWP_DelphiLogo150>
         <VerInfo_MinorVer>0</VerInfo_MinorVer>
         <VerInfo_Release>0</VerInfo_Release>
-        <VerInfo_Build>14</VerInfo_Build>
+        <VerInfo_Build>15</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
@@ -283,7 +283,7 @@
         <VerInfo_MajorVer>6</VerInfo_MajorVer>
         <VerInfo_MinorVer>0</VerInfo_MinorVer>
         <VerInfo_Release>0</VerInfo_Release>
-        <VerInfo_Build>14</VerInfo_Build>
+        <VerInfo_Build>15</VerInfo_Build>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">

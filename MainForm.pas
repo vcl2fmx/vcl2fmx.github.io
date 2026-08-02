@@ -1,6 +1,6 @@
 ﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
- Version v6.0 Navigator Build 014
+ Version v6.0 Navigator Build 015
  Written and built in the USA}
 
 unit MainForm;
@@ -2168,7 +2168,7 @@ begin
     HeroAccentRibbonLarge.Visible := False;
     HeroAccentRibbonMid.Visible := False;
     HeroAccentRibbonSmall.Visible := False;
-    HeroNavigatorGhost.Position.X := 500;
+    HeroNavigatorGhost.Position.X := 580;
     HeroNavigatorGhost.Position.Y := -10;
     HeroNavigatorGhost.Size.Width := 690;
     HeroNavigatorGhost.Size.Height := 122;
@@ -2182,7 +2182,7 @@ begin
     HeroVersionBadge.Position.Y := 58;
     HeroVersionBadge.Size.Width := 400;
     HeroVersionBadge.Size.Height := 28;
-    lblVersion.Position.X := 54;
+    lblVersion.Position.X := 34;
     lblVersion.Position.Y := 63;
     lblVersion.TextSettings.Font.Size := 12;
     lblStatusCaption.Position.Y := 18;
@@ -2253,7 +2253,7 @@ begin
     HeroAccentRibbonLarge.Visible := False;
     HeroAccentRibbonMid.Visible := False;
     HeroAccentRibbonSmall.Visible := False;
-    HeroNavigatorGhost.Position.X := 520;
+    HeroNavigatorGhost.Position.X := 600;
     HeroNavigatorGhost.Position.Y := -12;
     HeroNavigatorGhost.Size.Width := 700;
     HeroNavigatorGhost.Size.Height := 150;
@@ -2267,7 +2267,7 @@ begin
     HeroVersionBadge.Position.Y := 78;
     HeroVersionBadge.Size.Width := 400;
     HeroVersionBadge.Size.Height := 30;
-    lblVersion.Position.X := 60;
+    lblVersion.Position.X := 40;
     lblVersion.Position.Y := 84;
     lblVersion.TextSettings.Font.Size := 12;
     lblStatusCaption.Position.Y := 28;

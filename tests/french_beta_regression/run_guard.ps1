@@ -14,23 +14,20 @@ $dfmConvert = 'C:\Program Files (x86)\Embarcadero\Studio\37.0\bin\convert.exe'
 $runnerDir = Join-Path $ProjectRoot 'tools'
 $runner = Join-Path $runnerDir 'RunConversionEngine.exe'
 $source = Join-Path $PSScriptRoot 'source'
-$output = Join-Path $PSScriptRoot 'output'
 $invalidSource = Join-Path $PSScriptRoot 'invalid_source'
-$invalidOutput = Join-Path $PSScriptRoot 'invalid_output'
-$binarySource = Join-Path $PSScriptRoot 'binary_source'
-$binaryOutput = Join-Path $PSScriptRoot 'binary_output'
-$compileDcu = Join-Path $PSScriptRoot 'compile_dcu'
-$compileBin = Join-Path $PSScriptRoot 'compile_bin'
+$workRoot = Join-Path $env:TEMP ('VCL2FMXFrenchBeta_' + [Guid]::NewGuid().ToString('N'))
+$output = Join-Path $workRoot 'output'
+$invalidOutput = Join-Path $workRoot 'invalid_output'
+$binarySource = Join-Path $workRoot 'binary_source'
+$binaryOutput = Join-Path $workRoot 'binary_output'
+$compileDcu = Join-Path $workRoot 'compile_dcu'
+$compileBin = Join-Path $workRoot 'compile_bin'
 
-foreach ($path in @($output, $invalidOutput, $binarySource, $binaryOutput, $compileDcu, $compileBin)) {
-  if (Test-Path -LiteralPath $path) {
-    $resolved = (Resolve-Path -LiteralPath $path).Path
-    if (-not $resolved.StartsWith($PSScriptRoot, [StringComparison]::OrdinalIgnoreCase)) {
-      throw "Unsafe regression cleanup path: $resolved"
-    }
-    Remove-Item -LiteralPath $resolved -Recurse -Force
-  }
-}
+New-Item -ItemType Directory -Path $workRoot | Out-Null
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'RegressionCompile.dpr') `
+  -Destination $workRoot
+
+try {
 
 $buildRunner = 'call "{0}" && cd /d "{1}" && "{2}" -B -Q -U".." -I".." -N0"dcu" RunConversionEngine.dpr' -f $rsvars, $runnerDir, $dcc32
 & cmd.exe /c $buildRunner | Out-Null
@@ -96,7 +93,7 @@ if (-not ($generatedIndex -ge 0 -and $initializationIndex -gt $generatedIndex)) 
 }
 
 New-Item -ItemType Directory -Path $compileDcu, $compileBin | Out-Null
-$compileCommand = 'call "{0}" && cd /d "{1}" && "{2}" -B -Q -U"output" -I"output" -N0"compile_dcu" -E"compile_bin" RegressionCompile.dpr' -f $rsvars, $PSScriptRoot, $dcc32
+$compileCommand = 'call "{0}" && cd /d "{1}" && "{2}" -B -Q -U"output" -I"output" -N0"compile_dcu" -E"compile_bin" RegressionCompile.dpr' -f $rsvars, $workRoot, $dcc32
 & cmd.exe /c $compileCommand | Out-Null
 if ($LASTEXITCODE -ne 0) {
   throw 'Generated French-beta regression Pascal did not compile.'
@@ -139,3 +136,15 @@ if ([string]::IsNullOrWhiteSpace($binaryFmx) -or
 }
 
 Write-Output 'French beta regression guard passed.'
+}
+finally {
+  if (Test-Path -LiteralPath $workRoot) {
+    $resolvedWorkRoot = (Resolve-Path -LiteralPath $workRoot).Path
+    $resolvedTempRoot = (Resolve-Path -LiteralPath $env:TEMP).Path
+    if (-not $resolvedWorkRoot.StartsWith($resolvedTempRoot,
+        [StringComparison]::OrdinalIgnoreCase)) {
+      throw "Unsafe French regression cleanup path: $resolvedWorkRoot"
+    }
+    Remove-Item -LiteralPath $resolvedWorkRoot -Recurse -Force
+  }
+}
