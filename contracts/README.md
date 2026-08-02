@@ -74,6 +74,10 @@ Common fields in `.expected.json` files:
 - `expected_report_files`: requires at least one generated text or HTML report.
 - `expected_auxiliary_files`: file names that must be present as intentional non-source outputs, such as mapping-pack authoring suggestions.
 - `max_duration_ms`: optional upper bound for a fixture conversion, used for scale-regression guards.
+- `expected_normalized_text_report_sha256`: exact SHA-256 golden for the text
+  report after normalizing workspace paths, timestamps, and run duration.
+- `expected_normalized_html_report_sha256`: exact SHA-256 golden for the HTML
+  report after the same limited normalization.
 - `copy_case_directory`: optional project-level fixture mode that copies the whole
   fixture folder before conversion.
 - `skip_generated_compile`: optional flag for fixtures that intentionally preserve

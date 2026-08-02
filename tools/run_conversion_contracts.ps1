@@ -142,6 +142,55 @@ function Read-TextFile {
   }
 }
 
+function Normalize-ReportArtifact {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Text,
+    [Parameter(Mandatory = $true)]
+    [string]$CaseRoot
+  )
+
+  $normalized = $Text.Replace("`r`n", "`n").Replace("`r", "`n")
+  $normalized = [regex]::Replace(
+    $normalized, [regex]::Escape($CaseRoot), '<CASE_ROOT>',
+    [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+  $normalized = [regex]::Replace(
+    $normalized, [regex]::Escape($ProjectRoot), '<PROJECT_ROOT>',
+    [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+  $normalized = [regex]::Replace(
+    $normalized, '(?m)^Total time:.*$', 'Total time: <DURATION>')
+  $normalized = [regex]::Replace(
+    $normalized,
+    '(<div class="label">Run time</div><div class="value">).*?(</div>)',
+    '$1<DURATION>$2')
+  $normalized = [regex]::Replace(
+    $normalized, 'Generated \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}',
+    'Generated <TIMESTAMP>')
+  $normalized = [regex]::Replace(
+    $normalized, '\[\d{2}:\d{2}:\d{2}\]', '[TIME]')
+  $normalized = [regex]::Replace(
+    $normalized, '(?m)(Conversion completed in ).*$',
+    '$1<DURATION>')
+  return $normalized
+}
+
+function Get-TextSha256 {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Text
+  )
+
+  $sha256 = [System.Security.Cryptography.SHA256]::Create()
+  try {
+    $bytes = [System.Text.UTF8Encoding]::new($false).GetBytes($Text)
+    return ([System.BitConverter]::ToString(
+      $sha256.ComputeHash($bytes))).Replace('-', '')
+  }
+  finally {
+    $sha256.Dispose()
+  }
+}
+
 function Test-TextPattern {
   param(
     [string]$Text,
@@ -374,6 +423,36 @@ end.
   $reportText = [string]::Join("`n", $reportParts)
 
   $failures = New-Object 'System.Collections.Generic.List[string]'
+
+  foreach ($reportGolden in @(
+    [pscustomobject]@{
+      Field = 'expected_normalized_text_report_sha256'
+      File = Join-Path $caseOutput 'VCL_to_FMX_Conversion_Report.txt'
+      Label = 'text'
+    },
+    [pscustomobject]@{
+      Field = 'expected_normalized_html_report_sha256'
+      File = Join-Path $caseOutput 'VCL_to_FMX_Conversion_Report.html'
+      Label = 'HTML'
+    }
+  )) {
+    if (($null -ne $expectation.PSObject.Properties[$reportGolden.Field]) -and
+        -not [string]::IsNullOrWhiteSpace([string]$expectation.($reportGolden.Field))) {
+      if (-not (Test-Path -LiteralPath $reportGolden.File -PathType Leaf)) {
+        $failures.Add("Expected $($reportGolden.Label) report for normalized golden comparison.") | Out-Null
+        continue
+      }
+
+      $normalizedReport = Normalize-ReportArtifact `
+        -Text (Read-TextFile -Path $reportGolden.File) -CaseRoot $caseRoot
+      $actualHash = Get-TextSha256 -Text $normalizedReport
+      $expectedHash = ([string]$expectation.($reportGolden.Field)).ToUpperInvariant()
+      if ($actualHash -ne $expectedHash) {
+        $failures.Add(
+          "Normalized $($reportGolden.Label) report SHA-256 mismatch: $actualHash != $expectedHash.") | Out-Null
+      }
+    }
+  }
 
   if (($null -ne $expectation.PSObject.Properties['max_duration_ms']) -and
       ($durationMs -gt [int64]$expectation.max_duration_ms)) {

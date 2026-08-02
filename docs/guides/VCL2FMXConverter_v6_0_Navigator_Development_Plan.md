@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 006
+Current iteration: Navigator Release v6.0 Build 007
 
 ## Release Direction
 
@@ -221,3 +221,15 @@ The original E35 audit lists 14 public methods, while the later merged note
 requests deletion of five without naming them. Because public methods can be
 invoked through external code, RTTI, interfaces, or method pointers, no method
 was deleted based only on the two-reference count.
+
+## Iteration 007 — Exact Report Golden Baselines
+
+Navigator Build 007 adds exact normalized SHA-256 golden comparisons for both
+text and HTML reports. Normalization is deliberately limited to workspace
+paths, timestamps, and measured duration; totals, categories, severity,
+ordering, escaping, messages, locations, and recommendations remain protected
+byte for byte.
+
+Golden coverage now includes a mixed/manual project report, a blocking report,
+and an unknown third-party report. These baselines protect subsequent report
+model and renderer extraction from silent text/HTML drift.

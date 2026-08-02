@@ -1,6 +1,8 @@
 {
   "input_file": "contracts\\third_party\\03_unknown_vendor_component.pas",
   "expected_status": "converted",
+  "expected_normalized_text_report_sha256": "90B468249DE23D81586B723D0655A9BAB4B69AA6B0D8215B55711A6DB14C831F",
+  "expected_normalized_html_report_sha256": "B9FC741F256AB91412518C4BE518E47661A1BC483ED63FAF4D8A7FE1724F62CC",
   "expected_output_patterns": [
     "unit ContractUnknownVendorComponent",
     "VendorControl1: TVendorControl"

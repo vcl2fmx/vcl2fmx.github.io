@@ -132,6 +132,11 @@ $mainFormFmxText = Get-SourceText -RelativePath 'MainForm.fmx'
 $projectFileText = Get-SourceText -RelativePath 'VCL2FMXConverter.dproj'
 $readmeText = Get-SourceText -RelativePath 'README.md'
 $contractRunnerText = Get-SourceText -RelativePath 'tools\run_conversion_contracts.ps1'
+$reportGoldenExpectationsText = @(
+  Get-SourceText -RelativePath 'contracts\project_integration\05_real_world_report_shape\RealWorldReportShapeProject.expected.json'
+  Get-SourceText -RelativePath 'contracts\reporting\02_blocking_application_call.expected.json'
+  Get-SourceText -RelativePath 'contracts\third_party\03_unknown_vendor_component.expected.json'
+) -join "`n"
 $usesClauseText = Get-SourceText -RelativePath 'Converter.Rewrite.UsesClause.pas'
 $winApiText = Get-SourceText -RelativePath 'Converter.Advanced.WinAPI.pas'
 $activeConverterSourceText = @(
@@ -455,6 +460,18 @@ if (-not [string]::IsNullOrWhiteSpace($contractRunnerText)) {
     ) -Area 'Contract provenance' -Check 'Stale runner is rejected and identified' `
     -PassDetails 'The contract runner rejects newer source and prints executable hash/timestamp provenance.' `
     -FailDetails 'The contract runner can execute without stale-source rejection or auditable executable provenance.'
+
+  Add-RuleResult -Condition (
+      ($contractRunnerText -match 'function Normalize-ReportArtifact') -and
+      ($contractRunnerText -match 'expected_normalized_text_report_sha256') -and
+      ($contractRunnerText -match 'expected_normalized_html_report_sha256') -and
+      (([regex]::Matches($reportGoldenExpectationsText,
+        'expected_normalized_text_report_sha256')).Count -eq 3) -and
+      (([regex]::Matches($reportGoldenExpectationsText,
+        'expected_normalized_html_report_sha256')).Count -eq 3)
+    ) -Area 'Reporting' -Check 'Representative reports have exact normalized goldens' `
+    -PassDetails 'Three representative cases protect exact text and HTML report output.' `
+    -FailDetails 'Normalized text/HTML golden report coverage is incomplete.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($usesClauseText)) {

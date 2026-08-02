@@ -1,6 +1,8 @@
 {
   "input_file": "contracts\\reporting\\02_blocking_application_call.pas",
   "expected_status": "converted",
+  "expected_normalized_text_report_sha256": "7C5220D51E002E3198F6C43E2FE8589692083220A4662E6C5A962818776C9471",
+  "expected_normalized_html_report_sha256": "23B285502C9BA7E8C14DDD7BF8F8EEADFA87E60EB2F09B05F8B878A001A47F29",
   "expected_output_patterns": [
     "unit ContractBlockingApplicationCall",
     "\\bBringToFront;"
