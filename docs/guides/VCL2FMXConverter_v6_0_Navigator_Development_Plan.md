@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 017
+Current iteration: Navigator Release v6.0 Build 018
 
 ## Release Direction
 
@@ -324,3 +324,17 @@ interfaces or method pointers, absent from name-based RTTI invocation, and
 unreferenced beyond its declaration and implementation. A permanent regression
 guard protects the closed inventory, and the detailed evidence is recorded in
 `docs/notes/V6_E35_REACHABILITY_AUDIT.md`.
+
+## Iteration 018 — Parser, Generator, and Catalog Responsibilities
+
+Navigator Build 018 completes the measured oversized-unit split without
+changing converter behavior. `Converter.Parser.DFM` now owns the DFM object
+model and parsing only, while `Converter.Generator.FMX` owns FMX text
+generation. `Converter.Mapper.Component` retains mapping resolution and RTTI
+behavior, while static built-in and FMX component catalog construction lives
+in `Converter.Mapper.Catalog`.
+
+The original public parser and mapper entry points remain stable. Their
+delegation boundaries are protected by regression guards, and both new units
+are registered in the Delphi project so the split remains visible and
+designer/IDE friendly.

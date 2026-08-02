@@ -101,11 +101,13 @@ function Get-MethodBlock {
 $Results = New-Object 'System.Collections.Generic.List[object]'
 
 $mapperText = Get-SourceText -RelativePath 'Converter.Mapper.Component.pas'
+$mapperCatalogText = Get-SourceText -RelativePath 'Converter.Mapper.Catalog.pas'
 $dataAwareText = Get-SourceText -RelativePath 'Converter.Advanced.DataAware.pas'
 $integrationText = Get-SourceText -RelativePath 'Converter.Core.Integration.pas'
 $autoFixText = Get-SourceText -RelativePath 'Converter.Rewrite.AutoFixes.pas'
 $liveBindingsText = Get-SourceText -RelativePath 'Converter.Rewrite.LiveBindings.pas'
 $dfmParserText = Get-SourceText -RelativePath 'Converter.Parser.DFM.pas'
+$fmxGeneratorText = Get-SourceText -RelativePath 'Converter.Generator.FMX.pas'
 $pascalParserText = Get-SourceText -RelativePath 'Converter.Parser.Pascal.pas'
 $fileManagerText = Get-SourceText -RelativePath 'Converter.Core.FileManager.pas'
 $engineText = Get-SourceText -RelativePath 'Converter.Core.Engine.pas'
@@ -221,17 +223,19 @@ if (-not [string]::IsNullOrWhiteSpace($mapperText)) {
     -FailDetails 'RTTI property or event inventory lookup is case-sensitive.'
 }
 
+if (-not [string]::IsNullOrWhiteSpace($fmxGeneratorText)) {
+  Add-RuleResult -Condition ($fmxGeneratorText -match 'EnsureBestMatch\(Component\.ComponentClass\)') `
+    -Area 'FMX generator' -Check 'FMX generator uses EnsureBestMatch' `
+    -PassDetails 'FMX generation still routes component resolution through EnsureBestMatch.' `
+    -FailDetails 'FMX generation no longer shows the expected EnsureBestMatch call.'
+
+  Add-RuleResult -Condition (-not ($fmxGeneratorText -match 'FindBestMatch\(Component\.ComponentClass\)')) `
+    -Area 'FMX generator' -Check 'FMX generator avoids FindBestMatch for component resolution' `
+    -PassDetails 'FMX generation does not call FindBestMatch directly for component resolution.' `
+    -FailDetails 'FMX generation appears to call FindBestMatch directly for component resolution.'
+}
+
 if (-not [string]::IsNullOrWhiteSpace($dfmParserText)) {
-  Add-RuleResult -Condition ($dfmParserText -match 'EnsureBestMatch\(Component\.ComponentClass\)') `
-    -Area 'DFM parser' -Check 'DFM parser uses EnsureBestMatch' `
-    -PassDetails 'DFM parsing still routes component resolution through EnsureBestMatch.' `
-    -FailDetails 'DFM parsing no longer shows the expected EnsureBestMatch call.'
-
-  Add-RuleResult -Condition (-not ($dfmParserText -match 'FindBestMatch\(Component\.ComponentClass\)')) `
-    -Area 'DFM parser' -Check 'DFM parser avoids FindBestMatch for component resolution' `
-    -PassDetails 'DFM parsing does not call FindBestMatch directly for component resolution.' `
-    -FailDetails 'DFM parsing appears to call FindBestMatch directly for component resolution.'
-
   Add-RuleResult -Condition (($dfmParserText -match 'VCL2FMXTryReadTextFile') -and ($dfmParserText -match 'VCL2FMX_MAX_TEXT_DFM_BYTES')) `
     -Area 'DFM parser' -Check 'DFM parser uses shared encoding and size guard' `
     -PassDetails 'DFM loading uses the shared text reader and large-file guard.' `
@@ -495,6 +499,28 @@ Add-RuleResult -Condition ($e35RemainingMethods.Count -eq 0) `
   -Area 'Maintainability' -Check 'E35 audited dead methods remain removed' `
   -PassDetails 'All fourteen reachability-audited E35 methods are absent from active converter source.' `
   -FailDetails ('One or more E35 methods returned: ' + ($e35RemainingMethods -join ', '))
+
+if ((-not [string]::IsNullOrWhiteSpace($mapperText)) -and
+    (-not [string]::IsNullOrWhiteSpace($mapperCatalogText)) -and
+    (-not [string]::IsNullOrWhiteSpace($dfmParserText)) -and
+    (-not [string]::IsNullOrWhiteSpace($fmxGeneratorText))) {
+  $mapperLineCount = ($mapperText -split "\r?\n").Count
+  $dfmParserLineCount = ($dfmParserText -split "\r?\n").Count
+  Add-RuleResult -Condition (
+      ($mapperLineCount -lt 3000) -and
+      ($dfmParserLineCount -lt 1200) -and
+      ($mapperText -match 'PopulateBuiltInMappings\(FMappingDatabase\)') -and
+      ($mapperText -match 'PopulateFMXComponentCatalog\(FFMXComponents\)') -and
+      ($mapperCatalogText -match 'procedure\s+PopulateBuiltInMappings') -and
+      ($mapperCatalogText -match 'procedure\s+PopulateFMXComponentCatalog') -and
+      ($dfmParserText -match 'Converter\.Generator\.FMX') -and
+      (-not ($dfmParserText -match 'TFMXGenerator\s*=\s*class')) -and
+      ($fmxGeneratorText -match 'TFMXGenerator\s*=\s*class')
+    ) -Area 'Maintainability' -Check 'Oversized mapper and DFM responsibilities remain split' `
+    -PassDetails ('Mapper.Component is ' + $mapperLineCount + ' lines and Parser.DFM is ' +
+      $dfmParserLineCount + ' lines; static catalogs and FMX generation have dedicated owners.') `
+    -FailDetails 'The static catalogs or FMX generator returned to the oversized mapper/parser units.'
+}
 
 if (-not [string]::IsNullOrWhiteSpace($contractRunnerText)) {
   Add-RuleResult -Condition (

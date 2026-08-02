@@ -145,6 +145,7 @@ $typesText = Get-Text 'Converter.Core.Types.pas'
 $fileManagerText = Get-Text 'Converter.Core.FileManager.pas'
 $integrationText = Get-Text 'Converter.Core.Integration.pas'
 $dfmText = Get-Text 'Converter.Parser.DFM.pas'
+$fmxGeneratorText = Get-Text 'Converter.Generator.FMX.pas'
 $projectGeneratorText = Get-Text 'Converter.Project.Generator.pas'
 $mapperText = Get-Text 'Converter.Mapper.Component.pas'
 $thirdPartyText = Get-Text 'Converter.Advanced.ThirdParty.pas'
@@ -553,17 +554,17 @@ Add-Check -Condition (($winApiText -match 'AnalysisLines\.Text := VCL2FMXStripCo
   -PassDetails 'Comment-only code is skipped, color arrays are converted, and theme-dependent colors are explicitly marked for review.' `
   -FailDetails 'WinAPI or graphics rewrites may still alter comments or silently mishandle color constants.'
 
-Add-Check -Condition (($dfmText -match "SameText\(CompClass, 'TEdit'\) and SameText\(PropName, 'PasswordChar'\)") -and ($dfmText -match "ConvertedPropName := 'Password'") -and ($dfmText -match 'BoolToStr\(not SameText\(Trim\(PropValue\), ''#0''\)')) `
+Add-Check -Condition (($fmxGeneratorText -match "SameText\(CompClass, 'TEdit'\) and SameText\(PropName, 'PasswordChar'\)") -and ($fmxGeneratorText -match "ConvertedPropName := 'Password'") -and ($fmxGeneratorText -match 'BoolToStr\(not SameText\(Trim\(PropValue\), ''#0''\)')) `
   -Area DFM `
   -Check 'VCL PasswordChar is converted to FMX Password' `
   -PassDetails 'TEdit PasswordChar is translated to the FMX Password Boolean before output.' `
   -FailDetails 'TEdit PasswordChar conversion guard is missing.'
 
-Add-Check -Condition (-not ($dfmText -match 'FindBestMatch\(Component\.ComponentClass\)')) `
+Add-Check -Condition (-not ($fmxGeneratorText -match 'FindBestMatch\(Component\.ComponentClass\)')) `
   -Area DFM `
   -Check 'DFM mapper lookup uses safe path' `
-  -PassDetails 'DFM parser avoids direct FindBestMatch component resolution.' `
-  -FailDetails 'DFM parser uses direct FindBestMatch for component resolution.'
+  -PassDetails 'FMX generation avoids direct FindBestMatch component resolution.' `
+  -FailDetails 'FMX generation uses direct FindBestMatch for component resolution.'
 
 Add-Check -Condition ($projectGeneratorText -match 'VCL2FMXIsBuildArtifactFolder') `
   -Area Constants `
