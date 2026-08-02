@@ -110,6 +110,7 @@ $pascalParserText = Get-SourceText -RelativePath 'Converter.Parser.Pascal.pas'
 $fileManagerText = Get-SourceText -RelativePath 'Converter.Core.FileManager.pas'
 $engineText = Get-SourceText -RelativePath 'Converter.Core.Engine.pas'
 $reportModelText = Get-SourceText -RelativePath 'Converter.Reporting.Model.pas'
+$textReportRendererText = Get-SourceText -RelativePath 'Converter.Reporting.Text.pas'
 $generateReportMatch = [regex]::Match($engineText,
   '(?ms)^procedure\s+TConverterEngine\.GenerateReport;.*?(?=^procedure\s+TConverterEngine\.Cancel;)')
 $generateReportLineCount = if ($generateReportMatch.Success) {
@@ -365,7 +366,7 @@ if (-not [string]::IsNullOrWhiteSpace($engineText)) {
     -PassDetails 'Text and HTML reports include the captured conversion log.' `
     -FailDetails 'Conversion log no longer appears to be surfaced in reports.'
 
-  Add-RuleResult -Condition ($engineText -match 'Recommended next step:') `
+  Add-RuleResult -Condition ($textReportRendererText -match 'Recommended next step:') `
     -Area 'Reporting' -Check 'Text report includes next-step guidance' `
     -PassDetails 'Text report still includes Recommended next step.' `
     -FailDetails 'Text report no longer includes Recommended next step guidance.'
@@ -384,10 +385,10 @@ if (-not [string]::IsNullOrWhiteSpace($engineText)) {
       ($engineText -match 'procedure\s+TConverterEngine\.AddHtmlReportDocumentHead\(const AHtml: TStrings\)') -and
       ($engineText -match 'AddHtmlReportDocumentHead\(Html\);') -and
       ($generateReportLineCount -gt 0) -and
-      ($generateReportLineCount -le 1100)
+      ($generateReportLineCount -le 950)
     ) -Area 'Reporting' -Check 'Static HTML document head is split from GenerateReport' `
     -PassDetails ('GenerateReport is ' + $generateReportLineCount + ' lines and delegates its static HTML document head.') `
-    -FailDetails 'The HTML document head extraction is missing or GenerateReport has grown beyond 1,100 lines.'
+    -FailDetails 'The HTML document head extraction is missing or GenerateReport has grown beyond 950 lines.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($coreTypesText)) {
@@ -505,6 +506,20 @@ if ((-not [string]::IsNullOrWhiteSpace($reportModelText)) -and
     ) -Area 'Reporting' -Check 'Text and HTML render from an internal report snapshot' `
     -PassDetails 'Report totals, outcomes, and issue provenance are captured in the shared internal report model.' `
     -FailDetails 'The internal report snapshot or its stable issue provenance is incomplete.'
+}
+
+if ((-not [string]::IsNullOrWhiteSpace($textReportRendererText)) -and
+    $generateReportMatch.Success) {
+  Add-RuleResult -Condition (
+      ($textReportRendererText -match 'TConversionTextReportRenderer\s*=\s*class') -and
+      ($textReportRendererText -match 'const AModel:\s*TConversionReportModel') -and
+      ($textReportRendererText -match 'CONVERSION SUMMARY') -and
+      ($generateReportMatch.Value -match
+        'TConversionTextReportRenderer\.Render\(ReportModel,\s*Report\)') -and
+      (-not ($generateReportMatch.Value -match 'CONVERSION SUMMARY'))
+    ) -Area 'Reporting' -Check 'Text rendering is isolated behind the report model' `
+    -PassDetails ('The dedicated text renderer owns text output and GenerateReport is ' + $generateReportLineCount + ' lines.') `
+    -FailDetails 'Text report markup remains duplicated in GenerateReport or bypasses the report model.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($usesClauseText)) {

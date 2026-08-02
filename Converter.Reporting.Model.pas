@@ -23,11 +23,43 @@ type
     OriginalEvidence: string;
     RecommendedAction: string;
     IsBlocking: Boolean;
+    IncludeInDetailedIssues: Boolean;
+    IsDryRunPreview: Boolean;
+    SeverityText: string;
     class function Create(const AIssue: TConversionIssue;
       const ACategory, AStableIdentity: string): TConversionReportIssue; static;
   end;
 
+  TConversionReportManualGroup = record
+    Title: string;
+    RiskCategory: string;
+    OccurrenceCount: Integer;
+    AffectedLineCount: Integer;
+    DetailText: string;
+    AffectedLocations: string;
+    RecommendedSolution: string;
+    IsBlocking: Boolean;
+  end;
+
+  TConversionReportMappingUsage = record
+    ComponentName: string;
+    VCLClassName: string;
+    FMXClassName: string;
+    Action: string;
+    Confidence: Integer;
+    Vendor: string;
+    PackName: string;
+    SourceFile: string;
+    LineNumber: Integer;
+    Notes: string;
+    GeneratedOutput: Boolean;
+    class function Create(const AUsage: TMappingPackUsage):
+      TConversionReportMappingUsage; static;
+  end;
+
   TConversionReportModel = record
+    SourcePath: string;
+    OutputPath: string;
     TextReportFile: string;
     HtmlReportFile: string;
     RunTimeText: string;
@@ -53,6 +85,10 @@ type
     NeedsDataBindingReview: Boolean;
     NeedsManualCodeReview: Boolean;
     Issues: TArray<TConversionReportIssue>;
+    ManualGroups: TArray<TConversionReportManualGroup>;
+    MappingPacks: TArray<string>;
+    MappingUsages: TArray<TConversionReportMappingUsage>;
+    ConversionLogLines: TArray<string>;
   end;
 
 implementation
@@ -72,6 +108,23 @@ begin
   Result.OriginalEvidence := AIssue.OriginalCode;
   Result.RecommendedAction := AIssue.SuggestedFix;
   Result.IsBlocking := AIssue.IsBlocking;
+end;
+
+class function TConversionReportMappingUsage.Create(
+  const AUsage: TMappingPackUsage): TConversionReportMappingUsage;
+begin
+  Result := Default(TConversionReportMappingUsage);
+  Result.ComponentName := AUsage.ComponentName;
+  Result.VCLClassName := AUsage.VCLClassName;
+  Result.FMXClassName := AUsage.FMXClassName;
+  Result.Action := AUsage.Action;
+  Result.Confidence := AUsage.Confidence;
+  Result.Vendor := AUsage.Vendor;
+  Result.PackName := AUsage.PackName;
+  Result.SourceFile := AUsage.SourceFile;
+  Result.LineNumber := AUsage.LineNumber;
+  Result.Notes := AUsage.Notes;
+  Result.GeneratedOutput := AUsage.GeneratedOutput;
 end;
 
 end.

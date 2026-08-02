@@ -23,7 +23,8 @@ uses
   Converter.Core.FileManager,
   Converter.Core.Integration,
   Converter.Project.Generator,
-  Converter.Reporting.Model;
+  Converter.Reporting.Model,
+  Converter.Reporting.Text;
 
 type
   TConverterEngine = class
@@ -2326,29 +2327,10 @@ var
   ManualGroups: TStringList;
   AffectedFiles: TStringList;
   VisibleIssueCount: Integer;
-  UnknownThirdPartyCount: Integer;
   HasDetailedIssues: Boolean;
   HasBlockingOutcome: Boolean;
   IssueIndex: Integer;
   ReportModel: TConversionReportModel;
-
-  procedure AddIndentedBlock(const Header, Text: string);
-  var
-    Block: TStringList;
-    I: Integer;
-  begin
-    if Trim(Text) = '' then
-      Exit;
-    Report.Add(Header);
-    Block := TStringList.Create;
-    try
-      Block.Text := StringReplace(Text, #13#10, sLineBreak, [rfReplaceAll]);
-      for I := 0 to Block.Count - 1 do
-        Report.Add('  ' + Block[I]);
-    finally
-      Block.Free;
-    end;
-  end;
 
   function IssueGroupKey(const AIssue: TConversionIssue): string;
   begin
@@ -2741,50 +2723,6 @@ var
       Result := Format('%d sec', [Seconds]);
   end;
 
-  procedure AddUsageTextSection(const Title, EmptyText: string;
-    const ActionFilter: string; GeneratedOnly: Boolean; DetectOnly: Boolean);
-  var
-    Usage: TMappingPackUsage;
-    Index: Integer;
-    IncludeUsage: Boolean;
-  begin
-    Report.Add('');
-    Report.Add(Title);
-    Report.Add(StringOfChar('-', 40));
-    Index := 0;
-    for Usage in FContext.MappingPackUsages do
-    begin
-      IncludeUsage := True;
-      if ActionFilter <> '' then
-        IncludeUsage := SameText(Usage.Action, ActionFilter);
-      if GeneratedOnly then
-        IncludeUsage := IncludeUsage and Usage.GeneratedOutput;
-      if DetectOnly then
-        IncludeUsage := IncludeUsage and SameText(Usage.Action, 'detect_only');
-
-      if not IncludeUsage then
-        Continue;
-
-      Inc(Index);
-      Report.Add(Format('%d. %s: %s -> %s',
-        [Index, Usage.ComponentName, Usage.VCLClassName,
-         UsageTargetText(Usage)]));
-      Report.Add(Format('   Action: %s  Confidence: %d%%',
-        [Usage.Action, Usage.Confidence]));
-      if Trim(Usage.PackName) <> '' then
-        Report.Add('   Pack: ' + Usage.PackName);
-      if Trim(Usage.Vendor) <> '' then
-        Report.Add('   Vendor: ' + Usage.Vendor);
-      if Trim(UsageLocationText(Usage)) <> '' then
-        Report.Add('   Location: ' + UsageLocationText(Usage));
-      if Trim(Usage.Notes) <> '' then
-        Report.Add('   Notes: ' + Usage.Notes);
-    end;
-
-    if Index = 0 then
-      Report.Add(EmptyText);
-  end;
-
   procedure AddUsageHtmlSection(const Title, Note, EmptyText: string;
     const ActionFilter: string; GeneratedOnly: Boolean; DetectOnly: Boolean);
   var
@@ -2855,26 +2793,6 @@ var
     Html.Add('    </div>');
   end;
 
-  procedure AddMappingsUsedTextSection;
-  var
-    Usage: TMappingPackUsage;
-    Index: Integer;
-  begin
-    Report.Add('');
-    Report.Add('MAPPINGS USED');
-    Report.Add(StringOfChar('-', 40));
-    Index := 0;
-    for Usage in FContext.MappingPackUsages do
-    begin
-      Inc(Index);
-      Report.Add(Format('%d. %s: %s -> %s (%s, %d%%)',
-        [Index, Usage.ComponentName, Usage.VCLClassName,
-         UsageTargetText(Usage), Usage.Action, Usage.Confidence]));
-    end;
-    if Index = 0 then
-      Report.Add('No mapping-pack rules were used during this run.');
-  end;
-
   procedure AddMappingsUsedHtmlSection;
   var
     Usage: TMappingPackUsage;
@@ -2903,6 +2821,8 @@ var
 begin
   ReportModel.TextReportFile := TPath.Combine(FContext.Options.OutputPath, 'VCL_to_FMX_Conversion_Report.txt');
   ReportModel.HtmlReportFile := TPath.Combine(FContext.Options.OutputPath, 'VCL_to_FMX_Conversion_Report.html');
+  ReportModel.SourcePath := FContext.Options.SourcePath;
+  ReportModel.OutputPath := FContext.Options.OutputPath;
   ReportModel.FilesProcessed := FFilesProcessed;
   ReportModel.FilesConverted := FFilesConverted;
   ReportModel.FilesWithErrors := FFilesErrors;
@@ -2926,27 +2846,6 @@ begin
     RunTimeText := FormatRunTime(Secs);
     ReportModel.RunTimeText := RunTimeText;
 
-    Report.Add('');
-    Report.Add(StringOfChar('=', 50));
-    Report.Add('CONVERSION SUMMARY');
-    Report.Add(StringOfChar('=', 50));
-    Report.Add('');
-    Report.Add('Total time: ' + ReportModel.RunTimeText);
-    Report.Add(Format('Files processed: %d', [ReportModel.FilesProcessed]));
-    Report.Add(Format('Files converted: %d', [ReportModel.FilesConverted]));
-    Report.Add(Format('Files with errors: %d', [ReportModel.FilesWithErrors]));
-    Report.Add(Format('Files skipped: %d', [ReportModel.FilesSkipped]));
-    Report.Add(Format('Mapping packs loaded: %d', [ReportModel.MappingPacksLoaded]));
-    Report.Add('');
-    Report.Add('OUTPUT FILES');
-    Report.Add(StringOfChar('-', 40));
-    Report.Add('Output folder: ' + FContext.Options.OutputPath);
-    Report.Add('Text report: ' + ReportModel.TextReportFile);
-    Report.Add('HTML report: ' + ReportModel.HtmlReportFile);
-    Report.Add('Converted Pascal files are written beside converted source names in the output folder.');
-    Report.Add('Converted FMX files are written beside converted source names in the output folder.');
-
-    Report.Add('');
     InfoCount := 0;
     WarnCount := 0;
     ManualCount := 0;
@@ -2963,6 +2862,12 @@ begin
         IssueRiskCategory(Issue), IssueGroupKey(Issue) + '|' +
         UpperCase(Trim(Issue.FileName)) + '|' + IntToStr(Issue.LineNumber) +
         '|' + UpperCase(Trim(Issue.OriginalCode)));
+      ReportModel.Issues[IssueIndex].IncludeInDetailedIssues :=
+        ShouldIncludeInDetailedIssues(Issue);
+      ReportModel.Issues[IssueIndex].IsDryRunPreview :=
+        IsDryRunPreviewIssue(Issue);
+      ReportModel.Issues[IssueIndex].SeverityText :=
+        SeverityToString(Issue.Severity);
       Inc(IssueIndex);
 
       if IsDryRunPreviewIssue(Issue) then
@@ -3021,145 +2926,46 @@ begin
     ReportModel.NeedsVisualReview := HasRiskCategory('Visual review risk');
     ReportModel.NeedsDataBindingReview := HasRiskCategory('Data binding review risk');
     ReportModel.NeedsManualCodeReview := ManualCount > 0;
-
-    Report.Add(Format('Total issues: %d', [ReportModel.VisibleIssueCount]));
-    if ReportModel.InformationalCount > 0 then
-      Report.Add(Format('Informational notices: %d', [ReportModel.InformationalCount]));
-    if ReportModel.DryRunPreviewCount > 0 then
-      Report.Add(Format('Dry-run preview notices: %d', [ReportModel.DryRunPreviewCount]));
-    Report.Add(Format('Distinct files needing attention: %d', [ReportModel.AffectedFileCount]));
-    Report.Add(Format('Final status: %s', [ReportModel.StatusText]));
-    Report.Add(Format('Manual review items: %d', [ReportModel.ManualIssueCount]));
-    Report.Add(Format('Manual review groups: %d', [ReportModel.ManualGroupCount]));
-    Report.Add(Format('Blocking items: %d', [ReportModel.BlockingCount]));
-    Report.Add(Format('Files with conversion errors: %d', [ReportModel.FilesWithErrors]));
-    Report.Add('Recommended next step: ' + ReportModel.NextStepText);
-    Report.Add('');
-    Report.Add('Review note: Generated output should be reviewed in the IDE. Projects with manual-review or blocking items may not run until those items are fixed or mitigated.');
-
-    Report.Add('');
-    Report.Add('CONVERSION HEALTH');
-    Report.Add(StringOfChar('-', 40));
-    if ReportModel.HasBlockingOutcome then
-      Report.Add('Compile readiness: blocked until conversion errors or blocking items are resolved.')
-    else if ReportModel.ManualGroupCount > 0 then
-      Report.Add('Compile readiness: possible, but manual-review items may still block reliable behavior.')
-    else
-      Report.Add('Compile readiness: no blocking or manual-review categories were detected by the converter.');
-    Report.Add('Runtime behavior review: ' + IfThen(ReportModel.NeedsRuntimeReview, 'Yes', 'No'));
-    Report.Add('Visual review: ' + IfThen(ReportModel.NeedsVisualReview, 'Yes', 'No'));
-    Report.Add('Data binding review: ' + IfThen(ReportModel.NeedsDataBindingReview, 'Yes', 'No'));
-    Report.Add('Manual code review: ' + IfThen(ReportModel.NeedsManualCodeReview, 'Yes', 'No'));
-
-    Report.Add('');
-    Report.Add('MAPPING PACKS LOADED');
-    Report.Add(StringOfChar('-', 40));
-    if FContext.LoadedMappingPacks.Count = 0 then
-      Report.Add('No mapping packs were loaded for this run.')
-    else
-      for ManualIndex := 0 to FContext.LoadedMappingPacks.Count - 1 do
-        Report.Add(Format('%d. %s', [ManualIndex + 1,
-          FContext.LoadedMappingPacks[ManualIndex]]));
-
-    AddUsageTextSection('THIRD-PARTY COMPONENTS CONVERTED',
-      'No third-party mapping-pack components were fully converted.',
-      'convert', True, False);
-    AddUsageTextSection('THIRD-PARTY COMPONENTS PARTIALLY CONVERTED',
-      'No third-party mapping-pack components were partially converted.',
-      'partial', True, False);
-    AddUsageTextSection('THIRD-PARTY COMPONENTS DETECTED ONLY',
-      'No detect-only third-party mapping-pack components were found.',
-      'detect_only', False, True);
-    Report.Add('');
-    Report.Add('UNKNOWN THIRD-PARTY COMPONENTS');
-    Report.Add(StringOfChar('-', 40));
-    UnknownThirdPartyCount := 0;
-    for Issue in FContext.Issues do
-      if SameText(Issue.ProblemType, 'Unknown third-party component') then
-      begin
-        Report.Add('- ' + Issue.Message);
-        Inc(UnknownThirdPartyCount);
-      end;
-    if UnknownThirdPartyCount = 0 then
-      Report.Add('No unknown third-party components were found.');
-    AddMappingsUsedTextSection;
-
-    if ReportModel.DryRunPreviewCount > 0 then
+    SetLength(ReportModel.MappingPacks, FContext.LoadedMappingPacks.Count);
+    for ManualIndex := 0 to FContext.LoadedMappingPacks.Count - 1 do
+      ReportModel.MappingPacks[ManualIndex] :=
+        FContext.LoadedMappingPacks[ManualIndex];
+    SetLength(ReportModel.MappingUsages, FContext.MappingPackUsages.Count);
+    for ManualIndex := 0 to FContext.MappingPackUsages.Count - 1 do
+      ReportModel.MappingUsages[ManualIndex] :=
+        TConversionReportMappingUsage.Create(
+          FContext.MappingPackUsages[ManualIndex]);
+    SetLength(ReportModel.ManualGroups, ManualGroups.Count);
+    for ManualIndex := 0 to ManualGroups.Count - 1 do
     begin
-      Report.Add('');
-      Report.Add('DRY-RUN PREVIEW');
-      Report.Add(StringOfChar('-', 40));
-      Report.Add('Preview mode did not write converted source, form, or project files. These notices are not counted as conversion issues.');
-      for Issue in FContext.Issues do
-        if IsDryRunPreviewIssue(Issue) then
-          Report.Add('- ' + Issue.Message);
+      Issue := TList<TConversionIssue>(ManualGroups.Objects[ManualIndex])[0];
+      ReportModel.ManualGroups[ManualIndex].Title :=
+        IfThen(Issue.ProblemType <> '', Issue.ProblemType,
+          'Manual review required');
+      ReportModel.ManualGroups[ManualIndex].RiskCategory :=
+        IssueRiskCategory(Issue);
+      ReportModel.ManualGroups[ManualIndex].OccurrenceCount :=
+        ManualOccurrenceCount(
+          TList<TConversionIssue>(ManualGroups.Objects[ManualIndex]));
+      ReportModel.ManualGroups[ManualIndex].AffectedLineCount :=
+        ManualAffectedLineCount(
+          TList<TConversionIssue>(ManualGroups.Objects[ManualIndex]));
+      ReportModel.ManualGroups[ManualIndex].DetailText :=
+        BuildManualDetailText(
+          TList<TConversionIssue>(ManualGroups.Objects[ManualIndex]));
+      ReportModel.ManualGroups[ManualIndex].AffectedLocations :=
+        BuildOccurrenceText(
+          TList<TConversionIssue>(ManualGroups.Objects[ManualIndex]));
+      ReportModel.ManualGroups[ManualIndex].RecommendedSolution :=
+        BuildSuggestedFixText(
+          TList<TConversionIssue>(ManualGroups.Objects[ManualIndex]));
+      ReportModel.ManualGroups[ManualIndex].IsBlocking := Issue.IsBlocking;
     end;
-    Report.Add('');
-    Report.Add('DETAILED ISSUES');
-    Report.Add(StringOfChar('-', 40));
+    SetLength(ReportModel.ConversionLogLines, FConversionLog.Count);
+    for ManualIndex := 0 to FConversionLog.Count - 1 do
+      ReportModel.ConversionLogLines[ManualIndex] := FConversionLog[ManualIndex];
 
-    for Issue in FContext.Issues do
-    begin
-      if not ShouldIncludeInDetailedIssues(Issue) then
-        Continue;
-      Report.Add(Format('[%s] %s', [SeverityToString(Issue.Severity), Issue.Message]));
-      if Issue.FileName <> '' then
-        Report.Add('  File: ' + Issue.FileName);
-      if Issue.LineNumber > 0 then
-        Report.Add('  Line: ' + IntToStr(Issue.LineNumber));
-      if Issue.IsBlocking then
-        Report.Add('  Blocking: Yes');
-      if Issue.ProblemType <> '' then
-        Report.Add('  Problem type: ' + Issue.ProblemType);
-      Report.Add('  Risk category: ' + IssueRiskCategory(Issue));
-      if Trim(Issue.OriginalCode) <> '' then
-        Report.Add('  Original: ' + StringReplace(Trim(Issue.OriginalCode), sLineBreak, ' | ', [rfReplaceAll]));
-      if Issue.SuggestedFix <> '' then
-        Report.Add('  Recommendation: ' + Issue.SuggestedFix);
-      Report.Add('');
-    end;
-
-    if ReportModel.ManualGroupCount > 0 then
-    begin
-      Report.Add('MANUAL REVIEW ITEMS');
-      Report.Add(StringOfChar('-', 40));
-      Report.Add('');
-      for ManualIndex := 0 to ManualGroups.Count - 1 do
-      begin
-        Issue := TList<TConversionIssue>(ManualGroups.Objects[ManualIndex])[0];
-        Report.Add(Format('%d. %s', [ManualIndex + 1,
-          IfThen(Issue.ProblemType <> '', Issue.ProblemType, 'Manual review required')]));
-        if Issue.IsBlocking then
-          Report.Add('Blocking: Yes');
-        Report.Add('Risk category: ' + IssueRiskCategory(Issue));
-        Report.Add('Occurrences: ' + IntToStr(ManualOccurrenceCount(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex]))));
-        if ManualAffectedLineCount(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex])) >
-           ManualOccurrenceCount(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex])) then
-          Report.Add('Affected lines: ' + IntToStr(ManualAffectedLineCount(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex]))));
-        Report.Add('Detail: ' + BuildManualDetailText(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex])));
-        AddIndentedBlock('Affected locations:', BuildOccurrenceText(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex])));
-        AddIndentedBlock('Recommended solution:', BuildSuggestedFixText(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex])));
-        Report.Add('');
-      end;
-    end;
-
-    Report.Add('');
-    Report.Add('ISSUE SUMMARY');
-    Report.Add(StringOfChar('-', 30));
-    Report.Add(Format('Informational: %d', [ReportModel.InformationalCount]));
-    Report.Add(Format('Warnings: %d', [ReportModel.WarningCount]));
-    Report.Add(Format('Manual review required: %d', [ReportModel.ManualGroupCount]));
-    Report.Add(Format('Errors: %d', [ReportModel.ErrorCount]));
-    Report.Add(Format('Blocking items: %d', [ReportModel.BlockingCount]));
-
-    if FConversionLog.Count > 0 then
-    begin
-      Report.Add('');
-      Report.Add('CONVERSION LOG');
-      Report.Add(StringOfChar('-', 80));
-      Report.AddStrings(FConversionLog);
-    end;
-
+    TConversionTextReportRenderer.Render(ReportModel, Report);
     Report.SaveToFile(ReportModel.TextReportFile, TEncoding.UTF8);
 
     UILog(Format('Report saved to: %s', [ReportModel.TextReportFile]));

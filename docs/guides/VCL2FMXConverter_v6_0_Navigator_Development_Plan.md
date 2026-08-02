@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 009
+Current iteration: Navigator Release v6.0 Build 010
 
 ## Release Direction
 
@@ -249,3 +249,11 @@ HTML summary rendering. It captures conversion totals, risk outcomes, paths,
 status, next-step guidance, and issue snapshots with stable identity,
 severity, category, source span, original evidence, and recommended action.
 The existing normalized goldens must remain byte-equivalent.
+
+## Iteration 010 — Model-Backed Text Renderer
+
+Navigator Build 010 moves all text report rendering into
+`Converter.Reporting.Text`. The renderer consumes only the internal report
+snapshot; the engine no longer contains a second text-rendering path.
+`GenerateReport` falls from 1,099 to 904 lines while all three exact text and
+HTML goldens remain unchanged.
