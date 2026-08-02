@@ -1,6 +1,6 @@
 ﻿{VCL2FMX (c) 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
- Version v5.0 Vanguard
+ Version v6.0 Navigator
  Written and built in the USA}
 
 unit Converter.Rewrite.RuntimeNormalization;

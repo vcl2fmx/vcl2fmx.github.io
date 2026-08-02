@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 002
+Current iteration: Navigator Release v6.0 Build 005
 
 ## Release Direction
 
@@ -197,3 +197,10 @@ tables now use ordinal, case-insensitive comparers. These keys are Delphi
 identifiers, so their lookup semantics must match the language rather than
 the spelling found in one source file. Other dictionaries remain unchanged
 until their key semantics are reviewed individually.
+
+## Iteration 005 — Navigator Identity Completion
+
+Navigator Build 005 removes the inherited v5.0 Vanguard identity from active
+converter unit headers and generated-project banners. Historical v5 website,
+documentation, help, and archived sample material remain labeled Vanguard
+because they describe the v5 release rather than the active v6 program.
