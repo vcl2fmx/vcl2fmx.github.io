@@ -1,6 +1,6 @@
 ﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
- Version v5.0 Vanguard
+ Version v6.0 Navigator Build 001
  Written and built in the USA}
 
 unit MainForm;
@@ -8,7 +8,7 @@ unit MainForm;
 interface
 
 {$IFNDEF MSWINDOWS}
-  {$MESSAGE FATAL 'VCL2FMXConverter v5.0 Vanguard desktop UI is currently supported only on Windows.'}
+  {$MESSAGE FATAL 'VCL2FMXConverter v6.0 Navigator desktop UI is currently supported only on Windows.'}
 {$ENDIF}
 
 uses
@@ -60,7 +60,7 @@ type
     HeroAccentRibbonLarge: TRectangle;
     HeroAccentRibbonMid: TRectangle;
     HeroAccentRibbonSmall: TRectangle;
-    HeroVanguardGhost: TLabel;
+    HeroNavigatorGhost: TLabel;
     HeroVersionBadge: TRectangle;
     TabNavBar: TLayout;
     TabButtonDashboard: TRectangle;
@@ -121,6 +121,7 @@ type
     lblFileTypeCaption: TLabel;
     cmbFileTypes: TComboBox;
     chkRecursive: TCheckBox;
+    chkDryRunPreview: TCheckBox;
     ProjectActionCard: TRectangle;
     lblProjectActionTitle: TLabel;
     lblProjectActionBody: TLabel;
@@ -210,7 +211,6 @@ type
     FLastManualReviewCount: Integer;
     FLastBlockingCount: Integer;
     FLastRunDurationText: string;
-    FDryRunPreviewCheckBox: TCheckBox;
     procedure Log(const Msg: string);
     function ConversionThreadProc(SourcePath, TargetPath: string;
       FileTypeIndex: Integer; Recursive, EnableCritical, EnableDataAware,
@@ -314,23 +314,7 @@ begin
   chkDataAware.IsChecked := True;
   chkThirdParty.IsChecked := True;
   chkWinAPI.IsChecked := True;
-  if Assigned(FDryRunPreviewCheckBox) then
-    FDryRunPreviewCheckBox.IsChecked := False;
-  if not Assigned(FDryRunPreviewCheckBox) then
-  begin
-    FDryRunPreviewCheckBox := TCheckBox.Create(Self);
-    FDryRunPreviewCheckBox.Parent := ProjectCard;
-    FDryRunPreviewCheckBox.Text := 'Dry-run preview';
-    FDryRunPreviewCheckBox.StyledSettings := [TStyledSetting.Family, TStyledSetting.Style, TStyledSetting.FontColor];
-    FDryRunPreviewCheckBox.TextSettings.Font.Size := 14;
-    FDryRunPreviewCheckBox.Position.X := chkRecursive.Position.X + chkRecursive.Width + 28;
-    FDryRunPreviewCheckBox.Position.Y := chkRecursive.Position.Y;
-    FDryRunPreviewCheckBox.Width := 180;
-    FDryRunPreviewCheckBox.Height := chkRecursive.Height;
-    FDryRunPreviewCheckBox.IsChecked := False;
-    FDryRunPreviewCheckBox.OnChange := RuleOptionChanged;
-    FDryRunPreviewCheckBox.Hint := 'Create reports without writing converted source, form, or project files.';
-  end;
+  chkDryRunPreview.IsChecked := False;
 
   MemoLog.Lines.Text :=
     'Choose a VCL source folder and an FMX output folder, then start the conversion.';
@@ -1817,8 +1801,7 @@ begin
   chkDataAware.IsChecked := True;
   chkThirdParty.IsChecked := True;
   chkWinAPI.IsChecked := True;
-  if Assigned(FDryRunPreviewCheckBox) then
-    FDryRunPreviewCheckBox.IsChecked := False;
+  chkDryRunPreview.IsChecked := False;
 
   FPendingCompletion := Default(TConversionCompletionSnapshot);
 
@@ -1957,16 +1940,14 @@ begin
     'Data Aware: ' + EnabledText(chkDataAware.IsChecked) + sLineBreak +
     '3rd Party: ' + EnabledText(chkThirdParty.IsChecked) + sLineBreak +
     'WinAPI: ' + EnabledText(chkWinAPI.IsChecked) + sLineBreak +
-    'Dry-run preview: ' + EnabledText(Assigned(FDryRunPreviewCheckBox) and
-      FDryRunPreviewCheckBox.IsChecked);
+    'Dry-run preview: ' + EnabledText(chkDryRunPreview.IsChecked);
 
   lblRulesSummaryValue.Text :=
     'Critical Areas = ' + EnabledText(chkCritical.IsChecked) + sLineBreak +
     'Data Aware = ' + EnabledText(chkDataAware.IsChecked) + sLineBreak +
     '3rd Party = ' + EnabledText(chkThirdParty.IsChecked) + sLineBreak +
     'WinAPI = ' + EnabledText(chkWinAPI.IsChecked) + sLineBreak +
-    'Dry-run preview = ' + EnabledText(Assigned(FDryRunPreviewCheckBox) and
-      FDryRunPreviewCheckBox.IsChecked);
+    'Dry-run preview = ' + EnabledText(chkDryRunPreview.IsChecked);
 end;
 
 procedure TfrmMain.RuleOptionChanged(Sender: TObject);
@@ -1991,8 +1972,7 @@ begin
   chkDataAware.Enabled := not Starting;
   chkThirdParty.Enabled := not Starting;
   chkWinAPI.Enabled := not Starting;
-  if Assigned(FDryRunPreviewCheckBox) then
-    FDryRunPreviewCheckBox.Enabled := not Starting;
+  chkDryRunPreview.Enabled := not Starting;
 
   if Starting then
   begin
@@ -2199,11 +2179,11 @@ begin
     HeroAccentRibbonLarge.Visible := False;
     HeroAccentRibbonMid.Visible := False;
     HeroAccentRibbonSmall.Visible := False;
-    HeroVanguardGhost.Position.X := 500;
-    HeroVanguardGhost.Position.Y := -10;
-    HeroVanguardGhost.Size.Width := 690;
-    HeroVanguardGhost.Size.Height := 122;
-    HeroVanguardGhost.TextSettings.Font.Size := 92;
+    HeroNavigatorGhost.Position.X := 500;
+    HeroNavigatorGhost.Position.Y := -10;
+    HeroNavigatorGhost.Size.Width := 690;
+    HeroNavigatorGhost.Size.Height := 122;
+    HeroNavigatorGhost.TextSettings.Font.Size := 92;
     HeroBackgroundPaintBox.Repaint;
     lblHeader.Position.Y := 18;
     lblHeader.Size.Width := 620;
@@ -2284,11 +2264,11 @@ begin
     HeroAccentRibbonLarge.Visible := False;
     HeroAccentRibbonMid.Visible := False;
     HeroAccentRibbonSmall.Visible := False;
-    HeroVanguardGhost.Position.X := 520;
-    HeroVanguardGhost.Position.Y := -12;
-    HeroVanguardGhost.Size.Width := 700;
-    HeroVanguardGhost.Size.Height := 150;
-    HeroVanguardGhost.TextSettings.Font.Size := 112;
+    HeroNavigatorGhost.Position.X := 520;
+    HeroNavigatorGhost.Position.Y := -12;
+    HeroNavigatorGhost.Size.Width := 700;
+    HeroNavigatorGhost.Size.Height := 150;
+    HeroNavigatorGhost.TextSettings.Font.Size := 112;
     HeroBackgroundPaintBox.Repaint;
     lblHeader.Position.Y := 26;
     lblHeader.Size.Width := 560;
@@ -2582,8 +2562,7 @@ begin
   EnableDataAware := chkDataAware.IsChecked;
   EnableThirdParty := chkThirdParty.IsChecked;
   EnableWinAPI := chkWinAPI.IsChecked;
-  DryRunPreview := Assigned(FDryRunPreviewCheckBox) and
-    FDryRunPreviewCheckBox.IsChecked;
+  DryRunPreview := chkDryRunPreview.IsChecked;
 
   FLastOutputPath := Dst;
   FLastTextReportPath := '';

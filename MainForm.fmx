@@ -2,7 +2,7 @@
   Left = 0
   Top = 0
   ActiveControl = edtSource
-  Caption = 'VCL to FMX Converter v5.0 Vanguard'
+  Caption = 'VCL to FMX Converter v6.0 Navigator - Build 001'
   ClientHeight = 820
   ClientWidth = 1345
   Fill.Color = xFFF2F7FD
@@ -315,7 +315,7 @@
         XRadius = 18.000000000000000000
         YRadius = 18.000000000000000000
       end
-      object HeroVanguardGhost: TLabel
+      object HeroNavigatorGhost: TLabel
         StyledSettings = []
         Opacity = 0.090000003576278690
         Position.X = 520.000000000000000000
@@ -327,7 +327,7 @@
         TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
         TextSettings.HorzAlign = Center
-        Text = 'VANGUARD'
+        Text = 'NAVIGATOR'
         Visible = False
       end
       object lblHeader: TLabel
@@ -360,7 +360,7 @@
         Opacity = 0.140000000596046400
         Position.X = 27.000000000000000000
         Position.Y = 78.000000000000000000
-        Size.Width = 224.000000000000000000
+        Size.Width = 310.000000000000000000
         Size.Height = 30.000000000000000000
         Size.PlatformDefault = False
         Stroke.Kind = None
@@ -370,15 +370,15 @@
       object lblVersion: TLabel
         AutoSize = True
         StyledSettings = []
-        Position.X = 69.000000000000000000
+        Position.X = 48.000000000000000000
         Position.Y = 84.000000000000000000
-        Size.Width = 153.000000000000000000
+        Size.Width = 264.000000000000000000
         Size.Height = 18.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.Size = 13.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
-        Text = 'Vanguard Release  v5.0'
+        Text = 'Navigator Release  v6.0  Build 001'
       end
       object lblStatusCaption: TLabel
         StyledSettings = []
@@ -1020,6 +1020,18 @@
             Size.PlatformDefault = False
             Text = 'Include subfolders'
             TextSettings.Font.Size = 14.000000000000000000
+          end
+          object chkDryRunPreview: TCheckBox
+            StyledSettings = [Family, Style, FontColor]
+            Hint = 'Create reports without writing converted source, form, or project files.'
+            Position.X = 442.000000000000000000
+            Position.Y = 285.000000000000000000
+            Size.Width = 180.000000000000000000
+            Size.Height = 32.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Dry-run preview'
+            TextSettings.Font.Size = 14.000000000000000000
+            OnChange = RuleOptionChanged
           end
         end
         object ProjectActionCard: TRectangle

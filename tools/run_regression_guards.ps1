@@ -119,6 +119,9 @@ else {
 $coreTypesText = Get-SourceText -RelativePath 'Converter.Core.Types.pas'
 $projectGeneratorText = Get-SourceText -RelativePath 'Converter.Project.Generator.pas'
 $mainFormText = Get-SourceText -RelativePath 'MainForm.pas'
+$mainFormFmxText = Get-SourceText -RelativePath 'MainForm.fmx'
+$projectFileText = Get-SourceText -RelativePath 'VCL2FMXConverter.dproj'
+$readmeText = Get-SourceText -RelativePath 'README.md'
 $usesClauseText = Get-SourceText -RelativePath 'Converter.Rewrite.UsesClause.pas'
 $winApiText = Get-SourceText -RelativePath 'Converter.Advanced.WinAPI.pas'
 
@@ -323,6 +326,26 @@ if (-not [string]::IsNullOrWhiteSpace($mainFormText)) {
     ) -Area 'UI summary' -Check 'Main form status wording matches report outcomes' `
     -PassDetails 'Main form summary text still aligns with the current report status wording.' `
     -FailDetails 'Main form summary text no longer aligns with the current report status wording.'
+
+  Add-RuleResult -Condition (
+      ($mainFormText -match 'chkDryRunPreview:\s*TCheckBox;') -and
+      (-not ($mainFormText -match 'TCheckBox\.Create\s*\(')) -and
+      ($mainFormFmxText -match 'object\s+chkDryRunPreview:\s*TCheckBox') -and
+      ($mainFormFmxText -match 'OnChange\s*=\s*RuleOptionChanged')
+    ) -Area 'Designer UI' -Check 'Dry-run checkbox is designer-owned' `
+    -PassDetails 'The dry-run checkbox is declared in MainForm.fmx and no checkbox is constructed at runtime.' `
+    -FailDetails 'The dry-run checkbox is missing from MainForm.fmx or runtime checkbox construction has returned.'
+
+  Add-RuleResult -Condition (
+      ($mainFormText -match 'Version v6\.0 Navigator Build 001') -and
+      ($mainFormFmxText -match "Text = 'Navigator Release\s+v6\.0\s+Build 001'") -and
+      ($mainFormFmxText -match "Caption = 'VCL to FMX Converter v6\.0 Navigator - Build 001'") -and
+      ($projectFileText -match 'FileVersion=6\.0\.0\.1') -and
+      ($projectFileText -match '<VerInfo_Build>1</VerInfo_Build>') -and
+      ($readmeText -match 'VCL2FMXConverter v6\.0 Navigator.+Build 001')
+    ) -Area 'Build identity' -Check 'Navigator Build 001 identity is synchronized' `
+    -PassDetails 'Source header, designer text, executable version metadata, and README identify Navigator Build 001.' `
+    -FailDetails 'Navigator Build 001 identity is inconsistent across source, designer, project metadata, or README.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($usesClauseText)) {
@@ -384,7 +407,7 @@ $passCount = @($Results | Where-Object { $_.Status -eq 'Pass' }).Count
 $infoCount = @($Results | Where-Object { $_.Status -eq 'Info' }).Count
 
 $sb = New-Object System.Text.StringBuilder
-[void]$sb.AppendLine('VCL2FMXConverter V5 Regression Guards')
+[void]$sb.AppendLine('VCL2FMXConverter v6.0 Navigator Regression Guards')
 [void]$sb.AppendLine('=====================================')
 [void]$sb.AppendLine('')
 [void]$sb.AppendLine('Generated: ' + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'))
@@ -393,7 +416,7 @@ $sb = New-Object System.Text.StringBuilder
 [void]$sb.AppendLine(('Summary: {0} blocker(s), {1} warning(s), {2} pass item(s), {3} info item(s)' -f $blockerCount, $warningCount, $passCount, $infoCount))
 [void]$sb.AppendLine('')
 
-foreach ($group in @('Mapper', 'DFM parser', 'Data-aware', 'Integration', 'File scan', 'Engine', 'Encoding', 'Project generator', 'Uses clause', 'WinAPI', 'Reporting', 'UI summary', 'Workspace')) {
+foreach ($group in @('Mapper', 'DFM parser', 'Data-aware', 'Integration', 'File scan', 'Engine', 'Encoding', 'Project generator', 'Uses clause', 'WinAPI', 'Reporting', 'UI summary', 'Designer UI', 'Build identity', 'Workspace')) {
   $groupItems = @($Results | Where-Object { $_.Area -eq $group })
   if ($groupItems.Count -eq 0) {
     continue
