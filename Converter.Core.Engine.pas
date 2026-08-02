@@ -15,6 +15,7 @@ uses
   System.Math,
   System.DateUtils,
   System.Generics.Collections,
+  System.Generics.Defaults,
   System.RegularExpressions,
     FMX.Forms,
     System.Types,
@@ -689,6 +690,7 @@ var
   ComponentName: string;
   VclClassName: string;
   FirstItem: Boolean;
+  SuggestedClasses: TDictionary<string, Boolean>;
 
   function JsonEscape(const Value: string): string;
   begin
@@ -742,8 +744,18 @@ begin
     Exit;
 
   Suggestions := TStringList.Create;
+  SuggestedClasses := TDictionary<string, Boolean>.Create(
+    TIStringComparer.Ordinal);
   try
-    Suggestions.Add('[');
+    Suggestions.Add('{');
+    Suggestions.Add('  "schema": "' + VCL2FMX_MAPPING_PACK_SCHEMA + '",');
+    Suggestions.Add('  "pack_name": "Generated_MappingPack_Starter",');
+    Suggestions.Add('  "pack_id": "generated.mapping.starter",');
+    Suggestions.Add('  "vendor": "User-authored",');
+    Suggestions.Add('  "version": "0.1.0",');
+    Suggestions.Add('  "description": "Starter pack generated from conversion mapping gaps; review every rule and replace placeholder targets before use.",');
+    Suggestions.Add('  "mode": "conservative",');
+    Suggestions.Add('  "rules": [');
     FirstItem := True;
 
     for Issue in FContext.Issues do
@@ -761,22 +773,35 @@ begin
         ComponentName := Match.Groups[1].Value;
         VclClassName := Match.Groups[2].Value;
       end;
+      if Trim(VclClassName) = '' then
+        Continue;
+      if SuggestedClasses.ContainsKey(VclClassName) then
+        Continue;
+      SuggestedClasses.Add(VclClassName, True);
 
       if not FirstItem then
-        Suggestions.Add('  ,');
+        Suggestions.Add('    ,');
       FirstItem := False;
-      Suggestions.Add('  {');
-      Suggestions.Add('    "vcl_class": "' + JsonEscape(VclClassName) + '",');
-      Suggestions.Add('    "component_name": "' + JsonEscape(ComponentName) + '",');
-      Suggestions.Add('    "problem_type": "' + JsonEscape(Issue.ProblemType) + '",');
-      Suggestions.Add('    "source_file": "' + JsonEscape(Issue.FileName) + '",');
-      Suggestions.Add('    "line": ' + IntToStr(Issue.LineNumber) + ',');
-      Suggestions.Add('    "original_code": "' + JsonEscape(Issue.OriginalCode) + '",');
-      Suggestions.Add('    "suggested_authoring_action": "' + JsonEscape(Issue.SuggestedFix) + '"');
-      Suggestions.Add('  }');
+      Suggestions.Add('    {');
+      Suggestions.Add('      "vcl_class": "' + JsonEscape(VclClassName) + '",');
+      Suggestions.Add('      "fmx_class": "",');
+      Suggestions.Add('      "action": "manual_review",');
+      Suggestions.Add('      "confidence": 0,');
+      Suggestions.Add('      "notes": "' + JsonEscape(Issue.Message) + '",');
+      Suggestions.Add('      "manual_review_reason": "' +
+        JsonEscape(Issue.SuggestedFix) + '",');
+      Suggestions.Add('      "component_name": "' + JsonEscape(ComponentName) + '",');
+      Suggestions.Add('      "problem_type": "' + JsonEscape(Issue.ProblemType) + '",');
+      Suggestions.Add('      "source_file": "' + JsonEscape(Issue.FileName) + '",');
+      Suggestions.Add('      "line": ' + IntToStr(Issue.LineNumber) + ',');
+      Suggestions.Add('      "original_code": "' + JsonEscape(Issue.OriginalCode) + '",');
+      Suggestions.Add('      "suggested_authoring_action": "' +
+        JsonEscape(Issue.SuggestedFix) + '"');
+      Suggestions.Add('    }');
     end;
 
-    Suggestions.Add(']');
+    Suggestions.Add('  ]');
+    Suggestions.Add('}');
 
     if FirstItem then
       Exit;
@@ -792,6 +817,7 @@ begin
       -1,
       False);
   finally
+    SuggestedClasses.Free;
     Suggestions.Free;
   end;
 end;

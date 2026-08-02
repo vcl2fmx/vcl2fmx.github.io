@@ -1,4 +1,5 @@
-{
+﻿{
+  "schema": "vcl2fmx.mapping-pack.v1",
   "pack_name": "RemObjects_MappingPack_v2",
   "pack_id": "remobjects.mapping.v2",
   "vendor": "RemObjects Software",

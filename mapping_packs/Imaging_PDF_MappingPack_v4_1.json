@@ -1,4 +1,5 @@
-{
+﻿{
+  "schema": "vcl2fmx.mapping-pack.v1",
   "pack_name": "Imaging_PDF_MappingPack_v2",
   "pack_id": "imaging.pdf.mapping.v2",
   "vendor": "Gnostice, ImageEn, PDF/Imaging Libraries",

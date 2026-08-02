@@ -1,4 +1,5 @@
-{
+﻿{
+  "schema": "vcl2fmx.mapping-pack.v1",
   "pack_name": "EhLib_MappingPack_v2",
   "pack_id": "ehlib.complete.v2",
   "vendor": "EhLib",

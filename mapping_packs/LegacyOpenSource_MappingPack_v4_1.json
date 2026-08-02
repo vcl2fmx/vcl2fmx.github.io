@@ -1,4 +1,5 @@
-{
+﻿{
+  "schema": "vcl2fmx.mapping-pack.v1",
   "pack_name": "LegacyOpenSource_MappingPack_v2",
   "pack_id": "legacyopensource.mapping.v2",
   "vendor": "TurboPack, SynEdit, HtmlViewer, Delphi HTML Components",

@@ -1,4 +1,5 @@
-{
+﻿{
+  "schema": "vcl2fmx.mapping-pack.v1",
   "pack_name": "Skia4Delphi_MappingPack_v2",
   "pack_id": "skia4delphi.mapping.v2",
   "vendor": "Skia4Delphi",

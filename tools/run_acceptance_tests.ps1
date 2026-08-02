@@ -586,6 +586,33 @@ Add-Check -Condition (($thirdPartyText -match 'TThirdPartyHandler') -and ($third
 
 Test-JsonMappingPacks
 
+$mappingValidatorScript = Join-Path $ProjectRoot 'tools\validate_mapping_packs.ps1'
+$mappingValidationReport = Join-Path $env:TEMP (
+  'VCL2FMX_MAPPING_PACK_VALIDATION_{0}.txt' -f
+  (Get-Date -Format 'yyyy-MM-dd_HHmmss'))
+if (Test-Path -LiteralPath $mappingValidatorScript) {
+  $mappingValidation = Invoke-Process -FilePath 'powershell.exe' `
+    -Arguments ('-ExecutionPolicy Bypass -File "{0}" -ProjectRoot "{1}" -ReportPath "{2}"' -f
+      $mappingValidatorScript, $ProjectRoot, $mappingValidationReport) `
+    -WorkingDirectory $ProjectRoot
+  Add-Check -Condition ($mappingValidation.ExitCode -eq 0) `
+    -Area 'Mapping packs' `
+    -Check 'Schema and uniqueness validation command passes' `
+    -PassDetails ('Mapping-pack validation report: ' + $mappingValidationReport) `
+    -FailDetails $(if (($mappingValidation.StdOut + $mappingValidation.StdErr).Trim() -ne '') {
+      ($mappingValidation.StdOut + $mappingValidation.StdErr).Trim()
+    } else {
+      'Mapping-pack validation command returned a nonzero exit code.'
+    })
+}
+else {
+  Add-Check -Condition $false `
+    -Area 'Mapping packs' `
+    -Check 'Schema and uniqueness validation command is available' `
+    -PassDetails 'The required mapping-pack validator is present.' `
+    -FailDetails ('Required validation command is missing: ' + $mappingValidatorScript)
+}
+
 $guardScript = Join-Path $ProjectRoot 'tools\run_regression_guards.ps1'
 $guardReport = Join-Path $env:TEMP ('VCL2FMX_REGRESSION_FOR_ACCEPTANCE_{0}.txt' -f (Get-Date -Format 'yyyy-MM-dd_HHmmss'))
 $guard = Invoke-Process -FilePath 'powershell.exe' `

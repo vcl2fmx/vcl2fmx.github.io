@@ -1,4 +1,5 @@
-{
+﻿{
+  "schema": "vcl2fmx.mapping-pack.v1",
   "pack_name": "CleverComponents_MappingPack_v2",
   "pack_id": "clevercomponents.mapping.v2",
   "vendor": "Clever Components",

@@ -1,4 +1,5 @@
-{
+﻿{
+  "schema": "vcl2fmx.mapping-pack.v1",
   "pack_name": "LMD_MappingPack_v2",
   "pack_id": "lmd.complete.v2",
   "vendor": "LMD Innovative",

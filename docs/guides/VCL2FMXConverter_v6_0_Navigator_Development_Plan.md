@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 018
+Current iteration: Navigator Release v6.0 Build 019
 
 ## Release Direction
 
@@ -338,3 +338,17 @@ The original public parser and mapper entry points remain stable. Their
 delegation boundaries are protected by regression guards, and both new units
 are registered in the Delphi project so the split remains visible and
 designer/IDE friendly.
+
+## Iteration 019 — Mapping-Pack Schema Discipline
+
+Navigator Build 019 establishes `vcl2fmx.mapping-pack.v1` as the explicit
+mapping-pack schema for all 22 bundled packs and 493 rules. Runtime loading now
+rejects missing or unsupported schema identifiers, malformed semantic versions,
+unsupported modes/actions, invalid class names, confidence outside 0–100,
+duplicate pack IDs, duplicate classes within a pack, and cross-pack class
+collisions.
+
+The reusable `tools/validate_mapping_packs.ps1` command applies the same
+discipline before release or authoring work. Mapping-gap export now produces a
+complete schema-bearing starter pack instead of a loose suggestion array,
+deduplicates candidate classes, and keeps source evidence for review.

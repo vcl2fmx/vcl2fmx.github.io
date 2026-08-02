@@ -1,4 +1,5 @@
-{
+﻿{
+  "schema": "vcl2fmx.mapping-pack.v1",
   "pack_name": "TRichView_MappingPack_v2",
   "pack_id": "trichview.mapping.v2",
   "vendor": "TRichView",

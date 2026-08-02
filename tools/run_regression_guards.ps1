@@ -117,6 +117,7 @@ $htmlReportRendererText = Get-SourceText -RelativePath 'Converter.Reporting.Html
 $jsonReportRendererText = Get-SourceText -RelativePath 'Converter.Reporting.Json.pas'
 $acceptanceText = Get-SourceText -RelativePath 'tools\run_acceptance_tests.ps1'
 $mappingSmokeGuardText = Get-SourceText -RelativePath 'tests\mapping_pack_smoke\run_mapping_pack_smoke_guard.ps1'
+$mappingPackValidatorText = Get-SourceText -RelativePath 'tools\validate_mapping_packs.ps1'
 $frenchBetaGuardText = Get-SourceText -RelativePath 'tests\french_beta_regression\run_guard.ps1'
 $generateReportMatch = [regex]::Match($engineText,
   '(?ms)^procedure\s+TConverterEngine\.GenerateReport;.*?(?=^procedure\s+TConverterEngine\.Cancel;)')
@@ -520,6 +521,31 @@ if ((-not [string]::IsNullOrWhiteSpace($mapperText)) -and
     -PassDetails ('Mapper.Component is ' + $mapperLineCount + ' lines and Parser.DFM is ' +
       $dfmParserLineCount + ' lines; static catalogs and FMX generation have dedicated owners.') `
     -FailDetails 'The static catalogs or FMX generator returned to the oversized mapper/parser units.'
+}
+
+if ((-not [string]::IsNullOrWhiteSpace($mappingPackValidatorText)) -and
+    (-not [string]::IsNullOrWhiteSpace($mapperText)) -and
+    (-not [string]::IsNullOrWhiteSpace($engineText))) {
+  $mappingPackFiles = @(Get-ChildItem -LiteralPath (
+    Join-Path $ProjectRoot 'mapping_packs') -File -Filter '*.json')
+  $schemaPackCount = @($mappingPackFiles | Where-Object {
+    ([IO.File]::ReadAllText($_.FullName) -match
+      '"schema"\s*:\s*"vcl2fmx\.mapping-pack\.v1"')
+  }).Count
+  Add-RuleResult -Condition (
+      ($mappingPackFiles.Count -eq 22) -and
+      ($schemaPackCount -eq $mappingPackFiles.Count) -and
+      ($mapperText -match 'VCL2FMX_MAPPING_PACK_SCHEMA') -and
+      ($mapperText -match 'FLoadedMappingPackIds') -and
+      ($mapperText -match 'FMappingPackClassOwners') -and
+      ($mapperText -match 'confidence outside 0 through 100') -and
+      ($mappingPackValidatorText -match 'vcl2fmx\.mapping-pack\.v1') -and
+      ($mappingPackValidatorText -match 'duplicates vcl_class') -and
+      ($engineText -match 'Generated_MappingPack_Starter') -and
+      ($engineText -match 'VCL2FMX_MAPPING_PACK_SCHEMA')
+    ) -Area 'Mapping packs' -Check 'Schema, duplicate, and authoring discipline is enforced' `
+    -PassDetails 'All 22 packs declare schema v1; runtime and command-line validation reject duplicate IDs/classes and invalid confidence; authoring export produces a schema-valid starter.' `
+    -FailDetails 'Mapping-pack schema metadata, duplicate detection, confidence validation, or starter export discipline is incomplete.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($contractRunnerText)) {

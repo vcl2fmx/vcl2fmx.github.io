@@ -11,6 +11,7 @@ uses
   System.Classes, System.SysUtils, System.Generics.Collections,
   System.Generics.Defaults,
   System.RTTI, System.TypInfo, System.JSON, System.IOUtils, System.Types,
+  System.RegularExpressions,
   FMX.ComboEdit,
   Converter.Core.Types;
 
@@ -83,6 +84,8 @@ type
     FRTTIContext: TRttiContext;
     FMappingIndex: TDictionary<string, TComponentMapping>;
     FDerivedMappingCache: TObjectDictionary<string, TComponentMapping>;
+    FLoadedMappingPackIds: TDictionary<string, string>;
+    FMappingPackClassOwners: TDictionary<string, string>;
 
     procedure LoadBuiltInMappings;
     procedure LoadMappingPacks;
@@ -271,6 +274,10 @@ begin
   FMappingIndex := TDictionary<string, TComponentMapping>.Create(TIStringComparer.Ordinal);
   FDerivedMappingCache := TObjectDictionary<string, TComponentMapping>.Create(
     [doOwnsValues], TIStringComparer.Ordinal);
+  FLoadedMappingPackIds := TDictionary<string, string>.Create(
+    TIStringComparer.Ordinal);
+  FMappingPackClassOwners := TDictionary<string, string>.Create(
+    TIStringComparer.Ordinal);
 
   LoadBuiltInMappings;
   LoadFMXComponentCatalog;
@@ -389,12 +396,18 @@ var
   PackId: string;
   PackVendor: string;
   PackVersion: string;
+  PackSchema: string;
+  PackMode: string;
+  PackClasses: TDictionary<string, string>;
+  ClassPair: TPair<string, string>;
+  ClassKey: string;
   HasPropArray: Boolean;
   HasEventArray: Boolean;
   I, J: Integer;
 begin
   JSONValue := nil;
   ParsedMappings := TObjectList<TComponentMapping>.Create(True);
+  PackClasses := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
   try
     JSONStr := TFile.ReadAllText(FileName, TEncoding.UTF8);
     JSONValue := TJSONObject.ParseJSONValue(JSONStr);
@@ -403,18 +416,38 @@ begin
 
     PackObj := TJSONObject(JSONValue);
     PackDisplayName := ChangeFileExt(ExtractFileName(FileName), '');
+    PackSchema := PackObj.GetValue<string>('schema', '');
     PackName := PackObj.GetValue<string>('pack_name', PackDisplayName);
     PackId := PackObj.GetValue<string>('pack_id', ChangeFileExt(ExtractFileName(FileName), ''));
     PackVendor := PackObj.GetValue<string>('vendor', '');
     PackVersion := PackObj.GetValue<string>('version', '');
+    PackMode := LowerCase(PackObj.GetValue<string>('mode', ''));
+
+    if PackSchema <> VCL2FMX_MAPPING_PACK_SCHEMA then
+      raise Exception.CreateFmt('Unsupported or missing schema "%s"; expected "%s".',
+        [PackSchema, VCL2FMX_MAPPING_PACK_SCHEMA]);
+    if (Trim(PackName) = '') or (Trim(PackId) = '') or
+       (Trim(PackVendor) = '') or (Trim(PackVersion) = '') then
+      raise Exception.Create(
+        'Pack metadata requires nonblank pack_name, pack_id, vendor, and version.');
+    if not TRegEx.IsMatch(PackVersion, '^\d+\.\d+\.\d+$') then
+      raise Exception.CreateFmt(
+        'Pack version "%s" must use major.minor.patch.', [PackVersion]);
+    if (PackMode <> 'conservative') and (PackMode <> 'detection') then
+      raise Exception.CreateFmt('Unsupported pack mode "%s".', [PackMode]);
+    if FLoadedMappingPackIds.ContainsKey(PackId) then
+      raise Exception.CreateFmt('Duplicate pack_id "%s"; already loaded from %s.',
+        [PackId, FLoadedMappingPackIds[PackId]]);
 
     if not PackObj.TryGetValue<TJSONArray>('rules', Rules) then
       raise Exception.Create('Pack does not contain a rules array.');
+    if Rules.Count = 0 then
+      raise Exception.Create('Pack rules array is empty.');
 
     for I := 0 to Rules.Count - 1 do
     begin
       if not (Rules.Items[I] is TJSONObject) then
-        Continue;
+        raise Exception.CreateFmt('Rule %d must be a JSON object.', [I + 1]);
 
       RuleObj := TJSONObject(Rules.Items[I]);
       Mapping := TComponentMapping.Create;
@@ -438,6 +471,24 @@ begin
 
         if Trim(Mapping.VCLClassName) = '' then
           raise Exception.Create('Rule without vcl_class.');
+        if not TRegEx.IsMatch(Mapping.VCLClassName,
+             '^[A-Za-z_][A-Za-z0-9_.]*$') then
+          raise Exception.CreateFmt('Rule has invalid vcl_class "%s".',
+            [Mapping.VCLClassName]);
+        if (Mapping.Confidence < 0) or (Mapping.Confidence > 100) then
+          raise Exception.CreateFmt(
+            'Rule for %s has confidence outside 0 through 100.',
+            [Mapping.VCLClassName]);
+
+        ClassKey := BuildClassLookupKey(Mapping.VCLClassName);
+        if PackClasses.ContainsKey(ClassKey) then
+          raise Exception.CreateFmt('Duplicate vcl_class "%s" within pack.',
+            [Mapping.VCLClassName]);
+        if FMappingPackClassOwners.ContainsKey(ClassKey) then
+          raise Exception.CreateFmt(
+            'vcl_class "%s" is already owned by mapping pack %s.',
+            [Mapping.VCLClassName, FMappingPackClassOwners[ClassKey]]);
+        PackClasses.Add(ClassKey, Mapping.VCLClassName);
 
         HasPropArray := RuleObj.TryGetValue<TJSONArray>('properties', PropArray);
         if not HasPropArray then
@@ -447,7 +498,9 @@ begin
           for J := 0 to PropArray.Count - 1 do
           begin
             if not (PropArray.Items[J] is TJSONObject) then
-              Continue;
+              raise Exception.CreateFmt(
+                'Property row %d for %s must be a JSON object.',
+                [J + 1, Mapping.VCLClassName]);
 
             PropObj := TJSONObject(PropArray.Items[J]);
             PropMap.VCLProp := PropObj.GetValue<string>('vcl',
@@ -471,7 +524,9 @@ begin
           for J := 0 to EventArray.Count - 1 do
           begin
             if not (EventArray.Items[J] is TJSONObject) then
-              Continue;
+              raise Exception.CreateFmt(
+                'Event row %d for %s must be a JSON object.',
+                [J + 1, Mapping.VCLClassName]);
 
             EventObj := TJSONObject(EventArray.Items[J]);
             EventMap.VCLEvent := EventObj.GetValue<string>('vcl',
@@ -500,6 +555,10 @@ begin
       ParsedMappings.OwnsObjects := True;
     end;
 
+    FLoadedMappingPackIds.Add(PackId, ExtractFileName(FileName));
+    for ClassPair in PackClasses do
+      FMappingPackClassOwners.Add(ClassPair.Key, PackDisplayName);
+
     FContext.LoadedMappingPacks.Add(Format('%s (%s) - %d rules - %s',
       [PackDisplayName, PackId, Rules.Count, FileName]));
     FContext.AddIssue(csInfo, Format('Loaded mapping pack: %s (%d rules)',
@@ -510,12 +569,15 @@ begin
         FContext.AddIssue(csWarning,
           Format('Mapping pack skipped: %s - %s', [ExtractFileName(FileName), E.Message]));
   end;
+  PackClasses.Free;
   ParsedMappings.Free;
   JSONValue.Free;
 end;
 
 destructor TComponentMapper.Destroy;
 begin
+  FMappingPackClassOwners.Free;
+  FLoadedMappingPackIds.Free;
   FDerivedMappingCache.Free;
   FMappingIndex.Free;
   FMappingDatabase.Free;

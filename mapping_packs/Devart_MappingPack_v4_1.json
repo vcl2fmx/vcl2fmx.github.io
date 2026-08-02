@@ -1,4 +1,5 @@
-{
+﻿{
+  "schema": "vcl2fmx.mapping-pack.v1",
   "pack_name": "Devart_MappingPack_v2",
   "pack_id": "devart.dataaccess.preserve.v2",
   "vendor": "Devart",

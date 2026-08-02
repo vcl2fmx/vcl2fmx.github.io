@@ -1,4 +1,5 @@
-{
+﻿{
+  "schema": "vcl2fmx.mapping-pack.v1",
   "pack_name": "TMS_MappingPack_v2",
   "pack_id": "tms.complete.v2",
   "vendor": "TMS Software",

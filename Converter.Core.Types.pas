@@ -41,6 +41,7 @@ const
   VCL2FMX_RUNTIME_SCORE_NON_RELEASE = 25;
   VCL2FMX_RUNTIME_SCORE_PATH_DEPTH = 10;
   VCL2FMX_MAX_TEXT_DFM_BYTES = 50 * 1024 * 1024;
+  VCL2FMX_MAPPING_PACK_SCHEMA = 'vcl2fmx.mapping-pack.v1';
 
 function VCL2FMXIsBuildArtifactFolder(const AFolderName: string): Boolean;
 function VCL2FMXIsValidUTF8Bytes(const Bytes: TBytes): Boolean;

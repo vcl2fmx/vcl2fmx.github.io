@@ -1,4 +1,5 @@
-{
+﻿{
+  "schema": "vcl2fmx.mapping-pack.v1",
   "pack_name": "Raize_Konopka_MappingPack_v2",
   "pack_id": "raize.konopka.complete.v2",
   "vendor": "Raize / Konopka Signature VCL Controls",
