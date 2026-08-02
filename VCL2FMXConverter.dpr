@@ -16,6 +16,7 @@ uses
   Converter.Parser.DFM in 'Converter.Parser.DFM.pas',
   Converter.Parser.Pascal in 'Converter.Parser.Pascal.pas',
   Converter.Project.Generator in 'Converter.Project.Generator.pas',
+  Converter.Reporting.Model in 'Converter.Reporting.Model.pas',
   Converter.Rewrite.AutoFixes in 'Converter.Rewrite.AutoFixes.pas',
   Converter.Rewrite.Compatibility in 'Converter.Rewrite.Compatibility.pas',
   Converter.Rewrite.LiveBindings in 'Converter.Rewrite.LiveBindings.pas',

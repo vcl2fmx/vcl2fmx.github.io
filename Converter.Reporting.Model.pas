@@ -1,0 +1,77 @@
+{VCL2FMX © 2026 echurchsites.wixsite.com
+ Delphi VCL to FMX Converter and assistant
+ Version v6.0 Navigator
+ Written and built in the USA}
+
+unit Converter.Reporting.Model;
+
+interface
+
+uses
+  Converter.Core.Types;
+
+type
+  TConversionReportIssue = record
+    StableIdentity: string;
+    Severity: TConversionSeverity;
+    Category: string;
+    ProblemType: string;
+    MessageText: string;
+    SourceFile: string;
+    SourceStartLine: Integer;
+    SourceEndLine: Integer;
+    OriginalEvidence: string;
+    RecommendedAction: string;
+    IsBlocking: Boolean;
+    class function Create(const AIssue: TConversionIssue;
+      const ACategory, AStableIdentity: string): TConversionReportIssue; static;
+  end;
+
+  TConversionReportModel = record
+    TextReportFile: string;
+    HtmlReportFile: string;
+    RunTimeText: string;
+    StatusText: string;
+    NextStepText: string;
+    FilesProcessed: Integer;
+    FilesConverted: Integer;
+    FilesWithErrors: Integer;
+    FilesSkipped: Integer;
+    MappingPacksLoaded: Integer;
+    InformationalCount: Integer;
+    WarningCount: Integer;
+    ManualIssueCount: Integer;
+    ManualGroupCount: Integer;
+    ErrorCount: Integer;
+    BlockingCount: Integer;
+    DryRunPreviewCount: Integer;
+    VisibleIssueCount: Integer;
+    AffectedFileCount: Integer;
+    HasBlockingOutcome: Boolean;
+    NeedsRuntimeReview: Boolean;
+    NeedsVisualReview: Boolean;
+    NeedsDataBindingReview: Boolean;
+    NeedsManualCodeReview: Boolean;
+    Issues: TArray<TConversionReportIssue>;
+  end;
+
+implementation
+
+class function TConversionReportIssue.Create(const AIssue: TConversionIssue;
+  const ACategory, AStableIdentity: string): TConversionReportIssue;
+begin
+  Result := Default(TConversionReportIssue);
+  Result.StableIdentity := AStableIdentity;
+  Result.Severity := AIssue.Severity;
+  Result.Category := ACategory;
+  Result.ProblemType := AIssue.ProblemType;
+  Result.MessageText := AIssue.Message;
+  Result.SourceFile := AIssue.FileName;
+  Result.SourceStartLine := AIssue.LineNumber;
+  Result.SourceEndLine := AIssue.LineNumber;
+  Result.OriginalEvidence := AIssue.OriginalCode;
+  Result.RecommendedAction := AIssue.SuggestedFix;
+  Result.IsBlocking := AIssue.IsBlocking;
+end;
+
+end.

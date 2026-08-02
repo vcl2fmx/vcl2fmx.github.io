@@ -109,6 +109,7 @@ $dfmParserText = Get-SourceText -RelativePath 'Converter.Parser.DFM.pas'
 $pascalParserText = Get-SourceText -RelativePath 'Converter.Parser.Pascal.pas'
 $fileManagerText = Get-SourceText -RelativePath 'Converter.Core.FileManager.pas'
 $engineText = Get-SourceText -RelativePath 'Converter.Core.Engine.pas'
+$reportModelText = Get-SourceText -RelativePath 'Converter.Reporting.Model.pas'
 $generateReportMatch = [regex]::Match($engineText,
   '(?ms)^procedure\s+TConverterEngine\.GenerateReport;.*?(?=^procedure\s+TConverterEngine\.Cancel;)')
 $generateReportLineCount = if ($generateReportMatch.Success) {
@@ -485,6 +486,25 @@ if (-not [string]::IsNullOrWhiteSpace($contractRunnerText)) {
     ) -Area 'Reporting' -Check 'Report semantics and text/HTML parity are explicit' `
     -PassDetails 'Representative report contracts independently check semantics, ordering, escaping, recommendations, and text/HTML parity.' `
     -FailDetails 'Explicit report semantic or text/HTML parity coverage is incomplete.'
+}
+
+if ((-not [string]::IsNullOrWhiteSpace($reportModelText)) -and
+    (-not [string]::IsNullOrWhiteSpace($engineText))) {
+  Add-RuleResult -Condition (
+      ($reportModelText -match 'TConversionReportModel\s*=\s*record') -and
+      ($reportModelText -match 'TConversionReportIssue\s*=\s*record') -and
+      ($reportModelText -match 'StableIdentity:\s*string') -and
+      ($reportModelText -match 'SourceStartLine:\s*Integer') -and
+      ($reportModelText -match 'SourceEndLine:\s*Integer') -and
+      ($reportModelText -match 'OriginalEvidence:\s*string') -and
+      ($reportModelText -match 'RecommendedAction:\s*string') -and
+      ($engineText -match 'ReportModel:\s*TConversionReportModel') -and
+      ($engineText -match 'ReportModel\.Issues\[IssueIndex\]') -and
+      ($engineText -match 'ReportModel\.VisibleIssueCount') -and
+      ($engineText -match 'ReportModel\.NextStepText')
+    ) -Area 'Reporting' -Check 'Text and HTML render from an internal report snapshot' `
+    -PassDetails 'Report totals, outcomes, and issue provenance are captured in the shared internal report model.' `
+    -FailDetails 'The internal report snapshot or its stable issue provenance is incomplete.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($usesClauseText)) {

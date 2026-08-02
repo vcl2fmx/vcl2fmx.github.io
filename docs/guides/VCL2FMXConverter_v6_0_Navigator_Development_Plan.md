@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 008
+Current iteration: Navigator Release v6.0 Build 009
 
 ## Release Direction
 
@@ -241,3 +241,11 @@ totals, severity, category, source file and line, section ordering, HTML
 escaping, recommendations, and paired text/HTML meaning. Exact goldens remain
 the broad drift detector; these semantic checks identify the report contract
 that was broken.
+
+## Iteration 009 — Internal Report Snapshot Model
+
+Navigator Build 009 introduces an internal report snapshot shared by text and
+HTML summary rendering. It captures conversion totals, risk outcomes, paths,
+status, next-step guidance, and issue snapshots with stable identity,
+severity, category, source span, original evidence, and recommended action.
+The existing normalized goldens must remain byte-equivalent.

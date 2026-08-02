@@ -22,7 +22,8 @@ uses
   Converter.Core.Types,
   Converter.Core.FileManager,
   Converter.Core.Integration,
-  Converter.Project.Generator;
+  Converter.Project.Generator,
+  Converter.Reporting.Model;
 
 type
   TConverterEngine = class
@@ -2309,8 +2310,6 @@ end;
 
 procedure TConverterEngine.GenerateReport;
 var
-  ReportFile: string;
-  HtmlReportFile: string;
   Report: TStringList;
   Html: TStringList;
   Issue: TConversionIssue;
@@ -2330,6 +2329,8 @@ var
   UnknownThirdPartyCount: Integer;
   HasDetailedIssues: Boolean;
   HasBlockingOutcome: Boolean;
+  IssueIndex: Integer;
+  ReportModel: TConversionReportModel;
 
   procedure AddIndentedBlock(const Header, Text: string);
   var
@@ -2900,8 +2901,13 @@ var
     Html.Add('    </div>');
   end;
 begin
-  ReportFile := TPath.Combine(FContext.Options.OutputPath, 'VCL_to_FMX_Conversion_Report.txt');
-  HtmlReportFile := TPath.Combine(FContext.Options.OutputPath, 'VCL_to_FMX_Conversion_Report.html');
+  ReportModel.TextReportFile := TPath.Combine(FContext.Options.OutputPath, 'VCL_to_FMX_Conversion_Report.txt');
+  ReportModel.HtmlReportFile := TPath.Combine(FContext.Options.OutputPath, 'VCL_to_FMX_Conversion_Report.html');
+  ReportModel.FilesProcessed := FFilesProcessed;
+  ReportModel.FilesConverted := FFilesConverted;
+  ReportModel.FilesWithErrors := FFilesErrors;
+  ReportModel.FilesSkipped := FFilesSkipped;
+  ReportModel.MappingPacksLoaded := FContext.LoadedMappingPacks.Count;
   Report := TStringList.Create;
   Html := TStringList.Create;
   SeenBlockingKeys := TStringList.Create;
@@ -2918,24 +2924,25 @@ begin
     Duration := FEndTime - FStartTime;
     Secs := Round(Duration * 24 * 60 * 60);
     RunTimeText := FormatRunTime(Secs);
+    ReportModel.RunTimeText := RunTimeText;
 
     Report.Add('');
     Report.Add(StringOfChar('=', 50));
     Report.Add('CONVERSION SUMMARY');
     Report.Add(StringOfChar('=', 50));
     Report.Add('');
-    Report.Add('Total time: ' + RunTimeText);
-    Report.Add(Format('Files processed: %d', [FFilesProcessed]));
-    Report.Add(Format('Files converted: %d', [FFilesConverted]));
-    Report.Add(Format('Files with errors: %d', [FFilesErrors]));
-    Report.Add(Format('Files skipped: %d', [FFilesSkipped]));
-    Report.Add(Format('Mapping packs loaded: %d', [FContext.LoadedMappingPacks.Count]));
+    Report.Add('Total time: ' + ReportModel.RunTimeText);
+    Report.Add(Format('Files processed: %d', [ReportModel.FilesProcessed]));
+    Report.Add(Format('Files converted: %d', [ReportModel.FilesConverted]));
+    Report.Add(Format('Files with errors: %d', [ReportModel.FilesWithErrors]));
+    Report.Add(Format('Files skipped: %d', [ReportModel.FilesSkipped]));
+    Report.Add(Format('Mapping packs loaded: %d', [ReportModel.MappingPacksLoaded]));
     Report.Add('');
     Report.Add('OUTPUT FILES');
     Report.Add(StringOfChar('-', 40));
     Report.Add('Output folder: ' + FContext.Options.OutputPath);
-    Report.Add('Text report: ' + ReportFile);
-    Report.Add('HTML report: ' + HtmlReportFile);
+    Report.Add('Text report: ' + ReportModel.TextReportFile);
+    Report.Add('HTML report: ' + ReportModel.HtmlReportFile);
     Report.Add('Converted Pascal files are written beside converted source names in the output folder.');
     Report.Add('Converted FMX files are written beside converted source names in the output folder.');
 
@@ -2948,8 +2955,16 @@ begin
     BlockingCount := 0;
     DryRunPreviewCount := 0;
 
+    SetLength(ReportModel.Issues, FContext.Issues.Count);
+    IssueIndex := 0;
     for Issue in FContext.Issues do
     begin
+      ReportModel.Issues[IssueIndex] := TConversionReportIssue.Create(Issue,
+        IssueRiskCategory(Issue), IssueGroupKey(Issue) + '|' +
+        UpperCase(Trim(Issue.FileName)) + '|' + IntToStr(Issue.LineNumber) +
+        '|' + UpperCase(Trim(Issue.OriginalCode)));
+      Inc(IssueIndex);
+
       if IsDryRunPreviewIssue(Issue) then
         Inc(DryRunPreviewCount);
 
@@ -2983,13 +2998,6 @@ begin
     HasBlockingOutcome := (FFilesErrors > 0) or (BlockingCount > 0);
     NextStepText := BuildNextStepText;
 
-    Report.Add(Format('Total issues: %d', [VisibleIssueCount]));
-    if InfoCount > 0 then
-      Report.Add(Format('Informational notices: %d', [InfoCount]));
-    if DryRunPreviewCount > 0 then
-      Report.Add(Format('Dry-run preview notices: %d', [DryRunPreviewCount]));
-    Report.Add(Format('Distinct files needing attention: %d', [AffectedFiles.Count]));
-
     if HasBlockingOutcome then
       StatusText := 'Blocking issues present'
     else if ManualCount > 0 then
@@ -2997,28 +3005,51 @@ begin
     else
       StatusText := 'Clean conversion';
 
-    Report.Add(Format('Final status: %s', [StatusText]));
-    Report.Add(Format('Manual review items: %d', [ManualIssueCount]));
-    Report.Add(Format('Manual review groups: %d', [ManualCount]));
-    Report.Add(Format('Blocking items: %d', [BlockingCount]));
-    Report.Add(Format('Files with conversion errors: %d', [FFilesErrors]));
-    Report.Add('Recommended next step: ' + NextStepText);
+    ReportModel.InformationalCount := InfoCount;
+    ReportModel.WarningCount := WarnCount;
+    ReportModel.ManualIssueCount := ManualIssueCount;
+    ReportModel.ManualGroupCount := ManualCount;
+    ReportModel.ErrorCount := ErrorCount;
+    ReportModel.BlockingCount := BlockingCount;
+    ReportModel.DryRunPreviewCount := DryRunPreviewCount;
+    ReportModel.VisibleIssueCount := VisibleIssueCount;
+    ReportModel.AffectedFileCount := AffectedFiles.Count;
+    ReportModel.HasBlockingOutcome := HasBlockingOutcome;
+    ReportModel.StatusText := StatusText;
+    ReportModel.NextStepText := NextStepText;
+    ReportModel.NeedsRuntimeReview := HasRiskCategory('Runtime behavior risk');
+    ReportModel.NeedsVisualReview := HasRiskCategory('Visual review risk');
+    ReportModel.NeedsDataBindingReview := HasRiskCategory('Data binding review risk');
+    ReportModel.NeedsManualCodeReview := ManualCount > 0;
+
+    Report.Add(Format('Total issues: %d', [ReportModel.VisibleIssueCount]));
+    if ReportModel.InformationalCount > 0 then
+      Report.Add(Format('Informational notices: %d', [ReportModel.InformationalCount]));
+    if ReportModel.DryRunPreviewCount > 0 then
+      Report.Add(Format('Dry-run preview notices: %d', [ReportModel.DryRunPreviewCount]));
+    Report.Add(Format('Distinct files needing attention: %d', [ReportModel.AffectedFileCount]));
+    Report.Add(Format('Final status: %s', [ReportModel.StatusText]));
+    Report.Add(Format('Manual review items: %d', [ReportModel.ManualIssueCount]));
+    Report.Add(Format('Manual review groups: %d', [ReportModel.ManualGroupCount]));
+    Report.Add(Format('Blocking items: %d', [ReportModel.BlockingCount]));
+    Report.Add(Format('Files with conversion errors: %d', [ReportModel.FilesWithErrors]));
+    Report.Add('Recommended next step: ' + ReportModel.NextStepText);
     Report.Add('');
     Report.Add('Review note: Generated output should be reviewed in the IDE. Projects with manual-review or blocking items may not run until those items are fixed or mitigated.');
 
     Report.Add('');
     Report.Add('CONVERSION HEALTH');
     Report.Add(StringOfChar('-', 40));
-    if HasBlockingOutcome then
+    if ReportModel.HasBlockingOutcome then
       Report.Add('Compile readiness: blocked until conversion errors or blocking items are resolved.')
-    else if ManualCount > 0 then
+    else if ReportModel.ManualGroupCount > 0 then
       Report.Add('Compile readiness: possible, but manual-review items may still block reliable behavior.')
     else
       Report.Add('Compile readiness: no blocking or manual-review categories were detected by the converter.');
-    Report.Add('Runtime behavior review: ' + IfThen(HasRiskCategory('Runtime behavior risk'), 'Yes', 'No'));
-    Report.Add('Visual review: ' + IfThen(HasRiskCategory('Visual review risk'), 'Yes', 'No'));
-    Report.Add('Data binding review: ' + IfThen(HasRiskCategory('Data binding review risk'), 'Yes', 'No'));
-    Report.Add('Manual code review: ' + IfThen(ManualCount > 0, 'Yes', 'No'));
+    Report.Add('Runtime behavior review: ' + IfThen(ReportModel.NeedsRuntimeReview, 'Yes', 'No'));
+    Report.Add('Visual review: ' + IfThen(ReportModel.NeedsVisualReview, 'Yes', 'No'));
+    Report.Add('Data binding review: ' + IfThen(ReportModel.NeedsDataBindingReview, 'Yes', 'No'));
+    Report.Add('Manual code review: ' + IfThen(ReportModel.NeedsManualCodeReview, 'Yes', 'No'));
 
     Report.Add('');
     Report.Add('MAPPING PACKS LOADED');
@@ -3053,7 +3084,7 @@ begin
       Report.Add('No unknown third-party components were found.');
     AddMappingsUsedTextSection;
 
-    if DryRunPreviewCount > 0 then
+    if ReportModel.DryRunPreviewCount > 0 then
     begin
       Report.Add('');
       Report.Add('DRY-RUN PREVIEW');
@@ -3088,7 +3119,7 @@ begin
       Report.Add('');
     end;
 
-    if ManualCount > 0 then
+    if ReportModel.ManualGroupCount > 0 then
     begin
       Report.Add('MANUAL REVIEW ITEMS');
       Report.Add(StringOfChar('-', 40));
@@ -3115,11 +3146,11 @@ begin
     Report.Add('');
     Report.Add('ISSUE SUMMARY');
     Report.Add(StringOfChar('-', 30));
-    Report.Add(Format('Informational: %d', [InfoCount]));
-    Report.Add(Format('Warnings: %d', [WarnCount]));
-    Report.Add(Format('Manual review required: %d', [ManualCount]));
-    Report.Add(Format('Errors: %d', [ErrorCount]));
-    Report.Add(Format('Blocking items: %d', [BlockingCount]));
+    Report.Add(Format('Informational: %d', [ReportModel.InformationalCount]));
+    Report.Add(Format('Warnings: %d', [ReportModel.WarningCount]));
+    Report.Add(Format('Manual review required: %d', [ReportModel.ManualGroupCount]));
+    Report.Add(Format('Errors: %d', [ReportModel.ErrorCount]));
+    Report.Add(Format('Blocking items: %d', [ReportModel.BlockingCount]));
 
     if FConversionLog.Count > 0 then
     begin
@@ -3129,9 +3160,9 @@ begin
       Report.AddStrings(FConversionLog);
     end;
 
-    Report.SaveToFile(ReportFile, TEncoding.UTF8);
+    Report.SaveToFile(ReportModel.TextReportFile, TEncoding.UTF8);
 
-    UILog(Format('Report saved to: %s', [ReportFile]));
+    UILog(Format('Report saved to: %s', [ReportModel.TextReportFile]));
 
     AddHtmlReportDocumentHead(Html);
     Html.Add('<body>');
@@ -3143,54 +3174,54 @@ begin
       FormatDateTime('yyyy-mm-dd hh:nn:ss', Now)])) + '</p>');
     Html.Add('      <p>' + HtmlEncode('Source: ' + FContext.Options.SourcePath) + '<br>' +
       HtmlEncode('Output: ' + FContext.Options.OutputPath) + '</p>');
-    Html.Add('      <div class="status-chip">' + HtmlEncode(StatusText) + '</div>');
-    Html.Add('      <p>' + HtmlEncode('Next step: ' + NextStepText) + '</p>');
+    Html.Add('      <div class="status-chip">' + HtmlEncode(ReportModel.StatusText) + '</div>');
+    Html.Add('      <p>' + HtmlEncode('Next step: ' + ReportModel.NextStepText) + '</p>');
     Html.Add('    </div>');
     Html.Add('    <div class="meta">');
     Html.Add('      <div class="meta-card"><div class="label">Files processed</div><div class="value">' +
-      IntToStr(FFilesProcessed) + '</div></div>');
+      IntToStr(ReportModel.FilesProcessed) + '</div></div>');
     Html.Add('      <div class="meta-card"><div class="label">Files converted</div><div class="value">' +
-      IntToStr(FFilesConverted) + '</div></div>');
+      IntToStr(ReportModel.FilesConverted) + '</div></div>');
     Html.Add('      <div class="meta-card"><div class="label">Distinct files needing attention</div><div class="value">' +
-      IntToStr(AffectedFiles.Count) + '</div></div>');
+      IntToStr(ReportModel.AffectedFileCount) + '</div></div>');
     Html.Add('      <div class="meta-card"><div class="label">Manual review items</div><div class="value">' +
-      IntToStr(ManualIssueCount) + '</div></div>');
+      IntToStr(ReportModel.ManualIssueCount) + '</div></div>');
     Html.Add('      <div class="meta-card"><div class="label">Blocking items</div><div class="value">' +
-      IntToStr(BlockingCount) + '</div></div>');
+      IntToStr(ReportModel.BlockingCount) + '</div></div>');
     Html.Add('      <div class="meta-card"><div class="label">Files with errors</div><div class="value">' +
-      IntToStr(FFilesErrors) + '</div></div>');
+      IntToStr(ReportModel.FilesWithErrors) + '</div></div>');
     Html.Add('      <div class="meta-card"><div class="label">Warnings</div><div class="value">' +
-      IntToStr(WarnCount) + '</div></div>');
+      IntToStr(ReportModel.WarningCount) + '</div></div>');
     Html.Add('      <div class="meta-card"><div class="label">Errors</div><div class="value">' +
-      IntToStr(ErrorCount) + '</div></div>');
+      IntToStr(ReportModel.ErrorCount) + '</div></div>');
     Html.Add('      <div class="meta-card"><div class="label">Total issues</div><div class="value">' +
-      IntToStr(VisibleIssueCount) + '</div></div>');
-    if InfoCount > 0 then
+      IntToStr(ReportModel.VisibleIssueCount) + '</div></div>');
+    if ReportModel.InformationalCount > 0 then
       Html.Add('      <div class="meta-card"><div class="label">Informational notices</div><div class="value">' +
-        IntToStr(InfoCount) + '</div></div>');
-    if DryRunPreviewCount > 0 then
+        IntToStr(ReportModel.InformationalCount) + '</div></div>');
+    if ReportModel.DryRunPreviewCount > 0 then
       Html.Add('      <div class="meta-card"><div class="label">Dry-run notices</div><div class="value">' +
-        IntToStr(DryRunPreviewCount) + '</div></div>');
+        IntToStr(ReportModel.DryRunPreviewCount) + '</div></div>');
     Html.Add('      <div class="meta-card"><div class="label">Mapping packs loaded</div><div class="value">' +
-      IntToStr(FContext.LoadedMappingPacks.Count) + '</div></div>');
+      IntToStr(ReportModel.MappingPacksLoaded) + '</div></div>');
     Html.Add('      <div class="meta-card"><div class="label">Run time</div><div class="value">' +
-      HtmlEncode(RunTimeText) + '</div></div>');
+      HtmlEncode(ReportModel.RunTimeText) + '</div></div>');
     Html.Add('    </div>');
 
     Html.Add('    <div class="section">');
     Html.Add('      <h2>Conversion health</h2>');
     Html.Add('      <p class="section-note">Risk categories summarize what kind of review the generated project still needs.</p>');
     Html.Add('      <table><tbody>');
-    if HasBlockingOutcome then
+    if ReportModel.HasBlockingOutcome then
       Html.Add('        <tr><th>Compile readiness</th><td>Blocked until conversion errors or blocking items are resolved.</td></tr>')
-    else if ManualCount > 0 then
+    else if ReportModel.ManualGroupCount > 0 then
       Html.Add('        <tr><th>Compile readiness</th><td>Possible, but manual-review items may still block reliable behavior.</td></tr>')
     else
       Html.Add('        <tr><th>Compile readiness</th><td>No blocking or manual-review categories were detected by the converter.</td></tr>');
-    Html.Add('        <tr><th>Runtime behavior review</th><td>' + IfThen(HasRiskCategory('Runtime behavior risk'), 'Yes', 'No') + '</td></tr>');
-    Html.Add('        <tr><th>Visual review</th><td>' + IfThen(HasRiskCategory('Visual review risk'), 'Yes', 'No') + '</td></tr>');
-    Html.Add('        <tr><th>Data binding review</th><td>' + IfThen(HasRiskCategory('Data binding review risk'), 'Yes', 'No') + '</td></tr>');
-    Html.Add('        <tr><th>Manual code review</th><td>' + IfThen(ManualCount > 0, 'Yes', 'No') + '</td></tr>');
+    Html.Add('        <tr><th>Runtime behavior review</th><td>' + IfThen(ReportModel.NeedsRuntimeReview, 'Yes', 'No') + '</td></tr>');
+    Html.Add('        <tr><th>Visual review</th><td>' + IfThen(ReportModel.NeedsVisualReview, 'Yes', 'No') + '</td></tr>');
+    Html.Add('        <tr><th>Data binding review</th><td>' + IfThen(ReportModel.NeedsDataBindingReview, 'Yes', 'No') + '</td></tr>');
+    Html.Add('        <tr><th>Manual code review</th><td>' + IfThen(ReportModel.NeedsManualCodeReview, 'Yes', 'No') + '</td></tr>');
     Html.Add('      </tbody></table>');
     Html.Add('    </div>');
 
@@ -3200,8 +3231,8 @@ begin
     Html.Add('      <table class="issues-table">');
     Html.Add('        <tbody>');
     Html.Add('          <tr><th>Output folder</th><td>' + HtmlEncode(FContext.Options.OutputPath) + '</td></tr>');
-    Html.Add('          <tr><th>Text report</th><td>' + HtmlEncode(ReportFile) + '</td></tr>');
-    Html.Add('          <tr><th>HTML report</th><td>' + HtmlEncode(HtmlReportFile) + '</td></tr>');
+    Html.Add('          <tr><th>Text report</th><td>' + HtmlEncode(ReportModel.TextReportFile) + '</td></tr>');
+    Html.Add('          <tr><th>HTML report</th><td>' + HtmlEncode(ReportModel.HtmlReportFile) + '</td></tr>');
     Html.Add('          <tr><th>Converted source files</th><td>Generated Pascal and FMX files are written beside converted source names in the output folder.</td></tr>');
     Html.Add('        </tbody>');
     Html.Add('      </table>');
@@ -3236,10 +3267,10 @@ begin
     AddMappingsUsedHtmlSection;
 
 
-    if DryRunPreviewCount > 0 then
+    if ReportModel.DryRunPreviewCount > 0 then
     begin
       Html.Add('    <details class="section disclosure">');
-      Html.Add('      <summary><h2>Dry-run preview (' + IntToStr(DryRunPreviewCount) + ')</h2><span>Show/hide preview notices</span></summary>');
+      Html.Add('      <summary><h2>Dry-run preview (' + IntToStr(ReportModel.DryRunPreviewCount) + ')</h2><span>Show/hide preview notices</span></summary>');
       Html.Add('      <p class="section-note">Preview mode did not write converted source, form, or project files. These notices are not counted as conversion issues.</p>');
       Html.Add('      <div class="compact-list">');
       for Issue in FContext.Issues do
@@ -3290,7 +3321,7 @@ begin
     Html.Add('      <p class="section-note">These items usually require an IDE review or a deliberate FMX design decision before the converted output is production-ready.<br><strong style="color:#174f8f;">Click the &gt; arrow on each item to view affected locations and recommended fixes.</strong></p>');
     Html.Add('      <div class="manual-list">');
 
-    if ManualCount = 0 then
+    if ReportModel.ManualGroupCount = 0 then
       Html.Add('        <div class="manual-card">No grouped manual-review items were recorded.</div>')
     else
       for ManualIndex := 0 to ManualGroups.Count - 1 do
@@ -3345,25 +3376,25 @@ begin
     Html.Add('      <p class="section-note">Use this section for a quick print-friendly tally of the result.</p>');
     Html.Add('      <table>');
     Html.Add('        <tbody>');
-    Html.Add('          <tr><th>Informational</th><td>' + IntToStr(InfoCount) + '</td></tr>');
-    Html.Add('          <tr><th>Warnings</th><td>' + IntToStr(WarnCount) + '</td></tr>');
-    Html.Add('          <tr><th>Manual review required</th><td>' + IntToStr(ManualIssueCount) + '</td></tr>');
-    Html.Add('          <tr><th>Manual review groups</th><td>' + IntToStr(ManualCount) + '</td></tr>');
-    Html.Add('          <tr><th>Errors</th><td>' + IntToStr(ErrorCount) + '</td></tr>');
-    Html.Add('          <tr><th>Blocking items</th><td>' + IntToStr(BlockingCount) + '</td></tr>');
-    Html.Add('          <tr><th>Distinct files needing attention</th><td>' + IntToStr(AffectedFiles.Count) + '</td></tr>');
-    Html.Add('          <tr><th>Files with conversion errors</th><td>' + IntToStr(FFilesErrors) + '</td></tr>');
+    Html.Add('          <tr><th>Informational</th><td>' + IntToStr(ReportModel.InformationalCount) + '</td></tr>');
+    Html.Add('          <tr><th>Warnings</th><td>' + IntToStr(ReportModel.WarningCount) + '</td></tr>');
+    Html.Add('          <tr><th>Manual review required</th><td>' + IntToStr(ReportModel.ManualIssueCount) + '</td></tr>');
+    Html.Add('          <tr><th>Manual review groups</th><td>' + IntToStr(ReportModel.ManualGroupCount) + '</td></tr>');
+    Html.Add('          <tr><th>Errors</th><td>' + IntToStr(ReportModel.ErrorCount) + '</td></tr>');
+    Html.Add('          <tr><th>Blocking items</th><td>' + IntToStr(ReportModel.BlockingCount) + '</td></tr>');
+    Html.Add('          <tr><th>Distinct files needing attention</th><td>' + IntToStr(ReportModel.AffectedFileCount) + '</td></tr>');
+    Html.Add('          <tr><th>Files with conversion errors</th><td>' + IntToStr(ReportModel.FilesWithErrors) + '</td></tr>');
     Html.Add('        </tbody>');
     Html.Add('      </table>');
-    Html.Add('      <div class="footer-note">Next step: ' + HtmlEncode(NextStepText) + '</div>');
+    Html.Add('      <div class="footer-note">Next step: ' + HtmlEncode(ReportModel.NextStepText) + '</div>');
     Html.Add('      <div class="footer-note">Generated output should still be reviewed in the IDE. Projects with manual-review or blocking items may not run until those items are fixed or mitigated.</div>');
     Html.Add('    </div>');
     Html.Add('  </div>');
     Html.Add('</body>');
     Html.Add('</html>');
 
-    Html.SaveToFile(HtmlReportFile, TEncoding.UTF8);
-    UILog(Format('HTML report saved to: %s', [HtmlReportFile]));
+    Html.SaveToFile(ReportModel.HtmlReportFile, TEncoding.UTF8);
+    UILog(Format('HTML report saved to: %s', [ReportModel.HtmlReportFile]));
 
   finally
     AffectedFiles.Free;
