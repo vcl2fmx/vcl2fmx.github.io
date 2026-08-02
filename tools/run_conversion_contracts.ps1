@@ -278,22 +278,73 @@ function Invoke-GeneratedCompile {
     [string]$CompilerPath
   )
 
-  $projects = @(Get-ChildItem -LiteralPath $CaseOutput -Recurse -File -Filter '*.dpr' -ErrorAction SilentlyContinue)
-  if ($projects.Count -eq 0) {
+  $generatedProjects = @(Get-ChildItem -LiteralPath $CaseOutput -Recurse -File -Filter '*.dpr' -ErrorAction SilentlyContinue)
+  if ($generatedProjects.Count -eq 0) {
     return 'No generated .dpr found to compile.'
   }
 
   $compileRoot = Join-Path $CaseRoot 'compile'
+  $compileSource = Join-Path $compileRoot 'source'
   $binDir = Join-Path $compileRoot 'bin'
   $dcuDir = Join-Path $compileRoot 'dcu'
+  New-Item -ItemType Directory -Path $compileSource -Force | Out-Null
+  Get-ChildItem -LiteralPath $CaseOutput -Force | ForEach-Object {
+    Copy-Item -LiteralPath $_.FullName -Destination $compileSource -Recurse -Force
+  }
+
+  $renamedPascalFiles = @{}
+  $renamedPascalStems = @{}
+  foreach ($pascalFile in Get-ChildItem -LiteralPath $compileSource -Recurse -File -Filter '*.pas') {
+    $unitName = Get-PascalUnitName -InputPath $pascalFile.FullName
+    if ([string]::IsNullOrWhiteSpace($unitName)) {
+      continue
+    }
+
+    $expectedFileName = $unitName + '.pas'
+    if (-not $pascalFile.Name.Equals($expectedFileName, [System.StringComparison]::OrdinalIgnoreCase)) {
+      $renamedPascalFiles[$pascalFile.Name] = $expectedFileName
+      $renamedPascalStems[$pascalFile.BaseName] = $unitName
+      Rename-Item -LiteralPath $pascalFile.FullName -NewName $expectedFileName
+    }
+  }
+
+  foreach ($oldStem in $renamedPascalStems.Keys) {
+    foreach ($resourceExtension in @('.fmx', '.dfm')) {
+      foreach ($resourceFile in Get-ChildItem -LiteralPath $compileSource -Recurse -File |
+          Where-Object {
+            $_.BaseName.Equals($oldStem, [System.StringComparison]::OrdinalIgnoreCase) -and
+            $_.Extension.Equals($resourceExtension, [System.StringComparison]::OrdinalIgnoreCase)
+          }) {
+        Rename-Item -LiteralPath $resourceFile.FullName -NewName (
+          [string]$renamedPascalStems[$oldStem] + $resourceExtension)
+      }
+    }
+  }
+
+  $projects = @(Get-ChildItem -LiteralPath $compileSource -Recurse -File -Filter '*.dpr' -ErrorAction SilentlyContinue)
+  foreach ($project in $projects) {
+    $projectText = [System.IO.File]::ReadAllText($project.FullName)
+    foreach ($oldFileName in $renamedPascalFiles.Keys) {
+      $projectText = [regex]::Replace(
+        $projectText,
+        [regex]::Escape([string]$oldFileName),
+        [string]$renamedPascalFiles[$oldFileName],
+        [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    }
+    [System.IO.File]::WriteAllText(
+      $project.FullName,
+      $projectText,
+      [System.Text.UTF8Encoding]::new($true))
+  }
+
   New-Item -ItemType Directory -Path $binDir -Force | Out-Null
   New-Item -ItemType Directory -Path $dcuDir -Force | Out-Null
 
   $failures = New-Object 'System.Collections.Generic.List[string]'
   foreach ($project in $projects) {
     $searchDirs = New-Object 'System.Collections.Generic.List[string]'
-    $searchDirs.Add($CaseOutput) | Out-Null
-    foreach ($directory in Get-ChildItem -LiteralPath $CaseOutput -Recurse -Directory -ErrorAction SilentlyContinue) {
+    $searchDirs.Add($compileSource) | Out-Null
+    foreach ($directory in Get-ChildItem -LiteralPath $compileSource -Recurse -Directory -ErrorAction SilentlyContinue) {
       $searchDirs.Add($directory.FullName) | Out-Null
     }
     $searchPath = [string]::Join(';', $searchDirs)

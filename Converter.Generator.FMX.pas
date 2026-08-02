@@ -2120,7 +2120,7 @@ begin
             PropValue := 'Solid';
         end;
       end
-      else if PropName = 'Left' then
+      else if SameText(PropName, 'Left') then
       begin
         if IsRootComponent(Component) then
           ConvertedPropName := 'Left'
@@ -2132,7 +2132,7 @@ begin
         else
           ConvertedPropName := 'Position.X';
       end
-      else if PropName = 'Top' then
+      else if SameText(PropName, 'Top') then
       begin
         if IsRootComponent(Component) then
           ConvertedPropName := 'Top'
@@ -2144,7 +2144,7 @@ begin
         else
           ConvertedPropName := 'Position.Y';
       end
-      else if PropName = 'Width' then
+      else if SameText(PropName, 'Width') then
       begin
         if IsRootComponent(Component) then
           ConvertedPropName := 'Width'
@@ -2161,7 +2161,7 @@ begin
           ConvertedPropName := 'Size.Width';
         end;
       end
-      else if PropName = 'Height' then
+      else if SameText(PropName, 'Height') then
       begin
         if IsRootComponent(Component) then
           ConvertedPropName := 'Height'
@@ -2178,7 +2178,7 @@ begin
           ConvertedPropName := 'Size.Height';
         end;
       end
-      else if PropName = 'Caption' then
+      else if SameText(PropName, 'Caption') then
       begin
         if IsRootComponent(Component) then
           ConvertedPropName := 'Caption'
@@ -2197,7 +2197,7 @@ begin
       end
       else if SameText(CompClass, 'TOpenDialog') and SameText(PropName, 'DefaultFolder') then
         ConvertedPropName := 'InitialDir'
-      else if PropName = 'ClientWidth' then
+      else if SameText(PropName, 'ClientWidth') then
       begin
         if IsRootComponent(Component) then
           ConvertedPropName := 'ClientWidth'
@@ -2209,7 +2209,7 @@ begin
           HasExplicitSize := True;
         end;
       end
-      else if PropName = 'ClientHeight' then
+      else if SameText(PropName, 'ClientHeight') then
       begin
         if IsRootComponent(Component) then
           ConvertedPropName := 'ClientHeight'

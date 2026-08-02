@@ -1,6 +1,7 @@
 {
   "input_file": "contracts\\colors\\13_unknown_cl_color.pas",
   "expected_status": "converted",
+  "skip_generated_compile": true,
   "expected_manual_reviews": [
     "Unknown VCL color constant preserved for manual review"
   ],

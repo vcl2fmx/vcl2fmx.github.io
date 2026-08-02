@@ -1,5 +1,6 @@
 {
   "input_file": "contracts\\comments_and_boundaries\\11_end_dot_boundary.pas",
+  "skip_generated_compile": true,
   "expected_status": "converted",
   "expected_manual_reviews": ["end dot boundary"],
   "expected_output_patterns": ["WM_CLOSE|Original: SendMessage|end\\."],

@@ -1,5 +1,6 @@
 {
   "input_file": "contracts\\dfm_pairs\\09_binary_dfm\\BinaryForm.pas",
+  "skip_generated_compile": true,
   "expected_status": "converted",
   "expected_output_patterns": ["unit ContractBinaryDfm"],
   "forbidden_output_patterns": [],

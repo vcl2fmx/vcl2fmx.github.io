@@ -1,6 +1,7 @@
 {
   "input_file": "contracts\\colors\\14_color_to_rgb_usage.pas",
   "expected_status": "converted",
+  "skip_generated_compile": true,
   "expected_output_patterns": [
     "unit ContractColorToRGBUsage",
     "GeneratedColorToRGB\\(claRed\\)",

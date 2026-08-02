@@ -1,6 +1,7 @@
 {
   "input_file": "contracts\\dry_run_preview\\01_dry_run_no_artifacts.pas",
   "expected_status": "converted",
+  "skip_generated_compile": true,
   "engine_args": ["--dry-run"],
   "expected_no_generated_source_files": true,
   "expected_report_files": true,

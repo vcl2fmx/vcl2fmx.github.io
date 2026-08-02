@@ -5,8 +5,8 @@
   "expected_manual_reviews": [],
   "expected_units_added": ["FMX.Forms"],
   "expected_units_absent": ["Vcl.Forms"],
-  "expected_output_patterns": ["BorderStyle := bsDialog", "WindowState := TWindowState.wsMaximized"],
-  "forbidden_output_patterns": ["Vcl\\.Forms"],
+  "expected_output_patterns": ["BorderStyle := TFmxFormBorderStyle.Single", "WindowState := TWindowState.wsMaximized"],
+  "forbidden_output_patterns": ["Vcl\\.Forms", "BorderStyle := bsDialog"],
   "expected_report_patterns": [],
   "forbidden_report_patterns": []
 }

@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 020
+Current iteration: Navigator Release v6.0 Build 021
 
 ## Release Direction
 
@@ -367,3 +367,27 @@ bundled packs pass, while missing schema, duplicate pack IDs, duplicate VCL
 classes, and invalid confidence are rejected. The dry-run mapping suggestion
 contract also verifies that its auxiliary artifact is a usable v1 starter
 pack rather than merely checking that a file exists.
+
+## Iteration 021 — Compiled Generated-Output Validation
+
+Navigator Build 021 adds a compiler-backed contract gate for every eligible
+generated fixture. The contract runner copies generated projects to isolated
+staging, aligns Pascal filenames with declared unit names, rewrites project
+unit references, preserves paired form resources, and compiles the staged
+Win32 output with the RAD Studio 37 toolchain.
+
+Fixtures that deliberately model malformed source, missing or external
+dependencies, dry-run output, or manual-review-only constructs declare an
+explicit compile skip. All other generated fixtures must compile as part of
+the 227-contract suite.
+
+Compiler feedback exposed and corrected conditional uses-clause punctuation,
+bare implementation-unit normalization, missing FMX and System units,
+case-sensitive DFM property handling, VCL alpha-blend and dialog-border
+translations, and FMX-compatible canvas text and rectangle calls. The release
+gate also retains 64 regression guards, 62 acceptance checks, mapping-pack
+schema validation, the French field regression, and Win32/Win64 Release builds.
+
+This iteration strengthens validation without promising compiler-grade
+semantic conversion. Project-wide compiler-style architecture remains a
+measured research track rather than a v6 release commitment.

@@ -1551,11 +1551,13 @@ begin
       L := TRegEx.Replace(L, '\.BorderStyle\s*:=\s*bsSizeable\b', '.BorderStyle := TFmxFormBorderStyle.Sizeable', [roIgnoreCase]);
       L := TRegEx.Replace(L, '\.BorderStyle\s*:=\s*bsToolWindow\b', '.BorderStyle := TFmxFormBorderStyle.ToolWindow', [roIgnoreCase]);
       L := TRegEx.Replace(L, '\.BorderStyle\s*:=\s*bsSizeToolWin\b', '.BorderStyle := TFmxFormBorderStyle.SizeToolWin', [roIgnoreCase]);
+      L := TRegEx.Replace(L, '\.BorderStyle\s*:=\s*bsDialog\b', '.BorderStyle := TFmxFormBorderStyle.Single', [roIgnoreCase]);
       L := TRegEx.Replace(L, '(^\s*)BorderStyle\s*:=\s*bsNone\b', '$1BorderStyle := TFmxFormBorderStyle.None', [roIgnoreCase]);
       L := TRegEx.Replace(L, '(^\s*)BorderStyle\s*:=\s*bsSingle\b', '$1BorderStyle := TFmxFormBorderStyle.Single', [roIgnoreCase]);
       L := TRegEx.Replace(L, '(^\s*)BorderStyle\s*:=\s*bsSizeable\b', '$1BorderStyle := TFmxFormBorderStyle.Sizeable', [roIgnoreCase]);
       L := TRegEx.Replace(L, '(^\s*)BorderStyle\s*:=\s*bsToolWindow\b', '$1BorderStyle := TFmxFormBorderStyle.ToolWindow', [roIgnoreCase]);
       L := TRegEx.Replace(L, '(^\s*)BorderStyle\s*:=\s*bsSizeToolWin\b', '$1BorderStyle := TFmxFormBorderStyle.SizeToolWin', [roIgnoreCase]);
+      L := TRegEx.Replace(L, '(^\s*)BorderStyle\s*:=\s*bsDialog\b', '$1BorderStyle := TFmxFormBorderStyle.Single', [roIgnoreCase]);
       L := TRegEx.Replace(L, '\.FormStyle\s*:=\s*fsStayOnTop\b', '.FormStyle := TFormStyle.StayOnTop', [roIgnoreCase]);
       L := TRegEx.Replace(L, '\.FormStyle\s*:=\s*fsNormal\b', '.FormStyle := TFormStyle.Normal', [roIgnoreCase]);
       L := TRegEx.Replace(L, '\bfsModal\b', 'TFmxFormState.Modal', [roIgnoreCase]);
@@ -1775,6 +1777,14 @@ begin
             'Use FMX Opacity or the generated alpha-blend helper where appropriate.');
       end;
 
+      if TRegEx.IsMatch(AnalysisLine,
+           '^\s*AlphaBlendValue\s*:=\s*[^;\r\n]+;\s*$',
+           [roIgnoreCase]) then
+        L := TRegEx.Replace(L,
+          '(^\s*)AlphaBlendValue\s*:=\s*([^;\r\n]+);$',
+          '$1GeneratedSetAlphaBlendValue(Self, $2);',
+          [roIgnoreCase]);
+
       if TRegEx.IsMatch(AnalysisLine, '\b\w*MediaPlayer\w*\.Notify\s*:=', [roIgnoreCase]) then
         MarkLineForManualReview(L, i + 1, 'MediaPlayer notification',
           'VCL media-player notification wiring needs FMX manual review.',
@@ -1931,6 +1941,7 @@ begin
         InString := not InString;
         Inc(ScanPos);
       end;
+
       Continue;
     end;
 

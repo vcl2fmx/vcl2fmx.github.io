@@ -1,5 +1,6 @@
 {
   "input_file": "contracts\\third_party\\03_unknown_vendor_component.pas",
+  "skip_generated_compile": true,
   "expected_status": "converted",
   "expected_normalized_text_report_sha256": "115300DF384A5F5F4B6A4F749668BFFC2F2CE4D651707B0FEEE85354A2BD2318",
   "expected_normalized_html_report_sha256": "002FD15557327644CED45B184C406A3FE1661C137220D4EF8920AAB3CB1CEFC2",

@@ -1,5 +1,6 @@
 {
   "input_file": "contracts\\uses_clause\\24_user_appmenus_preserved.pas",
+  "skip_generated_compile": true,
   "expected_status": "converted",
   "expected_conversions": [],
   "expected_manual_reviews": [],

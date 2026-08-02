@@ -1,5 +1,6 @@
 {
   "input_file": "contracts\\project_integration\\06_pascal_structure_project\\PascalStructureProject.dpr",
+  "skip_generated_compile": true,
   "copy_case_directory": true,
   "expected_status": "converted",
   "expected_output_patterns": [

@@ -5,8 +5,8 @@
   "expected_manual_reviews": [],
   "expected_units_added": ["FMX.Forms"],
   "expected_units_absent": ["Vcl.Forms", "Vcl.ExtCtrls", "Vcl.Graphics"],
-  "expected_output_patterns": ["PaintBox1: TPaintBox", "procedure PaintBox1Paint", "Canvas.Rectangle"],
-  "forbidden_output_patterns": ["Vcl\\.Forms", "Vcl\\.ExtCtrls", "Vcl\\.Graphics"],
+  "expected_output_patterns": ["PaintBox1: TPaintBox", "procedure PaintBox1Paint", "GeneratedCanvasRoundRect"],
+  "forbidden_output_patterns": ["Vcl\\.Forms", "Vcl\\.ExtCtrls", "Vcl\\.Graphics", "Canvas\\.Rectangle"],
   "expected_report_patterns": [],
   "forbidden_report_patterns": []
 }

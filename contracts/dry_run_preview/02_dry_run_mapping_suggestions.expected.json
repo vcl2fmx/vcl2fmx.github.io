@@ -1,5 +1,6 @@
 {
   "input_file": "contracts\\third_party\\04_mapping_assistance_prefix.pas",
+  "skip_generated_compile": true,
   "copy_case_directory": true,
   "engine_args": ["--dry-run"],
   "expected_status": "converted",

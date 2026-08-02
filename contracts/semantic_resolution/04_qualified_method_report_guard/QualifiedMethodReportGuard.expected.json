@@ -1,5 +1,6 @@
 {
   "input_file": "contracts\\semantic_resolution\\04_qualified_method_report_guard\\QualifiedMethodReportGuard.pas",
+  "skip_generated_compile": true,
   "expected_status": "converted",
   "expected_output_patterns": [],
   "forbidden_output_patterns": [],

@@ -2,7 +2,7 @@
 param(
   [string]$ProjectRoot,
   [string]$OutputDirectory,
-  [string]$VersionTag = 'v5_0'
+  [string]$VersionTag = 'v6_0_Navigator_Build021'
 )
 
 Set-StrictMode -Version Latest
@@ -29,7 +29,7 @@ if (-not (Test-Path $licensePath -PathType Leaf)) {
 $timestamp = Get-Date -Format 'yyyy-MM-dd_HHmmss'
 $distributionName = 'VCL2FMXConverter_{0}_Source_Distribution_{1}' -f $VersionTag, $timestamp
 $zipPath = Join-Path $OutputDirectory ($distributionName + '.zip')
-$stageRoot = Join-Path ([IO.Path]::GetTempPath()) ('VCL2FMXConverterV5_Source_Distribution_' + $timestamp)
+$stageRoot = Join-Path ([IO.Path]::GetTempPath()) ('VCL2FMXConverterV6_Source_Distribution_' + $timestamp)
 $stageProjectRoot = $stageRoot
 
 $excludedDirectoryNames = @(
@@ -39,6 +39,7 @@ $excludedDirectoryNames = @(
   '__history',
   '__recovery',
   '.agents',
+  '.claude',
   '.codex',
   '.git',
   'docs',
@@ -47,6 +48,7 @@ $excludedDirectoryNames = @(
   'samples',
   'src',
   'Logos and Icons',
+  'images and icons',
   'Source Distributions',
   'Distribution Zip Files'
 )
@@ -63,7 +65,9 @@ $excludedFilePatterns = @(
   '*.rar',
   '*.bak',
   '*.tmp',
-  '*.temp'
+  '*.temp',
+  'claude-results*.md',
+  'CR*.md'
 )
 
 function Get-RelativePath {

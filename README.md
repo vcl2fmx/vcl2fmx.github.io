@@ -1,4 +1,4 @@
-# VCL2FMXConverter v6.0 Navigator — Build 020
+# VCL2FMXConverter v6.0 Navigator — Build 021
 
 ![VCL2FMXConverter](assets/vcl2fmx-logo.png)
 
@@ -10,22 +10,25 @@ The original VCL project remains the source of truth. Generated output is writte
 
 - [Local project website](index.html)
 - [Downloads and documentation](downloads.html)
-- [User Guide](docs/pdf/VCL2FMXConverter_v5_0_User_Guide.pdf)
-- [Engineering Guide](docs/pdf/VCL2FMXConverter_v5_0_Engineering_Guide.pdf)
+- [Navigator User Guide](docs/pdf/VCL2FMXConverter_v6_0_Navigator_User_Guide.pdf)
+- [Navigator Engineering Guide](docs/pdf/VCL2FMXConverter_v6_0_Navigator_Engineering_Guide.pdf)
 - [Rules, Component, Property, and Event Maps](docs/pdf/VCL2FMXConverter_v5_0_Rules_Component_Property_Event_Maps.pdf)
 - [Converter Runtime Flow](docs/pdf/Converter_runtime_flow_v5_0.pdf)
 
-## Highlights in v5.0
+## Highlights in v6.0 Navigator
 
-- Tabbed Vanguard workspace for project scanning, maps, output, and conversion rules
+- Designer-owned Navigator workspace with a per-iteration build identity
 - Pascal, DFM, and Delphi project analysis
 - FMX project, form, and source generation
 - Component, property, and event mapping
 - Compatibility, autofix, LiveBindings, and runtime-normalization passes
 - Data-aware, WinAPI, Windows-message, GDI, and third-party review support
-- 22 editable JSON mapping packs for common Delphi component families
-- 227 executable conversion contracts plus regression and release-readiness guards
-- Complete user, engineering, rules, mapping, runtime-flow, and contract documentation
+- Deterministic text, HTML, and `vcl2fmx.report.v1` JSON reports from one report model
+- 22 schema-validated JSON mapping packs containing 493 disciplined rules
+- Mapping-gap export as a valid starter mapping pack
+- 227 executable conversion contracts, including compilation of eligible generated fixtures
+- 64 regression guards and 62 release-readiness acceptance checks
+- Complete Navigator user and engineering guides with companion PDFs
 
 ## Requirements
 
@@ -68,7 +71,7 @@ VCL and FMX use different rendering, event, focus, platform, and component model
 The repository includes focused conversion contracts and broader regression checks. Run these from PowerShell:
 
 ```powershell
-.\tools\run_conversion_contracts.ps1 -ProjectRoot .
+.\tools\run_conversion_contracts.ps1 -ProjectRoot . -EnforceCoverage -CompileGenerated
 .\tools\run_regression_guards.ps1 -ProjectRoot . -FailOnBlockers
 .\tools\run_release_readiness_audit.ps1 -ProjectRoot . -FailOnBlockers
 ```

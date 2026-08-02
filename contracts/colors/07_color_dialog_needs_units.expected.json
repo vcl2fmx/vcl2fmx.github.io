@@ -1,6 +1,7 @@
 {
   "input_file": "contracts\\colors\\07_color_dialog_needs_units.pas",
   "expected_status": "converted",
+  "skip_generated_compile": true,
   "expected_output_patterns": [
     "unit ContractColorDialogNeedsUnits",
     "FMX\\.Colors",

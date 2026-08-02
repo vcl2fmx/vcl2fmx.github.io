@@ -5,8 +5,8 @@
   "expected_manual_reviews": [],
   "expected_units_added": ["FMX.Forms"],
   "expected_units_absent": ["Vcl.Forms"],
-  "expected_output_patterns": ["AlphaBlendValue := 128"],
-  "forbidden_output_patterns": ["Vcl\\.Forms"],
+  "expected_output_patterns": ["GeneratedSetAlphaBlendValue\\(Self, 128\\)"],
+  "forbidden_output_patterns": ["Vcl\\.Forms", "AlphaBlendValue := 128"],
   "expected_report_patterns": [],
   "forbidden_report_patterns": []
 }

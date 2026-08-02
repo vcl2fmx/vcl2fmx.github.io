@@ -1,5 +1,6 @@
 {
   "input_file": "contracts\\third_party\\01_devexpress_grid_name.pas",
+  "skip_generated_compile": true,
   "expected_status": "converted",
   "expected_output_patterns": [
     "unit ContractDevExpressGridName",

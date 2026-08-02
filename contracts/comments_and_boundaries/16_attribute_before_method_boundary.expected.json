@@ -1,5 +1,6 @@
 {
   "input_file": "contracts\\comments_and_boundaries\\16_attribute_before_method_boundary.pas",
+  "skip_generated_compile": true,
   "expected_status": "converted",
   "expected_manual_reviews": ["attribute boundary after message call"],
   "expected_output_patterns": ["WM_CLOSE|Original: SendMessage|\\[SomeAttribute\\]|procedure TContractAttributeBeforeMethodBoundary\\.SendMessage\\(const AText: string\\)"],

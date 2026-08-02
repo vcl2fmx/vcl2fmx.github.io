@@ -1,5 +1,6 @@
 {
   "input_file": "contracts\\comments_and_boundaries\\17_class_procedure_boundary.pas",
+  "skip_generated_compile": true,
   "expected_status": "converted",
   "expected_manual_reviews": ["class procedure boundary after message call"],
   "expected_output_patterns": ["WM_CLOSE|Original: SendMessage|class procedure TContractClassProcedureBoundary\\.SendMessage\\(const AText: string\\)"],

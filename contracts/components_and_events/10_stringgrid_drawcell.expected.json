@@ -14,12 +14,13 @@
   "expected_output_patterns": [
     "StringGrid1: TStringGrid",
     "procedure StringGrid1DrawCell",
-    "Canvas.TextOut"
+    "GeneratedCanvasTextOut"
   ],
   "forbidden_output_patterns": [
     "Vcl\\.Forms",
     "Vcl\\.Grids",
-    "Vcl\\.Graphics"
+    "Vcl\\.Graphics",
+    "Canvas\\.TextOut"
   ],
   "expected_report_patterns": [],
   "forbidden_report_patterns": []

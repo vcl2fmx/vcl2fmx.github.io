@@ -1,5 +1,6 @@
 {
   "input_file": "contracts\\include_analysis\\11_commented_include_directive\\IncludeCommentedDirective.pas",
+  "skip_generated_compile": true,
   "expected_status": "converted",
   "expected_output_patterns": [
     "unit IncludeCommentedDirective"

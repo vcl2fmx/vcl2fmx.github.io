@@ -1,5 +1,6 @@
 {
   "input_file": "contracts\\graphics\\08_scale_by_review\\ScaleByReview.pas",
+  "skip_generated_compile": true,
   "expected_status": "converted",
   "expected_output_patterns": [
     "GeneratedFMXScaleBy"

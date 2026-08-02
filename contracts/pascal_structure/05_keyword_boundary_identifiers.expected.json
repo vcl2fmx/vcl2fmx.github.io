@@ -1,5 +1,6 @@
 {
   "input_file": "contracts\\pascal_structure\\05_keyword_boundary_identifiers.pas",
+  "skip_generated_compile": true,
   "expected_status": "converted",
   "expected_conversions": [],
   "expected_manual_reviews": [],

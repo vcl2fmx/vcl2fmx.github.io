@@ -1286,6 +1286,13 @@ const
     '  end;' + sLineBreak +
     '  GeneratedSyncAutoSizeTextHeight(ATarget, ASize);' + sLineBreak +
     'end;' + sLineBreak + sLineBreak +
+    'procedure GeneratedCanvasTextOut(ACanvas: TCanvas; const X, Y: Single; const AText: string);' + sLineBreak +
+    'var' + sLineBreak +
+    '  RF: TRectF;' + sLineBreak +
+    'begin' + sLineBreak +
+    '  RF := RectF(X, Y, X + ACanvas.TextWidth(AText), Y + ACanvas.TextHeight(AText));' + sLineBreak +
+    '  ACanvas.FillText(RF, AText, False, 1, [], TTextAlign.Leading, TTextAlign.Leading);' + sLineBreak +
+    'end;' + sLineBreak + sLineBreak +
     'procedure GeneratedDrawText(ACanvas: TCanvas; const AText: string; var ARect: TRect; const AFlags: Cardinal);' + sLineBreak +
     'var' + sLineBreak +
     '  RF: TRectF;' + sLineBreak +
@@ -1571,11 +1578,6 @@ begin
     InsertGeneratedHelperBlock(FillAndStrokeEllipseHelperCode);
 
   Code := TRegEx.Replace(Code,
-    '(^[ \t]*procedure\s+[A-Za-z_][A-Za-z0-9_\.]*Paint\s*\(\s*Sender\s*:\s*TObject)\s*\);',
-    '$1; Canvas: TCanvas);',
-    [roIgnoreCase, roMultiLine]);
-
-  Code := TRegEx.Replace(Code,
     '\b([A-Za-z_][A-Za-z0-9_]*)\.Canvas(\s*,\s*GeneratedClientRect\(\1\))',
     'Canvas$2',
     [roIgnoreCase]);
@@ -1708,6 +1710,11 @@ begin
     [roIgnoreCase]);
 
   Code := TRegEx.Replace(Code,
+    '([A-Za-z_][A-Za-z0-9_\.]*)\.Rectangle\s*\(\s*([^,]+?)\s*,\s*([^,]+?)\s*,\s*([^,]+?)\s*,\s*([^)]+?)\s*\)\s*;',
+    'GeneratedCanvasRoundRect($1, $2, $3, $4, $5, 0, 0);',
+    [roIgnoreCase]);
+
+  Code := TRegEx.Replace(Code,
     '([A-Za-z_][A-Za-z0-9_\.]*)\.RoundRect\s*\(\s*([\s\S]+?)\s*\)\s*;',
     'GeneratedCanvasRoundRect($1, $2);',
     [roIgnoreCase, roSingleLine]);
@@ -1723,6 +1730,11 @@ begin
     [roIgnoreCase, roSingleLine]);
 
   Code := TRegEx.Replace(Code,
+    '([A-Za-z_][A-Za-z0-9_\.]*)\.TextOut\s*\(\s*([^,]+?)\s*,\s*([^,]+?)\s*,\s*([^)]+?)\s*\)\s*;',
+    'GeneratedCanvasTextOut($1, $2, $3, $4);',
+    [roIgnoreCase]);
+
+  Code := TRegEx.Replace(Code,
     '\bx([0-9A-Fa-f]{8})\b',
     '$$$1',
     [roIgnoreCase]);
@@ -1733,10 +1745,11 @@ begin
       ContainsText(Code, 'GeneratedCanvasLineTo(') or
       ContainsText(Code, 'GeneratedCanvasRoundRect(') or
       ContainsText(Code, 'GeneratedCanvasStretchDraw(') or
+      ContainsText(Code, 'GeneratedCanvasTextOut(') or
       ContainsText(Code, 'GeneratedSetCanvasTextColor(') or
       ContainsText(Code, 'GeneratedSetCanvasFontPixelHeight(') or
       ContainsText(Code, 'GeneratedSetCanvasFontSize(') or
-     ContainsText(Code, 'GeneratedDrawText(')) and
+      ContainsText(Code, 'GeneratedDrawText(')) and
      not ContainsText(Code, 'function GeneratedClientRect(') then
   begin
     InsertGeneratedHelperBlock(CanvasCompatHelperCode);

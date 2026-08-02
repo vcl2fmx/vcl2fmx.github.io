@@ -376,6 +376,12 @@ begin
           Continue;
         end;
         if SameText(UnitName, 'ActiveX') then Continue;
+        if SameText(UnitName, 'SysUtils') then
+          UnitName := 'System.SysUtils'
+        else if SameText(UnitName, 'Classes') then
+          UnitName := 'System.Classes'
+        else if SameText(UnitName, 'Variants') then
+          UnitName := 'System.Variants';
         if SameText(UnitName, 'DBGrids') then Continue;
         if SameText(UnitName, 'DBCtrls') then Continue;
         if SameText(UnitName, 'ComCtrls') then Continue;
@@ -396,6 +402,22 @@ begin
         UsesLine := BuildWrappedUsesClause(UnitList, '  ', 100);
         if ProtectedLines.Count > 0 then
         begin
+          for j := 0 to ProtectedLines.Count - 1 do
+          begin
+            CleanedProtectedLine := Trim(ProtectedLines[j]);
+            if (CleanedProtectedLine <> '') and
+               not StartsText('{$', CleanedProtectedLine) and
+               not StartsText('(*$', CleanedProtectedLine) then
+            begin
+              CleanedProtectedLine := StringReplace(
+                CleanedProtectedLine, ';', '', [rfReplaceAll]);
+              while StartsText(',', CleanedProtectedLine) do
+                Delete(CleanedProtectedLine, 1, 1);
+              while EndsText(',', CleanedProtectedLine) do
+                Delete(CleanedProtectedLine, Length(CleanedProtectedLine), 1);
+              ProtectedLines[j] := '  , ' + Trim(CleanedProtectedLine);
+            end;
+          end;
           if EndsText(';', TrimRight(UsesLine)) then
             Delete(UsesLine, Length(UsesLine), 1);
           ConditionalLine := TrimRight(ProtectedLines.Text);
@@ -471,6 +493,10 @@ var
   NeedsFMXNumberBox: Boolean;
   NeedsFMXColors: Boolean;
   NeedsFMXListBox: Boolean;
+  NeedsFMXListView: Boolean;
+  NeedsFMXTreeView: Boolean;
+  NeedsFMXTabControl: Boolean;
+  NeedsFMXActnList: Boolean;
   NeedsFMXLayouts: Boolean;
   NeedsFMXMenus: Boolean;
   NeedsFMXGrid: Boolean;
@@ -485,6 +511,8 @@ var
   NeedsFmxBindNavigator: Boolean;
   NeedsFmxBindEditors: Boolean;
   NeedsSystemUITypes: Boolean;
+  NeedsSystemSysUtils: Boolean;
+  NeedsSystemClasses: Boolean;
   NeedsSystemRtti: Boolean;
   NeedsSystemTypes: Boolean;
   NeedsSystemGenericsCollections: Boolean;
@@ -645,6 +673,10 @@ begin
     NeedsFMXNumberBox := False;
     NeedsFMXColors := False;
     NeedsFMXListBox := False;
+    NeedsFMXListView := False;
+    NeedsFMXTreeView := False;
+    NeedsFMXTabControl := False;
+    NeedsFMXActnList := False;
     NeedsFMXLayouts := False;
     NeedsFMXMenus := False;
     NeedsFMXImgList := False;
@@ -657,6 +689,8 @@ begin
     NeedsFmxBindNavigator := False;
     NeedsFmxBindEditors := False;
     NeedsSystemUITypes := False;
+    NeedsSystemSysUtils := False;
+    NeedsSystemClasses := False;
     NeedsSystemRtti := False;
     NeedsSystemGenericsCollections := False;
     NeedsSystemUIConsts := False;
@@ -706,6 +740,11 @@ begin
     NeedsFMXListBox := (Pos('TComboBox', AnalysisCode) > 0) or
                        (Pos('TListBox', AnalysisCode) > 0) or
                        (Pos('TFontDialog', AnalysisCode) > 0);
+    NeedsFMXListView := Pos('TListView', AnalysisCode) > 0;
+    NeedsFMXTreeView := Pos('TTreeView', AnalysisCode) > 0;
+    NeedsFMXTabControl := (Pos('TTabControl', AnalysisCode) > 0) or
+                          (Pos('TTabItem', AnalysisCode) > 0);
+    NeedsFMXActnList := Pos('TActionList', AnalysisCode) > 0;
     NeedsFMXLayouts := Pos('TLayout', AnalysisCode) > 0;
     NeedsFMXMenus := (Pos('TMenuBar', AnalysisCode) > 0) or
                      (Pos('TMenuItem', AnalysisCode) > 0) or
@@ -721,7 +760,8 @@ begin
                         (Pos('TSaveDialog', AnalysisCode) > 0);
     NeedsFMXMedia := (Pos('TMediaPlayer', AnalysisCode) > 0) or
                      (Pos('mpPlaying', AnalysisCode) > 0);
-    NeedsDataBindComponents := (Pos('TLinkControlToField', AnalysisCode) > 0) or
+    NeedsDataBindComponents := (Pos('TBindSource', AnalysisCode) > 0) or
+                               (Pos('TLinkControlToField', AnalysisCode) > 0) or
                                (Pos('TLinkPropertyToField', AnalysisCode) > 0) or
                                (Pos('TLinkFillControlToField', AnalysisCode) > 0);
     NeedsDataBindDBScope := Pos('TBindSourceDB', AnalysisCode) > 0;
@@ -734,6 +774,9 @@ begin
     NeedsFmxBindEditors := NeedsDataBindComponents or NeedsDataBindDBScope or
       NeedsDataBindGrid or NeedsFmxBindDBLinks;
     NeedsSystemUITypes := (Pos('TAlphaColor', AnalysisCode) > 0) or
+                          (Pos('TMouseButton', AnalysisCode) > 0) or
+                          (Pos('TWindowState', AnalysisCode) > 0) or
+                          (Pos('GeneratedCanvasTextOut(', AnalysisCode) > 0) or
                           TRegEx.IsMatch(AnalysisCode, '\bcla[A-Z][A-Za-z0-9_]*\b') or
                           (Pos('MessageDlg(', AnalysisCode) > 0) or
                           (Pos('TOpenOption.', AnalysisCode) > 0) or
@@ -741,6 +784,10 @@ begin
                           (Pos('mrOk', AnalysisCode) > 0) or
                           (Pos('mrCancel', AnalysisCode) > 0) or
                           (Pos('TColorDialog', AnalysisCode) > 0);
+    NeedsSystemSysUtils := TRegEx.IsMatch(AnalysisCode,
+      '\b(IntToStr|StrToInt|FloatToStr|StrToFloat|Format|UpperCase|LowerCase)\s*\(',
+      [roIgnoreCase]);
+    NeedsSystemClasses := Pos('TShiftState', AnalysisCode) > 0;
     NeedsSystemRtti := (Pos('TValue.From<', AnalysisCode) > 0) or
                        (Pos(': TValue', AnalysisCode) > 0) or
                        (Pos(' TValue;', AnalysisCode) > 0);
@@ -748,6 +795,8 @@ begin
                                       (Pos('TObjectDictionary<', AnalysisCode) > 0);
     NeedsSystemTypes := (Pos('RectF(', AnalysisCode) > 0) or
                          (Pos('PointF(', AnalysisCode) > 0) or
+                         TRegEx.IsMatch(AnalysisCode, '\bTRect\b') or
+                         TRegEx.IsMatch(AnalysisCode, '\bTPoint\b') or
                          (Pos('TRectF', AnalysisCode) > 0) or
                          (Pos('TPointF', AnalysisCode) > 0) or
                          (Pos('GeneratedClientRect(', AnalysisCode) > 0) or
@@ -801,6 +850,8 @@ begin
       NeedsFMXObjects or NeedsFMXStdCtrls or NeedsFMXEdit or
       NeedsFMXComboEdit or NeedsFMXMemo or NeedsFMXSpinBox or
       NeedsFMXNumberBox or NeedsFMXColors or NeedsFMXListBox or
+      NeedsFMXListView or NeedsFMXTreeView or NeedsFMXTabControl or
+      NeedsFMXActnList or
       NeedsFMXLayouts or NeedsFMXMenus or NeedsFMXGrid or
       NeedsFMXImgList or NeedsFMXDateTimeCtrls or NeedsFMXDialogs or
       NeedsFMXMedia or
@@ -998,6 +1049,14 @@ begin
         UnitList.Add('FMX.Colors');
       if NeedsFMXListBox and (UnitList.IndexOf('FMX.ListBox') = -1) then
         UnitList.Add('FMX.ListBox');
+      if NeedsFMXListView and (UnitList.IndexOf('FMX.ListView') = -1) then
+        UnitList.Add('FMX.ListView');
+      if NeedsFMXTreeView and (UnitList.IndexOf('FMX.TreeView') = -1) then
+        UnitList.Add('FMX.TreeView');
+      if NeedsFMXTabControl and (UnitList.IndexOf('FMX.TabControl') = -1) then
+        UnitList.Add('FMX.TabControl');
+      if NeedsFMXActnList and (UnitList.IndexOf('FMX.ActnList') = -1) then
+        UnitList.Add('FMX.ActnList');
       if NeedsFMXLayouts and (UnitList.IndexOf('FMX.Layouts') = -1) then
         UnitList.Add('FMX.Layouts');
       if NeedsFMXMenus and (UnitList.IndexOf('FMX.Menus') = -1) then
@@ -1032,6 +1091,10 @@ begin
         UnitList.Add('Fmx.Bind.Editors');
       if NeedsSystemUITypes and (UnitList.IndexOf('System.UITypes') = -1) then
         UnitList.Add('System.UITypes');
+      if NeedsSystemSysUtils and (UnitList.IndexOf('System.SysUtils') = -1) then
+        UnitList.Add('System.SysUtils');
+      if NeedsSystemClasses and (UnitList.IndexOf('System.Classes') = -1) then
+        UnitList.Add('System.Classes');
       if NeedsSystemTypes and (UnitList.IndexOf('System.Types') = -1) then
         UnitList.Add('System.Types');
       if NeedsSystemUIConsts and (UnitList.IndexOf('System.UIConsts') = -1) then
@@ -1055,6 +1118,22 @@ begin
       UsesLine := BuildWrappedUsesClause(UnitList, '  ', 100);
       if ProtectedLines.Count > 0 then
       begin
+        for j := 0 to ProtectedLines.Count - 1 do
+        begin
+          CleanedProtectedLine := Trim(ProtectedLines[j]);
+          if (CleanedProtectedLine <> '') and
+             not StartsText('{$', CleanedProtectedLine) and
+             not StartsText('(*$', CleanedProtectedLine) then
+          begin
+            CleanedProtectedLine := StringReplace(
+              CleanedProtectedLine, ';', '', [rfReplaceAll]);
+            while StartsText(',', CleanedProtectedLine) do
+              Delete(CleanedProtectedLine, 1, 1);
+            while EndsText(',', CleanedProtectedLine) do
+              Delete(CleanedProtectedLine, Length(CleanedProtectedLine), 1);
+            ProtectedLines[j] := '  , ' + Trim(CleanedProtectedLine);
+          end;
+        end;
         if EndsText(';', TrimRight(UsesLine)) then
           Delete(UsesLine, Length(UsesLine), 1);
         ConditionalLine := TrimRight(ProtectedLines.Text);
@@ -1092,8 +1171,20 @@ begin
         UnitList.Add('FMX.Grid');
       if NeedsFMXGrid then
         UnitList.Add('FMX.Grid.Style');
+      if NeedsFMXListView then
+        UnitList.Add('FMX.ListView');
+      if NeedsFMXTreeView then
+        UnitList.Add('FMX.TreeView');
+      if NeedsFMXTabControl then
+        UnitList.Add('FMX.TabControl');
+      if NeedsFMXActnList then
+        UnitList.Add('FMX.ActnList');
       if NeedsSystemUITypes then
         UnitList.Add('System.UITypes');
+      if NeedsSystemSysUtils then
+        UnitList.Add('System.SysUtils');
+      if NeedsSystemClasses then
+        UnitList.Add('System.Classes');
       if NeedsSystemGenericsCollections then
         UnitList.Add('System.Generics.Collections');
       if NeedsSystemTypes then
