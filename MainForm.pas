@@ -1,6 +1,6 @@
 ﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
- Version v6.0 Navigator Build 001
+ Version v6.0 Navigator Build 002
  Written and built in the USA}
 
 unit MainForm;
@@ -2191,9 +2191,9 @@ begin
     lblSubHeader.Visible := False;
     HeroVersionBadge.Position.X := 34;
     HeroVersionBadge.Position.Y := 58;
-    HeroVersionBadge.Size.Width := 210;
+    HeroVersionBadge.Size.Width := 465;
     HeroVersionBadge.Size.Height := 28;
-    lblVersion.Position.X := 49;
+    lblVersion.Position.X := 54;
     lblVersion.Position.Y := 63;
     lblVersion.TextSettings.Font.Size := 13;
     lblStatusCaption.Position.Y := 18;
@@ -2276,9 +2276,9 @@ begin
     lblSubHeader.Visible := False;
     HeroVersionBadge.Position.X := 40;
     HeroVersionBadge.Position.Y := 78;
-    HeroVersionBadge.Size.Width := 224;
+    HeroVersionBadge.Size.Width := 465;
     HeroVersionBadge.Size.Height := 30;
-    lblVersion.Position.X := 86;  // was 56 and too far left
+    lblVersion.Position.X := 60;
     lblVersion.Position.Y := 84;
     lblVersion.TextSettings.Font.Size := 13;
     lblStatusCaption.Position.Y := 28;

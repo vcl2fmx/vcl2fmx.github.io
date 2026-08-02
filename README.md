@@ -1,4 +1,4 @@
-# VCL2FMXConverter v6.0 Navigator — Build 001
+# VCL2FMXConverter v6.0 Navigator — Build 002
 
 ![VCL2FMXConverter](assets/vcl2fmx-logo.png)
 

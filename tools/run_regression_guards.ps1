@@ -108,6 +108,14 @@ $liveBindingsText = Get-SourceText -RelativePath 'Converter.Rewrite.LiveBindings
 $dfmParserText = Get-SourceText -RelativePath 'Converter.Parser.DFM.pas'
 $fileManagerText = Get-SourceText -RelativePath 'Converter.Core.FileManager.pas'
 $engineText = Get-SourceText -RelativePath 'Converter.Core.Engine.pas'
+$generateReportMatch = [regex]::Match($engineText,
+  '(?ms)^procedure\s+TConverterEngine\.GenerateReport;.*?(?=^procedure\s+TConverterEngine\.Cancel;)')
+$generateReportLineCount = if ($generateReportMatch.Success) {
+  ($generateReportMatch.Value -split "\r?\n").Count
+}
+else {
+  0
+}
 $engineConstructorMatch = [regex]::Match($engineText,
   '(?ms)constructor\s+TConverterEngine\.Create\b.*?^end;\s*$')
 $engineConstructorText = if ($engineConstructorMatch.Success) {
@@ -124,6 +132,33 @@ $projectFileText = Get-SourceText -RelativePath 'VCL2FMXConverter.dproj'
 $readmeText = Get-SourceText -RelativePath 'README.md'
 $usesClauseText = Get-SourceText -RelativePath 'Converter.Rewrite.UsesClause.pas'
 $winApiText = Get-SourceText -RelativePath 'Converter.Advanced.WinAPI.pas'
+$designerBuildMatch = [regex]::Match($mainFormFmxText,
+  "Text = 'Navigator Release\s+v6\.0\s+Build\s+(?<build>\d{3})\s+(?<timestamp>\d{4}-\d{2}-\d{2}\s+\d{1,2}:\d{2}\s+(?:AM|PM))'")
+$designerBuildText = if ($designerBuildMatch.Success) {
+  $designerBuildMatch.Groups['build'].Value
+}
+else {
+  ''
+}
+$designerBuildNumber = if ($designerBuildText -match '^\d{3}$') {
+  [int]$designerBuildText
+}
+else {
+  -1
+}
+$designerBadgeWidthMatch = [regex]::Match($mainFormFmxText,
+  '(?ms)object\s+HeroVersionBadge:\s*TRectangle.*?Size\.Width\s*=\s*(?<width>[0-9.]+)')
+$designerBadgeWidth = if ($designerBadgeWidthMatch.Success) {
+  [double]$designerBadgeWidthMatch.Groups['width'].Value
+}
+else {
+  0
+}
+$responsiveBadgeWidths = @(
+  [regex]::Matches($mainFormText,
+    'HeroVersionBadge\.Size\.Width\s*:=\s*(?<width>[0-9.]+)') |
+    ForEach-Object { [double]$_.Groups['width'].Value }
+)
 
 if (-not [string]::IsNullOrWhiteSpace($mapperText)) {
   $ensureBestMatchBlock = Get-MethodBlock -Text $mapperText -MethodName 'EnsureBestMatch'
@@ -300,6 +335,15 @@ if (-not [string]::IsNullOrWhiteSpace($engineText)) {
     -Area 'Reporting' -Check 'Report includes files-with-errors metric' `
     -PassDetails 'Reporting still includes Files with conversion errors.' `
     -FailDetails 'Reporting no longer includes the Files with conversion errors metric.'
+
+  Add-RuleResult -Condition (
+      ($engineText -match 'procedure\s+TConverterEngine\.AddHtmlReportDocumentHead\(const AHtml: TStrings\)') -and
+      ($engineText -match 'AddHtmlReportDocumentHead\(Html\);') -and
+      ($generateReportLineCount -gt 0) -and
+      ($generateReportLineCount -le 1100)
+    ) -Area 'Reporting' -Check 'Static HTML document head is split from GenerateReport' `
+    -PassDetails ('GenerateReport is ' + $generateReportLineCount + ' lines and delegates its static HTML document head.') `
+    -FailDetails 'The HTML document head extraction is missing or GenerateReport has grown beyond 1,100 lines.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($coreTypesText)) {
@@ -337,15 +381,23 @@ if (-not [string]::IsNullOrWhiteSpace($mainFormText)) {
     -FailDetails 'The dry-run checkbox is missing from MainForm.fmx or runtime checkbox construction has returned.'
 
   Add-RuleResult -Condition (
-      ($mainFormText -match 'Version v6\.0 Navigator Build 001') -and
-      ($mainFormFmxText -match "Text = 'Navigator Release\s+v6\.0\s+Build 001'") -and
-      ($mainFormFmxText -match "Caption = 'VCL to FMX Converter v6\.0 Navigator - Build 001'") -and
-      ($projectFileText -match 'FileVersion=6\.0\.0\.1') -and
-      ($projectFileText -match '<VerInfo_Build>1</VerInfo_Build>') -and
-      ($readmeText -match 'VCL2FMXConverter v6\.0 Navigator.+Build 001')
-    ) -Area 'Build identity' -Check 'Navigator Build 001 identity is synchronized' `
-    -PassDetails 'Source header, designer text, executable version metadata, and README identify Navigator Build 001.' `
-    -FailDetails 'Navigator Build 001 identity is inconsistent across source, designer, project metadata, or README.'
+      ($designerBuildNumber -ge 1) -and
+      ($mainFormText -match ('Version v6\.0 Navigator Build ' + [regex]::Escape($designerBuildText))) -and
+      ($mainFormFmxText -match ("Caption = 'VCL to FMX Converter v6\.0 Navigator - Build " + [regex]::Escape($designerBuildText) + "'")) -and
+      ($projectFileText -match ('FileVersion=6\.0\.0\.' + $designerBuildNumber + '(?:;|<)')) -and
+      ($projectFileText -match ('<VerInfo_Build>' + $designerBuildNumber + '</VerInfo_Build>')) -and
+      ($readmeText -match ('VCL2FMXConverter v6\.0 Navigator.+Build ' + [regex]::Escape($designerBuildText)))
+    ) -Area 'Build identity' -Check 'Navigator build identity is synchronized' `
+    -PassDetails ('Source header, designer text, timestamp, executable version metadata, and README identify Navigator Build ' + $designerBuildText + '.') `
+    -FailDetails 'Navigator build identity is inconsistent across source, designer, project metadata, or README.'
+
+  Add-RuleResult -Condition (
+      ($designerBadgeWidth -ge 450) -and
+      ($responsiveBadgeWidths.Count -eq 2) -and
+      (@($responsiveBadgeWidths | Where-Object { $_ -lt 450 }).Count -eq 0)
+    ) -Area 'Build identity' -Check 'Version badge contains full build and timestamp text' `
+    -PassDetails 'Designer and both responsive states keep the version badge at least 450 pixels wide.' `
+    -FailDetails 'The version badge can shrink below 450 pixels and clip the build or timestamp.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($usesClauseText)) {

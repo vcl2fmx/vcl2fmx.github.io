@@ -2,7 +2,7 @@
   Left = 0
   Top = 0
   ActiveControl = edtSource
-  Caption = 'VCL to FMX Converter v6.0 Navigator - Build 001'
+  Caption = 'VCL to FMX Converter v6.0 Navigator - Build 002'
   ClientHeight = 820
   ClientWidth = 1345
   Fill.Color = xFFF2F7FD
@@ -358,9 +358,9 @@
         Fill.Color = claWhite
         HitTest = False
         Opacity = 0.140000000596046400
-        Position.X = 27.000000000000000000
+        Position.X = 40.000000000000000000
         Position.Y = 78.000000000000000000
-        Size.Width = 310.000000000000000000
+        Size.Width = 465.000000000000000000
         Size.Height = 30.000000000000000000
         Size.PlatformDefault = False
         Stroke.Kind = None
@@ -370,15 +370,15 @@
       object lblVersion: TLabel
         AutoSize = True
         StyledSettings = []
-        Position.X = 48.000000000000000000
+        Position.X = 60.000000000000000000
         Position.Y = 84.000000000000000000
-        Size.Width = 264.000000000000000000
+        Size.Width = 405.000000000000000000
         Size.Height = 18.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.Size = 13.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
-        Text = 'Navigator Release  v6.0  Build 001'
+        Text = 'Navigator Release  v6.0  Build 002  2026-08-01 9:41 PM'
       end
       object lblStatusCaption: TLabel
         StyledSettings = []

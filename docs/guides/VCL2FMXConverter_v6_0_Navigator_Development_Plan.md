@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 001
+Current iteration: Navigator Release v6.0 Build 002
 
 ## Release Direction
 
@@ -62,6 +62,20 @@ Validation gate:
 - Regression guards with zero blockers.
 - Direct inspection of executable version information.
 - Git review and an intentional Build 001 commit.
+
+## Iteration 002
+
+Scope:
+
+- Keep the complete version, build, date, and time inside the hero badge at
+  normal and compact heights.
+- Guard the minimum badge width in both designer and responsive-layout state.
+- Make build-identity validation derive the active three-digit build rather
+  than hardcode Build 001.
+- Capture report-output equivalence baselines before decomposing the report
+  generator.
+- Extract the static HTML document head and CSS without changing rendered
+  output.
 
 ## Next: Verified Cleanup
 
