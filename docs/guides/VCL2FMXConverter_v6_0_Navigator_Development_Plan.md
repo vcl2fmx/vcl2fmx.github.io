@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 019
+Current iteration: Navigator Release v6.0 Build 020
 
 ## Release Direction
 
@@ -352,3 +352,18 @@ The reusable `tools/validate_mapping_packs.ps1` command applies the same
 discipline before release or authoring work. Mapping-gap export now produces a
 complete schema-bearing starter pack instead of a loose suggestion array,
 deduplicates candidate classes, and keeps source evidence for review.
+
+## Iteration 020 — Isolated and Semantic Validation
+
+Navigator Build 020 moves default contract execution beneath a unique
+temporary work tree and removes that tree after a successful run. Contract
+validation no longer rewrites tracked output fixtures. Every generated JSON
+report is parsed and checked for schema and required snapshot collections, and
+declared auxiliary JSON files are parsed and may carry explicit content
+patterns.
+
+The mapping-pack schema suite now proves both sides of the contract: all
+bundled packs pass, while missing schema, duplicate pack IDs, duplicate VCL
+classes, and invalid confidence are rejected. The dry-run mapping suggestion
+contract also verifies that its auxiliary artifact is a usable v1 starter
+pack rather than merely checking that a file exists.

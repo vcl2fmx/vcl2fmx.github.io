@@ -118,6 +118,7 @@ $jsonReportRendererText = Get-SourceText -RelativePath 'Converter.Reporting.Json
 $acceptanceText = Get-SourceText -RelativePath 'tools\run_acceptance_tests.ps1'
 $mappingSmokeGuardText = Get-SourceText -RelativePath 'tests\mapping_pack_smoke\run_mapping_pack_smoke_guard.ps1'
 $mappingPackValidatorText = Get-SourceText -RelativePath 'tools\validate_mapping_packs.ps1'
+$mappingPackSchemaGuardText = Get-SourceText -RelativePath 'tests\mapping_pack_schema\run_guard.ps1'
 $frenchBetaGuardText = Get-SourceText -RelativePath 'tests\french_beta_regression\run_guard.ps1'
 $generateReportMatch = [regex]::Match($engineText,
   '(?ms)^procedure\s+TConverterEngine\.GenerateReport;.*?(?=^procedure\s+TConverterEngine\.Cancel;)')
@@ -541,12 +542,26 @@ if ((-not [string]::IsNullOrWhiteSpace($mappingPackValidatorText)) -and
       ($mapperText -match 'confidence outside 0 through 100') -and
       ($mappingPackValidatorText -match 'vcl2fmx\.mapping-pack\.v1') -and
       ($mappingPackValidatorText -match 'duplicates vcl_class') -and
+      ($mappingPackSchemaGuardText -match 'missing_schema') -and
+      ($mappingPackSchemaGuardText -match 'duplicate_id') -and
+      ($mappingPackSchemaGuardText -match 'duplicate_class') -and
+      ($mappingPackSchemaGuardText -match 'invalid_confidence') -and
       ($engineText -match 'Generated_MappingPack_Starter') -and
       ($engineText -match 'VCL2FMX_MAPPING_PACK_SCHEMA')
     ) -Area 'Mapping packs' -Check 'Schema, duplicate, and authoring discipline is enforced' `
     -PassDetails 'All 22 packs declare schema v1; runtime and command-line validation reject duplicate IDs/classes and invalid confidence; authoring export produces a schema-valid starter.' `
     -FailDetails 'Mapping-pack schema metadata, duplicate detection, confidence validation, or starter export discipline is incomplete.'
 }
+
+Add-RuleResult -Condition (
+    ($contractRunnerText -match 'VCL2FMXContracts_') -and
+    ($contractRunnerText -match 'Assert-UnderOutputRoot') -and
+    ($contractRunnerText -match 'expected_auxiliary_patterns') -and
+    ($contractRunnerText -match 'vcl2fmx\.report\.v1') -and
+    ($contractRunnerText -match 'Remove-Item -LiteralPath \$OutputRoot -Recurse -Force')
+  ) -Area 'Contracts' -Check 'Contract artifacts are isolated and JSON artifacts are validated' `
+  -PassDetails 'Default contract work uses a unique temporary tree, validates report and auxiliary JSON semantics, and removes successful-run artifacts.' `
+  -FailDetails 'Contract output can dirty tracked fixtures or JSON artifact validation is incomplete.'
 
 if (-not [string]::IsNullOrWhiteSpace($contractRunnerText)) {
   Add-RuleResult -Condition (

@@ -613,6 +613,31 @@ else {
     -FailDetails ('Required validation command is missing: ' + $mappingValidatorScript)
 }
 
+$mappingSchemaGuardScript = Join-Path $ProjectRoot (
+  'tests\mapping_pack_schema\run_guard.ps1')
+if (Test-Path -LiteralPath $mappingSchemaGuardScript) {
+  $mappingSchemaGuard = Invoke-Process -FilePath 'powershell.exe' `
+    -Arguments ('-ExecutionPolicy Bypass -File "{0}" -ProjectRoot "{1}"' -f
+      $mappingSchemaGuardScript, $ProjectRoot) `
+    -WorkingDirectory (Split-Path -Parent $mappingSchemaGuardScript)
+  Add-Check -Condition ($mappingSchemaGuard.ExitCode -eq 0) `
+    -Area 'Mapping packs' `
+    -Check 'Mapping-pack schema negative cases are rejected' `
+    -PassDetails 'Missing schema, duplicate ID, duplicate class, and invalid confidence fixtures are rejected while bundled packs pass.' `
+    -FailDetails $(if (($mappingSchemaGuard.StdOut + $mappingSchemaGuard.StdErr).Trim() -ne '') {
+      ($mappingSchemaGuard.StdOut + $mappingSchemaGuard.StdErr).Trim()
+    } else {
+      'Mapping-pack schema guard returned a nonzero exit code.'
+    })
+}
+else {
+  Add-Check -Condition $false `
+    -Area 'Mapping packs' `
+    -Check 'Mapping-pack schema negative guard is available' `
+    -PassDetails 'The required mapping-pack schema guard is present.' `
+    -FailDetails ('Required schema guard is missing: ' + $mappingSchemaGuardScript)
+}
+
 $guardScript = Join-Path $ProjectRoot 'tools\run_regression_guards.ps1'
 $guardReport = Join-Path $env:TEMP ('VCL2FMX_REGRESSION_FOR_ACCEPTANCE_{0}.txt' -f (Get-Date -Format 'yyyy-MM-dd_HHmmss'))
 $guard = Invoke-Process -FilePath 'powershell.exe' `

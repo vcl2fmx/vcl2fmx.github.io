@@ -6,6 +6,18 @@
   "expected_no_generated_source_files": true,
   "expected_report_files": true,
   "expected_auxiliary_files": ["MappingPack_Authoring_Suggestions.json"],
+  "expected_auxiliary_patterns": [
+    {
+      "file": "MappingPack_Authoring_Suggestions.json",
+      "patterns": [
+        "\"schema\": \"vcl2fmx.mapping-pack.v1\"",
+        "\"pack_id\": \"generated.mapping.starter\"",
+        "\"vcl_class\": \"TAdvDoesNotExist\"",
+        "\"action\": \"manual_review\"",
+        "\"confidence\": 0"
+      ]
+    }
+  ],
   "expected_output_patterns": [],
   "forbidden_output_patterns": [],
   "expected_report_patterns": [

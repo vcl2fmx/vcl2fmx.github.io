@@ -99,7 +99,10 @@ foreach ($file in $files) {
     }
 
     $rulesProperty = $pack.PSObject.Properties['rules']
-    $rules = if ($null -eq $rulesProperty) { @() } else { @($rulesProperty.Value) }
+    $rules = @()
+    if ($null -ne $rulesProperty) {
+      $rules = @($rulesProperty.Value)
+    }
     if ($rules.Count -eq 0) {
       Add-ValidationError $file.Name 'rules must be a non-empty array'
       continue

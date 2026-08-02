@@ -23,8 +23,17 @@ if ([string]::IsNullOrWhiteSpace($FixtureRoot)) {
 }
 $FixtureRoot = (Resolve-Path $FixtureRoot).Path
 
-if ([string]::IsNullOrWhiteSpace($OutputRoot)) {
-  $OutputRoot = Join-Path $ProjectRoot 'tests\conversion_contract_output'
+$usesTemporaryOutputRoot = [string]::IsNullOrWhiteSpace($OutputRoot)
+if ($usesTemporaryOutputRoot) {
+  $OutputRoot = Join-Path $env:TEMP (
+    'VCL2FMXContracts_{0}' -f ([Guid]::NewGuid().ToString('N')))
+}
+$OutputRoot = [System.IO.Path]::GetFullPath($OutputRoot)
+$outputRootLeaf = Split-Path -Leaf $OutputRoot
+if (($OutputRoot -eq [System.IO.Path]::GetPathRoot($OutputRoot)) -or
+    ($OutputRoot.TrimEnd('\') -eq $ProjectRoot.TrimEnd('\')) -or
+    [string]::IsNullOrWhiteSpace($outputRootLeaf)) {
+  throw "Unsafe contract output root rejected: $OutputRoot"
 }
 
 if ([string]::IsNullOrWhiteSpace($ConverterExe)) {
@@ -67,16 +76,16 @@ Write-Output ('  Executable SHA-256: {0}' -f $runnerHash)
 Write-Output ('  Newest source: {0}' -f $newestRunnerSource.FullName)
 Write-Output ('  Newest source UTC: {0:o}' -f $newestRunnerSource.LastWriteTimeUtc)
 
-function Assert-UnderProjectRoot {
+function Assert-UnderOutputRoot {
   param(
     [Parameter(Mandatory = $true)]
     [string]$Path
   )
 
   $fullPath = [System.IO.Path]::GetFullPath($Path)
-  $rootWithSlash = $ProjectRoot.TrimEnd('\') + '\'
+  $rootWithSlash = $OutputRoot.TrimEnd('\') + '\'
   if (-not ($fullPath.StartsWith($rootWithSlash, [System.StringComparison]::OrdinalIgnoreCase))) {
-    throw "Refusing to use path outside project root: $fullPath"
+    throw "Refusing to use path outside contract output root: $fullPath"
   }
   return $fullPath
 }
@@ -152,7 +161,15 @@ function Normalize-ReportArtifact {
 
   $normalized = $Text.Replace("`r`n", "`n").Replace("`r", "`n")
   $normalized = [regex]::Replace(
+    $normalized, [regex]::Escape($CaseRoot.Replace('\', '\\')),
+    '<CASE_ROOT>',
+    [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+  $normalized = [regex]::Replace(
     $normalized, [regex]::Escape($CaseRoot), '<CASE_ROOT>',
+    [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+  $normalized = [regex]::Replace(
+    $normalized, [regex]::Escape($ProjectRoot.Replace('\', '\\')),
+    '<PROJECT_ROOT>',
     [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
   $normalized = [regex]::Replace(
     $normalized, [regex]::Escape($ProjectRoot), '<PROJECT_ROOT>',
@@ -330,12 +347,12 @@ function Invoke-ContractCase {
   }
 
   $caseName = Get-CaseName -InputFile $inputPath
-  $caseRoot = Assert-UnderProjectRoot (Join-Path $OutputRoot $caseName)
+  $caseRoot = Assert-UnderOutputRoot (Join-Path $OutputRoot $caseName)
   $caseSource = Join-Path $caseRoot 'source'
   $caseOutput = Join-Path $caseRoot 'output'
 
   if (Test-Path -LiteralPath $caseRoot) {
-    $resolvedCaseRoot = Assert-UnderProjectRoot $caseRoot
+    $resolvedCaseRoot = Assert-UnderOutputRoot $caseRoot
     Remove-Item -LiteralPath $resolvedCaseRoot -Recurse -Force
   }
 
@@ -577,6 +594,73 @@ end.
     if ($auxiliaryFiles.Count -eq 0) {
       $failures.Add("Expected auxiliary output file '$auxiliaryFileName' was not found.") | Out-Null
     }
+    elseif ([System.IO.Path]::GetExtension([string]$auxiliaryFileName) -ieq '.json') {
+      try {
+        $null = Read-TextFile -Path $auxiliaryFiles[0].FullName | ConvertFrom-Json
+      }
+      catch {
+        $failures.Add(
+          "Auxiliary JSON '$auxiliaryFileName' is not parseable: $($_.Exception.Message)") |
+          Out-Null
+      }
+    }
+  }
+
+  foreach ($auxiliaryCheck in Get-JsonArray -Object $expectation -Name 'expected_auxiliary_patterns') {
+    if (($null -eq $auxiliaryCheck.PSObject.Properties['file']) -or
+        [string]::IsNullOrWhiteSpace([string]$auxiliaryCheck.file)) {
+      $failures.Add('An expected_auxiliary_patterns entry has no file name.') | Out-Null
+      continue
+    }
+    $auxiliaryFiles = @(Get-ChildItem -LiteralPath $caseOutput -Recurse -File -ErrorAction SilentlyContinue |
+      Where-Object { $_.Name -eq [string]$auxiliaryCheck.file })
+    if ($auxiliaryFiles.Count -eq 0) {
+      $failures.Add(
+        "Auxiliary pattern target '$($auxiliaryCheck.file)' was not found.") |
+        Out-Null
+      continue
+    }
+    $auxiliaryText = Read-TextFile -Path $auxiliaryFiles[0].FullName
+    foreach ($pattern in Get-JsonArray -Object $auxiliaryCheck -Name 'patterns') {
+      if (-not (Test-TextPattern -Text $auxiliaryText -Pattern ([string]$pattern))) {
+        $failures.Add(
+          "Auxiliary file '$($auxiliaryCheck.file)' is missing pattern '$pattern'.") |
+          Out-Null
+      }
+    }
+  }
+
+  $jsonReportFiles = @(Get-ChildItem -LiteralPath $caseOutput -Recurse -File -ErrorAction SilentlyContinue |
+    Where-Object { $_.Name -like '*Report*.json' })
+  foreach ($jsonReportFile in $jsonReportFiles) {
+    try {
+      $jsonReport = Read-TextFile -Path $jsonReportFile.FullName | ConvertFrom-Json
+      if ([string]$jsonReport.schemaVersion -cne 'vcl2fmx.report.v1') {
+        $failures.Add(
+          "JSON report '$($jsonReportFile.Name)' has an unsupported schemaVersion.") |
+          Out-Null
+      }
+      foreach ($requiredReportField in @(
+          'summary', 'issues', 'manualGroups', 'mappingPacks',
+          'mappingUsages', 'conversionLog')) {
+        if ($null -eq $jsonReport.PSObject.Properties[$requiredReportField]) {
+          $failures.Add(
+            "JSON report '$($jsonReportFile.Name)' is missing $requiredReportField.") |
+            Out-Null
+        }
+      }
+      if (($null -ne $jsonReport.PSObject.Properties['summary']) -and
+          ([int]$jsonReport.summary.visibleIssues -lt 0)) {
+        $failures.Add(
+          "JSON report '$($jsonReportFile.Name)' has a negative visibleIssues count.") |
+          Out-Null
+      }
+    }
+    catch {
+      $failures.Add(
+        "JSON report '$($jsonReportFile.Name)' is not parseable: $($_.Exception.Message)") |
+        Out-Null
+    }
   }
 
   if (($null -ne $expectation.PSObject.Properties['expected_output_encoding']) -and
@@ -685,7 +769,6 @@ end.
   }
 }
 
-$OutputRoot = Assert-UnderProjectRoot $OutputRoot
 New-Item -ItemType Directory -Path $OutputRoot -Force | Out-Null
 
 if ($CompileGenerated) {
@@ -742,4 +825,12 @@ Write-Output ('Summary: {0} pass, {1} fail' -f $passCount, $failCount)
 
 if ($failCount -gt 0) {
   throw "Conversion contract run failed with $failCount failing case(s)."
+}
+
+if ($usesTemporaryOutputRoot -and
+    $OutputRoot.StartsWith($env:TEMP.TrimEnd('\') + '\',
+      [System.StringComparison]::OrdinalIgnoreCase) -and
+    ((Split-Path -Leaf $OutputRoot) -like 'VCL2FMXContracts_*') -and
+    (Test-Path -LiteralPath $OutputRoot)) {
+  Remove-Item -LiteralPath $OutputRoot -Recurse -Force
 }

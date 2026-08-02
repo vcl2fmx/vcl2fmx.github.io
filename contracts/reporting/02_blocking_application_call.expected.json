@@ -3,7 +3,7 @@
   "expected_status": "converted",
   "expected_normalized_text_report_sha256": "0345A6CE1D6CEFE7B003701F317C5E765472A1BC0D13A7248D81BA05FC6ECAE4",
   "expected_normalized_html_report_sha256": "2D2AF28AFB6649DF94A755016E57E79E9471FDE6497B9508E53F02D8FF52D6BD",
-  "expected_normalized_json_report_sha256": "CB01E9722D9CF84F3756C61BB380E0F26EF7241147D7D8CFF472BAFBF859119E",
+  "expected_normalized_json_report_sha256": "1F3BF55AEA2872E4E0E47290DDA710B959088A00428283501E35F6DB5EF5E97E",
   "expected_auxiliary_files": [
     "VCL_to_FMX_Conversion_Report.json"
   ],
