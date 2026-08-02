@@ -46,6 +46,11 @@ MySetups/
 *.sqlite3
 *.log
 docs/notes/regression_guards/REGRESSION_GUARDS_*.txt
+tests/french_beta_regression/binary_output/
+tests/french_beta_regression/compile_bin/
+tests/french_beta_regression/compile_dcu/
+tests/french_beta_regression/invalid_output/
+tests/french_beta_regression/output/
 
 # Local Codex/agent state
 .agents/

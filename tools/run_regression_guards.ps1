@@ -595,6 +595,18 @@ if ((-not [string]::IsNullOrWhiteSpace($acceptanceText)) -and
     ) -Area 'Workspace' -Check 'Required field-test suites cannot be silently skipped' `
     -PassDetails 'The restored mapping-pack and French regression guards are required by the acceptance gate, including explicit missing-suite failures.' `
     -FailDetails 'A required field-test suite is missing or the acceptance gate can silently skip it.'
+
+  Add-RuleResult -Condition (
+      ($frenchBetaGuardText -match "VCL2FMXFrenchBeta_") -and
+      ($frenchBetaGuardText -match '\[Guid\]::NewGuid\(\)') -and
+      ($frenchBetaGuardText -match '\$workRoot\s*=\s*Join-Path\s+\$env:TEMP') -and
+      ($frenchBetaGuardText -match 'finally\s*\{') -and
+      ($frenchBetaGuardText -match 'Remove-Item -LiteralPath \$resolvedWorkRoot -Recurse -Force') -and
+      (-not ($frenchBetaGuardText -match
+        '\$output\s*=\s*Join-Path\s+\$PSScriptRoot\s+''output'''))
+    ) -Area 'Workspace' -Check 'French regression artifacts are isolated from tracked fixtures' `
+    -PassDetails 'The French regression suite creates and removes a unique temporary work tree.' `
+    -FailDetails 'The French regression suite can write generated output into its tracked fixture tree.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($usesClauseText)) {

@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 015
+Current iteration: Navigator Release v6.0 Build 016
 
 ## Release Direction
 
@@ -305,3 +305,12 @@ and moves that wordmark farther right in both responsive layouts. The French
 beta guard now creates all generated conversion, binary-DFM, and compiler
 artifacts beneath a unique temporary directory and removes that directory
 after the run, leaving its tracked fixture tree unchanged.
+
+## Iteration 016 — Review Housekeeping Closure
+
+Navigator Build 016 closes the remaining Round 2 review housekeeping. The 38
+ignored legacy regression logs were removed while the 34 tracked historical
+records were preserved. Legacy French-regression output folders are explicitly
+ignored as a secondary defense, and regression guards now require the French
+suite to use and clean an isolated temporary working directory rather than
+write generated artifacts into its tracked fixture tree.
