@@ -1,6 +1,7 @@
-# VCL2FMXConverter v5 Conversion Contracts
+# VCL2FMXConverter v6.0 Navigator Conversion Contracts
 
-This folder contains the executable conversion contracts for VCL2FMXConverter v5.
+This folder contains the executable conversion contracts for
+VCL2FMXConverter v6.0 Navigator.
 These are no longer passive samples: the contract runner uses them to verify
 converter behavior after structural changes.
 

@@ -691,22 +691,49 @@ if (-not $SkipBuild) {
   $rsvars = 'C:\Program Files (x86)\Embarcadero\Studio\37.0\bin\rsvars.bat'
   $msbuild = 'C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe'
   $dproj = Join-Path $ProjectRoot 'VCL2FMXConverter.dproj'
-  $buildCommand = ('call "{0}" && "{1}" "{2}" /t:Build /p:Config=Release /p:Platform=Win32' -f $rsvars, $msbuild, $dproj)
-  $build = Invoke-Process -FilePath 'cmd.exe' -Arguments ('/c "' + $buildCommand + '"') -WorkingDirectory $ProjectRoot
-  $buildOutput = ($build.StdOut + $build.StdErr)
-  Add-Check -Condition (($build.ExitCode -eq 0) -and ($buildOutput -match '0 Warning\(s\)') -and ($buildOutput -match '0 Error\(s\)')) `
+  $buildOutputs = New-Object 'System.Collections.Generic.List[string]'
+  $buildsClean = $true
+  foreach ($platform in @('Win32', 'Win64')) {
+    $buildCommand = ('call "{0}" && "{1}" "{2}" /t:Build /p:Config=Release /p:Platform={3}' -f
+      $rsvars, $msbuild, $dproj, $platform)
+    $build = Invoke-Process -FilePath 'cmd.exe' `
+      -Arguments ('/c "' + $buildCommand + '"') `
+      -WorkingDirectory $ProjectRoot
+    $buildOutput = ($build.StdOut + $build.StdErr)
+    $buildOutputs.Add(('{0}:{1}{2}' -f $platform, [Environment]::NewLine, $buildOutput.Trim())) | Out-Null
+    $hasNonHintCompilerWarning = [regex]::IsMatch(
+      $buildOutput,
+      '(?i)\bwarning\s+(?:W\d{4}|MSB\d+)\b')
+    if (($build.ExitCode -ne 0) -or
+        $hasNonHintCompilerWarning -or
+        ($buildOutput -notmatch '0 Error\(s\)')) {
+      $buildsClean = $false
+    }
+  }
+  Add-Check -Condition $buildsClean `
     -Area Build `
-    -Check 'Release MSBuild passes cleanly' `
-    -PassDetails 'Release build completed with 0 warnings and 0 errors.' `
-    -FailDetails $buildOutput.Trim()
+    -Check 'Win32 and Win64 Release MSBuild passes cleanly' `
+    -PassDetails 'Win32 and Win64 Release builds completed with 0 errors and no non-hint compiler warnings.' `
+    -FailDetails ($buildOutputs -join ([Environment]::NewLine + [Environment]::NewLine))
 }
 
-$releaseExe = Join-Path $ProjectRoot 'Win32\Release\VCL2FMXConverter.exe'
-Add-Check -Condition (Test-Path -LiteralPath $releaseExe) `
+$releaseExecutables = @(
+  Join-Path $ProjectRoot 'Win32\Release\VCL2FMXConverter.exe'
+  Join-Path $ProjectRoot 'Win64\Release\VCL2FMXConverter.exe'
+)
+$missingReleaseExecutables = @(
+  $releaseExecutables |
+    Where-Object { -not (Test-Path -LiteralPath $_) }
+)
+Add-Check -Condition ($missingReleaseExecutables.Count -eq 0) `
   -Area Build `
-  -Check 'Release executable exists' `
-  -PassDetails $releaseExe `
-  -FailDetails 'Release executable is missing after build.'
+  -Check 'Win32 and Win64 Release executables exist' `
+  -PassDetails ($releaseExecutables -join '; ') `
+  -FailDetails $(if ($missingReleaseExecutables.Count -gt 0) {
+    'Release executable is missing after build: ' + ($missingReleaseExecutables -join '; ')
+  } else {
+    'One or more required Release executables are missing.'
+  })
 
 $contractScript = Join-Path $ProjectRoot 'tools\run_conversion_contracts.ps1'
 if (Test-Path -LiteralPath $contractScript) {
