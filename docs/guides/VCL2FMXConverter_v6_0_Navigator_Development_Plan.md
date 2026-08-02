@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 007
+Current iteration: Navigator Release v6.0 Build 008
 
 ## Release Direction
 
@@ -233,3 +233,11 @@ byte for byte.
 Golden coverage now includes a mixed/manual project report, a blocking report,
 and an unknown third-party report. These baselines protect subsequent report
 model and renderer extraction from silent text/HTML drift.
+
+## Iteration 008 — Explicit Report Semantics and Parity
+
+Navigator Build 008 adds independent text and HTML assertions for summary
+totals, severity, category, source file and line, section ordering, HTML
+escaping, recommendations, and paired text/HTML meaning. Exact goldens remain
+the broad drift detector; these semantic checks identify the report contract
+that was broken.

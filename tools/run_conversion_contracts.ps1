@@ -421,18 +421,32 @@ end.
     $reportParts.Add((Read-TextFile -Path $file.FullName)) | Out-Null
   }
   $reportText = [string]::Join("`n", $reportParts)
+  $textReportPath = Join-Path $caseOutput 'VCL_to_FMX_Conversion_Report.txt'
+  $htmlReportPath = Join-Path $caseOutput 'VCL_to_FMX_Conversion_Report.html'
+  $textReport = if (Test-Path -LiteralPath $textReportPath -PathType Leaf) {
+    Read-TextFile -Path $textReportPath
+  }
+  else {
+    ''
+  }
+  $htmlReport = if (Test-Path -LiteralPath $htmlReportPath -PathType Leaf) {
+    Read-TextFile -Path $htmlReportPath
+  }
+  else {
+    ''
+  }
 
   $failures = New-Object 'System.Collections.Generic.List[string]'
 
   foreach ($reportGolden in @(
     [pscustomobject]@{
       Field = 'expected_normalized_text_report_sha256'
-      File = Join-Path $caseOutput 'VCL_to_FMX_Conversion_Report.txt'
+      File = $textReportPath
       Label = 'text'
     },
     [pscustomobject]@{
       Field = 'expected_normalized_html_report_sha256'
-      File = Join-Path $caseOutput 'VCL_to_FMX_Conversion_Report.html'
+      File = $htmlReportPath
       Label = 'HTML'
     }
   )) {
@@ -451,6 +465,71 @@ end.
         $failures.Add(
           "Normalized $($reportGolden.Label) report SHA-256 mismatch: $actualHash != $expectedHash.") | Out-Null
       }
+    }
+  }
+
+  foreach ($reportPatternSet in @(
+    [pscustomobject]@{
+      Field = 'expected_text_report_patterns'
+      Text = $textReport
+      Label = 'text'
+    },
+    [pscustomobject]@{
+      Field = 'expected_html_report_patterns'
+      Text = $htmlReport
+      Label = 'HTML'
+    }
+  )) {
+    foreach ($pattern in Get-JsonArray -Object $expectation -Name $reportPatternSet.Field) {
+      if (-not (Test-TextPattern -Text $reportPatternSet.Text -Pattern ([string]$pattern))) {
+        $failures.Add("Expected $($reportPatternSet.Label) report pattern not found: $pattern") | Out-Null
+      }
+    }
+  }
+
+  foreach ($orderedPatternSet in @(
+    [pscustomobject]@{
+      Field = 'expected_text_report_ordered_patterns'
+      Text = $textReport
+      Label = 'text'
+    },
+    [pscustomobject]@{
+      Field = 'expected_html_report_ordered_patterns'
+      Text = $htmlReport
+      Label = 'HTML'
+    }
+  )) {
+    $searchStart = 0
+    foreach ($pattern in Get-JsonArray -Object $expectation -Name $orderedPatternSet.Field) {
+      $patternRegex = [regex]::new(
+        [string]$pattern,
+        [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+      $patternMatch = $patternRegex.Match($orderedPatternSet.Text, $searchStart)
+      if (-not $patternMatch.Success) {
+        $failures.Add(
+          "Expected $($orderedPatternSet.Label) report ordered pattern not found after offset ${searchStart}: $pattern") |
+          Out-Null
+        break
+      }
+      $searchStart = $patternMatch.Index + $patternMatch.Length
+    }
+  }
+
+  foreach ($parityCheck in Get-JsonArray -Object $expectation -Name 'expected_text_html_parity') {
+    $label = if (($null -ne $parityCheck.PSObject.Properties['label']) -and
+        -not [string]::IsNullOrWhiteSpace([string]$parityCheck.label)) {
+      [string]$parityCheck.label
+    }
+    else {
+      'unnamed parity check'
+    }
+    if (($null -eq $parityCheck.PSObject.Properties['text_pattern']) -or
+        -not (Test-TextPattern -Text $textReport -Pattern ([string]$parityCheck.text_pattern))) {
+      $failures.Add("Text/HTML parity '$label' is missing from the text report.") | Out-Null
+    }
+    if (($null -eq $parityCheck.PSObject.Properties['html_pattern']) -or
+        -not (Test-TextPattern -Text $htmlReport -Pattern ([string]$parityCheck.html_pattern))) {
+      $failures.Add("Text/HTML parity '$label' is missing from the HTML report.") | Out-Null
     }
   }
 

@@ -4,6 +4,79 @@
   "expected_status": "converted",
   "expected_normalized_text_report_sha256": "68B0CA48169981882235B23279C9B2A45B2D33EDE97F8EB0D8F1419736D114AD",
   "expected_normalized_html_report_sha256": "F0F24AC527A69F34940B2EB59D0B25FA521E9733A081BF5C9A7C5C73548EFC80",
+  "expected_text_report_patterns": [
+    "Total issues: 3",
+    "Informational notices: 3",
+    "Distinct files needing attention: 2",
+    "Final status: Manual review required",
+    "Manual review items: 1",
+    "Blocking items: 0",
+    "\\[WARNING\\] Pascal include directive found: RealWorldHelpers\\.inc",
+    "File: .*RealWorldMain\\.pas",
+    "Line: 25",
+    "Risk category: Runtime behavior risk",
+    "Recommendation: Review this method in the IDE",
+    "Recommended solution:\\s+Use Close or OnCloseQuery"
+  ],
+  "expected_html_report_patterns": [
+    "<div class=\"label\">Total issues</div><div class=\"value\">3</div>",
+    "<div class=\"label\">Informational notices</div><div class=\"value\">3</div>",
+    "<div class=\"label\">Distinct files needing attention</div><div class=\"value\">2</div>",
+    "<div class=\"label\">Manual review items</div><div class=\"value\">1</div>",
+    "<div class=\"label\">Blocking items</div><div class=\"value\">0</div>",
+    "<span class=\"severity warning\">WARNING</span><strong>Pascal include directive</strong>",
+    "<span class=\"meta\">Line 25</span>",
+    "RealWorldMain\\.pas",
+    "<span>Risk: Runtime behavior risk</span>",
+    "<div class=\"block-label\">Recommended solution</div>",
+    "&lt; 1 second",
+    "-&gt; SendMessage"
+  ],
+  "expected_text_report_ordered_patterns": [
+    "CONVERSION SUMMARY",
+    "DETAILED ISSUES",
+    "MANUAL REVIEW ITEMS",
+    "ISSUE SUMMARY",
+    "CONVERSION LOG"
+  ],
+  "expected_html_report_ordered_patterns": [
+    "<h2>Detailed issues</h2>",
+    "<h2>Manual review items</h2>",
+    "<summary><h2>Conversion log</h2>",
+    "<h2>Issue summary</h2>"
+  ],
+  "expected_text_html_parity": [
+    {
+      "label": "total issues",
+      "text_pattern": "Total issues: 3",
+      "html_pattern": "<div class=\"label\">Total issues</div><div class=\"value\">3</div>"
+    },
+    {
+      "label": "manual review total",
+      "text_pattern": "Manual review items: 1",
+      "html_pattern": "<div class=\"label\">Manual review items</div><div class=\"value\">1</div>"
+    },
+    {
+      "label": "blocking total",
+      "text_pattern": "Blocking items: 0",
+      "html_pattern": "<div class=\"label\">Blocking items</div><div class=\"value\">0</div>"
+    },
+    {
+      "label": "warning severity and category",
+      "text_pattern": "\\[WARNING\\] Pascal include directive found",
+      "html_pattern": "<span class=\"severity warning\">WARNING</span><strong>Pascal include directive</strong>"
+    },
+    {
+      "label": "source location",
+      "text_pattern": "File: .*RealWorldMain\\.pas\\s+Line: 25",
+      "html_pattern": "<span class=\"meta\">Line 25</span>[\\s\\S]*RealWorldMain\\.pas"
+    },
+    {
+      "label": "manual-review recommendation",
+      "text_pattern": "Recommended solution:\\s+Use Close or OnCloseQuery",
+      "html_pattern": "<div class=\"block-label\">Recommended solution</div>\\s+<div class=\"pre\">Use Close or OnCloseQuery"
+    }
+  ],
   "expected_output_patterns": [
     "program RealWorldReportShapeProject",
     "unit RealWorldMain",

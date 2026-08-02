@@ -472,6 +472,19 @@ if (-not [string]::IsNullOrWhiteSpace($contractRunnerText)) {
     ) -Area 'Reporting' -Check 'Representative reports have exact normalized goldens' `
     -PassDetails 'Three representative cases protect exact text and HTML report output.' `
     -FailDetails 'Normalized text/HTML golden report coverage is incomplete.'
+
+  Add-RuleResult -Condition (
+      ($contractRunnerText -match 'expected_text_report_patterns') -and
+      ($contractRunnerText -match 'expected_html_report_patterns') -and
+      ($contractRunnerText -match 'expected_text_report_ordered_patterns') -and
+      ($contractRunnerText -match 'expected_html_report_ordered_patterns') -and
+      ($contractRunnerText -match 'expected_text_html_parity') -and
+      ($reportGoldenExpectationsText -match 'expected_text_html_parity') -and
+      ($reportGoldenExpectationsText -match '&lt; 1 second') -and
+      ($reportGoldenExpectationsText -match 'Recommended solution')
+    ) -Area 'Reporting' -Check 'Report semantics and text/HTML parity are explicit' `
+    -PassDetails 'Representative report contracts independently check semantics, ordering, escaping, recommendations, and text/HTML parity.' `
+    -FailDetails 'Explicit report semantic or text/HTML parity coverage is incomplete.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($usesClauseText)) {
