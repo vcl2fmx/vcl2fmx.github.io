@@ -151,7 +151,7 @@ $activeConverterSourceText = @(
     ForEach-Object { [System.IO.File]::ReadAllText($_.FullName) }
 ) -join "`n"
 $designerBuildMatch = [regex]::Match($mainFormFmxText,
-  "Text = 'Navigator Release\s+v6\.0\s+Build\s+(?<build>\d{3})\s+(?<timestamp>\d{4}-\d{2}-\d{2}\s+\d{1,2}:\d{2}\s+(?:AM|PM))'")
+  "Text = 'Navigator Release\s+v6\.0\s+Build\s+(?<build>\d{3})\s+(?<timestamp>(?:\d{4}-\d{2}-\d{2}|\d{1,2}/\d{1,2}/\d{2,4})\s+\d{1,2}:\d{2}\s+(?:AM|PM))'")
 $designerBuildText = if ($designerBuildMatch.Success) {
   $designerBuildMatch.Groups['build'].Value
 }
@@ -447,12 +447,15 @@ if (-not [string]::IsNullOrWhiteSpace($mainFormText)) {
     -FailDetails 'Navigator build identity is inconsistent across source, designer, project metadata, or README.'
 
   Add-RuleResult -Condition (
-      ($designerBadgeWidth -ge 450) -and
+      ($designerBadgeWidth -ge 380) -and
+      ($designerBadgeWidth -le 410) -and
       ($responsiveBadgeWidths.Count -eq 2) -and
-      (@($responsiveBadgeWidths | Where-Object { $_ -lt 450 }).Count -eq 0)
+      (@($responsiveBadgeWidths | Where-Object { ($_ -lt 380) -or ($_ -gt 410) }).Count -eq 0) -and
+      ($mainFormFmxText -match "(?ms)object\s+HeroNavigatorGhost:\s*TLabel.*?Text\s*=\s*'NAVIGATOR'.*?Visible\s*=\s*True") -and
+      (-not ($mainFormText -match "FillText\([^`r`n]*'VANGUARD'"))
     ) -Area 'Build identity' -Check 'Version badge contains full build and timestamp text' `
-    -PassDetails 'Designer and both responsive states keep the version badge at least 450 pixels wide.' `
-    -FailDetails 'The version badge can shrink below 450 pixels and clip the build or timestamp.'
+    -PassDetails 'The designer-owned Navigator hero is visible and the compact badge remains between 380 and 410 pixels in every responsive state.' `
+    -FailDetails 'The hero branding is not designer-owned Navigator text, Vanguard runtime painting remains, or the compact badge width is outside its protected range.'
 }
 
 Add-RuleResult -Condition (

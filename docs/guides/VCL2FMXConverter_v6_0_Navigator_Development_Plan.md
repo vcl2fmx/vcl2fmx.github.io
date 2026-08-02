@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 013
+Current iteration: Navigator Release v6.0 Build 014
 
 ## Release Direction
 
@@ -288,3 +288,11 @@ dry-run-preview, and actionable informational entries. Stable identities include
 the computed risk category, and the JSON snapshot now includes manual-review
 groups, loaded mapping packs, mapping usages, and conversion-log lines already
 owned by the shared report model.
+
+## Iteration 014 — Navigator Hero and Compact Build Badge
+
+Navigator Build 014 removes the remaining runtime-painted Vanguard wordmark
+from the application hero. The existing designer-owned `HeroNavigatorGhost`
+label is now visible and supplies the Navigator wordmark through editable FMX
+properties. The release badge retains the product line, release, build number,
+date, and time in a shorter format and a narrower designer-owned rectangle.

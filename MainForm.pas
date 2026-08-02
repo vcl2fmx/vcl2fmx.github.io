@@ -1,6 +1,6 @@
 ﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
- Version v6.0 Navigator Build 013
+ Version v6.0 Navigator Build 014
  Written and built in the USA}
 
 unit MainForm;
@@ -367,19 +367,8 @@ procedure TfrmMain.HeroBackgroundPaint(Sender: TObject; Canvas: TCanvas);
 var
   H: Single;
   BaseY: Single;
-  GhostRect: TRectF;
 begin
   H := HeroCard.Height;
-
-  Canvas.Fill.Kind := TBrushKind.Solid;
-  Canvas.Fill.Color := $24FF8800;
-  Canvas.Font.Family := 'Segoe UI';
-  Canvas.Font.Size := H * 0.66;
-  Canvas.Font.Style := [TFontStyle.fsBold];
-  GhostRect := RectF(HeroCard.Width * 0.40, -H * 0.08,
-    HeroCard.Width * 1.09, H * 0.68);
-  Canvas.FillText(GhostRect, 'VANGUARD', False, 1.0, [], TTextAlign.Center,
-    TTextAlign.Center);
 
   if H <= 140 then
     BaseY := H * 0.86
@@ -2191,11 +2180,11 @@ begin
     lblSubHeader.Visible := False;
     HeroVersionBadge.Position.X := 34;
     HeroVersionBadge.Position.Y := 58;
-    HeroVersionBadge.Size.Width := 465;
+    HeroVersionBadge.Size.Width := 400;
     HeroVersionBadge.Size.Height := 28;
     lblVersion.Position.X := 54;
     lblVersion.Position.Y := 63;
-    lblVersion.TextSettings.Font.Size := 13;
+    lblVersion.TextSettings.Font.Size := 12;
     lblStatusCaption.Position.Y := 18;
     lblStatusValue.Position.Y := 42;
     lblStatusValue.TextSettings.Font.Size := 22;
@@ -2276,11 +2265,11 @@ begin
     lblSubHeader.Visible := False;
     HeroVersionBadge.Position.X := 40;
     HeroVersionBadge.Position.Y := 78;
-    HeroVersionBadge.Size.Width := 465;
+    HeroVersionBadge.Size.Width := 400;
     HeroVersionBadge.Size.Height := 30;
     lblVersion.Position.X := 60;
     lblVersion.Position.Y := 84;
-    lblVersion.TextSettings.Font.Size := 13;
+    lblVersion.TextSettings.Font.Size := 12;
     lblStatusCaption.Position.Y := 28;
     lblStatusValue.Position.Y := 52;
     lblStatusValue.TextSettings.Font.Size := 24;
