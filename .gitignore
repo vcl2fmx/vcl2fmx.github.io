@@ -45,6 +45,7 @@ MySetups/
 *.sqlite
 *.sqlite3
 *.log
+docs/notes/regression_guards/REGRESSION_GUARDS_*.txt
 
 # Local Codex/agent state
 .agents/

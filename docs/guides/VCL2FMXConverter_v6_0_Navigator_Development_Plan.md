@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 012
+Current iteration: Navigator Release v6.0 Build 013
 
 ## Release Direction
 
@@ -274,3 +274,17 @@ and HTML equivalence was proven. The JSON uses schema
 identity with severity, category, source span, original evidence, and
 recommended action. Three representative contracts now protect exact
 normalized text, HTML, and JSON artifacts.
+
+## Iteration 013 — Review Corrections and Complete JSON Snapshot
+
+Navigator Build 013 restores the field-test and smoke-test suites identified by
+external review and makes the acceptance gate fail when either required guard
+script is absent. Regression-guard reports now default to a temporary directory
+instead of accumulating as untracked project files.
+
+The `vcl2fmx.report.v1` JSON output now explicitly identifies `issues` as the
+raw issue inventory. Per-issue presentation flags distinguish detailed,
+dry-run-preview, and actionable informational entries. Stable identities include
+the computed risk category, and the JSON snapshot now includes manual-review
+groups, loaded mapping packs, mapping usages, and conversion-log lines already
+owned by the shared report model.

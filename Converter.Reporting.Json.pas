@@ -33,6 +33,16 @@ var
   Issues: TJSONArray;
   IssueObject: TJSONObject;
   Issue: TConversionReportIssue;
+  ManualGroups: TJSONArray;
+  ManualGroupObject: TJSONObject;
+  ManualGroup: TConversionReportManualGroup;
+  MappingPacks: TJSONArray;
+  MappingPack: string;
+  MappingUsages: TJSONArray;
+  MappingUsageObject: TJSONObject;
+  MappingUsage: TConversionReportMappingUsage;
+  ConversionLog: TJSONArray;
+  ConversionLogLine: string;
 begin
   Root := TJSONObject.Create;
   try
@@ -42,6 +52,7 @@ begin
     Root.AddPair('sourcePath', AModel.SourcePath);
     Root.AddPair('outputPath', AModel.OutputPath);
     Root.AddPair('runTime', AModel.RunTimeText);
+    Root.AddPair('issueCollection', 'raw');
 
     Summary := TJSONObject.Create;
     Summary.AddPair('filesProcessed', TJSONNumber.Create(AModel.FilesProcessed));
@@ -84,9 +95,68 @@ begin
       IssueObject.AddPair('originalEvidence', Issue.OriginalEvidence);
       IssueObject.AddPair('recommendedAction', Issue.RecommendedAction);
       IssueObject.AddPair('blocking', TJSONBool.Create(Issue.IsBlocking));
+      IssueObject.AddPair('includeInDetailedIssues',
+        TJSONBool.Create(Issue.IncludeInDetailedIssues));
+      IssueObject.AddPair('dryRunPreview',
+        TJSONBool.Create(Issue.IsDryRunPreview));
+      IssueObject.AddPair('actionableInformation',
+        TJSONBool.Create(Issue.IsActionableInfo));
       Issues.AddElement(IssueObject);
     end;
     Root.AddPair('issues', Issues);
+
+    ManualGroups := TJSONArray.Create;
+    for ManualGroup in AModel.ManualGroups do
+    begin
+      ManualGroupObject := TJSONObject.Create;
+      ManualGroupObject.AddPair('title', ManualGroup.Title);
+      ManualGroupObject.AddPair('riskCategory', ManualGroup.RiskCategory);
+      ManualGroupObject.AddPair('occurrenceCount',
+        TJSONNumber.Create(ManualGroup.OccurrenceCount));
+      ManualGroupObject.AddPair('affectedLineCount',
+        TJSONNumber.Create(ManualGroup.AffectedLineCount));
+      ManualGroupObject.AddPair('detail', ManualGroup.DetailText);
+      ManualGroupObject.AddPair('affectedLocations',
+        ManualGroup.AffectedLocations);
+      ManualGroupObject.AddPair('recommendedSolution',
+        ManualGroup.RecommendedSolution);
+      ManualGroupObject.AddPair('blocking',
+        TJSONBool.Create(ManualGroup.IsBlocking));
+      ManualGroups.AddElement(ManualGroupObject);
+    end;
+    Root.AddPair('manualGroups', ManualGroups);
+
+    MappingPacks := TJSONArray.Create;
+    for MappingPack in AModel.MappingPacks do
+      MappingPacks.AddElement(TJSONString.Create(MappingPack));
+    Root.AddPair('mappingPacks', MappingPacks);
+
+    MappingUsages := TJSONArray.Create;
+    for MappingUsage in AModel.MappingUsages do
+    begin
+      MappingUsageObject := TJSONObject.Create;
+      MappingUsageObject.AddPair('componentName', MappingUsage.ComponentName);
+      MappingUsageObject.AddPair('vclClassName', MappingUsage.VCLClassName);
+      MappingUsageObject.AddPair('fmxClassName', MappingUsage.FMXClassName);
+      MappingUsageObject.AddPair('action', MappingUsage.Action);
+      MappingUsageObject.AddPair('confidence',
+        TJSONNumber.Create(MappingUsage.Confidence));
+      MappingUsageObject.AddPair('vendor', MappingUsage.Vendor);
+      MappingUsageObject.AddPair('packName', MappingUsage.PackName);
+      MappingUsageObject.AddPair('sourceFile', MappingUsage.SourceFile);
+      MappingUsageObject.AddPair('lineNumber',
+        TJSONNumber.Create(MappingUsage.LineNumber));
+      MappingUsageObject.AddPair('notes', MappingUsage.Notes);
+      MappingUsageObject.AddPair('generatedOutput',
+        TJSONBool.Create(MappingUsage.GeneratedOutput));
+      MappingUsages.AddElement(MappingUsageObject);
+    end;
+    Root.AddPair('mappingUsages', MappingUsages);
+
+    ConversionLog := TJSONArray.Create;
+    for ConversionLogLine in AModel.ConversionLogLines do
+      ConversionLog.AddElement(TJSONString.Create(ConversionLogLine));
+    Root.AddPair('conversionLog', ConversionLog);
 
     TFile.WriteAllText(AModel.JsonReportFile, Root.ToJSON,
       TEncoding.UTF8);

@@ -25,6 +25,7 @@ type
     IsBlocking: Boolean;
     IncludeInDetailedIssues: Boolean;
     IsDryRunPreview: Boolean;
+    IsActionableInfo: Boolean;
     SeverityText: string;
     class function Create(const AIssue: TConversionIssue;
       const ACategory, AStableIdentity: string): TConversionReportIssue; static;

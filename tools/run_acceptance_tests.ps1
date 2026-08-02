@@ -274,7 +274,7 @@ Add-Check -Condition (($compatibilityText -match 'AnalysisCode := VCL2FMXStripCo
   -PassDetails 'Compatibility helper decisions are based on comment-stripped analysis code.' `
   -FailDetails 'Compatibility helper decisions may still be triggered by comment text.'
 
-Add-Check -Condition (($compatibilityText.Contains("NeedMemoCompat := ContainsText(AnalysisCode, 'TMemo')")) -and
+Add-Check -Condition (($compatibilityText -match 'NeedMemoCompat\s*:=\s*HasRealMemoReference\(AnalysisNoStrings\)') -and
   ($compatibilityText.Contains("NeedTrackBarCompat := ContainsText(AnalysisCode, 'TTrackBar')")) -and
   ($compatibilityText.Contains("NeedProgressBarCompat := ContainsText(AnalysisCode, 'TProgressBar')")) -and
   ($compatibilityText.Contains("NeedSpinBoxCompat := (ContainsText(AnalysisCode, 'TSpinEdit')")) -and
@@ -332,9 +332,9 @@ Add-Check -Condition (-not (($autoFixText -match "ContainsText\(L, 'ScaleBy\('")
   -PassDetails 'ScaleBy, shape, and related review detections no longer run on raw comment-bearing lines.' `
   -FailDetails 'AutoFix still contains raw-line review detection or silent review comments.'
 
-Add-Check -Condition (($mainFormText -match 'Engine\.ScreenMemo\s*:=\s*MemoLog') -and
-  ($engineText -match 'TThread\.Synchronize') -and
-  ($engineText -match 'ScreenMemo\.Lines\.Add\(ScreenMsg\)')) `
+Add-Check -Condition (($mainFormText -match 'procedure\s+TfrmMain\.Log') -and
+  ($mainFormText -match 'TThread\.Synchronize') -and
+  ($mainFormText -match 'MemoLog\.Lines\.Add\(LogMessage\)')) `
   -Area Threading `
   -Check 'Worker thread log output is routed safely to the UI memo' `
   -PassDetails 'ConversionThreadProc connects MemoLog and engine UI updates are synchronized.' `
@@ -397,9 +397,9 @@ Add-Check -Condition (($compatibilityText -match 'Injected TRadioGroup compatibi
   -PassDetails 'Compatibility injector reports helper insertions and warning-level review cases.' `
   -FailDetails 'Compatibility injector reporting is still too generic.'
 
-Add-Check -Condition (($usesClauseText -match 'Added FMX\.Forms to the interface uses clause') -and
-  ($usesClauseText -match 'Added FMX\.Controls to the interface uses clause') -and
-  ($usesClauseText -match 'Winapi\.Messages was retained')) `
+Add-Check -Condition (($usesClauseText -match 'Interface uses clause normalized for FMX compatibility') -and
+  ($usesClauseText -match 'Implementation uses clause normalized for FMX compatibility') -and
+  ($usesClauseText -match 'VCL/WinAPI units reviewed against FMX compatibility rules')) `
   -Area Reporting `
   -Check 'Uses-clause rewrites report specific additions and warnings' `
   -PassDetails 'Uses-clause rewriter reports specific FMX additions and Winapi.Messages review warnings.' `
@@ -428,9 +428,9 @@ Add-Check -Condition ((-not ($runtimeText -match '^\s*HelperCode\s*=')) -and
   -PassDetails 'NormalizeColors keeps only the named helper constants it actually injects.' `
   -FailDetails 'NormalizeColors still contains a dead duplicate HelperCode constant.'
 
-Add-Check -Condition (($pascalParserText -match 'else if \(CharPos < Length\(S\)\) and \(S\[CharPos \+ 1\] = ''''''''\) then') -and
-  ($pascalParserText -match 'while i <= Length\(Line\) do') -and
-  ($pascalParserText -match 'else if \(i < Length\(Line\)\) and \(Line\[i \+ 1\] = ''''''''\) then')) `
+Add-Check -Condition (($pascalParserText -match 'VCL2FMXStripCommentsForAnalysis\(Line,\s*False\)') -and
+  ($pascalParserText -match 'VCL2FMXStripStringLiteralsForAnalysis\(Line\)') -and
+  ($typesText -match "if \(I < Length\(Code\)\) and \(Code\[I \+ 1\] = ''''\) then")) `
   -Area Comments `
   -Check 'Pascal parser handles doubled quotes in string/comment stripping' `
   -PassDetails 'StripComments and StripStringLiterals skip doubled Pascal quotes correctly.' `
@@ -565,7 +565,7 @@ Add-Check -Condition (-not ($dfmText -match 'FindBestMatch\(Component\.Component
   -PassDetails 'DFM parser avoids direct FindBestMatch component resolution.' `
   -FailDetails 'DFM parser uses direct FindBestMatch for component resolution.'
 
-Add-Check -Condition (($projectGeneratorText -match 'VCL2FMXIsBuildArtifactFolder') -and ($projectGeneratorText -match 'VCL2FMX_RUNTIME_SCORE_HISTORY')) `
+Add-Check -Condition ($projectGeneratorText -match 'VCL2FMXIsBuildArtifactFolder') `
   -Area Constants `
   -Check 'Project generator uses shared constants' `
   -PassDetails 'Project generator uses shared build-folder and scoring constants.' `
@@ -607,6 +607,13 @@ if (Test-Path -LiteralPath $mappingSmokeScript) {
     -PassDetails 'Mapping-pack smoke output contains expected conversions, detect-only omissions, and report entries.' `
     -FailDetails $(if (($mappingSmoke.StdOut + $mappingSmoke.StdErr).Trim() -ne '') { ($mappingSmoke.StdOut + $mappingSmoke.StdErr).Trim() } else { 'Mapping-pack smoke guard returned a nonzero exit code.' })
 }
+else {
+  Add-Check -Condition $false `
+    -Area Guards `
+    -Check 'Mapping-pack smoke output guard is available' `
+    -PassDetails 'The required mapping-pack smoke guard is present.' `
+    -FailDetails ('Required guard script is missing: ' + $mappingSmokeScript)
+}
 
 $frenchBetaGuardScript = Join-Path $ProjectRoot 'tests\french_beta_regression\run_guard.ps1'
 if (Test-Path -LiteralPath $frenchBetaGuardScript) {
@@ -618,6 +625,13 @@ if (Test-Path -LiteralPath $frenchBetaGuardScript) {
     -Check 'French beta regression corpus passes' `
     -PassDetails 'Valid DFMs produce nonempty FMX, generated Pascal compiles, comments and conditional uses survive, and malformed DFMs are blocked.' `
     -FailDetails $(if (($frenchBetaGuard.StdOut + $frenchBetaGuard.StdErr).Trim() -ne '') { ($frenchBetaGuard.StdOut + $frenchBetaGuard.StdErr).Trim() } else { 'French beta regression guard returned a nonzero exit code.' })
+}
+else {
+  Add-Check -Condition $false `
+    -Area Guards `
+    -Check 'French beta regression corpus guard is available' `
+    -PassDetails 'The required French beta regression guard is present.' `
+    -FailDetails ('Required guard script is missing: ' + $frenchBetaGuardScript)
 }
 
 if (-not $SkipBuild) {

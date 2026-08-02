@@ -15,7 +15,7 @@ if ([string]::IsNullOrWhiteSpace($ProjectRoot)) {
 $ProjectRoot = (Resolve-Path $ProjectRoot).Path
 
 if ([string]::IsNullOrWhiteSpace($ReportPath)) {
-  $reportDir = Join-Path $ProjectRoot 'docs\notes\regression_guards'
+  $reportDir = Join-Path $env:TEMP 'VCL2FMXConverter\regression_guards'
   New-Item -ItemType Directory -Path $reportDir -Force | Out-Null
   $timestamp = Get-Date -Format 'yyyy-MM-dd_HHmmss'
   $ReportPath = Join-Path $reportDir ("REGRESSION_GUARDS_{0}.txt" -f $timestamp)
@@ -113,6 +113,9 @@ $reportModelText = Get-SourceText -RelativePath 'Converter.Reporting.Model.pas'
 $textReportRendererText = Get-SourceText -RelativePath 'Converter.Reporting.Text.pas'
 $htmlReportRendererText = Get-SourceText -RelativePath 'Converter.Reporting.Html.pas'
 $jsonReportRendererText = Get-SourceText -RelativePath 'Converter.Reporting.Json.pas'
+$acceptanceText = Get-SourceText -RelativePath 'tools\run_acceptance_tests.ps1'
+$mappingSmokeGuardText = Get-SourceText -RelativePath 'tests\mapping_pack_smoke\run_mapping_pack_smoke_guard.ps1'
+$frenchBetaGuardText = Get-SourceText -RelativePath 'tests\french_beta_regression\run_guard.ps1'
 $generateReportMatch = [regex]::Match($engineText,
   '(?ms)^procedure\s+TConverterEngine\.GenerateReport;.*?(?=^procedure\s+TConverterEngine\.Cancel;)')
 $generateReportLineCount = if ($generateReportMatch.Success) {
@@ -556,6 +559,16 @@ if (-not [string]::IsNullOrWhiteSpace($jsonReportRendererText)) {
       ($jsonReportRendererText -match "'sourceEndLine'") -and
       ($jsonReportRendererText -match "'originalEvidence'") -and
       ($jsonReportRendererText -match "'recommendedAction'") -and
+      ($jsonReportRendererText -match "'issueCollection',\s*'raw'") -and
+      ($jsonReportRendererText -match "'includeInDetailedIssues'") -and
+      ($jsonReportRendererText -match "'dryRunPreview'") -and
+      ($jsonReportRendererText -match "'actionableInformation'") -and
+      ($jsonReportRendererText -match "'manualGroups'") -and
+      ($jsonReportRendererText -match "'mappingPacks'") -and
+      ($jsonReportRendererText -match "'mappingUsages'") -and
+      ($jsonReportRendererText -match "'conversionLog'") -and
+      ($engineText -match
+        "UpperCase\(Trim\(IssueRiskCategory\(Issue\)\)\)\s*\+\s*'\|'") -and
       ($engineText -match
         'TConversionJsonReportRenderer\.Save\(ReportModel\)') -and
       $contractRunnerText.Contains(
@@ -563,6 +576,18 @@ if (-not [string]::IsNullOrWhiteSpace($jsonReportRendererText)) {
     ) -Area 'Reporting' -Check 'JSON report exposes stable issue provenance' `
     -PassDetails 'The deterministic v1 JSON schema is rendered from the shared report model and includes stable issue provenance.' `
     -FailDetails 'The JSON report schema, model ownership, or stable issue provenance is incomplete.'
+}
+
+if ((-not [string]::IsNullOrWhiteSpace($acceptanceText)) -and
+    (-not [string]::IsNullOrWhiteSpace($mappingSmokeGuardText)) -and
+    (-not [string]::IsNullOrWhiteSpace($frenchBetaGuardText))) {
+  Add-RuleResult -Condition (
+      ($acceptanceText -match "Required guard script is missing:") -and
+      ($acceptanceText -match "Mapping-pack smoke output guard is available") -and
+      ($acceptanceText -match "French beta regression corpus guard is available")
+    ) -Area 'Workspace' -Check 'Required field-test suites cannot be silently skipped' `
+    -PassDetails 'The restored mapping-pack and French regression guards are required by the acceptance gate, including explicit missing-suite failures.' `
+    -FailDetails 'A required field-test suite is missing or the acceptance gate can silently skip it.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($usesClauseText)) {

@@ -2,7 +2,7 @@
   Left = 0
   Top = 0
   ActiveControl = edtSource
-  Caption = 'VCL to FMX Converter v6.0 Navigator - Build 012'
+  Caption = 'VCL to FMX Converter v6.0 Navigator - Build 013'
   ClientHeight = 820
   ClientWidth = 1345
   Fill.Color = xFFF2F7FD
@@ -378,7 +378,7 @@
         TextSettings.Font.Size = 13.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
-        Text = 'Navigator Release  v6.0  Build 012  2026-08-02 9:17 AM'
+        Text = 'Navigator Release  v6.0  Build 013  2026-08-02 10:00 AM'
       end
       object lblStatusCaption: TLabel
         StyledSettings = []

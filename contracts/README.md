@@ -98,6 +98,13 @@ Pascal/FMX/DPR output, and report patterns only against report text. This keeps
 source excerpts in reports from accidentally satisfying or failing generated-code
 assertions.
 
+The `vcl2fmx.report.v1` JSON `issues` array is the raw issue inventory, not the
+filtered visible-issue list. Each issue exposes `includeInDetailedIssues`,
+`dryRunPreview`, and `actionableInformation` so consumers can reproduce the
+text/HTML presentation rules without losing raw diagnostics. The JSON also
+serializes the shared model's `manualGroups`, `mappingPacks`, `mappingUsages`,
+and `conversionLog` collections.
+
 `-CompileGenerated` asks the runner to compile generated DPR output with `dcc32`
 for compile-ready fixtures. The runner adds generated subfolders to the compiler
 unit and include search paths so copied include files can be resolved.

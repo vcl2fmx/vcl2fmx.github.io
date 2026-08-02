@@ -2733,13 +2733,16 @@ begin
     for Issue in FContext.Issues do
     begin
       ReportModel.Issues[IssueIndex] := TConversionReportIssue.Create(Issue,
-        IssueRiskCategory(Issue), IssueGroupKey(Issue) + '|' +
+        IssueRiskCategory(Issue), UpperCase(Trim(IssueRiskCategory(Issue))) +
+        '|' + IssueGroupKey(Issue) + '|' +
         UpperCase(Trim(Issue.FileName)) + '|' + IntToStr(Issue.LineNumber) +
         '|' + UpperCase(Trim(Issue.OriginalCode)));
       ReportModel.Issues[IssueIndex].IncludeInDetailedIssues :=
         ShouldIncludeInDetailedIssues(Issue);
       ReportModel.Issues[IssueIndex].IsDryRunPreview :=
         IsDryRunPreviewIssue(Issue);
+      ReportModel.Issues[IssueIndex].IsActionableInfo :=
+        IsActionableInfo(Issue);
       ReportModel.Issues[IssueIndex].SeverityText :=
         SeverityToString(Issue.Severity);
       Inc(IssueIndex);
