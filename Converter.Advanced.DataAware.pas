@@ -9,6 +9,7 @@ interface
 
 uses
   System.Classes, System.SysUtils, System.Generics.Collections,
+  System.Generics.Defaults,
   System.RTTI, System.JSON, System.RegularExpressions,
   Converter.Core.Types,
   Converter.Parser.DFM,
@@ -149,7 +150,7 @@ end;
 constructor TDataBindingInfo.Create;
 begin
   inherited Create;
-  FOriginalProperties := TDictionary<string, string>.Create;
+  FOriginalProperties := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
 end;
 
 destructor TDataBindingInfo.Destroy;
@@ -754,8 +755,8 @@ constructor TDatabaseConverter.Create(AContext: TConversionContext);
 begin
   inherited Create;
   FContext := AContext;
-  FConnectionInfo := TDictionary<string, TJSONObject>.Create;
-  FQueryInfo := TDictionary<string, TJSONObject>.Create;
+  FConnectionInfo := TDictionary<string, TJSONObject>.Create(TIStringComparer.Ordinal);
+  FQueryInfo := TDictionary<string, TJSONObject>.Create(TIStringComparer.Ordinal);
 end;
 
 destructor TDatabaseConverter.Destroy;
@@ -1022,7 +1023,7 @@ begin
     // Generate connections
     for Pair in FConnectionInfo do
     begin
-      Props := TDictionary<string, string>.Create;
+      Props := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
       try
         for JSONPair in Pair.Value do
           Props.Add(JSONPair.JsonString.Value, JSONPair.JsonValue.Value);
@@ -1037,7 +1038,7 @@ begin
     // Generate queries
     for Pair in FQueryInfo do
     begin
-      Props := TDictionary<string, string>.Create;
+      Props := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
       try
         for JSONPair in Pair.Value do
           Props.Add(JSONPair.JsonString.Value, JSONPair.JsonValue.Value);

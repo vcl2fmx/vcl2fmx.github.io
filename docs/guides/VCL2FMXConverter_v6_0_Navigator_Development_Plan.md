@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 005
+Current iteration: Navigator Release v6.0 Build 006
 
 ## Release Direction
 
@@ -204,3 +204,20 @@ Navigator Build 005 removes the inherited v5.0 Vanguard identity from active
 converter unit headers and generated-project banners. Historical v5 website,
 documentation, help, and archived sample material remain labeled Vanguard
 because they describe the v5 release rather than the active v6 program.
+
+## Iteration 006 — Verified Lexical and Comparer Cleanup
+
+Navigator Build 006 completes the source-level dictionary comparer review.
+String keys representing Delphi identifiers, symbols, vendor identities, and
+Windows source paths now use ordinal, case-insensitive comparison. No default
+string-keyed `TDictionary` or owning `TObjectDictionary` constructor remains
+in active converter source.
+
+The Pascal parser now delegates comment stripping to the shared lexical owner
+with compiler-directive preservation explicitly disabled, matching its prior
+parser-specific behavior without retaining a second scanner.
+
+The original E35 audit lists 14 public methods, while the later merged note
+requests deletion of five without naming them. Because public methods can be
+invoked through external code, RTTI, interfaces, or method pointers, no method
+was deleted based only on the two-reference count.

@@ -13,6 +13,7 @@ uses
   System.RegularExpressions,
   System.StrUtils,
   System.Generics.Collections,
+  System.Generics.Defaults,
   Converter.Core.Types,
   Converter.Parser.DFM;
 
@@ -206,7 +207,7 @@ begin
 
   LocalParser := TDFMParser.Create(FContext);
   Lines := TStringList.Create;
-  LabelHeightRatios := TDictionary<string, string>.Create;
+  LabelHeightRatios := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
   try
     DFMCode := LocalParser.LoadDFM(DFMFileName);
     if DFMCode = '' then
@@ -934,7 +935,7 @@ const
 
   begin
     Lines := TStringList.Create;
-    Reported := TDictionary<string, Boolean>.Create;
+    Reported := TDictionary<string, Boolean>.Create(TIStringComparer.Ordinal);
     try
       Lines.Text := Code;
       for I := 0 to Lines.Count - 1 do

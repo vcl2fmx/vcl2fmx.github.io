@@ -1169,7 +1169,7 @@ constructor TFormInheritanceConverter.Create(AContext: TConversionContext);
 begin
   inherited Create;
   FContext := AContext;
-  FInheritedForms := TDictionary<string, string>.Create;
+  FInheritedForms := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
 end;
 
 destructor TFormInheritanceConverter.Destroy;

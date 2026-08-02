@@ -1128,10 +1128,10 @@ var
     end;
   end;
 begin
-  ReportedMissingAssets := TDictionary<string, Boolean>.Create;
-  ReportedCompanionNotes := TDictionary<string, Boolean>.Create;
+  ReportedMissingAssets := TDictionary<string, Boolean>.Create(TIStringComparer.Ordinal);
+  ReportedCompanionNotes := TDictionary<string, Boolean>.Create(TIStringComparer.Ordinal);
   PrimaryProjectExecutables := TStringList.Create;
-  StagedRuntimeCandidates := TDictionary<string, string>.Create;
+  StagedRuntimeCandidates := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
   try
     try
       PrimaryProjectExecutables.CaseSensitive := False;

@@ -106,6 +106,7 @@ $integrationText = Get-SourceText -RelativePath 'Converter.Core.Integration.pas'
 $autoFixText = Get-SourceText -RelativePath 'Converter.Rewrite.AutoFixes.pas'
 $liveBindingsText = Get-SourceText -RelativePath 'Converter.Rewrite.LiveBindings.pas'
 $dfmParserText = Get-SourceText -RelativePath 'Converter.Parser.DFM.pas'
+$pascalParserText = Get-SourceText -RelativePath 'Converter.Parser.Pascal.pas'
 $fileManagerText = Get-SourceText -RelativePath 'Converter.Core.FileManager.pas'
 $engineText = Get-SourceText -RelativePath 'Converter.Core.Engine.pas'
 $generateReportMatch = [regex]::Match($engineText,
@@ -223,6 +224,24 @@ if (-not [string]::IsNullOrWhiteSpace($dfmParserText)) {
     -Area 'DFM parser' -Check 'DFM parser uses shared encoding and size guard' `
     -PassDetails 'DFM loading uses the shared text reader and large-file guard.' `
     -FailDetails 'DFM loading no longer shows the shared encoding reader and size guard.'
+}
+
+Add-RuleResult -Condition (
+    -not ($activeConverterSourceText -match
+      'T(?:Object)?Dictionary<string,\s*[^>]+>\.Create(?:\(\[doOwnsValues\]\)|;)')
+  ) -Area 'Comparer semantics' -Check 'String-key dictionaries declare comparison semantics' `
+  -PassDetails 'Active string-key dictionaries no longer use the default comparer constructor.' `
+  -FailDetails 'At least one active string-key dictionary still relies on the default comparer.'
+
+if (-not [string]::IsNullOrWhiteSpace($pascalParserText)) {
+  Add-RuleResult -Condition (
+      ($pascalParserText -match
+        'Result\s*:=\s*VCL2FMXStripCommentsForAnalysis\(Line,\s*False\)') -and
+      (-not ($pascalParserText -match
+        '(?s)function\s+TPascalParser\.StripComments.*?while\s+CharPos'))
+    ) -Area 'Lexical ownership' -Check 'Pascal parser uses shared comment scanner' `
+    -PassDetails 'The parser delegates comment stripping while explicitly removing compiler directives.' `
+    -FailDetails 'The Pascal parser has restored an independent comment scanner.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($dataAwareText)) {

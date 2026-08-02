@@ -264,11 +264,14 @@ begin
   FContext := AContext;
   FMappingDatabase := TObjectList<TComponentMapping>.Create(True);
   FFMXComponents := TObjectList<TFMXComponentInfo>.Create(True);
-  FVCLInventories := TObjectDictionary<string, TRttiClassInventory>.Create([doOwnsValues]);
-  FFMXInventories := TObjectDictionary<string, TRttiClassInventory>.Create([doOwnsValues]);
+  FVCLInventories := TObjectDictionary<string, TRttiClassInventory>.Create(
+    [doOwnsValues], TIStringComparer.Ordinal);
+  FFMXInventories := TObjectDictionary<string, TRttiClassInventory>.Create(
+    [doOwnsValues], TIStringComparer.Ordinal);
   FRTTIContext := TRttiContext.Create;
-  FMappingIndex := TDictionary<string, TComponentMapping>.Create;
-  FDerivedMappingCache := TObjectDictionary<string, TComponentMapping>.Create([doOwnsValues]);
+  FMappingIndex := TDictionary<string, TComponentMapping>.Create(TIStringComparer.Ordinal);
+  FDerivedMappingCache := TObjectDictionary<string, TComponentMapping>.Create(
+    [doOwnsValues], TIStringComparer.Ordinal);
 
   LoadBuiltInMappings;
   LoadFMXComponentCatalog;

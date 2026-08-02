@@ -1488,58 +1488,8 @@ begin
 end;
 
 function TPascalParser.StripComments(const Line: string): string;
-var
-  CharPos: Integer;
-  InString: Boolean;
-  S: string;
 begin
-  S := Line;
-  Result := '';
-  InString := False;
-  CharPos := 1;
-
-  while CharPos <= Length(S) do
-  begin
-    if S[CharPos] = '''' then
-    begin
-      if not InString then
-        InString := True
-      else if (CharPos < Length(S)) and (S[CharPos + 1] = '''') then
-      begin
-        Result := Result + S[CharPos] + S[CharPos + 1];
-        Inc(CharPos, 2);
-        Continue;
-      end
-      else
-        InString := False;
-    end;
-
-    if not InString then
-    begin
-      if (CharPos < Length(S)) and (S[CharPos] = '/') and (S[CharPos+1] = '/') then
-        Break;
-
-      if S[CharPos] = '{' then
-      begin
-        while (CharPos <= Length(S)) and (S[CharPos] <> '}') do
-          Inc(CharPos);
-        Inc(CharPos);
-        Continue;
-      end;
-
-      if (CharPos < Length(S)) and (S[CharPos] = '(') and (S[CharPos+1] = '*') then
-      begin
-        Inc(CharPos, 2);
-        while (CharPos <= Length(S)) and not ((S[CharPos] = '*') and (CharPos < Length(S)) and (S[CharPos+1] = ')')) do
-          Inc(CharPos);
-        Inc(CharPos, 2);
-        Continue;
-      end;
-    end;
-
-    Result := Result + S[CharPos];
-    Inc(CharPos);
-  end;
+  Result := VCL2FMXStripCommentsForAnalysis(Line, False);
 end;
 
 function TPascalParser.StripStringLiterals(const Line: string): string;

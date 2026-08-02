@@ -49,7 +49,8 @@ function VCL2FMXDetectTextEncoding(const AFileName: string;
 function VCL2FMXTryReadTextFile(const AFileName: string; out Text: string;
   out EncodingName: string): Boolean;
 function VCL2FMXIsPascalKeywordLine(const Line, Keyword: string): Boolean;
-function VCL2FMXStripCommentsForAnalysis(const Code: string): string;
+function VCL2FMXStripCommentsForAnalysis(const Code: string;
+  PreserveCompilerDirectives: Boolean = True): string;
 function VCL2FMXStripStringLiteralsForAnalysis(const Code: string): string;
 function VCL2FMXStripLineCommentOutsideString(const Value: string): string;
 
@@ -459,7 +460,8 @@ begin
   Result := not CharInSet(NextChar, ['A'..'Z', 'a'..'z', '0'..'9', '_']);
 end;
 
-function VCL2FMXStripCommentsForAnalysis(const Code: string): string;
+function VCL2FMXStripCommentsForAnalysis(const Code: string;
+  PreserveCompilerDirectives: Boolean): string;
 type
   TCommentState = (cstNone, cstLine, cstBrace, cstParenStar);
 var
@@ -553,7 +555,8 @@ begin
       Continue;
     end;
 
-    if (Ch = '{') and (I < Length(Code)) and (Code[I + 1] = '$') then
+    if PreserveCompilerDirectives and (Ch = '{') and
+       (I < Length(Code)) and (Code[I + 1] = '$') then
     begin
       while I <= Length(Code) do
       begin

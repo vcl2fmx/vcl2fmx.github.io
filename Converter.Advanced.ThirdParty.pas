@@ -1171,7 +1171,7 @@ var
   Comp: string;
   HasThirdParty: Boolean;
 begin
-  VendorGroups := TDictionary<string, TList<string>>.Create;
+  VendorGroups := TDictionary<string, TList<string>>.Create(TIStringComparer.Ordinal);
   HasThirdParty := False;
 
   try

@@ -13,6 +13,7 @@ uses
   System.RegularExpressions,
   System.StrUtils,
   System.Generics.Collections,
+  System.Generics.Defaults,
   Converter.Parser.DFM,
   Converter.Core.Types;
 
@@ -1505,8 +1506,8 @@ var
 begin
   Lines := TStringList.Create;
   AnalysisLines := TStringList.Create;
-  ControlTypes := TDictionary<string, string>.Create;
-  GenericListFields := TDictionary<string, string>.Create;
+  ControlTypes := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  GenericListFields := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
   IntegerFields := TStringList.Create;
   IntegerFields.CaseSensitive := False;
   try

@@ -13,6 +13,7 @@ uses
   System.RegularExpressions,
   System.StrUtils,
   System.Generics.Collections,
+  System.Generics.Defaults,
   Converter.Core.Types,
   Converter.Parser.DFM,
   Converter.Advanced.DataAware;
@@ -549,7 +550,7 @@ var
     if not Assigned(FDfmParser) or (FDfmParser.Components.Count = 0) then
       Exit;
 
-    AddedComponents := TDictionary<string, Boolean>.Create;
+    AddedComponents := TDictionary<string, Boolean>.Create(TIStringComparer.Ordinal);
     try
       VisitComponents(FDfmParser.Components);
     finally
@@ -579,7 +580,7 @@ var
     if ColumnCount <= 0 then
       Exit;
 
-    AddedFields := TDictionary<string, string>.Create;
+    AddedFields := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
     try
       DisplayCount := 0;
       for I := 0 to ColumnCount - 1 do
@@ -2546,25 +2547,30 @@ begin
   CleanupLines := TStringList.Create;
   MethodImplementationLines := TStringList.Create;
   EarlyDestroyLines := TStringList.Create;
-  BindSources := TDictionary<string, string>.Create;
-  GeneratedLinks := TDictionary<string, Boolean>.Create;
-  GeneratedDisplayFields := TDictionary<string, Boolean>.Create;
-  CalcMethodNames := TDictionary<string, string>.Create;
-  CalcFieldAssignments := TObjectDictionary<string, TStringList>.Create([doOwnsValues]);
-  AfterOpenHandlerNames := TDictionary<string, string>.Create;
-  OriginalAfterOpenHandlerFields := TDictionary<string, string>.Create;
-  AfterOpenLinkMap := TObjectDictionary<string, TStringList>.Create([doOwnsValues]);
-  ComboDataChangeHandlerNames := TDictionary<string, string>.Create;
-  ComboOriginalDataChangeHandlers := TDictionary<string, string>.Create;
-  ComboDataChangeSyncMap := TObjectDictionary<string, TStringList>.Create([doOwnsValues]);
-  ManualFieldNavigatorHandlerNames := TDictionary<string, string>.Create;
-  NavigatorOriginalBeforeActionFields := TDictionary<string, string>.Create;
-  ManualFieldNavigatorCommitMap := TObjectDictionary<string, TStringList>.Create([doOwnsValues]);
-  ManualFieldNavigatorSyncMap := TObjectDictionary<string, TStringList>.Create([doOwnsValues]);
-  ToggleClickHandlerNames := TDictionary<string, string>.Create;
-  ToggleChangeHandlerNames := TDictionary<string, string>.Create;
-  EnterHandlerNames := TDictionary<string, string>.Create;
-  TimerSourceOnTimerHandlers := TDictionary<string, string>.Create;
+  BindSources := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  GeneratedLinks := TDictionary<string, Boolean>.Create(TIStringComparer.Ordinal);
+  GeneratedDisplayFields := TDictionary<string, Boolean>.Create(TIStringComparer.Ordinal);
+  CalcMethodNames := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  CalcFieldAssignments := TObjectDictionary<string, TStringList>.Create(
+    [doOwnsValues], TIStringComparer.Ordinal);
+  AfterOpenHandlerNames := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  OriginalAfterOpenHandlerFields := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  AfterOpenLinkMap := TObjectDictionary<string, TStringList>.Create(
+    [doOwnsValues], TIStringComparer.Ordinal);
+  ComboDataChangeHandlerNames := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  ComboOriginalDataChangeHandlers := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  ComboDataChangeSyncMap := TObjectDictionary<string, TStringList>.Create(
+    [doOwnsValues], TIStringComparer.Ordinal);
+  ManualFieldNavigatorHandlerNames := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  NavigatorOriginalBeforeActionFields := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  ManualFieldNavigatorCommitMap := TObjectDictionary<string, TStringList>.Create(
+    [doOwnsValues], TIStringComparer.Ordinal);
+  ManualFieldNavigatorSyncMap := TObjectDictionary<string, TStringList>.Create(
+    [doOwnsValues], TIStringComparer.Ordinal);
+  ToggleClickHandlerNames := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  ToggleChangeHandlerNames := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  EnterHandlerNames := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  TimerSourceOnTimerHandlers := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
   TimerComponentNames := TStringList.Create;
   TimerHandlerNames := TStringList.Create;
   MediaNotifyPlayers := TStringList.Create;
