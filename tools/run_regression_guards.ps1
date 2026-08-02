@@ -195,6 +195,13 @@ if (-not [string]::IsNullOrWhiteSpace($mapperText)) {
     ) -Area 'Mapper' -Check 'FindBestMatch remains pure/cached' `
     -PassDetails 'FindBestMatch still uses the derived cache without mutating the mapping database or logging issues.' `
     -FailDetails 'FindBestMatch no longer looks like a pure/cached lookup path.'
+
+  Add-RuleResult -Condition (
+      ($mapperText -match 'FProperties\s*:=\s*TDictionary<string,\s*string>\.Create\(TIStringComparer\.Ordinal\)') -and
+      ($mapperText -match 'FEvents\s*:=\s*TDictionary<string,\s*string>\.Create\(TIStringComparer\.Ordinal\)')
+    ) -Area 'Comparer semantics' -Check 'RTTI member inventories are case-insensitive' `
+    -PassDetails 'RTTI property and event keys use ordinal, case-insensitive Delphi identifier semantics.' `
+    -FailDetails 'RTTI property or event inventory lookup is case-sensitive.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($dfmParserText)) {
@@ -238,6 +245,13 @@ if (-not [string]::IsNullOrWhiteSpace($dataAwareText)) {
 
 if (-not [string]::IsNullOrWhiteSpace($integrationText)) {
   $autoFixScopeText = $integrationText + $autoFixText
+
+  Add-RuleResult -Condition (
+      ($integrationText -match 'GridBindingSources\s*:=\s*TDictionary<string,\s*string>\.Create\(TIStringComparer\.Ordinal\)') -and
+      ($integrationText -match 'DirectBindingTargets\s*:=\s*TDictionary<string,\s*string>\.Create\(TIStringComparer\.Ordinal\)')
+    ) -Area 'Comparer semantics' -Check 'LiveBindings component lookups are case-insensitive' `
+    -PassDetails 'Grid and direct-binding component names use ordinal, case-insensitive Delphi identifier semantics.' `
+    -FailDetails 'A LiveBindings component-name dictionary is case-sensitive.'
 
   Add-RuleResult -Condition ($autoFixScopeText -match 'procedure\s+T(?:ConversionOrchestrator|AutoFixRewriter)\.MarkUnsupportedPascalRoutinesForReview') `
     -Area 'Integration' -Check 'Unsupported-routine review helper exists' `
@@ -413,6 +427,14 @@ if (-not [string]::IsNullOrWhiteSpace($contractRunnerText)) {
 }
 
 if (-not [string]::IsNullOrWhiteSpace($usesClauseText)) {
+  Add-RuleResult -Condition (
+      (-not ($usesClauseText -match 'function\s+StripStringLiteralsForAnalysis')) -and
+      (([regex]::Matches($usesClauseText,
+        'VCL2FMXStripStringLiteralsForAnalysis\s*\(')).Count -ge 2)
+    ) -Area 'Lexical ownership' -Check 'Uses-clause string masking uses shared scanner' `
+    -PassDetails 'Both uses-clause passes call the shared string-literal analysis routine.' `
+    -FailDetails 'A local duplicate string-literal masking routine has returned to the uses-clause rewriter.'
+
   Add-RuleResult -Condition (-not ($usesClauseText -match "Pos\('cla',\s*AnalysisCode\)")) `
     -Area 'Uses clause' -Check 'cla color detection avoids substring matching' `
     -PassDetails 'Uses-clause detection no longer treats every class declaration as a cla color constant.' `

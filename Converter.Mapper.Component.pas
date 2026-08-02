@@ -9,6 +9,7 @@ interface
 
 uses
   System.Classes, System.SysUtils, System.Generics.Collections,
+  System.Generics.Defaults,
   System.RTTI, System.TypInfo, System.JSON, System.IOUtils, System.Types,
   FMX.ComboEdit,
   Converter.Core.Types;
@@ -244,8 +245,8 @@ end;
 constructor TRttiClassInventory.Create;
 begin
   inherited Create;
-  FProperties := TDictionary<string, string>.Create;
-  FEvents := TDictionary<string, string>.Create;
+  FProperties := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  FEvents := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
 end;
 
 destructor TRttiClassInventory.Destroy;

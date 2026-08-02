@@ -185,3 +185,15 @@ newer than the executable. Successful runs print the UTC run time, executable
 timestamp and SHA-256 hash, plus the newest source timestamp. This prevents a
 green contract result from being attributed to source the runner did not
 actually contain.
+
+## Iteration 004 — Lexical Ownership and Identifier Semantics
+
+Navigator Build 004 removes the two byte-equivalent string-literal stripping
+routines nested in the uses-clause rewriter and routes both callers through
+the contract-protected shared lexical routine in `Converter.Core.Types`.
+
+The RTTI property/event inventories and LiveBindings component-name lookup
+tables now use ordinal, case-insensitive comparers. These keys are Delphi
+identifiers, so their lookup semantics must match the language rather than
+the spelling found in one source file. Other dictionaries remain unchanged
+until their key semantics are reviewed individually.

@@ -207,38 +207,6 @@ var
     end;
   end;
 
-  function StripStringLiteralsForAnalysis(const S: string): string;
-  var
-    K: Integer;
-    InString: Boolean;
-  begin
-    Result := '';
-    InString := False;
-    K := 1;
-    while K <= Length(S) do
-    begin
-      if S[K] = '''' then
-      begin
-        if not InString then
-          InString := True
-        else if (K < Length(S)) and (S[K + 1] = '''') then
-        begin
-          Result := Result + '  ';
-          Inc(K, 2);
-          Continue;
-        end
-        else
-          InString := False;
-        Result := Result + ' ';
-      end
-      else if InString then
-        Result := Result + ' '
-      else
-        Result := Result + S[K];
-      Inc(K);
-    end;
-  end;
-
   function HasLikelyMessageAPICall(const ACode: string): Boolean;
   var
     LocalLines: TStringList;
@@ -283,7 +251,8 @@ begin
   Assert(Assigned(FContext));
 
   OriginalCode := Code;
-  AnalysisCode := StripStringLiteralsForAnalysis(VCL2FMXStripCommentsForAnalysis(Code));
+  AnalysisCode := VCL2FMXStripStringLiteralsForAnalysis(
+    VCL2FMXStripCommentsForAnalysis(Code));
   Lines := TStringList.Create;
   AnalysisLines := TStringList.Create;
   UnitList := TStringList.Create;
@@ -614,37 +583,6 @@ var
     end;
   end;
 
-  function StripStringLiteralsForAnalysis(const S: string): string;
-  var
-    K: Integer;
-    InString: Boolean;
-  begin
-    Result := '';
-    InString := False;
-    K := 1;
-    while K <= Length(S) do
-    begin
-      if S[K] = '''' then
-      begin
-        if not InString then
-          InString := True
-        else if (K < Length(S)) and (S[K + 1] = '''') then
-        begin
-          Result := Result + '  ';
-          Inc(K, 2);
-          Continue;
-        end
-        else
-          InString := False;
-        Result := Result + ' ';
-      end
-      else if InString then
-        Result := Result + ' '
-      else
-        Result := Result + S[K];
-      Inc(K);
-    end;
-  end;
   function HasLikelyMessageAPICall(const ACode: string): Boolean;
   var
     LocalLines: TStringList;
@@ -689,7 +627,8 @@ begin
   Assert(Assigned(FContext));
 
   OriginalCode := Code;
-  AnalysisCode := StripStringLiteralsForAnalysis(VCL2FMXStripCommentsForAnalysis(Code));
+  AnalysisCode := VCL2FMXStripStringLiteralsForAnalysis(
+    VCL2FMXStripCommentsForAnalysis(Code));
   Lines := TStringList.Create;
   AnalysisLines := TStringList.Create;
   UnitList := TStringList.Create;

@@ -1990,8 +1990,8 @@ var
   Match: TMatch;
 begin
   Lines := TStringList.Create;
-  GridBindingSources := TDictionary<string, string>.Create;
-  DirectBindingTargets := TDictionary<string, string>.Create;
+  GridBindingSources := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
+  DirectBindingTargets := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
   try
     Lines.Text := Code;
 
