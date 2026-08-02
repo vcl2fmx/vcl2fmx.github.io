@@ -11,7 +11,7 @@
     "\\bVcl\\."
   ],
   "expected_report_patterns": [
-    "TMS_MappingPack_v4_1"
+    "TMS_MappingPack"
   ],
   "forbidden_report_patterns": []
 }

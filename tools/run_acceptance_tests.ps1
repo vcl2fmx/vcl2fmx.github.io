@@ -708,6 +708,37 @@ Add-Check -Condition (Test-Path -LiteralPath $releaseExe) `
   -PassDetails $releaseExe `
   -FailDetails 'Release executable is missing after build.'
 
+$contractScript = Join-Path $ProjectRoot 'tools\run_conversion_contracts.ps1'
+if (Test-Path -LiteralPath $contractScript) {
+  $compiledContracts = Invoke-Process -FilePath 'powershell.exe' `
+    -Arguments ('-ExecutionPolicy Bypass -File "{0}" -ProjectRoot "{1}" -EnforceCoverage -CompileGenerated' -f
+      $contractScript, $ProjectRoot) `
+    -WorkingDirectory $ProjectRoot
+  $contractSummary = @(($compiledContracts.StdOut -split "\r?\n") |
+    Where-Object { $_ -match '^Summary:' } |
+    Select-Object -Last 1)
+  Add-Check -Condition ($compiledContracts.ExitCode -eq 0) `
+    -Area Contracts `
+    -Check 'Generated contract output compiles' `
+    -PassDetails $(if ($contractSummary.Count -gt 0) {
+      $contractSummary[0]
+    } else {
+      'The enforced contract suite and every eligible generated fixture compiled successfully.'
+    }) `
+    -FailDetails $(if (($compiledContracts.StdOut + $compiledContracts.StdErr).Trim() -ne '') {
+      ($compiledContracts.StdOut + $compiledContracts.StdErr).Trim()
+    } else {
+      'Compiled contract validation returned a nonzero exit code.'
+    })
+}
+else {
+  Add-Check -Condition $false `
+    -Area Contracts `
+    -Check 'Compiled contract validation command is available' `
+    -PassDetails 'The required compiled contract validation command is present.' `
+    -FailDetails ('Required contract command is missing: ' + $contractScript)
+}
+
 $failCount = @($Results | Where-Object { $_.Status -eq 'Fail' }).Count
 $passCount = @($Results | Where-Object { $_.Status -eq 'Pass' }).Count
 $infoCount = @($Results | Where-Object { $_.Status -eq 'Info' }).Count
@@ -721,7 +752,7 @@ $sb = New-Object System.Text.StringBuilder
 [void]$sb.AppendLine(('Summary: {0} pass item(s), {1} fail item(s), {2} info item(s)' -f $passCount, $failCount, $infoCount))
 [void]$sb.AppendLine('')
 
-$reportGroups = @('Encoding', 'Save', 'Context', 'Structure', 'DFM', 'Constants', 'Mapping packs', 'Third-party', 'Guards', 'Build', 'Reporting', 'Workspace')
+$reportGroups = @('Encoding', 'Save', 'Context', 'Structure', 'DFM', 'Constants', 'Mapping packs', 'Third-party', 'Guards', 'Build', 'Contracts', 'Reporting', 'Workspace')
 $reportGroups += @($Results.Area | Where-Object { $_ -notin $reportGroups } | Sort-Object -Unique)
 
 foreach ($group in $reportGroups) {

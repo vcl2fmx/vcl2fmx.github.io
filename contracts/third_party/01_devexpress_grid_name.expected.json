@@ -11,7 +11,7 @@
     "\\bVcl\\."
   ],
   "expected_report_patterns": [
-    "DevExpress_MappingPack_v4_1"
+    "DevExpress_MappingPack"
   ],
   "forbidden_report_patterns": []
 }

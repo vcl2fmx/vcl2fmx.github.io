@@ -1,4 +1,4 @@
-# VCL2FMXConverter v6.0 Navigator — Build 021
+# VCL2FMXConverter v6.0 Navigator — Build 022
 
 ![VCL2FMXConverter](assets/vcl2fmx-logo.png)
 
@@ -27,7 +27,7 @@ The original VCL project remains the source of truth. Generated output is writte
 - 22 schema-validated JSON mapping packs containing 493 disciplined rules
 - Mapping-gap export as a valid starter mapping pack
 - 227 executable conversion contracts, including compilation of eligible generated fixtures
-- 64 regression guards and 62 release-readiness acceptance checks
+- 64 regression guards and 63 release-readiness acceptance checks
 - Complete Navigator user and engineering guides with companion PDFs
 
 ## Requirements

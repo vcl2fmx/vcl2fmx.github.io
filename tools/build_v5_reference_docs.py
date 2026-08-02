@@ -108,7 +108,7 @@ def parse_builtin_mappings() -> list[dict]:
 
 def parse_mapping_packs() -> list[dict]:
     rows: list[dict] = []
-    for path in sorted(MAPPING_PACKS.glob("*_MappingPack_v4_1.json")):
+    for path in sorted(MAPPING_PACKS.glob("*_MappingPack.json")):
         data = json.loads(read_text(path))
         pack = data.get("display_name") or data.get("name") or path.stem
         vendor = data.get("vendor", "")
@@ -247,7 +247,7 @@ def build_runtime_flow() -> Path:
     rows = [
         ["Release line", "Version 5.0 Vanguard"],
         ["Contract expectations", str(total_contracts)],
-        ["Mapping packs", f"{len(list(MAPPING_PACKS.glob('*_MappingPack_v4_1.json')))} JSON packs carried forward from v4.1.8"],
+        ["Mapping packs", f"{len(list(MAPPING_PACKS.glob('*_MappingPack.json')))} versioned JSON packs"],
         ["Built-in component mappings", str(len(builtins))],
         ["Mapping-pack component rules", str(len(packs))],
         ["Primary v5.0 additions", "Contracts, include analysis, Windows messaging categories, protected uses cleanup, GDI reporting/conversion contracts, and updated UI/reference surfaces."],

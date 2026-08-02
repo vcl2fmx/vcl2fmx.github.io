@@ -175,6 +175,14 @@ function Normalize-ReportArtifact {
     $normalized, [regex]::Escape($ProjectRoot), '<PROJECT_ROOT>',
     [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
   $normalized = [regex]::Replace(
+    $normalized,
+    '(?i)[A-Z]:\\\\[^"\r\n]*?\\\\mapping_packs\\\\',
+    '<PROJECT_ROOT>\\mapping_packs\\')
+  $normalized = [regex]::Replace(
+    $normalized,
+    '(?i)[A-Z]:\\[^"\r\n]*?\\mapping_packs\\',
+    '<PROJECT_ROOT>\mapping_packs\')
+  $normalized = [regex]::Replace(
     $normalized, '(?m)^Total time:.*$', 'Total time: <DURATION>')
   $normalized = [regex]::Replace(
     $normalized,

@@ -2,9 +2,9 @@
   "input_file": "contracts\\project_integration\\05_real_world_report_shape\\RealWorldReportShapeProject.dpr",
   "copy_case_directory": true,
   "expected_status": "converted",
-  "expected_normalized_text_report_sha256": "336809C01565BFDFA74DA967EAD0DE4FE2925AD25F565C3A8F34EE9180633F29",
-  "expected_normalized_html_report_sha256": "E3A18553968866032CFA05FDB34673D5C05680027FAD00948BB69859071A0489",
-  "expected_normalized_json_report_sha256": "FAAF36096F433EA27F302DD5BDF60656EEE63A84DC36E74DD4A93E715ECAA1F1",
+  "expected_normalized_text_report_sha256": "11CBB54DFF274C4FAD47C3A33BEAA72760A474082D45804D248D20F493AE55AE",
+  "expected_normalized_html_report_sha256": "7940E0588EAB4A6F079795267DA05452D3CCD68988D9C0A02CB353EDF3AF45FF",
+  "expected_normalized_json_report_sha256": "0E635D824323F51D947DCC8DEC829B2815E878360AE2EC1CB379F3A9E3B3161E",
   "expected_auxiliary_files": [
     "VCL_to_FMX_Conversion_Report.json"
   ],

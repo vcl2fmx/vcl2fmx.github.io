@@ -2,7 +2,7 @@
 param(
   [string]$ProjectRoot,
   [string]$OutputDirectory,
-  [string]$VersionTag = 'v6_0_Navigator_Build021'
+  [string]$VersionTag = 'v6_0_Navigator_Build022'
 )
 
 Set-StrictMode -Version Latest

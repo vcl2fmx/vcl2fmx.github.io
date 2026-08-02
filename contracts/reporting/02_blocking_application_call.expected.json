@@ -2,9 +2,9 @@
   "input_file": "contracts\\reporting\\02_blocking_application_call.pas",
   "skip_generated_compile": true,
   "expected_status": "converted",
-  "expected_normalized_text_report_sha256": "0345A6CE1D6CEFE7B003701F317C5E765472A1BC0D13A7248D81BA05FC6ECAE4",
-  "expected_normalized_html_report_sha256": "2D2AF28AFB6649DF94A755016E57E79E9471FDE6497B9508E53F02D8FF52D6BD",
-  "expected_normalized_json_report_sha256": "1F3BF55AEA2872E4E0E47290DDA710B959088A00428283501E35F6DB5EF5E97E",
+  "expected_normalized_text_report_sha256": "28792CA8D18A13D4CBEFDCED7F3F869FDF36754DB752C8CA8C8CB8BF51807851",
+  "expected_normalized_html_report_sha256": "110E866A2E6614BC33BFD8C51C083BCC87516245EF4501E72C736D311A99B056",
+  "expected_normalized_json_report_sha256": "D37EEEFB89286DED14D7BFC53B767C5F2F2157497A7EA4219A6B8113B2541255",
   "expected_auxiliary_files": [
     "VCL_to_FMX_Conversion_Report.json"
   ],

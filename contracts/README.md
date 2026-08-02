@@ -29,10 +29,16 @@ contract.
 
 ## Running Contracts
 
-From the project root:
+For a fast structural contract run from the project root:
 
 ```powershell
 powershell.exe -ExecutionPolicy Bypass -File .\tools\run_conversion_contracts.ps1 -EnforceCoverage
+```
+
+For release validation, compile every eligible generated fixture:
+
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File .\tools\run_conversion_contracts.ps1 -EnforceCoverage -CompileGenerated
 ```
 
 Default behavior:
@@ -174,8 +180,8 @@ Use this sequence:
 
 ```powershell
 & 'C:\Program Files (x86)\Embarcadero\Studio\37.0\bin\DCC32.EXE' -B -Q '-$O+' '-EWin32\Release' '-N0dcu\Win32\Release' VCL2FMXConverter.dpr
-& 'C:\Program Files (x86)\Embarcadero\Studio\37.0\bin\DCC32.EXE' -B -Q '-UC:\New Delphi Projects\VCL2FMXConverterV5' '-EC:\New Delphi Projects\VCL2FMXConverterV5\tools' '-N0C:\New Delphi Projects\VCL2FMXConverterV5\tools\dcu' tools\RunConversionEngine.dpr
-powershell.exe -ExecutionPolicy Bypass -File .\tools\run_conversion_contracts.ps1 -EnforceCoverage
+& 'C:\Program Files (x86)\Embarcadero\Studio\37.0\bin\DCC32.EXE' -B -Q '-UC:\New Delphi Projects\VCL2FMXConverterV6' '-EC:\New Delphi Projects\VCL2FMXConverterV6\tools' '-N0C:\New Delphi Projects\VCL2FMXConverterV6\tools\dcu' tools\RunConversionEngine.dpr
+powershell.exe -ExecutionPolicy Bypass -File .\tools\run_conversion_contracts.ps1 -EnforceCoverage -CompileGenerated
 powershell.exe -ExecutionPolicy Bypass -File .\tools\run_regression_guards.ps1 -FailOnBlockers
 ```
 
