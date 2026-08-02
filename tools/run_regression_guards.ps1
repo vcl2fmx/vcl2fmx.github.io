@@ -130,6 +130,7 @@ $mainFormText = Get-SourceText -RelativePath 'MainForm.pas'
 $mainFormFmxText = Get-SourceText -RelativePath 'MainForm.fmx'
 $projectFileText = Get-SourceText -RelativePath 'VCL2FMXConverter.dproj'
 $readmeText = Get-SourceText -RelativePath 'README.md'
+$contractRunnerText = Get-SourceText -RelativePath 'tools\run_conversion_contracts.ps1'
 $usesClauseText = Get-SourceText -RelativePath 'Converter.Rewrite.UsesClause.pas'
 $winApiText = Get-SourceText -RelativePath 'Converter.Advanced.WinAPI.pas'
 $designerBuildMatch = [regex]::Match($mainFormFmxText,
@@ -398,6 +399,17 @@ if (-not [string]::IsNullOrWhiteSpace($mainFormText)) {
     ) -Area 'Build identity' -Check 'Version badge contains full build and timestamp text' `
     -PassDetails 'Designer and both responsive states keep the version badge at least 450 pixels wide.' `
     -FailDetails 'The version badge can shrink below 450 pixels and clip the build or timestamp.'
+}
+
+if (-not [string]::IsNullOrWhiteSpace($contractRunnerText)) {
+  Add-RuleResult -Condition (
+      ($contractRunnerText -match 'Stale contract runner rejected') -and
+      ($contractRunnerText -match 'LastWriteTimeUtc -gt \$converterExeInfo\.LastWriteTimeUtc') -and
+      ($contractRunnerText -match 'Get-FileHash.+SHA256') -and
+      ($contractRunnerText -match 'Contract runner provenance:')
+    ) -Area 'Contract provenance' -Check 'Stale runner is rejected and identified' `
+    -PassDetails 'The contract runner rejects newer source and prints executable hash/timestamp provenance.' `
+    -FailDetails 'The contract runner can execute without stale-source rejection or auditable executable provenance.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($usesClauseText)) {

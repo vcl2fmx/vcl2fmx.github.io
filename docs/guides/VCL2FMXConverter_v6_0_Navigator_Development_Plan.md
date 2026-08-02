@@ -176,3 +176,12 @@ The following are not committed v6 scope:
 A shared lexical scanner may be prototyped against representative contracts
 and field-trial projects. Broader compiler-style work requires evidence from
 that prototype and separate approval.
+
+## Iteration 003 — Contract Runner Provenance
+
+Navigator Build 003 makes contract execution reject a stale
+`RunConversionEngine.exe` whenever its runner project or converter source is
+newer than the executable. Successful runs print the UTC run time, executable
+timestamp and SHA-256 hash, plus the newest source timestamp. This prevents a
+green contract result from being attributed to source the runner did not
+actually contain.

@@ -41,6 +41,13 @@ Default behavior:
 - Output root: `tests\conversion_contract_output`
 - Runner executable: `tools\RunConversionEngine.exe`
 
+Before any fixture runs, the runner rejects `RunConversionEngine.exe` if the
+runner project or converter source is newer than the executable. Each run also
+records the UTC start time, executable path and timestamp, executable SHA-256
+hash, and newest runner-source timestamp in its console output. Rebuild the
+runner after changing converter source; stale contract results are not
+accepted.
+
 `-EnforceCoverage` requires every discovered `.pas` and `.dpr` fixture to have
 an expectation file or be covered by a project-level expectation.
 

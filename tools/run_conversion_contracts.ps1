@@ -35,6 +35,38 @@ if (-not (Test-Path -LiteralPath $ConverterExe)) {
   throw "Converter executable not found: $ConverterExe"
 }
 
+$ConverterExe = (Resolve-Path $ConverterExe).Path
+$runnerSourceFiles = @(
+  Get-ChildItem -LiteralPath $ProjectRoot -File |
+    Where-Object { ($_.Name -like 'Converter.*.pas') -or ($_.Name -eq 'VCL2FMXConverter.dpr') }
+  Get-Item -LiteralPath (Join-Path $ProjectRoot 'tools\RunConversionEngine.dpr')
+)
+$converterExeInfo = Get-Item -LiteralPath $ConverterExe
+$newerRunnerSources = @(
+  $runnerSourceFiles |
+    Where-Object { $_.LastWriteTimeUtc -gt $converterExeInfo.LastWriteTimeUtc } |
+    Sort-Object LastWriteTimeUtc -Descending
+)
+if ($newerRunnerSources.Count -gt 0) {
+  $newestSource = $newerRunnerSources[0]
+  throw ('Stale contract runner rejected. Rebuild {0}; source {1} is newer ({2:o}) than the executable ({3:o}).' -f
+    $ConverterExe,
+    $newestSource.FullName,
+    $newestSource.LastWriteTimeUtc,
+    $converterExeInfo.LastWriteTimeUtc)
+}
+
+$runnerHash = (Get-FileHash -LiteralPath $ConverterExe -Algorithm SHA256).Hash
+$newestRunnerSource = $runnerSourceFiles | Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 1
+$runStartedUtc = [DateTime]::UtcNow
+Write-Output 'Contract runner provenance:'
+Write-Output ('  Started UTC: {0:o}' -f $runStartedUtc)
+Write-Output ('  Executable: {0}' -f $ConverterExe)
+Write-Output ('  Executable UTC: {0:o}' -f $converterExeInfo.LastWriteTimeUtc)
+Write-Output ('  Executable SHA-256: {0}' -f $runnerHash)
+Write-Output ('  Newest source: {0}' -f $newestRunnerSource.FullName)
+Write-Output ('  Newest source UTC: {0:o}' -f $newestRunnerSource.LastWriteTimeUtc)
+
 function Assert-UnderProjectRoot {
   param(
     [Parameter(Mandatory = $true)]
