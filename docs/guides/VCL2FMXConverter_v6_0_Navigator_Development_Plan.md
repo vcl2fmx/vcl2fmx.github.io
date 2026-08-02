@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 010
+Current iteration: Navigator Release v6.0 Build 011
 
 ## Release Direction
 
@@ -257,3 +257,11 @@ Navigator Build 010 moves all text report rendering into
 snapshot; the engine no longer contains a second text-rendering path.
 `GenerateReport` falls from 1,099 to 904 lines while all three exact text and
 HTML goldens remain unchanged.
+
+## Iteration 011 — Model-Backed HTML Renderer
+
+Navigator Build 011 moves all dynamic HTML body rendering into
+`Converter.Reporting.Html`. The existing static document head remains isolated
+in its already-extracted method, while both dynamic renderers now consume the
+same report snapshot. `GenerateReport` falls from 904 to 552 lines and the
+normalized text and HTML goldens remain byte-equivalent.

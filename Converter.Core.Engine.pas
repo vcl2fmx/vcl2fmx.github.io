@@ -14,7 +14,6 @@ uses
   System.StrUtils,
   System.Math,
   System.DateUtils,
-  System.NetEncoding,
   System.Generics.Collections,
   System.RegularExpressions,
     FMX.Forms,
@@ -23,6 +22,7 @@ uses
   Converter.Core.FileManager,
   Converter.Core.Integration,
   Converter.Project.Generator,
+  Converter.Reporting.Html,
   Converter.Reporting.Model,
   Converter.Reporting.Text;
 
@@ -2327,7 +2327,6 @@ var
   ManualGroups: TStringList;
   AffectedFiles: TStringList;
   VisibleIssueCount: Integer;
-  HasDetailedIssues: Boolean;
   HasBlockingOutcome: Boolean;
   IssueIndex: Integer;
   ReportModel: TConversionReportModel;
@@ -2665,38 +2664,6 @@ var
       ManualGroups.Objects[I].Free;
   end;
 
-  function HtmlEncode(const Value: string): string;
-  begin
-    Result := TNetEncoding.HTML.Encode(Value);
-  end;
-
-  function SeverityCssClass(Severity: TConversionSeverity): string;
-  begin
-    case Severity of
-      csInfo: Result := 'info';
-      csWarning: Result := 'warning';
-      csManualReview: Result := 'manual';
-      csError, csCritical: Result := 'error';
-    else
-      Result := 'neutral';
-    end;
-  end;
-
-  function UsageTargetText(const Usage: TMappingPackUsage): string;
-  begin
-    if Trim(Usage.FMXClassName) <> '' then
-      Result := Usage.FMXClassName
-    else
-      Result := 'No FMX output generated';
-  end;
-
-  function UsageLocationText(const Usage: TMappingPackUsage): string;
-  begin
-    Result := Usage.SourceFile;
-    if Usage.LineNumber > 0 then
-      Result := Result + ':' + IntToStr(Usage.LineNumber);
-  end;
-
   function FormatRunTime(Seconds: Integer): string;
   var
     Minutes: Integer;
@@ -2723,101 +2690,6 @@ var
       Result := Format('%d sec', [Seconds]);
   end;
 
-  procedure AddUsageHtmlSection(const Title, Note, EmptyText: string;
-    const ActionFilter: string; GeneratedOnly: Boolean; DetectOnly: Boolean);
-  var
-    Usage: TMappingPackUsage;
-    AddedAny: Boolean;
-    IncludeUsage: Boolean;
-  begin
-    AddedAny := False;
-    for Usage in FContext.MappingPackUsages do
-    begin
-      IncludeUsage := True;
-      if ActionFilter <> '' then
-        IncludeUsage := SameText(Usage.Action, ActionFilter);
-      if GeneratedOnly then
-        IncludeUsage := IncludeUsage and Usage.GeneratedOutput;
-      if DetectOnly then
-        IncludeUsage := IncludeUsage and SameText(Usage.Action, 'detect_only');
-      if IncludeUsage then
-      begin
-        AddedAny := True;
-        Break;
-      end;
-    end;
-    if not AddedAny then
-      Exit;
-
-    Html.Add('    <div class="section">');
-    Html.Add('      <h2>' + HtmlEncode(Title) + '</h2>');
-    Html.Add('      <p class="section-note">' + HtmlEncode(Note) + '</p>');
-    Html.Add('      <div class="usage-list">');
-    AddedAny := False;
-    for Usage in FContext.MappingPackUsages do
-    begin
-      IncludeUsage := True;
-      if ActionFilter <> '' then
-        IncludeUsage := SameText(Usage.Action, ActionFilter);
-      if GeneratedOnly then
-        IncludeUsage := IncludeUsage and Usage.GeneratedOutput;
-      if DetectOnly then
-        IncludeUsage := IncludeUsage and SameText(Usage.Action, 'detect_only');
-
-      if not IncludeUsage then
-        Continue;
-
-      AddedAny := True;
-      Html.Add('        <div class="usage-card">');
-      Html.Add('          <div class="usage-title">' + HtmlEncode(Usage.ComponentName) +
-        '<span>' + HtmlEncode(Usage.Action) + ' | ' + IntToStr(Usage.Confidence) + '%</span></div>');
-      Html.Add('          <div class="usage-map">' + HtmlEncode(Usage.VCLClassName) +
-        ' -> ' + HtmlEncode(UsageTargetText(Usage)) + '</div>');
-      Html.Add('          <div class="usage-meta">');
-      if Trim(Usage.PackName) <> '' then
-        Html.Add('            <span>Pack: ' + HtmlEncode(Usage.PackName) + '</span>');
-      if Trim(Usage.Vendor) <> '' then
-        Html.Add('            <span>Vendor: ' + HtmlEncode(Usage.Vendor) + '</span>');
-      Html.Add('          </div>');
-      if Trim(UsageLocationText(Usage)) <> '' then
-        Html.Add('          <div class="usage-path">' + HtmlEncode(UsageLocationText(Usage)) + '</div>');
-      if Trim(Usage.Notes) <> '' then
-        Html.Add('          <div class="usage-notes">' + HtmlEncode(Usage.Notes) + '</div>');
-      Html.Add('        </div>');
-    end;
-
-    if not AddedAny then
-      Html.Add('        <div class="empty-state">' + HtmlEncode(EmptyText) + '</div>');
-
-    Html.Add('      </div>');
-    Html.Add('    </div>');
-  end;
-
-  procedure AddMappingsUsedHtmlSection;
-  var
-    Usage: TMappingPackUsage;
-    AddedAny: Boolean;
-  begin
-    if FContext.MappingPackUsages.Count = 0 then
-      Exit;
-
-    Html.Add('    <div class="section">');    Html.Add('      <h2>Mappings used</h2>');
-    Html.Add('      <p class="section-note">Compact list of mapping-pack rules that fired during this conversion run.</p>');
-    Html.Add('      <div class="compact-list">');
-    AddedAny := False;
-    for Usage in FContext.MappingPackUsages do
-    begin
-      AddedAny := True;
-      Html.Add('        <div>' +
-        HtmlEncode(Format('%s: %s -> %s (%s, %d%%)',
-          [Usage.ComponentName, Usage.VCLClassName, UsageTargetText(Usage),
-           Usage.Action, Usage.Confidence])) + '</div>');
-    end;
-    if not AddedAny then
-      Html.Add('        <div>No mapping-pack rules were used during this run.</div>');
-    Html.Add('      </div>');
-    Html.Add('    </div>');
-  end;
 begin
   ReportModel.TextReportFile := TPath.Combine(FContext.Options.OutputPath, 'VCL_to_FMX_Conversion_Report.txt');
   ReportModel.HtmlReportFile := TPath.Combine(FContext.Options.OutputPath, 'VCL_to_FMX_Conversion_Report.html');
@@ -2969,236 +2841,12 @@ begin
     Report.SaveToFile(ReportModel.TextReportFile, TEncoding.UTF8);
 
     UILog(Format('Report saved to: %s', [ReportModel.TextReportFile]));
+    SetLength(ReportModel.ConversionLogLines, FConversionLog.Count);
+    for ManualIndex := 0 to FConversionLog.Count - 1 do
+      ReportModel.ConversionLogLines[ManualIndex] := FConversionLog[ManualIndex];
 
     AddHtmlReportDocumentHead(Html);
-    Html.Add('<body>');
-    Html.Add('  <div class="page">');
-    Html.Add('    <div class="hero">');
-    Html.Add('      <div class="eyebrow">VCL to FMX Converter</div>');
-    Html.Add('      <h1>Conversion Report</h1>');
-    Html.Add('      <p>' + HtmlEncode(Format('Generated %s', [
-      FormatDateTime('yyyy-mm-dd hh:nn:ss', Now)])) + '</p>');
-    Html.Add('      <p>' + HtmlEncode('Source: ' + FContext.Options.SourcePath) + '<br>' +
-      HtmlEncode('Output: ' + FContext.Options.OutputPath) + '</p>');
-    Html.Add('      <div class="status-chip">' + HtmlEncode(ReportModel.StatusText) + '</div>');
-    Html.Add('      <p>' + HtmlEncode('Next step: ' + ReportModel.NextStepText) + '</p>');
-    Html.Add('    </div>');
-    Html.Add('    <div class="meta">');
-    Html.Add('      <div class="meta-card"><div class="label">Files processed</div><div class="value">' +
-      IntToStr(ReportModel.FilesProcessed) + '</div></div>');
-    Html.Add('      <div class="meta-card"><div class="label">Files converted</div><div class="value">' +
-      IntToStr(ReportModel.FilesConverted) + '</div></div>');
-    Html.Add('      <div class="meta-card"><div class="label">Distinct files needing attention</div><div class="value">' +
-      IntToStr(ReportModel.AffectedFileCount) + '</div></div>');
-    Html.Add('      <div class="meta-card"><div class="label">Manual review items</div><div class="value">' +
-      IntToStr(ReportModel.ManualIssueCount) + '</div></div>');
-    Html.Add('      <div class="meta-card"><div class="label">Blocking items</div><div class="value">' +
-      IntToStr(ReportModel.BlockingCount) + '</div></div>');
-    Html.Add('      <div class="meta-card"><div class="label">Files with errors</div><div class="value">' +
-      IntToStr(ReportModel.FilesWithErrors) + '</div></div>');
-    Html.Add('      <div class="meta-card"><div class="label">Warnings</div><div class="value">' +
-      IntToStr(ReportModel.WarningCount) + '</div></div>');
-    Html.Add('      <div class="meta-card"><div class="label">Errors</div><div class="value">' +
-      IntToStr(ReportModel.ErrorCount) + '</div></div>');
-    Html.Add('      <div class="meta-card"><div class="label">Total issues</div><div class="value">' +
-      IntToStr(ReportModel.VisibleIssueCount) + '</div></div>');
-    if ReportModel.InformationalCount > 0 then
-      Html.Add('      <div class="meta-card"><div class="label">Informational notices</div><div class="value">' +
-        IntToStr(ReportModel.InformationalCount) + '</div></div>');
-    if ReportModel.DryRunPreviewCount > 0 then
-      Html.Add('      <div class="meta-card"><div class="label">Dry-run notices</div><div class="value">' +
-        IntToStr(ReportModel.DryRunPreviewCount) + '</div></div>');
-    Html.Add('      <div class="meta-card"><div class="label">Mapping packs loaded</div><div class="value">' +
-      IntToStr(ReportModel.MappingPacksLoaded) + '</div></div>');
-    Html.Add('      <div class="meta-card"><div class="label">Run time</div><div class="value">' +
-      HtmlEncode(ReportModel.RunTimeText) + '</div></div>');
-    Html.Add('    </div>');
-
-    Html.Add('    <div class="section">');
-    Html.Add('      <h2>Conversion health</h2>');
-    Html.Add('      <p class="section-note">Risk categories summarize what kind of review the generated project still needs.</p>');
-    Html.Add('      <table><tbody>');
-    if ReportModel.HasBlockingOutcome then
-      Html.Add('        <tr><th>Compile readiness</th><td>Blocked until conversion errors or blocking items are resolved.</td></tr>')
-    else if ReportModel.ManualGroupCount > 0 then
-      Html.Add('        <tr><th>Compile readiness</th><td>Possible, but manual-review items may still block reliable behavior.</td></tr>')
-    else
-      Html.Add('        <tr><th>Compile readiness</th><td>No blocking or manual-review categories were detected by the converter.</td></tr>');
-    Html.Add('        <tr><th>Runtime behavior review</th><td>' + IfThen(ReportModel.NeedsRuntimeReview, 'Yes', 'No') + '</td></tr>');
-    Html.Add('        <tr><th>Visual review</th><td>' + IfThen(ReportModel.NeedsVisualReview, 'Yes', 'No') + '</td></tr>');
-    Html.Add('        <tr><th>Data binding review</th><td>' + IfThen(ReportModel.NeedsDataBindingReview, 'Yes', 'No') + '</td></tr>');
-    Html.Add('        <tr><th>Manual code review</th><td>' + IfThen(ReportModel.NeedsManualCodeReview, 'Yes', 'No') + '</td></tr>');
-    Html.Add('      </tbody></table>');
-    Html.Add('    </div>');
-
-    Html.Add('    <div class="section">');
-    Html.Add('      <h2>Output files</h2>');
-    Html.Add('      <p class="section-note">Files and folders produced or updated by this conversion run.</p>');
-    Html.Add('      <table class="issues-table">');
-    Html.Add('        <tbody>');
-    Html.Add('          <tr><th>Output folder</th><td>' + HtmlEncode(FContext.Options.OutputPath) + '</td></tr>');
-    Html.Add('          <tr><th>Text report</th><td>' + HtmlEncode(ReportModel.TextReportFile) + '</td></tr>');
-    Html.Add('          <tr><th>HTML report</th><td>' + HtmlEncode(ReportModel.HtmlReportFile) + '</td></tr>');
-    Html.Add('          <tr><th>Converted source files</th><td>Generated Pascal and FMX files are written beside converted source names in the output folder.</td></tr>');
-    Html.Add('        </tbody>');
-    Html.Add('      </table>');
-    Html.Add('    </div>');
-
-    Html.Add('    <details class="section disclosure">');
-    Html.Add('      <summary><h2>Mapping packs loaded (' + IntToStr(FContext.LoadedMappingPacks.Count) + ')</h2><span>Show/hide loaded packs</span></summary>');
-    Html.Add('      <p class="section-note">External mapping packs loaded for this conversion run.</p>');
-    Html.Add('      <div class="mapping-pack-list">');
-    if FContext.LoadedMappingPacks.Count = 0 then
-      Html.Add('        <div class="mapping-pack-row"><div class="mapping-pack-text">No mapping packs were loaded for this run.</div></div>')
-    else
-      for ManualIndex := 0 to FContext.LoadedMappingPacks.Count - 1 do
-        Html.Add('        <div class="mapping-pack-row"><div class="mapping-pack-index">' +
-          IntToStr(ManualIndex + 1) + '</div><div class="mapping-pack-text">' +
-          HtmlEncode(FContext.LoadedMappingPacks[ManualIndex]) + '</div></div>');
-    Html.Add('      </div>');
-    Html.Add('    </details>');
-
-    AddUsageHtmlSection('Third-party components converted',
-      'Mapping-pack components that generated FMX output with a convert action.',
-      'No third-party mapping-pack components were fully converted.',
-      'convert', True, False);
-    AddUsageHtmlSection('Third-party components partially converted',
-      'Mapping-pack components that generated FMX output but still require review.',
-      'No third-party mapping-pack components were partially converted.',
-      'partial', True, False);
-    AddUsageHtmlSection('Third-party components detected only',
-      'Mapping-pack components intentionally reported without generated FMX output.',
-      'No detect-only third-party mapping-pack components were found.',
-      'detect_only', False, True);
-    AddMappingsUsedHtmlSection;
-
-
-    if ReportModel.DryRunPreviewCount > 0 then
-    begin
-      Html.Add('    <details class="section disclosure">');
-      Html.Add('      <summary><h2>Dry-run preview (' + IntToStr(ReportModel.DryRunPreviewCount) + ')</h2><span>Show/hide preview notices</span></summary>');
-      Html.Add('      <p class="section-note">Preview mode did not write converted source, form, or project files. These notices are not counted as conversion issues.</p>');
-      Html.Add('      <div class="compact-list">');
-      for Issue in FContext.Issues do
-        if IsDryRunPreviewIssue(Issue) then
-          Html.Add('        <div>' + HtmlEncode(Issue.Message) + '</div>');
-      Html.Add('      </div>');
-      Html.Add('    </details>');
-    end;
-    Html.Add('    <div class="section">');
-    Html.Add('      <h2>Detailed issues</h2>');
-    Html.Add('      <p class="section-note">Warnings and errors are listed below. Informational run details stay in the text report and conversion log.</p>');
-    Html.Add('      <div class="issue-list">');
-
-    HasDetailedIssues := False;
-    for Issue in FContext.Issues do
-    begin
-      if not ShouldIncludeInDetailedIssues(Issue) then
-        Continue;
-      if Issue.Severity = csInfo then
-        Continue;
-
-      HasDetailedIssues := True;
-      Html.Add('        <div class="issue-card">');
-      Html.Add('          <div class="issue-card-header"><span class="severity ' +
-        SeverityCssClass(Issue.Severity) + '">' +
-        HtmlEncode(SeverityToString(Issue.Severity)) + '</span><strong>' +
-        HtmlEncode(IfThen(Issue.ProblemType <> '', Issue.ProblemType,
-          IssueRiskCategory(Issue))) + '</strong><span class="meta">' +
-        HtmlEncode(IssueRiskCategory(Issue)) + '</span>' +
-        IfThen(Issue.LineNumber > 0,
-          '<span class="meta">Line ' + IntToStr(Issue.LineNumber) + '</span>',
-          '') + '</div>');
-      Html.Add('          <div class="issue-message">' + HtmlEncode(Issue.Message) + '</div>');
-      if Trim(Issue.FileName) <> '' then
-        Html.Add('          <div class="issue-path">' + HtmlEncode(Issue.FileName) + '</div>');
-      if Trim(Issue.SuggestedFix) <> '' then
-        Html.Add('          <div class="issue-fix">' + HtmlEncode(Issue.SuggestedFix) + '</div>');
-      Html.Add('        </div>');
-    end;
-
-    if not HasDetailedIssues then
-      Html.Add('        <div class="empty-state">No warning or error items were recorded outside the grouped manual-review section.</div>');
-
-    Html.Add('      </div>');
-    Html.Add('    </div>');
-    Html.Add('    <div class="section">');
-    Html.Add('      <h2>Manual review items</h2>');
-    Html.Add('      <p class="section-note">These items usually require an IDE review or a deliberate FMX design decision before the converted output is production-ready.<br><strong style="color:#174f8f;">Click the &gt; arrow on each item to view affected locations and recommended fixes.</strong></p>');
-    Html.Add('      <div class="manual-list">');
-
-    if ReportModel.ManualGroupCount = 0 then
-      Html.Add('        <div class="manual-card">No grouped manual-review items were recorded.</div>')
-    else
-      for ManualIndex := 0 to ManualGroups.Count - 1 do
-      begin
-        Issue := TList<TConversionIssue>(ManualGroups.Objects[ManualIndex])[0];
-        Html.Add('        <div class="manual-card">');
-        Html.Add('          <h3>' + HtmlEncode(Format('%d. %s', [ManualIndex + 1,
-          IfThen(Issue.ProblemType <> '', Issue.ProblemType,
-          'Manual review required')])) + '</h3>');
-        Html.Add('          <div class="manual-meta">');
-        Html.Add('            <span>Occurrences: ' +
-          IntToStr(ManualOccurrenceCount(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex]))) + '</span>');
-        if ManualAffectedLineCount(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex])) >
-           ManualOccurrenceCount(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex])) then
-          Html.Add('            <span>Affected lines: ' +
-            IntToStr(ManualAffectedLineCount(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex]))) + '</span>');
-        if Issue.IsBlocking then
-          Html.Add('            <span>Blocking: Yes</span>');
-        Html.Add('            <span>Risk: ' + HtmlEncode(IssueRiskCategory(Issue)) + '</span>');
-        Html.Add('          </div>');
-        Html.Add('          <p><strong>Detail:</strong> ' +
-          HtmlEncode(BuildManualDetailText(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex]))) + '</p>');
-        Html.Add('          <details class="block">');
-        Html.Add('            <summary class="block-label">Affected locations</summary>');
-        Html.Add('            <div class="pre">' +
-          HtmlEncode(BuildOccurrenceText(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex]))) +
-          '</div>');
-        Html.Add('          </details>');
-        Html.Add('          <div class="block">');
-        Html.Add('            <div class="block-label">Recommended solution</div>');
-        Html.Add('            <div class="pre">' +
-          HtmlEncode(BuildSuggestedFixText(TList<TConversionIssue>(ManualGroups.Objects[ManualIndex]))) +
-          '</div>');
-        Html.Add('          </div>');
-        Html.Add('        </div>');
-      end;
-
-    Html.Add('      </div>');
-    Html.Add('    </div>');
-
-    if FConversionLog.Count > 0 then
-    begin
-      Html.Add('    <details class="section disclosure">');
-      Html.Add('      <summary><h2>Conversion log</h2><span>Show/hide screen log</span></summary>');
-      Html.Add('      <p class="section-note">Screen log captured during this conversion run.</p>');
-      Html.Add('      <div class="pre log-block">' + HtmlEncode(FConversionLog.Text) + '</div>');
-      Html.Add('    </details>');
-    end;
-
-    Html.Add('    <div class="section">');
-    Html.Add('      <h2>Issue summary</h2>');
-    Html.Add('      <p class="section-note">Use this section for a quick print-friendly tally of the result.</p>');
-    Html.Add('      <table>');
-    Html.Add('        <tbody>');
-    Html.Add('          <tr><th>Informational</th><td>' + IntToStr(ReportModel.InformationalCount) + '</td></tr>');
-    Html.Add('          <tr><th>Warnings</th><td>' + IntToStr(ReportModel.WarningCount) + '</td></tr>');
-    Html.Add('          <tr><th>Manual review required</th><td>' + IntToStr(ReportModel.ManualIssueCount) + '</td></tr>');
-    Html.Add('          <tr><th>Manual review groups</th><td>' + IntToStr(ReportModel.ManualGroupCount) + '</td></tr>');
-    Html.Add('          <tr><th>Errors</th><td>' + IntToStr(ReportModel.ErrorCount) + '</td></tr>');
-    Html.Add('          <tr><th>Blocking items</th><td>' + IntToStr(ReportModel.BlockingCount) + '</td></tr>');
-    Html.Add('          <tr><th>Distinct files needing attention</th><td>' + IntToStr(ReportModel.AffectedFileCount) + '</td></tr>');
-    Html.Add('          <tr><th>Files with conversion errors</th><td>' + IntToStr(ReportModel.FilesWithErrors) + '</td></tr>');
-    Html.Add('        </tbody>');
-    Html.Add('      </table>');
-    Html.Add('      <div class="footer-note">Next step: ' + HtmlEncode(ReportModel.NextStepText) + '</div>');
-    Html.Add('      <div class="footer-note">Generated output should still be reviewed in the IDE. Projects with manual-review or blocking items may not run until those items are fixed or mitigated.</div>');
-    Html.Add('    </div>');
-    Html.Add('  </div>');
-    Html.Add('</body>');
-    Html.Add('</html>');
-
+    TConversionHtmlReportRenderer.RenderBody(ReportModel, Html);
     Html.SaveToFile(ReportModel.HtmlReportFile, TEncoding.UTF8);
     UILog(Format('HTML report saved to: %s', [ReportModel.HtmlReportFile]));
 
