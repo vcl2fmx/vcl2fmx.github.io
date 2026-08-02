@@ -20,13 +20,9 @@ type
   private
     FContext: TConversionContext;
 
-    function ConvertGDIMethod(const MethodCall: string): string;
-    function ConvertPaintHandler(const MethodBody: TStringList): TStringList;
-    function IsGDIFunction(const Line: string): Boolean;
   public
     constructor Create(AContext: TConversionContext);
 
-    function ConvertOnPaint(var PascalCode: TStringList): Boolean;
     function ConvertCustomDrawing(var PascalCode: TStringList): Boolean;
   end;
 
@@ -42,7 +38,6 @@ type
     destructor Destroy; override;
 
     function ConvertMessageHandlers(var PascalCode: TStringList): Boolean;
-    function GenerateFMXMessageHandlers: TStringList;
   end;
 
   // Owner-Draw Converter
@@ -56,7 +51,6 @@ type
     constructor Create(AContext: TConversionContext);
 
     function ConvertOwnerDraw(var PascalCode: TStringList): Boolean;
-    function GenerateDrawHandlers: TStringList;
   end;
 
   // ActionList Converter
@@ -98,21 +92,6 @@ type
     function ConvertDPIAssumptions(var PascalCode: TStringList): Boolean;
   end;
 
-  // Form Inheritance Converter
-  TFormInheritanceConverter = class
-  private
-    FContext: TConversionContext;
-    FInheritedForms: TDictionary<string, string>;
-
-    procedure AnalyzeInheritance(const FormName, ClassName: string);
-  public
-    constructor Create(AContext: TConversionContext);
-    destructor Destroy; override;
-
-    function ConvertInheritedForms(const FormFiles: TArray<string>): Boolean;
-    function GenerateInheritanceHierarchy: TStringList;
-  end;
-
   // Master Critical Areas Converter
   TCriticalAreasConverter = class
   private
@@ -123,7 +102,6 @@ type
     FActionList: TActionListConverter;
     FThreadSync: TThreadSyncConverter;
     FDPIScaling: TDPIScalingConverter;
-    FFormInheritance: TFormInheritanceConverter;
 
     FIssuesFound: TStringList;
   public
@@ -131,7 +109,6 @@ type
     destructor Destroy; override;
 
     function ConvertAllCriticalAreas(var PascalCode: TStringList): Boolean;
-    function GenerateCriticalAreasReport: TStringList;
     property IssuesFound: TStringList read FIssuesFound;
   end;
 
@@ -166,234 +143,6 @@ constructor TCustomDrawingConverter.Create(AContext: TConversionContext);
 begin
   inherited Create;
   FContext := AContext;
-end;
-
-function TCustomDrawingConverter.ConvertOnPaint(var PascalCode: TStringList): Boolean;
-var
-  I: Integer;
-  J: Integer;
-  InPaintHandler: Boolean;
-  PaintLines: TStringList;
-  StartLine: Integer;
-  ConvertedLines: TStringList;
-  Line: string;
-  HandlerDepth: Integer;
-  SawHandlerBegin: Boolean;
-begin
-  Result := False;
-  InPaintHandler := False;
-  PaintLines := nil;
-  StartLine := -1;
-  HandlerDepth := 0;
-  SawHandlerBegin := False;
-
-  try
-    for I := 0 to PascalCode.Count - 1 do
-    begin
-      Line := Trim(PascalCode[I]);
-
-      if (Pos('procedure', Line) > 0) and
-         ((Pos('Paint', Line) > 0) or (Pos('Draw', Line) > 0)) and
-         (Pos('Sender: TObject', Line) > 0) then
-      begin
-        FreeAndNil(PaintLines);
-        InPaintHandler := True;
-        StartLine := I;
-        HandlerDepth := 0;
-        SawHandlerBegin := False;
-        PaintLines := TStringList.Create;
-        PaintLines.Add(PascalCode[I]);
-
-        FContext.AddIssue(csInfo,
-          Format('Custom paint handler detected at line %d', [I + 1]));
-      end
-      else if InPaintHandler then
-      begin
-        PaintLines.Add(PascalCode[I]);
-
-        if CriticalAreaBlockOpenCount(Line) > 0 then
-        begin
-          Inc(HandlerDepth, CriticalAreaBlockOpenCount(Line));
-          SawHandlerBegin := True;
-        end;
-        Dec(HandlerDepth, CriticalAreaBlockCloseCount(Line));
-
-        if SawHandlerBegin and (HandlerDepth <= 0) and SameText(Trim(Line), 'end;') then
-        begin
-          ConvertedLines := ConvertPaintHandler(PaintLines);
-          try
-            J := PaintLines.Count;
-            ReplaceCodeBlock(PascalCode, StartLine, J, ConvertedLines);
-          finally
-            ConvertedLines.Free;
-          end;
-
-          FreeAndNil(PaintLines);
-          Result := True;
-          Break;
-        end;
-      end;
-    end;
-  finally
-    PaintLines.Free;
-  end;
-end;
-
-function TCustomDrawingConverter.ConvertPaintHandler(
-  const MethodBody: TStringList): TStringList;
-var
-  I: Integer;
-  Line: string;
-  InCanvasOp: Boolean;
-begin
-  Result := TStringList.Create;
-  InCanvasOp := False;
-
-  for I := 0 to MethodBody.Count - 1 do
-  begin
-    Line := MethodBody[I];
-
-    if IsGDIFunction(Line) then
-    begin
-      if not InCanvasOp then
-      begin
-        Result.Add('  // Converted GDI operations to FMX Canvas');
-        Result.Add('  with Canvas do');
-        Result.Add('  begin');
-        InCanvasOp := True;
-      end;
-
-      Result.Add('    ' + ConvertGDIMethod(Trim(Line)));
-    end
-    else
-    begin
-      if InCanvasOp then
-      begin
-        Result.Add('  end;');
-        InCanvasOp := False;
-      end;
-
-      Result.Add(Line);
-    end;
-  end;
-
-  if InCanvasOp then
-    Result.Add('  end;');
-end;
-
-function TCustomDrawingConverter.ConvertGDIMethod(const MethodCall: string): string;
-var
-  Params: string;
-  StartPos: Integer;
-  EndPos: Integer;
-  X, Y, Text: string;
-  Parts: TArray<string>;
-begin
-  Result := MethodCall;
-
-  if Pos('Rectangle', MethodCall) > 0 then
-  begin
-    StartPos := Pos('(', MethodCall);
-    EndPos := LastDelimiter(')', MethodCall);
-    if (StartPos > 0) and (EndPos > StartPos) then
-    begin
-      Params := Copy(MethodCall, StartPos + 1, EndPos - StartPos - 1);
-      Result := Format('DrawRect(RectF(%s), 0, 0, AllCorners, 1, TCornerStyle.Round);', [Params]);
-    end;
-  end
-
-  else if Pos('Ellipse', MethodCall) > 0 then
-  begin
-    StartPos := Pos('(', MethodCall);
-    EndPos := LastDelimiter(')', MethodCall);
-    if (StartPos > 0) and (EndPos > StartPos) then
-    begin
-      Params := Copy(MethodCall, StartPos + 1, EndPos - StartPos - 1);
-      Result := Format('DrawEllipse(RectF(%s), 1);', [Params]);
-    end;
-  end
-
-  else if Pos('TextOut', MethodCall) > 0 then
-  begin
-    StartPos := Pos('(', MethodCall);
-    EndPos := LastDelimiter(')', MethodCall);
-    if (StartPos > 0) and (EndPos > StartPos) then
-    begin
-      Params := Copy(MethodCall, StartPos + 1, EndPos - StartPos - 1);
-      Parts := Params.Split([',']);
-      if Length(Parts) >= 3 then
-      begin
-        X := Trim(Parts[0]);
-        Y := Trim(Parts[1]);
-        Text := Trim(Parts[2]);
-        Result := Format('DrawText(RectF(%s, %s, %s+500, %s+50), %s, False, 1, [], TTextAlign.Leading, TTextAlign.Center);',
-          [X, Y, X, Y, Text]);
-      end;
-    end;
-  end
-
-  else if Pos('LineTo', MethodCall) > 0 then
-  begin
-    StartPos := Pos('(', MethodCall);
-    EndPos := LastDelimiter(')', MethodCall);
-    if (StartPos > 0) and (EndPos > StartPos) then
-    begin
-      Params := Copy(MethodCall, StartPos + 1, EndPos - StartPos - 1);
-      Result := Format('DrawLine(PointF(0, 0), PointF(%s), 1);', [Params]);
-    end;
-  end
-
-  else if Pos('FillRect', MethodCall) > 0 then
-  begin
-    StartPos := Pos('(', MethodCall);
-    EndPos := LastDelimiter(')', MethodCall);
-    if (StartPos > 0) and (EndPos > StartPos) then
-    begin
-      Params := Copy(MethodCall, StartPos + 1, EndPos - StartPos - 1);
-      Result := Format('FillRect(RectF(%s), 0, 0, AllCorners, 1, TCornerStyle.Round);', [Params]);
-    end;
-  end
-
-  else if Pos('FrameRect', MethodCall) > 0 then
-  begin
-    StartPos := Pos('(', MethodCall);
-    EndPos := LastDelimiter(')', MethodCall);
-    if (StartPos > 0) and (EndPos > StartPos) then
-    begin
-      Params := Copy(MethodCall, StartPos + 1, EndPos - StartPos - 1);
-      Result := Format('DrawRect(RectF(%s), 0, 0, AllCorners, 1, TCornerStyle.Round);', [Params]);
-    end;
-  end;
-
-  if Pos('Pen.Color', Result) > 0 then
-    Result := StringReplace(Result, 'Pen.Color', 'Stroke.Color', [rfReplaceAll]);
-  if Pos('Pen.Width', Result) > 0 then
-    Result := StringReplace(Result, 'Pen.Width', 'Stroke.Thickness', [rfReplaceAll]);
-  if Pos('Brush.Color', Result) > 0 then
-    Result := StringReplace(Result, 'Brush.Color', 'Fill.Color', [rfReplaceAll]);
-  if Pos('Brush.Style', Result) > 0 then
-    Result := StringReplace(Result, 'Brush.Style', 'Fill.Kind', [rfReplaceAll]);
-end;
-
-function TCustomDrawingConverter.IsGDIFunction(const Line: string): Boolean;
-var
-  L: string;
-begin
-  L := LowerCase(Line);
-  Result := (Pos('canvas.', L) > 0) and (
-    (Pos('rectangle', L) > 0) or
-    (Pos('ellipse', L) > 0) or
-    (Pos('textout', L) > 0) or
-    (Pos('lineto', L) > 0) or
-    (Pos('moveto', L) > 0) or
-    (Pos('fillrect', L) > 0) or
-    (Pos('framerect', L) > 0) or
-    (Pos('polygon', L) > 0) or
-    (Pos('polyline', L) > 0) or
-    (Pos('pie', L) > 0) or
-    (Pos('arc', L) > 0) or
-    (Pos('chord', L) > 0)
-  );
 end;
 
 function TCustomDrawingConverter.ConvertCustomDrawing(
@@ -730,29 +479,6 @@ begin
   end;
 end;
 
-function TMessageHandlerConverter.GenerateFMXMessageHandlers: TStringList;
-begin
-  Result := TStringList.Create;
-  Result.Add('{ ===== FMX Message Bridge =====');
-  Result.Add('  Generated by VCL2FMX Converter.');
-  Result.Add('  Replace Windows WM_USER messages with TMessageManager.');
-  Result.Add('  Usage:');
-  Result.Add('    1. Define a message class for each custom WM_USER + N:');
-  Result.Add('       type TMyMsg = class(TMessage<Integer>) end;');
-  Result.Add('    2. In FormCreate: subscribe:');
-  Result.Add('       TMessageManager.DefaultManager.SubscribeToMessage(TMyMsg,');
-  Result.Add('         procedure(const Sender: TObject; const M: TMessage)');
-  Result.Add('         begin');
-  Result.Add('           HandleMyMsg(M as TMyMsg);');
-  Result.Add('         end);');
-  Result.Add('    3. To send (replaces PostMessage):');
-  Result.Add('       TMessageManager.DefaultManager.SendMessage(Self, TMyMsg.Create(Value));');
-  Result.Add('    4. In FormDestroy: unsubscribe:');
-  Result.Add('       TMessageManager.DefaultManager.Unsubscribe(TMyMsg);');
-  Result.Add('  Requires: System.Messaging in uses clause.');
-  Result.Add('  ============================= }');
-end;
-
 { TOwnerDrawConverter }
 
 constructor TOwnerDrawConverter.Create(AContext: TConversionContext);
@@ -915,24 +641,6 @@ begin
   Result.Insert(2, '  var ItemSelected: Boolean;');
   Result.Insert(3, '  var ItemIndex: Integer;');
   Result.Insert(4, '  // FMX: Get item state from parameters');
-end;
-
-function TOwnerDrawConverter.GenerateDrawHandlers: TStringList;
-begin
-  Result := TStringList.Create;
-  Result.Add('  // FMX owner-draw template');
-  Result.Add('  procedure ListBox1DrawItem(Sender: TObject; const Canvas: TCanvas;');
-  Result.Add('    const Item: TListBoxItem; const Rect: TRectF; const State: TDrawState);');
-  Result.Add('  begin');
-  Result.Add('    // Custom drawing code here');
-  Result.Add('    Canvas.Fill.Color := TAlphaColorRec.White;');
-  Result.Add('    Canvas.FillRect(Rect, 0, 0, AllCorners, 1);');
-  Result.Add('    ');
-  Result.Add('    if dsSelected in State then');
-  Result.Add('      Canvas.Fill.Color := TAlphaColorRec.Lightblue;');
-  Result.Add('      ');
-  Result.Add('    Canvas.FillText(Rect, Item.Text, False, 1, [], TTextAlign.Leading);');
-  Result.Add('  end;');
 end;
 
 { TActionListConverter }
@@ -1163,95 +871,6 @@ begin
             (IntValue < 2000);
 end;
 
-{ TFormInheritanceConverter }
-
-constructor TFormInheritanceConverter.Create(AContext: TConversionContext);
-begin
-  inherited Create;
-  FContext := AContext;
-  FInheritedForms := TDictionary<string, string>.Create(TIStringComparer.Ordinal);
-end;
-
-destructor TFormInheritanceConverter.Destroy;
-begin
-  FInheritedForms.Free;
-  inherited;
-end;
-
-procedure TFormInheritanceConverter.AnalyzeInheritance(const FormName,
-  ClassName: string);
-begin
-  if Pos('(', ClassName) > 0 then
-  begin
-    var InheritedFrom := Copy(ClassName,
-      Pos('(', ClassName) + 1,
-      Pos(')', ClassName) - Pos('(', ClassName) - 1);
-
-    FInheritedForms.Add(FormName, InheritedFrom);
-
-    FContext.AddIssue(csInfo,
-      Format('Form inheritance detected: %s inherits from %s',
-        [FormName, InheritedFrom]));
-  end;
-end;
-
-function TFormInheritanceConverter.ConvertInheritedForms(
-  const FormFiles: TArray<string>): Boolean;
-var
-  I: Integer;
-  Content: TStringList;
-  FormName: string;
-  ClassName: string;
-  Line: string;
-  Parts: TArray<string>;
-begin
-  Result := False;
-
-  for I := 0 to Length(FormFiles) - 1 do
-  begin
-    Content := TStringList.Create;
-    try
-      if FileExists(FormFiles[I]) then
-        Content.LoadFromFile(FormFiles[I]);
-
-      for var J := 0 to Content.Count - 1 do
-      begin
-        Line := Trim(Content[J]);
-        if Pos('object', Line) = 1 then
-        begin
-          Parts := Line.Split([':']);
-          if Length(Parts) >= 2 then
-          begin
-            FormName := Trim(StringReplace(Parts[0], 'object', '', [rfReplaceAll]));
-            ClassName := Trim(Parts[1]);
-            AnalyzeInheritance(FormName, ClassName);
-          end;
-          Break;
-        end;
-      end;
-    finally
-      Content.Free;
-    end;
-  end;
-end;
-
-function TFormInheritanceConverter.GenerateInheritanceHierarchy: TStringList;
-var
-  Pair: TPair<string, string>;
-begin
-  Result := TStringList.Create;
-  Result.Add('Form Inheritance Hierarchy:');
-  Result.Add('==========================');
-
-  for Pair in FInheritedForms do
-  begin
-    Result.Add(Format('  %s -> %s', [Pair.Key, Pair.Value]));
-  end;
-
-  if FInheritedForms.Count = 0 then
-    Result.Add('  No form inheritance detected');
-end;
-
 { TCriticalAreasConverter }
 
 constructor TCriticalAreasConverter.Create(AContext: TConversionContext);
@@ -1265,7 +884,6 @@ begin
   FActionList := TActionListConverter.Create(AContext);
   FThreadSync := TThreadSyncConverter.Create(AContext);
   FDPIScaling := TDPIScalingConverter.Create(AContext);
-  FFormInheritance := TFormInheritanceConverter.Create(AContext);
 
   FIssuesFound := TStringList.Create;
 end;
@@ -1278,7 +896,6 @@ begin
   FActionList.Free;
   FThreadSync.Free;
   FDPIScaling.Free;
-  FFormInheritance.Free;
 
   FIssuesFound.Free;
   inherited;
@@ -1325,27 +942,6 @@ begin
     FIssuesFound.Add('DPI assumptions marked - test on different resolutions');
     Result := True;
   end;
-end;
-
-function TCriticalAreasConverter.GenerateCriticalAreasReport: TStringList;
-var
-  I: Integer;
-begin
-  Result := TStringList.Create;
-  Result.Add('Critical Areas Conversion Report');
-  Result.Add('================================');
-  Result.Add('');
-
-  if FIssuesFound.Count > 0 then
-  begin
-    for I := 0 to FIssuesFound.Count - 1 do
-      Result.Add(Format('%d. %s', [I + 1, FIssuesFound[I]]));
-  end
-  else
-    Result.Add('No critical issues detected.');
-
-  Result.Add('');
-  Result.Add('Please thoroughly test these areas after conversion.');
 end;
 
 end.

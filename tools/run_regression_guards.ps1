@@ -470,6 +470,32 @@ Add-RuleResult -Condition (
   -PassDetails 'Active converter units and generated-project banners identify v6.0 Navigator.' `
   -FailDetails 'Active converter source still exposes the v5.0 Vanguard identity.'
 
+$e35RemovedMethodNames = @(
+  'ConvertOnPaint',
+  'GenerateFMXMessageHandlers',
+  'GenerateDrawHandlers',
+  'ConvertInheritedForms',
+  'GenerateInheritanceHierarchy',
+  'GenerateCriticalAreasReport',
+  'GenerateLiveBindings',
+  'ConvertDataAwareComponents',
+  'AnalyzeDatabaseComponents',
+  'GenerateDatabaseDFM',
+  'GenerateDatabaseCode',
+  'GetReplacementCode',
+  'GenerateVendorNotes',
+  'AddUserMapping'
+)
+$e35RemainingMethods = @(
+  $e35RemovedMethodNames | Where-Object {
+    $activeConverterSourceText -match ('\b' + [regex]::Escape($_) + '\b')
+  }
+)
+Add-RuleResult -Condition ($e35RemainingMethods.Count -eq 0) `
+  -Area 'Maintainability' -Check 'E35 audited dead methods remain removed' `
+  -PassDetails 'All fourteen reachability-audited E35 methods are absent from active converter source.' `
+  -FailDetails ('One or more E35 methods returned: ' + ($e35RemainingMethods -join ', '))
+
 if (-not [string]::IsNullOrWhiteSpace($contractRunnerText)) {
   Add-RuleResult -Condition (
       ($contractRunnerText -match 'Stale contract runner rejected') -and

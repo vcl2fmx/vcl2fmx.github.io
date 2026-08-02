@@ -180,8 +180,6 @@ type
     function ResolveEventMapping(const VCLClassName, EventName: string;
       out EventMap: TEventMapping): Boolean;
     procedure ExportReferenceArtifacts(const ArtifactDir: string = '');
-    procedure AddUserMapping(const Mapping: TComponentMapping);
-
     property MappingDatabase: TObjectList<TComponentMapping>
       read FMappingDatabase;
   end;
@@ -4521,27 +4519,6 @@ begin
       Mapping.EventMaps.Add(EventMap);
     end;
   end;
-end;
-
-procedure TComponentMapper.AddUserMapping(const Mapping: TComponentMapping);
-var
-  I: Integer;
-begin
-  for I := FMappingDatabase.Count - 1 downto 0 do
-  begin
-    if SameText(BuildClassLookupKey(FMappingDatabase[I].VCLClassName),
-                BuildClassLookupKey(Mapping.VCLClassName)) then
-    begin
-      FMappingDatabase.Delete(I);
-      Break;
-    end;
-  end;
-
-  FMappingDatabase.Add(Mapping);
-  RebuildMappingIndex;
-
-  if FContext.Options.UserMappingsFile <> '' then
-    SaveMappings(FContext.Options.UserMappingsFile);
 end;
 
 end.

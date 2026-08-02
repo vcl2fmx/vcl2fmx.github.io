@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 016
+Current iteration: Navigator Release v6.0 Build 017
 
 ## Release Direction
 
@@ -314,3 +314,13 @@ records were preserved. Legacy French-regression output folders are explicitly
 ignored as a secondary defense, and regression guards now require the French
 suite to use and clean an isolated temporary working directory rather than
 write generated artifacts into its tracked fixture tree.
+
+## Iteration 017 — E35 Reachability Closure
+
+Navigator Build 017 reconciles the original fourteen-method E35 inventory and
+removes only candidates that passed the full sequencing qualification. Each
+method was verified as non-published, unbound to designer events, unrelated to
+interfaces or method pointers, absent from name-based RTTI invocation, and
+unreferenced beyond its declaration and implementation. A permanent regression
+guard protects the closed inventory, and the detailed evidence is recorded in
+`docs/notes/V6_E35_REACHABILITY_AUDIT.md`.
