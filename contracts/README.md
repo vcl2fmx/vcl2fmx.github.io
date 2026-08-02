@@ -78,6 +78,8 @@ Common fields in `.expected.json` files:
   report after normalizing workspace paths, timestamps, and run duration.
 - `expected_normalized_html_report_sha256`: exact SHA-256 golden for the HTML
   report after the same limited normalization.
+- `expected_normalized_json_report_sha256`: exact SHA-256 golden for the
+  machine-readable JSON report after the same limited normalization.
 - `expected_text_report_patterns` and `expected_html_report_patterns`: regex
   assertions scoped to one rendered format.
 - `expected_text_report_ordered_patterns` and

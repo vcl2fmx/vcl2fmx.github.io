@@ -23,6 +23,7 @@ uses
   Converter.Core.Integration,
   Converter.Project.Generator,
   Converter.Reporting.Html,
+  Converter.Reporting.Json,
   Converter.Reporting.Model,
   Converter.Reporting.Text;
 
@@ -2693,6 +2694,7 @@ var
 begin
   ReportModel.TextReportFile := TPath.Combine(FContext.Options.OutputPath, 'VCL_to_FMX_Conversion_Report.txt');
   ReportModel.HtmlReportFile := TPath.Combine(FContext.Options.OutputPath, 'VCL_to_FMX_Conversion_Report.html');
+  ReportModel.JsonReportFile := TPath.Combine(FContext.Options.OutputPath, 'VCL_to_FMX_Conversion_Report.json');
   ReportModel.SourcePath := FContext.Options.SourcePath;
   ReportModel.OutputPath := FContext.Options.OutputPath;
   ReportModel.FilesProcessed := FFilesProcessed;
@@ -2849,6 +2851,8 @@ begin
     TConversionHtmlReportRenderer.RenderBody(ReportModel, Html);
     Html.SaveToFile(ReportModel.HtmlReportFile, TEncoding.UTF8);
     UILog(Format('HTML report saved to: %s', [ReportModel.HtmlReportFile]));
+    TConversionJsonReportRenderer.Save(ReportModel);
+    UILog(Format('JSON report saved to: %s', [ReportModel.JsonReportFile]));
 
   finally
     AffectedFiles.Free;

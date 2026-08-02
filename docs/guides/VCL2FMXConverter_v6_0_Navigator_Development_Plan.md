@@ -2,7 +2,7 @@
 
 Last changed: August 1, 2026
 
-Current iteration: Navigator Release v6.0 Build 011
+Current iteration: Navigator Release v6.0 Build 012
 
 ## Release Direction
 
@@ -265,3 +265,12 @@ Navigator Build 011 moves all dynamic HTML body rendering into
 in its already-extracted method, while both dynamic renderers now consume the
 same report snapshot. `GenerateReport` falls from 904 to 552 lines and the
 normalized text and HTML goldens remain byte-equivalent.
+
+## Iteration 012 — Deterministic JSON Report
+
+Navigator Build 012 adds `VCL_to_FMX_Conversion_Report.json` only after text
+and HTML equivalence was proven. The JSON uses schema
+`vcl2fmx.report.v1` and exposes summary totals, risk outcomes, and stable issue
+identity with severity, category, source span, original evidence, and
+recommended action. Three representative contracts now protect exact
+normalized text, HTML, and JSON artifacts.

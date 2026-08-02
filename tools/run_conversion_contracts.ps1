@@ -407,7 +407,11 @@ end.
 
   $generatedParts = New-Object 'System.Collections.Generic.List[string]'
   foreach ($file in Get-ChildItem -LiteralPath $caseOutput -Recurse -File -ErrorAction SilentlyContinue |
-      Where-Object { $_.Extension -in @('.pas', '.fmx', '.dpr', '.inc', '.json') }) {
+      Where-Object {
+        ($_.Extension -in @('.pas', '.fmx', '.dpr', '.inc', '.json')) -and
+        -not (($_.Extension -eq '.json') -and
+          ($_.Name -like '*Report*.json'))
+      }) {
     $generatedParts.Add((Read-TextFile -Path $file.FullName)) | Out-Null
   }
   $generatedText = [string]::Join("`n", $generatedParts)
@@ -448,6 +452,11 @@ end.
       Field = 'expected_normalized_html_report_sha256'
       File = $htmlReportPath
       Label = 'HTML'
+    },
+    [pscustomobject]@{
+      Field = 'expected_normalized_json_report_sha256'
+      File = Join-Path $caseOutput 'VCL_to_FMX_Conversion_Report.json'
+      Label = 'JSON'
     }
   )) {
     if (($null -ne $expectation.PSObject.Properties[$reportGolden.Field]) -and

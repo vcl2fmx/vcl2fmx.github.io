@@ -2,8 +2,12 @@
   "input_file": "contracts\\project_integration\\05_real_world_report_shape\\RealWorldReportShapeProject.dpr",
   "copy_case_directory": true,
   "expected_status": "converted",
-  "expected_normalized_text_report_sha256": "68B0CA48169981882235B23279C9B2A45B2D33EDE97F8EB0D8F1419736D114AD",
-  "expected_normalized_html_report_sha256": "F0F24AC527A69F34940B2EB59D0B25FA521E9733A081BF5C9A7C5C73548EFC80",
+  "expected_normalized_text_report_sha256": "336809C01565BFDFA74DA967EAD0DE4FE2925AD25F565C3A8F34EE9180633F29",
+  "expected_normalized_html_report_sha256": "E3A18553968866032CFA05FDB34673D5C05680027FAD00948BB69859071A0489",
+  "expected_normalized_json_report_sha256": "6243417CA23D82365ED0068C9EF673FA7BDA35E2ECCCCABF9DC652EDB1FFD24A",
+  "expected_auxiliary_files": [
+    "VCL_to_FMX_Conversion_Report.json"
+  ],
   "expected_text_report_patterns": [
     "Total issues: 3",
     "Informational notices: 3",

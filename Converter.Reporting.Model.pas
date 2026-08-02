@@ -62,6 +62,7 @@ type
     OutputPath: string;
     TextReportFile: string;
     HtmlReportFile: string;
+    JsonReportFile: string;
     RunTimeText: string;
     StatusText: string;
     NextStepText: string;

@@ -112,6 +112,7 @@ $engineText = Get-SourceText -RelativePath 'Converter.Core.Engine.pas'
 $reportModelText = Get-SourceText -RelativePath 'Converter.Reporting.Model.pas'
 $textReportRendererText = Get-SourceText -RelativePath 'Converter.Reporting.Text.pas'
 $htmlReportRendererText = Get-SourceText -RelativePath 'Converter.Reporting.Html.pas'
+$jsonReportRendererText = Get-SourceText -RelativePath 'Converter.Reporting.Json.pas'
 $generateReportMatch = [regex]::Match($engineText,
   '(?ms)^procedure\s+TConverterEngine\.GenerateReport;.*?(?=^procedure\s+TConverterEngine\.Cancel;)')
 $generateReportLineCount = if ($generateReportMatch.Success) {
@@ -473,13 +474,16 @@ if (-not [string]::IsNullOrWhiteSpace($contractRunnerText)) {
       ($contractRunnerText -match 'function Normalize-ReportArtifact') -and
       ($contractRunnerText -match 'expected_normalized_text_report_sha256') -and
       ($contractRunnerText -match 'expected_normalized_html_report_sha256') -and
+      ($contractRunnerText -match 'expected_normalized_json_report_sha256') -and
       (([regex]::Matches($reportGoldenExpectationsText,
         'expected_normalized_text_report_sha256')).Count -eq 3) -and
       (([regex]::Matches($reportGoldenExpectationsText,
-        'expected_normalized_html_report_sha256')).Count -eq 3)
+        'expected_normalized_html_report_sha256')).Count -eq 3) -and
+      (([regex]::Matches($reportGoldenExpectationsText,
+        'expected_normalized_json_report_sha256')).Count -eq 3)
     ) -Area 'Reporting' -Check 'Representative reports have exact normalized goldens' `
-    -PassDetails 'Three representative cases protect exact text and HTML report output.' `
-    -FailDetails 'Normalized text/HTML golden report coverage is incomplete.'
+    -PassDetails 'Three representative cases protect exact text, HTML, and JSON report output.' `
+    -FailDetails 'Normalized text/HTML/JSON golden report coverage is incomplete.'
 
   Add-RuleResult -Condition (
       ($contractRunnerText -match 'expected_text_report_patterns') -and
@@ -541,6 +545,24 @@ if ((-not [string]::IsNullOrWhiteSpace($htmlReportRendererText)) -and
     ) -Area 'Reporting' -Check 'HTML rendering is isolated behind the report model' `
     -PassDetails ('The dedicated HTML renderer owns dynamic HTML output and GenerateReport is ' + $generateReportLineCount + ' lines.') `
     -FailDetails 'Dynamic HTML report markup remains duplicated in GenerateReport or bypasses the report model.'
+}
+
+if (-not [string]::IsNullOrWhiteSpace($jsonReportRendererText)) {
+  Add-RuleResult -Condition (
+      ($jsonReportRendererText -match 'TConversionJsonReportRenderer\s*=\s*class') -and
+      ($jsonReportRendererText -match 'vcl2fmx\.report\.v1') -and
+      ($jsonReportRendererText -match "'stableIdentity'") -and
+      ($jsonReportRendererText -match "'sourceStartLine'") -and
+      ($jsonReportRendererText -match "'sourceEndLine'") -and
+      ($jsonReportRendererText -match "'originalEvidence'") -and
+      ($jsonReportRendererText -match "'recommendedAction'") -and
+      ($engineText -match
+        'TConversionJsonReportRenderer\.Save\(ReportModel\)') -and
+      $contractRunnerText.Contains(
+        '($_.Name -like ''*Report*.json'')')
+    ) -Area 'Reporting' -Check 'JSON report exposes stable issue provenance' `
+    -PassDetails 'The deterministic v1 JSON schema is rendered from the shared report model and includes stable issue provenance.' `
+    -FailDetails 'The JSON report schema, model ownership, or stable issue provenance is incomplete.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($usesClauseText)) {

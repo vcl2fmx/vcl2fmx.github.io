@@ -155,6 +155,7 @@ begin
   AReport.Add('Output folder: ' + AModel.OutputPath);
   AReport.Add('Text report: ' + AModel.TextReportFile);
   AReport.Add('HTML report: ' + AModel.HtmlReportFile);
+  AReport.Add('JSON report: ' + AModel.JsonReportFile);
   AReport.Add('Converted Pascal files are written beside converted source names in the output folder.');
   AReport.Add('Converted FMX files are written beside converted source names in the output folder.');
   AReport.Add('');

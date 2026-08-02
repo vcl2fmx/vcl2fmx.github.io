@@ -235,6 +235,8 @@ begin
     HtmlEncode(AModel.TextReportFile) + '</td></tr>');
   AHtml.Add('          <tr><th>HTML report</th><td>' +
     HtmlEncode(AModel.HtmlReportFile) + '</td></tr>');
+  AHtml.Add('          <tr><th>JSON report</th><td>' +
+    HtmlEncode(AModel.JsonReportFile) + '</td></tr>');
   AHtml.Add('          <tr><th>Converted source files</th><td>Generated Pascal and FMX files are written beside converted source names in the output folder.</td></tr>');
   AHtml.Add('        </tbody>');
   AHtml.Add('      </table>');
