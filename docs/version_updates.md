@@ -203,6 +203,10 @@ while performing version updates.
       review is required.
 - [ ] Verify every download button points to the intended final artifact rather
       than a prior release, local path, draft file, or unavailable GitHub tag.
+- [ ] Before any GitHub push or website publication, replace the current
+      Complete Source link to the `vcl2fmx.github.io` website-repository ZIP
+      with the approved v6 source-release archive URL. Do not publish while the
+      source button still downloads the website repository.
 - [ ] Confirm the website, GitHub release, release tag, filenames, hashes, and
       validation record all describe the same build.
 - [ ] Decide explicitly whether v5 remains downloadable; if retained, label it
