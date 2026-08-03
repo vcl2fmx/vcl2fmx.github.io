@@ -52,7 +52,7 @@
   "assets": [
     {
       "key": "image1.png",
-      "value": "ImportedAssets\\VCL2FMXConverter v6.0 Navigator User Guide — Build 023\\image1.png"
+      "value": "ImportedAssets\\VCL2FMXConverter v6.0 Navigator User Guide — Build 024\\image1.png"
     }
   ],
   "templates": [
@@ -114,7 +114,7 @@
   "projectSettings": [
     {
       "key": "HtmlTitle",
-      "value": "VCL2FMX Navigator Build 023"
+      "value": "VCL2FMX Navigator Build 024"
     },
     {
       "key": "SupportUrl",
@@ -209,8 +209,8 @@
     {
       "id": "{B2838A7B-98B3-4242-A869-FED002C676D8}",
       "parentId": "",
-      "title": "VCL2FMXConverter v6.0 Navigator User Guide — Build 023",
-      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1 style=\"text-align: center;\">VCL2FMX Converter v6.0 Navigator User Guide — Build 023</h1><div style=\"text-align: center;\"><span style=\"font-family:&quot;Segoe UI&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\"><span style=\"font-family:&quot;Segoe Script&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\"><span style=\"font-family:&quot;Segoe Script&quot;;font-size:30pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\">Navigator</span></span></span></div>\n\n\n\n<p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><span style=\"font-family:&quot;Segoe UI&quot;;font-size:14pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\">Detailed Operator, Validation, and Workflow Manual</span></p>\n\n<p style=\"text-align: center;\">Updated August 2, 2026</p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p>\n\n<p>Audience: developers, technical operators, project owners, and maintainers who will run the converter and validate converted Delphi projects.</p>\n</article>",
+      "title": "VCL2FMXConverter v6.0 Navigator User Guide — Build 024",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1 style=\"text-align: center;\">VCL2FMX Converter v6.0 Navigator User Guide — Build 024</h1><div style=\"text-align: center;\"><span style=\"font-family:&quot;Segoe UI&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\"><span style=\"font-family:&quot;Segoe Script&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\"><span style=\"font-family:&quot;Segoe Script&quot;;font-size:30pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\">Navigator</span></span></span></div>\n\n\n\n<p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><span style=\"font-family:&quot;Segoe UI&quot;;font-size:14pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\">Detailed Operator, Validation, and Workflow Manual</span></p>\n\n<p style=\"text-align: center;\">Updated August 3, 2026</p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p>\n\n<p>Audience: developers, technical operators, project owners, and maintainers who will run the converter and validate converted Delphi projects.</p>\n</article>",
       "status": "Approved",
       "iconName": "auto",
       "owner": "Auto Import",

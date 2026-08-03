@@ -40,6 +40,6 @@ Mapping-pack usage is reported in the conversion report so third-party behavior 
 
 The v6.0 Navigator distribution includes 22 schema-validated mapping packs containing 493 disciplined rules for common Delphi third-party libraries. These packs are intentionally conservative: simple controls may convert, approximate controls may convert with review notes, and complex controls are usually report-only.
 
-Revision date: August 2, 2026
+Revision date: August 3, 2026
 
 Mapping packs are extension data, not vendor runtimes. They do not install or replace commercial component libraries. Always review the generated report and test the converted FMX project in Delphi.

@@ -1,7 +1,8 @@
 # VCL2FMXConverter Post-Coding Release Checklist
 
-Use this checklist after application coding is complete and before declaring a
-new VCL2FMXConverter version ready for release.
+Codex will use this checklist after application coding is complete and before declaring a
+new VCL2FMXConverter version ready for release. Codex will do all items that may be done
+by him and request manual assistance from the developer, when appropriate.
 
 The release is not complete until a clean clone, fork, or extracted source
 distribution contains everything required to build, validate, document, and
@@ -22,46 +23,37 @@ brand the application.
 
 ## 2. Repository completeness and fork readiness
 
-- [ ] Ensure every required logo, icon, screenshot, banner, and source graphic
-      is stored in the repository.
-- [ ] Include original editable graphic sources where available, not only
-      flattened PNG or JPG exports.
+- [ ] Ensure every required logo, icon, screenshot, banner, and source
+      graphic is stored in the repository, including original editable
+      sources where available.
 - [ ] Include all Windows, FMX, UWP, application, and deployment icon sizes
-      referenced by the `.dproj`.
-- [ ] Verify every image path referenced by `.fmx`, `.dproj`, documentation,
-      help, and website files exists.
+      referenced by the `.dproj`, and verify every image path referenced by
+      `.fmx`, `.dproj`, documentation, help, and website files exists.
 - [ ] Include required FMX style files, resources, manifests, templates, and
       embedded assets.
 - [ ] Include all mapping packs and their schema information.
-- [ ] Include contracts, fixture inputs, expectations, includes, resources, and
-      other files required by the contract runner.
-- [ ] Include sample source needed to demonstrate or validate the application.
-- [ ] Include the build and validation scripts needed to reproduce the release.
-- [ ] Include the Apache License 2.0 text and required third-party attribution.
-- [ ] Document the required RAD Studio version and toolchain.
-- [ ] Document optional third-party dependencies separately from required
-      dependencies.
-- [ ] Eliminate dependencies on personal, temporary, backup, or external-drive
-      files.
-- [ ] Replace unnecessary machine-specific paths with project-relative paths.
-- [ ] Search active source and project files for references to `C:\Users`,
-      temporary directories, prior workspaces, and external drives.
+- [ ] Include contracts, fixture inputs, expectations, includes, resources,
+      sample source, and other files required by the contract runner or
+      needed to demonstrate or validate the application.
+- [ ] Include the build and validation scripts needed to reproduce the
+      release.
+- [ ] Include the Apache License 2.0 text and required third-party
+      attribution, and document the required RAD Studio version, toolchain,
+      and any optional third-party dependencies.
+- [ ] Eliminate dependencies on personal, temporary, backup, or
+      external-drive files; replace machine-specific paths with
+      project-relative ones; search active source and project files for
+      `C:\Users`, temporary directories, prior workspaces, and external
+      drives.
 - [ ] Confirm the project opens in RAD Studio with all units and resources
       visible in the Project Manager.
-- [ ] Test Win32 and Win64 Release builds from a clean clone, fork, or extracted
-      source distribution.
-- [ ] Run the validation tools from that clean location.
-- [ ] Confirm missing optional assets produce clear instructions instead of
-      unexplained failures.
-- [ ] Maintain an asset inventory recording each artifact's purpose, repository
-      path, source format, and license.
-- [ ] Record hashes for critical release graphics and embedded resources when
-      useful.
+- [ ] Test Win32 and Win64 Release builds from a clean clone, fork, or
+      extracted source distribution, and run the validation tools from that
+      clean location.
 
 ## 3. Final validation
 
-- [ ] Make the required pre-release backup under
-      `D:\VCL2FMXConverterV6 Backup`.
+- [ ] Make the required pre-release backup under `D:\VCL2FMXConverterV6 Backup`.
 - [ ] Build Win32 Release.
 - [ ] Build Win64 Release.
 - [ ] Run mapping-pack validation.
@@ -70,13 +62,34 @@ brand the application.
 - [ ] Compile every eligible generated contract fixture.
 - [ ] Run all regression guards.
 - [ ] Run the complete acceptance gate.
-- [ ] Run timing-sensitive contracts under isolated conditions.
-- [ ] Test representative real Delphi projects.
+- [ ] Run timing-sensitive contracts with no other build, compile, or
+      heavy background process running concurrently; a busy machine can trip a
+      duration budget that passes cleanly in isolation. Re-run once alone
+      before treating a duration failure as a real regression.
+- [ ] Silently test representative real Delphi projects by name: Carillon, GPS Control,
+      RealTimeClock, and any other project previously used for field
+      validation. Record which named projects were actually run against the
+      current build, not only that "real projects" were tested in general. If any
+      errors occur that need attention, stop this validation and request assistance
+      from the developer. This would include Pascal and Delphi errors that must be
+      resolved.
+- [ ] Confirm any document titled as a field-trial or real-project validation
+      record actually contains output, findings, or behavior from a named real
+      project — not a restatement of contract, guard, or acceptance-suite
+      totals under a field-trial title.
 - [ ] Test dry-run and normal conversion modes.
 - [ ] Inspect plain-text, HTML, and JSON reports.
 - [ ] Confirm validation tools do not modify tracked fixtures or goldens.
 - [ ] Confirm the Git working tree contains no unexpected generated changes.
-- [ ] Record executable and distribution SHA-256 hashes.
+- [ ] Confirm report and contract goldens remain valid if the repository is
+      built from a different absolute path (for example after a mapping-pack
+      or fixture rename); re-normalize and regenerate goldens if any embedded
+      absolute path changed.
+- [ ] Record executable and distribution SHA-256 hashes from the exact
+      binaries that will ship. Delphi builds are not guaranteed
+      byte-reproducible between runs, so do not rebuild after recording a
+      hash without re-recording it — record hashes last, after all other
+      validation is complete.
 
 ## 4. Application graphics
 
@@ -130,7 +143,7 @@ while performing version updates.
 
 - [ ] Update help topics for changed features and behavior.
 - [ ] Update version and build information.
-- [ ] Update screenshots and navigation.
+- [ ] Update screenshots and navigation. Retake screen shots to update to current look.
 - [ ] Update contract, mapping-pack, dry-run, reporting, and validation topics.
 - [ ] Rebuild using the Help Doc Creator-compatible workflow.
 - [ ] Test contents, index, search, context links, and internal hyperlinks.
@@ -139,7 +152,10 @@ while performing version updates.
 ## 8. Website
 
 - [ ] Locate and back up the authoritative website source, including all HTML,
-      CSS, JavaScript, images, downloadable files, and GitHub Pages settings.
+      CSS, JavaScript, images, downloadable files, and GitHub Pages settings. The
+      working copies of this are in the project root directory and are named
+      index.html and downloads.html.  All changes to the web pages should be done
+      to them, verified and they then be readied for later push to GitHub.
 - [ ] Perform a complete line-by-line version review of `index.html`, not only
       the visible release heading.
 - [ ] Perform a complete line-by-line version review of `downloads.html`,
@@ -217,7 +233,6 @@ while performing version updates.
       contrast, link purpose, form labels, and meaningful alternative text.
 - [ ] Check the complete site at desktop, tablet, and phone widths, including
       the hero, badge, menus, download cards, tables, code blocks, and footer.
-- [ ] Test with current Chromium, Edge, and Firefox behavior where practical.
 - [ ] Crawl and test every internal link, anchor, download link, documentation
       link, email link, and relevant external link.
 - [ ] Confirm all public resources use HTTPS and that filenames and URL casing
@@ -267,6 +282,10 @@ while performing version updates.
 - [ ] Have Claude review the final source with contracts included.
 - [ ] Correct only confirmed issues.
 - [ ] Repeat all affected validation after any correction.
+- [ ] Treat the Claude review as iterative, not a single pass: after
+      corrections, have Claude re-review the specific changes made and
+      independently re-run (not just re-read) the validation it can execute,
+      until a round produces no new findings.
 
 ## 11. Repository preparation
 
@@ -284,6 +303,9 @@ while performing version updates.
 
 ## 12. GitHub release — only when authorized
 
+- [ ] Confirm explicitly with the developer that a push to the public
+      `origin` repository is intended to replace the currently live public
+      release, not just add alongside it, before pushing anything.
 - [ ] Confirm which public and private repositories must be updated.
 - [ ] Push the final branch and commit.
 - [ ] Create the release tag.

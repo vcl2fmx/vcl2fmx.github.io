@@ -1,8 +1,8 @@
 # VCL2FMXConverter v6.0 Navigator Development Plan
 
-Last changed: August 2, 2026
+Last changed: August 3, 2026
 
-Current iteration: Navigator Release v6.0 Build 023
+Current iteration: Navigator Release v6.0 Build 024
 
 ## Release Direction
 

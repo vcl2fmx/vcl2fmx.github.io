@@ -2,9 +2,11 @@
   Left = 0
   Top = 0
   ActiveControl = edtSource
-  Caption = 'VCL to FMX Converter v6.0 Navigator - Build 023'
+  Caption = 'VCL to FMX Converter v6.0 Navigator - Build 024'
   ClientHeight = 820
   ClientWidth = 1345
+  Constraints.MinHeight = 700.000000000000000000
+  Constraints.MinWidth = 1280.000000000000000000
   Fill.Color = xFFF2F7FD
   Fill.Kind = Solid
   Position = ScreenCenter
@@ -380,7 +382,7 @@
         TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
         TextSettings.HorzAlign = Center
-        Text = 'Navigator Release v6.0  Build 023  8/2/26 7:20 PM'
+        Text = 'Navigator Release v6.0  Build 024  8/3/26 11:40 AM'
       end
       object lblStatusCaption: TLabel
         StyledSettings = []
