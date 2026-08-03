@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="What Delphi developers should verify before buying or trusting a VCL-to-FMX converter—and why no responsible tool should promise a finished one-click migration.">
+  <meta name="theme-color" content="#0757b8">
+  <link rel="canonical" href="https://vcl2fmx.github.io/BeforeYouPay.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VCL2FMXConverter">
+  <meta property="og:title" content="Before You Pay for a VCL-to-FMX Promise">
+  <meta property="og:description" content="A practical buyer's guide to evaluating VCL-to-FMX conversion tools, support claims, test evidence, licensing, and generated output.">
+  <meta property="og:url" content="https://vcl2fmx.github.io/BeforeYouPay.html">
+  <meta property="og:image" content="https://vcl2fmx.github.io/assets/vcl2fmx-v6-screen.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Before You Pay for a VCL-to-FMX Promise">
+  <meta name="twitter:description" content="Do not buy a promise. Test the evidence and keep control of your Delphi source.">
+  <meta name="twitter:image" content="https://vcl2fmx.github.io/assets/vcl2fmx-v6-screen.png">
+  <title>Before You Pay | VCL2FMXConverter</title>
+  <link rel="icon" href="assets/vcl2fmx-icon.png" type="image/png">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="preconnect" href="https://cdn.gtranslate.net">
+  <link rel="preconnect" href="https://translate.google.com">
+  <link rel="preconnect" href="https://translate.googleapis.com">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R67HW0Z3L"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3R67HW0Z3L');
+  </script>
+</head>
+<body>
+  <div class="gtranslate_wrapper notranslate" translate="no"></div>
+  <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"detect_browser_language":true,"wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right"}</script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+  <script src="assets/translation-selector.js" defer></script>
+  <script>
+    window.addEventListener('load', function () {
+      document.querySelector('.gtranslate_wrapper').dispatchEvent(new Event('focusin', { bubbles: true }));
+    });
+  </script>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="index.html" aria-label="VCL2FMXConverter home">
+        <img src="assets/vcl2fmx-logo.png" alt="VCL2FMXConverter">
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="index.html#features">Features</a>
+        <a href="BeforeYouPay.html" aria-current="page">Before You Pay</a>
+        <a href="downloads.html">Downloads</a>
+        <a class="nav-cta" href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="pay-hero" aria-labelledby="pay-title">
+      <div class="shell pay-hero-grid">
+        <div>
+          <p class="eyebrow">A buyer's guide for Delphi developers</p>
+          <h1 id="pay-title">Before you pay for a VCL-to-FMX promise.</h1>
+          <p class="lede">A converter can remove a great deal of repetitive work. It cannot press one button and turn every Windows-specific VCL application into a finished, tested, cross-platform FireMonkey product.</p>
+          <div class="actions">
+            <a class="button orange" href="#buyer-checklist">Use the buyer's checklist</a>
+            <a class="button secondary" href="#responsible-conversion">See responsible conversion</a>
+          </div>
+        </div>
+        <aside class="evidence-card" aria-labelledby="quick-test-title">
+          <p class="eyebrow">The 60-second test</p>
+          <h2 id="quick-test-title">Ask for evidence, not adjectives.</h2>
+          <ul class="evidence-list">
+            <li>Does it support your current Delphi release?</li>
+            <li>Can you test it against your own project?</li>
+            <li>Does it identify what it could not convert?</li>
+            <li>Can the generated project be compiled?</li>
+            <li>Can you reach a real support channel?</li>
+          </ul>
+          <p class="evidence-note">If the answers are unclear, do not purchase the promise.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="truth-band" aria-label="Important conversion fact">
+      <div class="shell truth-inner">
+        <span class="truth-mark" aria-hidden="true">!</span>
+        <div>
+          <p class="eyebrow">The essential fact</p>
+          <h2>There is no honest one-click conversion from VCL to FireMonkey.</h2>
+          <p>Embarcadero's own migration guidance explains that there is no direct migration path between the frameworks. VCL and FMX differ in component hierarchies, properties, drawing, layout, platform services, Windows messages, data controls, and third-party support.</p>
+          <p class="source-note">Reference: <a href="https://docwiki.embarcadero.com/RADStudio/Sydney/en/Migrating_VCL_Applications_to_FireMonkey">Embarcadero, Migrating VCL Applications to FireMonkey</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="form-title">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow">Look beyond the form</p>
+          <h2 id="form-title">Form conversion is not application conversion.</h2>
+          <p>Replacing visible controls and renaming properties may save time, but it does not prove that the application's behavior, dependencies, or platform assumptions survived the move.</p>
+        </div>
+        <div class="risk-grid">
+          <article class="risk-card">
+            <span class="risk-number" aria-hidden="true">01</span>
+            <h3>Framework behavior</h3>
+            <p>Events, focus, keyboard handling, scaling, styles, modal behavior, and control lifecycles can differ between VCL and FMX.</p>
+          </article>
+          <article class="risk-card">
+            <span class="risk-number" aria-hidden="true">02</span>
+            <h3>Windows-specific code</h3>
+            <p>Messages, handles, GDI drawing, Winapi calls, shell integration, and owner-draw behavior may require redesign rather than substitution.</p>
+          </article>
+          <article class="risk-card">
+            <span class="risk-number" aria-hidden="true">03</span>
+            <h3>Data and dependencies</h3>
+            <p>Database controls, LiveBindings, reports, grids, actions, resources, include files, and third-party libraries need separate analysis.</p>
+          </article>
+          <article class="risk-card">
+            <span class="risk-number" aria-hidden="true">04</span>
+            <h3>Proof of completion</h3>
+            <p>A form that opens in the designer is not a finished application. Generated output still needs to compile, run, and pass real testing.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="buyer-checklist" aria-labelledby="checklist-title">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow">Verify before you buy</p>
+          <h2 id="checklist-title">Ten questions every converter should answer.</h2>
+          <p>Do not rely on screenshots, old announcements, broad percentages, or the word “automatic.” Ask for current, project-specific evidence.</p>
+        </div>
+        <ol class="buyer-checklist">
+          <li><strong>Current compatibility</strong><span>Which Delphi releases are supported and actually tested today?</span></li>
+          <li><strong>Dated maintenance</strong><span>Are current release notes and a recent change history publicly available?</span></li>
+          <li><strong>Your-project trial</strong><span>Can you evaluate the converter against your own forms, source, and dependencies before paying?</span></li>
+          <li><strong>Reliable licensing</strong><span>Will the product continue to run if a registration or activation server becomes unavailable?</span></li>
+          <li><strong>Reachable support</strong><span>Is there an active, published support channel with evidence of recent responses?</span></li>
+          <li><strong>Source analysis</strong><span>Does it analyze Pascal code as well as DFM forms and component names?</span></li>
+          <li><strong>Risk detection</strong><span>Does it find Windows messages, Winapi dependencies, custom drawing, and unsafe framework assumptions?</span></li>
+          <li><strong>Third-party coverage</strong><span>Can it explain how your actual commercial and open-source components will be handled?</span></li>
+          <li><strong>Honest reporting</strong><span>Does it report what was converted, omitted, approximated, or left for manual review?</span></li>
+          <li><strong>Compile evidence</strong><span>Is there proof that eligible generated projects are compiled during validation?</span></li>
+        </ol>
+        <div class="buyer-verdict">
+          <p><strong>If these questions cannot be answered clearly, do not spend money on the promise.</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="active-title">
+      <div class="shell split">
+        <div>
+          <p class="eyebrow">Maintenance matters</p>
+          <h2 id="active-title">An old download is not an active product.</h2>
+          <p>Internet searches still return conversion programs, archived announcements, personal utilities, and experiments created during the earliest years of FireMonkey. Some may have been useful at the time.</p>
+          <p>However, an available webpage or executable is not evidence of current maintenance, working licensing, modern Delphi compatibility, or dependable support.</p>
+        </div>
+        <aside class="signal-panel">
+          <h3>Look for current signals</h3>
+          <ul class="signal-list">
+            <li>A recent release date</li>
+            <li>Supported Delphi versions</li>
+            <li>Working website and contact channel</li>
+            <li>Reliable licensing or available source</li>
+            <li>Current documentation</li>
+            <li>Repeatable automated validation</li>
+            <li>Recent real-project results</li>
+          </ul>
+          <p>A partially developed converter may create more repair work than it saves.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section responsible-section" id="responsible-conversion" aria-labelledby="responsible-title">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow">A better standard</p>
+          <h2 id="responsible-title">What responsible conversion looks like.</h2>
+          <p>A trustworthy migration tool makes difficult cases visible. It helps the developer make informed decisions instead of manufacturing confidence.</p>
+        </div>
+        <div class="responsibility-grid">
+          <article><span aria-hidden="true">✓</span><p>Preserves the original VCL project.</p></article>
+          <article><span aria-hidden="true">✓</span><p>Writes converted files to a separate output location.</p></article>
+          <article><span aria-hidden="true">✓</span><p>Explains important conversion decisions.</p></article>
+          <article><span aria-hidden="true">✓</span><p>Identifies unsupported and uncertain behavior.</p></article>
+          <article><span aria-hidden="true">✓</span><p>Separates safe automation from manual-review cases.</p></article>
+          <article><span aria-hidden="true">✓</span><p>Validates forms, properties, events, uses clauses, and source.</p></article>
+          <article><span aria-hidden="true">✓</span><p>Supports transparent, extensible third-party mappings.</p></article>
+          <article><span aria-hidden="true">✓</span><p>Produces a useful and reproducible conversion report.</p></article>
+          <article><span aria-hidden="true">✓</span><p>Uses repeatable tests to guard known conversion behavior.</p></article>
+          <article><span aria-hidden="true">✓</span><p>Never claims that programmer review is unnecessary.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="our-position-title">
+      <div class="shell position-card">
+        <div>
+          <p class="eyebrow">Our position</p>
+          <h2 id="our-position-title"><span class="notranslate" translate="no">VCL2FMXConverter</span> makes no one-click promise.</h2>
+          <p><span class="notranslate" translate="no">VCL2FMXConverter</span> is a migration assistant, not a magic compiler. It performs repetitive work that can be handled responsibly and reports risks or unsupported behavior instead of silently concealing them.</p>
+          <p>Its mapping packs can be inspected and extended. Its source is available under the Apache License 2.0. There is no purchase price, proprietary activation server, or hidden conversion engine standing between you and your project.</p>
+        </div>
+        <div class="position-actions">
+          <a class="button orange" href="downloads.html#current-source">Inspect the source</a>
+          <a class="button secondary" href="index.html#contracts">Review the validation approach</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing-statement" aria-labelledby="closing-title">
+      <div class="shell">
+        <p class="eyebrow">The standard is simple</p>
+        <h2 id="closing-title">Do not buy a promise.<br>Test the evidence.<br>Keep control of your source.</h2>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <p>&copy; 2026 VCL2FMXConverter</p>
+      <p><a href="index.html">Home</a> &middot; <a href="downloads.html">Downloads</a> &middot; Free and open-source Delphi VCL-to-FMX migration assistance</p>
+      <p>Automatic translations are machine-generated by <span class="notranslate" translate="no">GTranslate</span>; select English to view the original.</p>
+    </div>
+  </footer>
+</body>
+</html>
