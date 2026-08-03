@@ -10,15 +10,17 @@ brand the application.
 
 ## 1. Release identity
 
-- [ ] Confirm the final product name, version, release name, and build number.
+- [ ] Confirm the final product name, version, and release name.
+- [ ] Confirm the current application and website build identity separately
+      from the build-neutral documentation identity.
 - [ ] Confirm the final release date and time.
 - [ ] Update the designer-owned version badge in the FMX form.
 - [ ] Update the main form caption.
 - [ ] Update source-file version headers.
 - [ ] Update `.dproj` file and product-version metadata.
 - [ ] Confirm Win32 and Win64 executables report the correct version.
-- [ ] Search active files for stale build numbers, release names, Vanguard
-      references, and previous-version paths.
+- [ ] Search active documentation for numeric build identifiers, stale release
+      names, Vanguard references, and previous-version paths.
 - [ ] Confirm the displayed product name remains Navigator for v6.
 
 ## 2. Repository completeness and fork readiness
@@ -121,8 +123,8 @@ while performing version updates.
 - [ ] Update release notes and validation totals.
 - [ ] Replace screenshots without changing their established placement or
       sizing.
-- [ ] Update titles, headers, footers, build numbers, dates, and last-changed
-      fields.
+- [ ] Update titles, headers, footers, dates, and last-changed fields while
+      keeping documentation build-neutral.
 - [ ] Update tables of contents through Microsoft Word.
 - [ ] Check page breaks, tables, captions, headings, and cross-references.
 - [ ] Visually inspect every rendered page.
