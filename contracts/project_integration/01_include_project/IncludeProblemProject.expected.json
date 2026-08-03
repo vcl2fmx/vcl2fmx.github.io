@@ -1,6 +1,12 @@
 {
   "input_file": "contracts\\project_integration\\01_include_project\\IncludeProblemProject.dpr",
   "copy_case_directory": true,
+  "external_fixture_files": [
+    {
+      "source": "contracts\\project_integration\\outside_shared\\OutsideProject.inc",
+      "target": "outside_shared\\OutsideProject.inc"
+    }
+  ],
   "skip_generated_compile": true,
   "expected_status": "converted",
   "expected_output_patterns": [

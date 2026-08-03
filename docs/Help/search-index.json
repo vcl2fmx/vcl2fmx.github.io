@@ -1,9 +1,9 @@
 [
   {
-    "title": "VCL2FMXConverter_v5_0_User_Guide",
-    "url": "topics/vcl2fmxconverter-v5-0-user-guide.html",
+    "title": "VCL2FMXConverter v6.0 Navigator User Guide",
+    "url": "topics/vcl2fmxconverter-v6-0-navigator-user-guide.html",
     "tags": "imported,docx",
-    "helpId": "IDH_VCL2FMXCONVERTER_V5_0_USER_GUIDE",
+    "helpId": "IDH_VCL2FMXCONVERTER_V6_0_NAVIGATOR_USER_GUIDE",
     "owner": "Auto Import"
   },
   {
@@ -175,10 +175,10 @@
     "owner": "Thomas H Martin"
   },
   {
-    "title": "Conversion Contracts in v5.0",
-    "url": "topics/conversion-contracts-in-v5-0.html",
+    "title": "Conversion Contracts in v6.0 Navigator",
+    "url": "topics/conversion-contracts-in-v6-0-navigator.html",
     "tags": "contracts,regression,testing,v5",
-    "helpId": "IDH_CONVERSION_CONTRACTS_IN_V5_0",
+    "helpId": "IDH_CONVERSION_CONTRACTS_IN_V6_0_NAVIGATOR",
     "owner": "Auto Import"
   }
 ]

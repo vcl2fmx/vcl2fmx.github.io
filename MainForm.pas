@@ -1,6 +1,6 @@
 ﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
-Version v6.0 Navigator Build 022
+Version v6.0 Navigator Build 023
  Written and built in the USA}
 
 unit MainForm;
@@ -56,7 +56,7 @@ type
   TfrmMain = class(TForm)
     RootLayout: TLayout;
     HeroCard: TRectangle;
-    HeroBackgroundPaintBox: TPaintBox;
+    HeroArtworkLayer: TLayout;
     HeroAccentRibbonLarge: TRectangle;
     HeroAccentRibbonMid: TRectangle;
     HeroAccentRibbonSmall: TRectangle;
@@ -96,6 +96,13 @@ type
     tabEventMap: TTabItem;
     tabIssues: TTabItem;
     tabRules: TTabItem;
+    DashboardScrollBox: TVertScrollBox;
+    ProjectScanScrollBox: TVertScrollBox;
+    ComponentMapScrollBox: TVertScrollBox;
+    PropertyMapScrollBox: TVertScrollBox;
+    EventMapScrollBox: TVertScrollBox;
+    IssuesScrollBox: TVertScrollBox;
+    RulesScrollBox: TVertScrollBox;
     DashboardStatusCard: TRectangle;
     lblDashboardStatusTitle: TLabel;
     lblDashboardStatusValue: TLabel;
@@ -130,14 +137,17 @@ type
     lblComponentTitle: TLabel;
     lblComponentHint: TLabel;
     MemoComponentMap: TMemo;
+    ComponentMapBrowser: TWebBrowser;
     PropertyCard: TRectangle;
     lblPropertyTitle: TLabel;
     lblPropertyHint: TLabel;
     MemoPropertyMap: TMemo;
+    PropertyMapBrowser: TWebBrowser;
     EventCard: TRectangle;
     lblEventTitle: TLabel;
     lblEventHint: TLabel;
     MemoEventMap: TMemo;
+    EventMapBrowser: TWebBrowser;
     IssuesSummaryCard: TRectangle;
     lblIssuesSummaryTitle: TLabel;
     lblIssuesSummaryHint: TLabel;
@@ -177,9 +187,8 @@ type
     procedure btnResetClick(Sender: TObject);
     procedure RuleOptionChanged(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure FormResize(Sender: TObject);
     procedure TabControlMainChange(Sender: TObject);
-    procedure HeroBackgroundPaint(Sender: TObject; Canvas: TCanvas);
+    procedure TabNavClick(Sender: TObject);
   private
     FConversionThread: TThread;
     FLastOutputPath: string;
@@ -191,14 +200,10 @@ type
     FTabButtons: array[0..6] of TRectangle;
     FTabLabels: array[0..6] of TLabel;
     FTabScrollBoxes: array[0..6] of TVertScrollBox;
-    FFormShown: Boolean;
-    FComponentMapBrowser: TWebBrowser;
     FComponentMapHtml: string;
     FComponentMapPlainText: string;
-    FPropertyMapBrowser: TWebBrowser;
     FPropertyMapHtml: string;
     FPropertyMapPlainText: string;
-    FEventMapBrowser: TWebBrowser;
     FEventMapHtml: string;
     FEventMapPlainText: string;
     FHasCompletedRun: Boolean;
@@ -225,7 +230,6 @@ type
     procedure UpdateRuleSummary;
     procedure PopulateReferencePages;
     procedure SuggestTargetFromSource(const SourcePath: string);
-    procedure ApplyResponsiveLayout;
     procedure CompleteConversionOnUIThread;
     procedure ResetRunSummary;
     procedure UpdateConversionOutputSummary(const ARunning: Boolean);
@@ -233,8 +237,6 @@ type
     function FormatDurationText(const AStartTime, AEndTime: TDateTime): string;
     function SourceFolderContainsVCL2FMXReport(const SourcePath: string): Boolean;
     procedure ShowInvalidConvertedSourceFolderDialog;
-    procedure WrapTabInVerticalScroll(const ATab: TTabItem;
-      var AScrollBox: TVertScrollBox; const AChildNames: array of string);
     procedure ShowError(const Msg: string);
     function GetTextReportPath(const TargetPath: string): string;
     function GetHTMLReportPath(const TargetPath: string): string;
@@ -244,18 +246,11 @@ type
     procedure BuildTabChrome;
     procedure ApplyTabTheme;
     procedure UpdateTabChrome;
-    procedure TabNavClick(Sender: TObject);
     function GetTabForNavIndex(const AIndex: Integer): TTabItem;
-    procedure EnsureComponentMapBrowser;
-    procedure UpdateComponentMapBrowserBounds;
     procedure LoadComponentMapReference;
     procedure BuildComponentMapContent(out AHtml, APlainText: string);
-    procedure EnsurePropertyMapBrowser;
-    procedure UpdatePropertyMapBrowserBounds;
     procedure LoadPropertyMapReference;
     procedure BuildPropertyMapContent(out AHtml, APlainText: string);
-    procedure EnsureEventMapBrowser;
-    procedure UpdateEventMapBrowserBounds;
     procedure LoadEventMapReference;
     procedure BuildEventMapContent(out AHtml, APlainText: string);
     procedure AppendReferencePageHead(ABuilder: TStringBuilder;
@@ -295,33 +290,6 @@ uses
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   FActiveEngineLock := TObject.Create;
-  OnCloseQuery := FormCloseQuery;
-  OnShow := FormShow;
-  OnResize := FormResize;
-  TabControlMain.OnChange := TabControlMainChange;
-
-  cmbFileTypes.Items.Clear;
-  cmbFileTypes.Items.Add('PAS files only');
-  cmbFileTypes.Items.Add('DFM files only');
-  cmbFileTypes.Items.Add('Both PAS and DFM');
-  cmbFileTypes.ItemIndex := 2;
-
-  edtSource.Text := '';
-  edtTarget.Text := '';
-
-  chkRecursive.IsChecked := True;
-  chkCritical.IsChecked := True;
-  chkDataAware.IsChecked := True;
-  chkThirdParty.IsChecked := True;
-  chkWinAPI.IsChecked := True;
-  chkDryRunPreview.IsChecked := False;
-
-  MemoLog.Lines.Text :=
-    'Choose a VCL source folder and an FMX output folder, then start the conversion.';
-
-  MemoComponentMap.ReadOnly := True;
-  MemoPropertyMap.ReadOnly := True;
-  MemoEventMap.ReadOnly := True;
 
   PopulateReferencePages;
   LoadComponentMapReference;
@@ -333,74 +301,17 @@ begin
   BuildTabChrome;
   TabControlMain.ActiveTab := tabProjectScan;
   UpdateTabChrome;
-  ApplyResponsiveLayout;
-end;
-
-procedure TfrmMain.HeroBackgroundPaint(Sender: TObject; Canvas: TCanvas);
-
-  procedure DrawWave(const ABaseY, AOffset, AThickness: Single;
-    const AColor: TAlphaColor; const AOpacity: Single);
-  var
-    Path: TPathData;
-  begin
-    Path := TPathData.Create;
-    try
-      Path.MoveTo(PointF(-40, ABaseY + AOffset));
-      Path.CurveTo(
-        PointF(HeroCard.Width * 0.18, ABaseY - (HeroCard.Height * 0.22) + AOffset),
-        PointF(HeroCard.Width * 0.38, ABaseY - (HeroCard.Height * 0.15) + AOffset),
-        PointF(HeroCard.Width * 0.58, ABaseY + (HeroCard.Height * 0.02) + AOffset));
-      Path.CurveTo(
-        PointF(HeroCard.Width * 0.76, ABaseY + (HeroCard.Height * 0.18) + AOffset),
-        PointF(HeroCard.Width * 0.94, ABaseY + (HeroCard.Height * 0.02) + AOffset),
-        PointF(HeroCard.Width + 60, ABaseY - (HeroCard.Height * 0.32) + AOffset));
-
-      Canvas.Stroke.Kind := TBrushKind.Solid;
-      Canvas.Stroke.Color := AColor;
-      Canvas.Stroke.Thickness := AThickness;
-      Canvas.DrawPath(Path, AOpacity);
-    finally
-      Path.Free;
-    end;
-  end;
-
-var
-  H: Single;
-  BaseY: Single;
-begin
-  H := HeroCard.Height;
-
-  if H <= 140 then
-    BaseY := H * 0.86
-  else
-    BaseY := H * 0.80;
-
-  DrawWave(BaseY, -16, 1.1, $58FFFFFF, 0.20);
-  DrawWave(BaseY, -7, 1.8, $72FFFFFF, 0.30);
-  DrawWave(BaseY, 3, 1.3, $8CEAF4FF, 0.34);
-  DrawWave(BaseY, 12, 3.2, $78FFFFFF, 0.28);
-  DrawWave(BaseY, 20, 1.1, $44FFFFFF, 0.18);
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
-  FFormShown := True;
   if not Assigned(TabControlMain.ActiveTab) then
     TabControlMain.ActiveTab := tabDashboard;
-  ApplyResponsiveLayout;
   ApplyTabTheme;
   UpdateTabChrome;
-  EnsureComponentMapBrowser;
-  EnsurePropertyMapBrowser;
-  EnsureEventMapBrowser;
   LoadComponentMapReference;
   LoadPropertyMapReference;
   LoadEventMapReference;
-end;
-
-procedure TfrmMain.FormResize(Sender: TObject);
-begin
-  ApplyResponsiveLayout;
 end;
 
 destructor TfrmMain.Destroy;
@@ -438,9 +349,6 @@ begin
     FreeAndNil(FConversionThread);
   end;
   FreeAndNil(FActiveEngineLock);
-  FreeAndNil(FComponentMapBrowser);
-  FreeAndNil(FPropertyMapBrowser);
-  FreeAndNil(FEventMapBrowser);
   inherited;
 end;
 
@@ -477,124 +385,23 @@ begin
 end;
 
 procedure TfrmMain.ShowInvalidConvertedSourceFolderDialog;
-var
-  DialogForm: TForm;
-  Background: TRectangle;
-  AccentBar: TRectangle;
-  TitleLabel: TLabel;
-  BodyLabel: TLabel;
-  OKButton: TButton;
 begin
-  DialogForm := TForm.CreateNew(Self);
-  DialogForm.Caption := 'Invalid Source Folder';
-  DialogForm.Width := 760;
-  DialogForm.Height := 470;
-  DialogForm.Position := TFormPosition.MainFormCenter;
-
-  Background := TRectangle.Create(DialogForm);
-  Background.Parent := DialogForm;
-  Background.Align := TAlignLayout.Contents;
-  Background.Fill.Color := $FFF7FAFE;
-  Background.Stroke.Color := $FFD6E4F3;
-  Background.XRadius := 0;
-  Background.YRadius := 0;
-
-  AccentBar := TRectangle.Create(DialogForm);
-  AccentBar.Parent := Background;
-  AccentBar.Align := TAlignLayout.Top;
-  AccentBar.Height := 92;
-  AccentBar.Fill.Color := $FF2F6FCD;
-  AccentBar.Stroke.Kind := TBrushKind.None;
-
-  TitleLabel := TLabel.Create(DialogForm);
-  TitleLabel.Parent := AccentBar;
-  TitleLabel.Align := TAlignLayout.Client;
-  TitleLabel.Margins.Left := 28;
-  TitleLabel.Margins.Right := 28;
-  TitleLabel.Text := 'Invalid Source Folder';
-  TitleLabel.StyledSettings := [];
-  TitleLabel.TextSettings.Font.Size := 34;
-  TitleLabel.TextSettings.Font.Style := [TFontStyle.fsBold];
-  TitleLabel.TextSettings.FontColor := TAlphaColorRec.White;
-  TitleLabel.TextSettings.VertAlign := TTextAlign.Center;
-
-  BodyLabel := TLabel.Create(DialogForm);
-  BodyLabel.Parent := Background;
-  BodyLabel.Position.X := 42;
-  BodyLabel.Position.Y := 126;
-  BodyLabel.Size.Width := 680;
-  BodyLabel.Size.Height := 245;
-  BodyLabel.WordWrap := True;
-  BodyLabel.Text :=
-    'The selected folder contains VCL2FMX conversion files and cannot be used.' + sLineBreak + sLineBreak +
-    'It appears to contain a previous conversion session and therefore is not a valid VCL source folder.' + sLineBreak + sLineBreak +
-    'Please select a valid VCL project folder that contains source .pas, .dfm, .dpr, and .dproj files.';
-  BodyLabel.StyledSettings := [];
-  BodyLabel.TextSettings.Font.Size := 20;
-  BodyLabel.TextSettings.FontColor := $FF13314F;
-
-  OKButton := TButton.Create(DialogForm);
-  OKButton.Parent := Background;
-  OKButton.Text := 'OK';
-  OKButton.Width := 140;
-  OKButton.Height := 52;
-  OKButton.Position.X := DialogForm.Width - OKButton.Width - 48;
-  OKButton.Position.Y := DialogForm.Height - OKButton.Height - 58;
-  OKButton.StyledSettings := [];
-  OKButton.TextSettings.Font.Size := 18;
-  OKButton.ModalResult := mrOk;
-
-  try
-    DialogForm.ShowModal;
-  finally
-    DialogForm.Free;
-  end;
+  TDialogService.ShowMessage(
+    'The selected folder contains VCL2FMX conversion files and cannot be used.' +
+    sLineBreak + sLineBreak +
+    'It appears to contain a previous conversion session and therefore is not ' +
+    'a valid VCL source folder.' + sLineBreak + sLineBreak +
+    'Please select a valid VCL project folder that contains source .pas, .dfm, ' +
+    '.dpr, and .dproj files.');
 end;
 
 procedure TfrmMain.PopulateReferencePages;
 begin
-  lblComponentHint.Text :=
-    'Generated from the built-in mapping database so operators can inspect real conversion coverage.';
   MemoComponentMap.Lines.Text := 'Building component mapping reference...';
 
-  lblPropertyHint.Text :=
-    'Generated from the live property-rule database so operators can inspect actual rename and transform behavior.';
   MemoPropertyMap.Lines.Text := 'Building property mapping reference...';
 
-  lblEventHint.Text :=
-    'Generated from the live event-rule database so operators can inspect mapped handlers and signature compatibility.';
   MemoEventMap.Lines.Text := 'Building event mapping reference...';
-end;
-
-procedure TfrmMain.EnsureComponentMapBrowser;
-begin
-  if Assigned(FComponentMapBrowser) then
-  begin
-    UpdateComponentMapBrowserBounds;
-    Exit;
-  end;
-
-  try
-    FComponentMapBrowser := TWebBrowser.Create(Self);
-    FComponentMapBrowser.WindowsEngine := TWindowsEngine.EdgeIfAvailable;
-    FComponentMapBrowser.Parent := ComponentCard;
-    FComponentMapBrowser.Visible := False;
-    UpdateComponentMapBrowserBounds;
-    FComponentMapBrowser.BringToFront;
-  except
-    FreeAndNil(FComponentMapBrowser);
-  end;
-end;
-
-procedure TfrmMain.UpdateComponentMapBrowserBounds;
-begin
-  if not Assigned(FComponentMapBrowser) then
-    Exit;
-
-  FComponentMapBrowser.Position.X := MemoComponentMap.Position.X;
-  FComponentMapBrowser.Position.Y := MemoComponentMap.Position.Y;
-  FComponentMapBrowser.Width := MemoComponentMap.Width;
-  FComponentMapBrowser.Height := MemoComponentMap.Height;
 end;
 
 procedure TfrmMain.LoadComponentMapReference;
@@ -616,54 +423,19 @@ begin
 
   MemoComponentMap.Lines.Text := FComponentMapPlainText;
 
-  if FFormShown then
-    EnsureComponentMapBrowser;
-
-  if Assigned(FComponentMapBrowser) and (FComponentMapHtml <> '') then
+  if Assigned(ComponentMapBrowser) and (FComponentMapHtml <> '') then
     try
-      UpdateComponentMapBrowserBounds;
-      FComponentMapBrowser.LoadFromStrings(FComponentMapHtml, TEncoding.UTF8,
+      ComponentMapBrowser.LoadFromStrings(FComponentMapHtml, TEncoding.UTF8,
         'about:blank');
-      FComponentMapBrowser.Visible := True;
-      FComponentMapBrowser.BringToFront;
+      ComponentMapBrowser.Visible := True;
+      ComponentMapBrowser.BringToFront;
       MemoComponentMap.Visible := False;
     except
-      FComponentMapBrowser.Visible := False;
+      ComponentMapBrowser.Visible := False;
       MemoComponentMap.Visible := True;
     end
   else
     MemoComponentMap.Visible := True;
-end;
-
-procedure TfrmMain.EnsurePropertyMapBrowser;
-begin
-  if Assigned(FPropertyMapBrowser) then
-  begin
-    UpdatePropertyMapBrowserBounds;
-    Exit;
-  end;
-
-  try
-    FPropertyMapBrowser := TWebBrowser.Create(Self);
-    FPropertyMapBrowser.WindowsEngine := TWindowsEngine.EdgeIfAvailable;
-    FPropertyMapBrowser.Parent := PropertyCard;
-    FPropertyMapBrowser.Visible := False;
-    UpdatePropertyMapBrowserBounds;
-    FPropertyMapBrowser.BringToFront;
-  except
-    FreeAndNil(FPropertyMapBrowser);
-  end;
-end;
-
-procedure TfrmMain.UpdatePropertyMapBrowserBounds;
-begin
-  if not Assigned(FPropertyMapBrowser) then
-    Exit;
-
-  FPropertyMapBrowser.Position.X := MemoPropertyMap.Position.X;
-  FPropertyMapBrowser.Position.Y := MemoPropertyMap.Position.Y;
-  FPropertyMapBrowser.Width := MemoPropertyMap.Width;
-  FPropertyMapBrowser.Height := MemoPropertyMap.Height;
 end;
 
 procedure TfrmMain.LoadPropertyMapReference;
@@ -685,54 +457,19 @@ begin
 
   MemoPropertyMap.Lines.Text := FPropertyMapPlainText;
 
-  if FFormShown then
-    EnsurePropertyMapBrowser;
-
-  if Assigned(FPropertyMapBrowser) and (FPropertyMapHtml <> '') then
+  if Assigned(PropertyMapBrowser) and (FPropertyMapHtml <> '') then
     try
-      UpdatePropertyMapBrowserBounds;
-      FPropertyMapBrowser.LoadFromStrings(FPropertyMapHtml, TEncoding.UTF8,
+      PropertyMapBrowser.LoadFromStrings(FPropertyMapHtml, TEncoding.UTF8,
         'about:blank');
-      FPropertyMapBrowser.Visible := True;
-      FPropertyMapBrowser.BringToFront;
+      PropertyMapBrowser.Visible := True;
+      PropertyMapBrowser.BringToFront;
       MemoPropertyMap.Visible := False;
     except
-      FPropertyMapBrowser.Visible := False;
+      PropertyMapBrowser.Visible := False;
       MemoPropertyMap.Visible := True;
     end
   else
     MemoPropertyMap.Visible := True;
-end;
-
-procedure TfrmMain.EnsureEventMapBrowser;
-begin
-  if Assigned(FEventMapBrowser) then
-  begin
-    UpdateEventMapBrowserBounds;
-    Exit;
-  end;
-
-  try
-    FEventMapBrowser := TWebBrowser.Create(Self);
-    FEventMapBrowser.WindowsEngine := TWindowsEngine.EdgeIfAvailable;
-    FEventMapBrowser.Parent := EventCard;
-    FEventMapBrowser.Visible := False;
-    UpdateEventMapBrowserBounds;
-    FEventMapBrowser.BringToFront;
-  except
-    FreeAndNil(FEventMapBrowser);
-  end;
-end;
-
-procedure TfrmMain.UpdateEventMapBrowserBounds;
-begin
-  if not Assigned(FEventMapBrowser) then
-    Exit;
-
-  FEventMapBrowser.Position.X := MemoEventMap.Position.X;
-  FEventMapBrowser.Position.Y := MemoEventMap.Position.Y;
-  FEventMapBrowser.Width := MemoEventMap.Width;
-  FEventMapBrowser.Height := MemoEventMap.Height;
 end;
 
 procedure TfrmMain.LoadEventMapReference;
@@ -754,19 +491,15 @@ begin
 
   MemoEventMap.Lines.Text := FEventMapPlainText;
 
-  if FFormShown then
-    EnsureEventMapBrowser;
-
-  if Assigned(FEventMapBrowser) and (FEventMapHtml <> '') then
+  if Assigned(EventMapBrowser) and (FEventMapHtml <> '') then
     try
-      UpdateEventMapBrowserBounds;
-      FEventMapBrowser.LoadFromStrings(FEventMapHtml, TEncoding.UTF8,
+      EventMapBrowser.LoadFromStrings(FEventMapHtml, TEncoding.UTF8,
         'about:blank');
-      FEventMapBrowser.Visible := True;
-      FEventMapBrowser.BringToFront;
+      EventMapBrowser.Visible := True;
+      EventMapBrowser.BringToFront;
       MemoEventMap.Visible := False;
     except
-      FEventMapBrowser.Visible := False;
+      EventMapBrowser.Visible := False;
       MemoEventMap.Visible := True;
     end
   else
@@ -1664,8 +1397,6 @@ begin
 end;
 
 procedure TfrmMain.BuildTabChrome;
-var
-  I: Integer;
 begin
   FTabButtons[0] := TabButtonDashboard;
   FTabButtons[1] := TabButtonProjectScan;
@@ -1683,26 +1414,14 @@ begin
   FTabLabels[5] := lblTabIssues;
   FTabLabels[6] := lblTabRules;
 
-  for I := Low(FTabButtons) to High(FTabButtons) do
-    if Assigned(FTabButtons[I]) then
-      FTabButtons[I].OnClick := TabNavClick;
+  FTabScrollBoxes[0] := DashboardScrollBox;
+  FTabScrollBoxes[1] := ProjectScanScrollBox;
+  FTabScrollBoxes[2] := ComponentMapScrollBox;
+  FTabScrollBoxes[3] := PropertyMapScrollBox;
+  FTabScrollBoxes[4] := EventMapScrollBox;
+  FTabScrollBoxes[5] := IssuesScrollBox;
+  FTabScrollBoxes[6] := RulesScrollBox;
 
-  WrapTabInVerticalScroll(tabDashboard, FTabScrollBoxes[0],
-    ['DashboardStatusCard', 'DashboardModulesCard', 'DashboardNextCard']);
-  WrapTabInVerticalScroll(tabProjectScan, FTabScrollBoxes[1],
-    ['ProjectCard', 'ProjectActionCard']);
-  WrapTabInVerticalScroll(tabComponentMap, FTabScrollBoxes[2],
-    ['ComponentCard']);
-  WrapTabInVerticalScroll(tabPropertyMap, FTabScrollBoxes[3],
-    ['PropertyCard']);
-  WrapTabInVerticalScroll(tabEventMap, FTabScrollBoxes[4],
-    ['EventCard']);
-  WrapTabInVerticalScroll(tabIssues, FTabScrollBoxes[5],
-    ['IssuesSummaryCard', 'IssuesLogCard']);
-  WrapTabInVerticalScroll(tabRules, FTabScrollBoxes[6],
-    ['RulesCard', 'RulesSummaryCard']);
-
-  TabControlMain.TabPosition := TTabPosition.None;
 end;
 
 procedure TfrmMain.ApplyTabTheme;
@@ -1812,7 +1531,6 @@ begin
 
   TabControlMain.ActiveTab := tabProjectScan;
   UpdateTabChrome;
-  ApplyResponsiveLayout;
 
   if edtSource.CanFocus then
     ActiveControl := edtSource;
@@ -2148,238 +1866,6 @@ begin
   end;
 
   ResetToStartupState;
-end;
-
-procedure TfrmMain.ApplyResponsiveLayout;
-var
-  CompactHeight: Boolean;
-  I: Integer;
-begin
-  CompactHeight := ClientHeight <= 820;
-
-  if CompactHeight then
-  begin
-    RootLayout.Padding.Left := 20;
-    RootLayout.Padding.Top := 14;
-    RootLayout.Padding.Right := 20;
-    RootLayout.Padding.Bottom := 12;
-
-    HeroCard.Height := 138;
-    HeroAccentRibbonLarge.Visible := False;
-    HeroAccentRibbonMid.Visible := False;
-    HeroAccentRibbonSmall.Visible := False;
-    HeroNavigatorGhost.Position.X := 580;
-    HeroNavigatorGhost.Position.Y := -10;
-    HeroNavigatorGhost.Size.Width := 690;
-    HeroNavigatorGhost.Size.Height := 122;
-    HeroNavigatorGhost.TextSettings.Font.Size := 92;
-    HeroBackgroundPaintBox.Repaint;
-    lblHeader.Position.Y := 18;
-    lblHeader.Size.Width := 620;
-    lblHeader.TextSettings.Font.Size := 27;
-    lblSubHeader.Visible := False;
-    HeroVersionBadge.Position.X := 34;
-    HeroVersionBadge.Position.Y := 58;
-    HeroVersionBadge.Size.Width := 400;
-    HeroVersionBadge.Size.Height := 28;
-    lblVersion.Position.X := 34;
-    lblVersion.Position.Y := 63;
-    lblVersion.TextSettings.Font.Size := 12;
-    lblStatusCaption.Position.Y := 18;
-    lblStatusValue.Position.Y := 42;
-    lblStatusValue.TextSettings.Font.Size := 22;
-    btnConvert.Position.X := 700;
-    btnConvert.Position.Y := 84;
-    btnConvert.Size.Width := 166;
-    btnConvert.Size.Height := 42;
-    btnReset.Position.X := 896;
-    btnReset.Position.Y := 86;
-    btnReset.Size.Width := 112;
-    btnOpenReport.Position.X := 1022;
-    btnOpenReport.Position.Y := 86;
-    btnOpenReport.Size.Width := 112;
-    btnPrintReport.Position.X := 1148;
-    btnPrintReport.Position.Y := 86;
-    btnPrintReport.Size.Width := 112;
-
-    TabNavBar.Margins.Top := 12;
-    TabNavBar.Height := 44;
-    TabControlMain.Margins.Top := 6;
-    btnCloseApp.Height := 44;
-    btnCloseApp.XRadius := 12;
-    btnCloseApp.YRadius := 12;
-    lblCloseApp.TextSettings.Font.Size := 12;
-
-    DashboardStatusCard.Height := 194;
-    DashboardModulesCard.Height := 194;
-    lblDashboardStatusValue.Position.Y := 50;
-    lblDashboardOutputTitle.Position.Y := 88;
-    lblDashboardOutputValue.Position.Y := 110;
-    lblDashboardOutputValue.Height := 30;
-    lblDashboardReportTitle.Position.Y := 146;
-    lblDashboardReportValue.Position.Y := 168;
-    lblDashboardReportValue.Height := 24;
-    DashboardNextCard.Position.Y := 216;
-    DashboardNextCard.Height := 146;
-    lblDashboardNextBody.Position.Y := 54;
-    lblDashboardNextBody.Height := 88;
-
-    ProjectCard.Height := 312;
-    ProjectActionCard.Height := 312;
-
-    ComponentCard.Height := 438;
-    MemoComponentMap.Height := 330;
-    PropertyCard.Height := 438;
-    MemoPropertyMap.Height := 330;
-    EventCard.Height := 438;
-    MemoEventMap.Height := 330;
-
-    IssuesSummaryCard.Height := 154;
-    IssuesLogCard.Position.Y := 184;
-    IssuesLogCard.Height := 226;
-    MemoLog.Height := 144;
-
-    RulesCard.Height := 472;
-    RulesSummaryCard.Height := 472;
-  end
-  else
-  begin
-    RootLayout.Padding.Left := 28;
-    RootLayout.Padding.Top := 24;
-    RootLayout.Padding.Right := 28;
-    RootLayout.Padding.Bottom := 24;
-
-    HeroCard.Height := 176;
-    HeroAccentRibbonLarge.Visible := False;
-    HeroAccentRibbonMid.Visible := False;
-    HeroAccentRibbonSmall.Visible := False;
-    HeroNavigatorGhost.Position.X := 600;
-    HeroNavigatorGhost.Position.Y := -12;
-    HeroNavigatorGhost.Size.Width := 700;
-    HeroNavigatorGhost.Size.Height := 150;
-    HeroNavigatorGhost.TextSettings.Font.Size := 112;
-    HeroBackgroundPaintBox.Repaint;
-    lblHeader.Position.Y := 26;
-    lblHeader.Size.Width := 560;
-    lblHeader.TextSettings.Font.Size := 31;
-    lblSubHeader.Visible := False;
-    HeroVersionBadge.Position.X := 40;
-    HeroVersionBadge.Position.Y := 78;
-    HeroVersionBadge.Size.Width := 400;
-    HeroVersionBadge.Size.Height := 30;
-    lblVersion.Position.X := 40;
-    lblVersion.Position.Y := 84;
-    lblVersion.TextSettings.Font.Size := 12;
-    lblStatusCaption.Position.Y := 28;
-    lblStatusValue.Position.Y := 52;
-    lblStatusValue.TextSettings.Font.Size := 24;
-    btnConvert.Position.X := 700;
-    btnConvert.Position.Y := 118;
-    btnConvert.Size.Width := 172;
-    btnConvert.Size.Height := 38;
-    btnReset.Position.X := 896;
-    btnReset.Position.Y := 118;
-    btnReset.Size.Width := 112;
-    btnOpenReport.Position.X := 1022;
-    btnOpenReport.Position.Y := 118;
-    btnOpenReport.Size.Width := 112;
-    btnPrintReport.Position.X := 1148;
-    btnPrintReport.Position.Y := 118;
-    btnPrintReport.Size.Width := 112;
-
-    TabNavBar.Margins.Top := 18;
-    TabNavBar.Height := 48;
-    TabControlMain.Margins.Top := 8;
-    btnCloseApp.Height := 48;
-    btnCloseApp.XRadius := 14;
-    btnCloseApp.YRadius := 14;
-    lblCloseApp.TextSettings.Font.Size := 13;
-
-    DashboardStatusCard.Height := 210;
-    DashboardModulesCard.Height := 210;
-    lblDashboardStatusValue.Position.Y := 50;
-    lblDashboardOutputTitle.Position.Y := 90;
-    lblDashboardOutputValue.Position.Y := 114;
-    lblDashboardOutputValue.Height := 32;
-    lblDashboardReportTitle.Position.Y := 150;
-    lblDashboardReportValue.Position.Y := 172;
-    lblDashboardReportValue.Height := 24;
-    DashboardNextCard.Position.Y := 242;
-    DashboardNextCard.Height := 188;
-    lblDashboardNextBody.Position.Y := 56;
-    lblDashboardNextBody.Height := 116;
-
-    ProjectCard.Height := 334;
-    ProjectActionCard.Height := 334;
-
-    ComponentCard.Height := 500;
-    MemoComponentMap.Height := 392;
-    PropertyCard.Height := 500;
-    MemoPropertyMap.Height := 392;
-    EventCard.Height := 500;
-    MemoEventMap.Height := 392;
-
-    IssuesSummaryCard.Height := 164;
-    IssuesLogCard.Position.Y := 194;
-    IssuesLogCard.Height := 300;
-    MemoLog.Height := 206;
-
-    RulesCard.Height := 504;
-    RulesSummaryCard.Height := 504;
-  end;
-
-  UpdateComponentMapBrowserBounds;
-  UpdatePropertyMapBrowserBounds;
-  UpdateEventMapBrowserBounds;
-
-  for I := Low(FTabButtons) to High(FTabButtons) do
-  begin
-    if Assigned(FTabButtons[I]) then
-    begin
-      FTabButtons[I].Height := TabNavBar.Height;
-      if CompactHeight then
-      begin
-        FTabButtons[I].XRadius := 12;
-        FTabButtons[I].YRadius := 12;
-      end
-      else
-      begin
-        FTabButtons[I].XRadius := 14;
-        FTabButtons[I].YRadius := 14;
-      end;
-    end;
-
-    if Assigned(FTabLabels[I]) then
-    begin
-      if CompactHeight then
-        FTabLabels[I].TextSettings.Font.Size := 12
-      else
-        FTabLabels[I].TextSettings.Font.Size := 13;
-    end;
-  end;
-end;
-
-procedure TfrmMain.WrapTabInVerticalScroll(const ATab: TTabItem;
-  var AScrollBox: TVertScrollBox; const AChildNames: array of string);
-var
-  ChildIndex: Integer;
-  ChildObject: TFmxObject;
-begin
-  if not Assigned(ATab) or Assigned(AScrollBox) then
-    Exit;
-
-  AScrollBox := TVertScrollBox.Create(Self);
-  AScrollBox.Parent := ATab;
-  AScrollBox.Align := TAlignLayout.Client;
-  AScrollBox.ShowScrollBars := True;
-  AScrollBox.Padding.Bottom := 18;
-
-  for ChildIndex := Low(AChildNames) to High(AChildNames) do
-  begin
-    ChildObject := TFmxObject(FindComponent(AChildNames[ChildIndex]));
-    if Assigned(ChildObject) and (ChildObject <> AScrollBox) then
-      AScrollBox.AddObject(ChildObject);
-  end;
 end;
 
 function TfrmMain.ExecuteShellVerb(const AVerb, ATarget: string;

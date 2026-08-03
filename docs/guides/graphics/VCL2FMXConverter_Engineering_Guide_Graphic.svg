@@ -28,7 +28,7 @@
     <rect x="1028" y="84" width="392" height="224" rx="30" fill="url(#glassEng)"/>
 
     <text x="114" y="130" fill="#EAF3FF" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="600" letter-spacing="3">VCL TO FMX CONVERTER</text>
-    <text x="114" y="274" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="154" font-weight="700">v5.0</text>
+    <text x="114" y="274" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="154" font-weight="700">v6.0</text>
     <text x="120" y="327" fill="#DCE9FF" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="600" letter-spacing="4">ENGINEERING GUIDE</text>
 
     <path d="M1110 156L1160 122L1210 156L1160 190L1110 156Z" fill="#F5F9FF" fill-opacity="0.72"/>

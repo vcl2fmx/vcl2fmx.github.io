@@ -21,7 +21,7 @@ implementation
 
 {$I Includes\NestedA.inc}
 {$I MissingContract.inc}
-{$I C:\New Delphi Projects\VCL2FMXConverterV5\contracts\project_integration\outside_shared\OutsideProject.inc}
+{$I ..\outside_shared\OutsideProject.inc}
 {$I Includes\LoopA.inc}
 {$I Includes\Utf8ProjectText.inc}
 

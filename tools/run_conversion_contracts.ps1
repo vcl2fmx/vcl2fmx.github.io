@@ -299,6 +299,11 @@ function Invoke-GeneratedCompile {
   Get-ChildItem -LiteralPath $CaseOutput -Force | ForEach-Object {
     Copy-Item -LiteralPath $_.FullName -Destination $compileSource -Recurse -Force
   }
+  Get-ChildItem -LiteralPath $CaseRoot -Force |
+    Where-Object { $_.Name -notin @('source', 'output', 'compile') } |
+    ForEach-Object {
+      Copy-Item -LiteralPath $_.FullName -Destination $compileRoot -Recurse -Force
+    }
 
   $renamedPascalFiles = @{}
   $renamedPascalStems = @{}
@@ -429,6 +434,31 @@ function Invoke-ContractCase {
   }
   else {
     Copy-Item -LiteralPath $inputPath -Destination (Join-Path $caseSource (Split-Path -Leaf $inputPath)) -Force
+  }
+
+  foreach ($externalFile in Get-JsonArray -Object $expectation -Name 'external_fixture_files') {
+    if (($null -eq $externalFile.PSObject.Properties['source']) -or
+        ($null -eq $externalFile.PSObject.Properties['target'])) {
+      throw "External fixture file requires source and target: $ExpectationPath"
+    }
+
+    $externalSource = [System.IO.Path]::GetFullPath(
+      (Join-Path $ProjectRoot ([string]$externalFile.source)))
+    $projectRootWithSlash = $ProjectRoot.TrimEnd('\') + '\'
+    if (-not $externalSource.StartsWith(
+        $projectRootWithSlash,
+        [System.StringComparison]::OrdinalIgnoreCase)) {
+      throw "External fixture source is outside the project root: $externalSource"
+    }
+    if (-not (Test-Path -LiteralPath $externalSource -PathType Leaf)) {
+      throw "External fixture source not found: $externalSource"
+    }
+
+    $externalTarget = Assert-UnderOutputRoot (
+      Join-Path $caseRoot ([string]$externalFile.target))
+    $externalTargetDirectory = Split-Path -Parent $externalTarget
+    New-Item -ItemType Directory -Path $externalTargetDirectory -Force | Out-Null
+    Copy-Item -LiteralPath $externalSource -Destination $externalTarget -Force
   }
 
   $inputDirectory = Split-Path -Parent $inputPath

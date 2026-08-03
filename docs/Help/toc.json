@@ -1,7 +1,7 @@
 [
   {
-    "title": "VCL2FMXConverter_v5_0_User_Guide",
-    "url": "topics/vcl2fmxconverter-v5-0-user-guide.html",
+    "title": "VCL2FMXConverter v6.0 Navigator User Guide",
+    "url": "topics/vcl2fmxconverter-v6-0-navigator-user-guide.html",
     "status": "Approved",
     "owner": "Auto Import"
   },
@@ -150,8 +150,8 @@
     "owner": "Thomas H Martin"
   },
   {
-    "title": "Conversion Contracts in v5.0",
-    "url": "topics/conversion-contracts-in-v5-0.html",
+    "title": "Conversion Contracts in v6.0 Navigator",
+    "url": "topics/conversion-contracts-in-v6-0-navigator.html",
     "status": "Approved",
     "owner": "Auto Import"
   }

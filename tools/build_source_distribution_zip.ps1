@@ -2,7 +2,7 @@
 param(
   [string]$ProjectRoot,
   [string]$OutputDirectory,
-  [string]$VersionTag = 'v6_0_Navigator_Build022'
+  [string]$VersionTag = 'v6_0_Navigator_Build023'
 )
 
 Set-StrictMode -Version Latest
@@ -36,6 +36,7 @@ $excludedDirectoryNames = @(
   'Win32',
   'Win64',
   'dcu',
+  'tmp',
   '__history',
   '__recovery',
   '.agents',
@@ -153,6 +154,21 @@ try {
     $targetDirectory = Split-Path -Parent $targetFile
     New-Item -ItemType Directory -Path $targetDirectory -Force | Out-Null
     Copy-Item $file.FullName $targetFile -Force
+  }
+
+  $requiredProjectAssets = @(
+    'Logos and Icons\Concept 04 - Faceted Cube Arrow\VCL2FMX_Concept04_FacetedCubeArrow_44.png',
+    'Logos and Icons\Concept 04 - Faceted Cube Arrow\VCL2FMX_Concept04_FacetedCubeArrow_150.png'
+  )
+  foreach ($requiredProjectAsset in $requiredProjectAssets) {
+    $assetSource = Join-Path $ProjectRoot $requiredProjectAsset
+    if (-not (Test-Path -LiteralPath $assetSource -PathType Leaf)) {
+      throw "Required project asset is missing: $requiredProjectAsset"
+    }
+
+    $assetTarget = Join-Path $stageProjectRoot $requiredProjectAsset
+    New-Item -ItemType Directory -Path (Split-Path -Parent $assetTarget) -Force | Out-Null
+    Copy-Item -LiteralPath $assetSource -Destination $assetTarget -Force
   }
 
   $stagedLicensePath = Join-Path $stageProjectRoot 'LICENSE.txt'

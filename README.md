@@ -1,4 +1,4 @@
-# VCL2FMXConverter v6.0 Navigator — Build 022
+# VCL2FMXConverter v6.0 Navigator — Build 023
 
 ![VCL2FMXConverter](assets/vcl2fmx-logo.png)
 
@@ -12,8 +12,8 @@ The original VCL project remains the source of truth. Generated output is writte
 - [Downloads and documentation](downloads.html)
 - [Navigator User Guide](docs/pdf/VCL2FMXConverter_v6_0_Navigator_User_Guide.pdf)
 - [Navigator Engineering Guide](docs/pdf/VCL2FMXConverter_v6_0_Navigator_Engineering_Guide.pdf)
-- [Rules, Component, Property, and Event Maps](docs/pdf/VCL2FMXConverter_v5_0_Rules_Component_Property_Event_Maps.pdf)
-- [Converter Runtime Flow](docs/pdf/Converter_runtime_flow_v5_0.pdf)
+- [Rules, Component, Property, and Event Maps](docs/pdf/VCL2FMXConverter_v6_0_Navigator_Rules_Component_Property_Event_Maps.pdf)
+- [Converter Runtime Flow](docs/pdf/VCL2FMXConverter_v6_0_Navigator_Converter_Runtime_Flow.pdf)
 
 ## Highlights in v6.0 Navigator
 
@@ -27,7 +27,7 @@ The original VCL project remains the source of truth. Generated output is writte
 - 22 schema-validated JSON mapping packs containing 493 disciplined rules
 - Mapping-gap export as a valid starter mapping pack
 - 227 executable conversion contracts, including compilation of eligible generated fixtures
-- 64 regression guards and 63 release-readiness acceptance checks
+- 65 regression guards and 63 release-readiness acceptance checks
 - Complete Navigator user and engineering guides with companion PDFs
 
 ## Requirements

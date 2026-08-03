@@ -442,6 +442,24 @@ if (-not [string]::IsNullOrWhiteSpace($mainFormText)) {
     -FailDetails 'The dry-run checkbox is missing from MainForm.fmx or runtime checkbox construction has returned.'
 
   Add-RuleResult -Condition (
+      ([regex]::Matches($mainFormFmxText,
+        'object\s+\w+ScrollBox:\s*TVertScrollBox').Count -eq 7) -and
+      ([regex]::Matches($mainFormFmxText,
+        'object\s+\w+Browser:\s*TWebBrowser').Count -eq 3) -and
+      (-not ($mainFormText -match
+        '(?i)\bT(?:Form|Label|Layout|Rectangle|Button|Path|PaintBox|Image|Edit|Memo|ComboBox|CheckBox|TabItem|TabControl|ScrollBox|VertScrollBox|StringGrid|ListBox|WebBrowser|Panel|ProgressBar|Splitter|GridPanelLayout|FlowLayout)\.Create(?:New)?\s*\(')) -and
+      (-not ($mainFormText -match
+        '\.(?:Position\.(?:X|Y)|Size\.(?:Width|Height)|Width|Height|Align|Parent|Margins\.(?:Left|Top|Right|Bottom)|Padding\.(?:Left|Top|Right|Bottom)|XRadius|YRadius)\s*:=')) -and
+      (-not ($mainFormText -match
+        'ApplyResponsiveLayout|FormResize|OnResize\s*:=')) -and
+      ($mainFormFmxText -match 'OnCloseQuery\s*=\s*FormCloseQuery') -and
+      ($mainFormFmxText -match 'OnShow\s*=\s*FormShow') -and
+      ($mainFormFmxText -match 'OnChange\s*=\s*TabControlMainChange')
+    ) -Area 'Designer UI' -Check 'Main form visual structure is designer-owned' `
+    -PassDetails 'Scroll containers, mapping browsers, form events, and all static geometry are declared in MainForm.fmx with no runtime visual construction or geometry assignments.' `
+    -FailDetails 'Runtime-created controls, runtime geometry, missing designer components, or runtime-only form events have returned.'
+
+  Add-RuleResult -Condition (
       ($designerBuildNumber -ge 1) -and
       ($mainFormText -match ('Version v6\.0 Navigator Build ' + [regex]::Escape($designerBuildText))) -and
       ($mainFormFmxText -match ("Caption = 'VCL to FMX Converter v6\.0 Navigator - Build " + [regex]::Escape($designerBuildText) + "'")) -and
@@ -455,17 +473,14 @@ if (-not [string]::IsNullOrWhiteSpace($mainFormText)) {
   Add-RuleResult -Condition (
       ($designerBadgeWidth -ge 380) -and
       ($designerBadgeWidth -le 410) -and
-      ($responsiveBadgeWidths.Count -eq 2) -and
-      (@($responsiveBadgeWidths | Where-Object { ($_ -lt 380) -or ($_ -gt 410) }).Count -eq 0) -and
+      ($responsiveBadgeWidths.Count -eq 0) -and
       ($mainFormFmxText -match "(?ms)object\s+HeroNavigatorGhost:\s*TLabel.*?Text\s*=\s*'NAVIGATOR'.*?Visible\s*=\s*True") -and
       ($mainFormFmxText -match "(?ms)object\s+HeroNavigatorGhost:\s*TLabel.*?Opacity\s*=\s*0\.14.*?Position\.X\s*=\s*600\..*?TextSettings\.FontColor\s*=\s*xFFFF8800") -and
       ($mainFormFmxText -match "(?ms)object\s+lblVersion:\s*TLabel.*?AutoSize\s*=\s*False.*?Size\.Width\s*=\s*400\..*?TextSettings\.HorzAlign\s*=\s*Center") -and
-      ($mainFormText -match 'HeroNavigatorGhost\.Position\.X\s*:=\s*580') -and
-      ($mainFormText -match 'HeroNavigatorGhost\.Position\.X\s*:=\s*600') -and
       (-not ($mainFormText -match "FillText\([^`r`n]*'VANGUARD'"))
     ) -Area 'Build identity' -Check 'Version badge contains full build and timestamp text' `
-    -PassDetails 'The designer-owned Navigator hero is visible, orange, and right-positioned; the compact badge remains centered and between 380 and 410 pixels in every responsive state.' `
-    -FailDetails 'The hero branding, orange/right alignment, centered badge text, or protected compact badge width has regressed.'
+    -PassDetails 'The designer-owned Navigator hero is visible, orange, and right-positioned; the centered badge remains between 380 and 410 pixels with no runtime width overrides.' `
+    -FailDetails 'The hero branding, orange/right alignment, centered badge text, protected badge width, or designer-only geometry contract has regressed.'
 }
 
 Add-RuleResult -Condition (

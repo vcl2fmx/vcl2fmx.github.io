@@ -2,7 +2,7 @@
 
 ## Supported code
 
-Security fixes are applied to the current v5.0 code line. Older source snapshots and generated distribution archives may not receive separate fixes.
+Security fixes are applied to the current v6.0 Navigator code line. Older source snapshots and generated distribution archives may not receive separate fixes.
 
 ## Reporting a vulnerability
 

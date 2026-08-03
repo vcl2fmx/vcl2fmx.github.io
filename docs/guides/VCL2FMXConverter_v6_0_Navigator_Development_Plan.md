@@ -1,8 +1,8 @@
 # VCL2FMXConverter v6.0 Navigator Development Plan
 
-Last changed: August 1, 2026
+Last changed: August 2, 2026
 
-Current iteration: Navigator Release v6.0 Build 021
+Current iteration: Navigator Release v6.0 Build 023
 
 ## Release Direction
 
@@ -385,9 +385,23 @@ Compiler feedback exposed and corrected conditional uses-clause punctuation,
 bare implementation-unit normalization, missing FMX and System units,
 case-sensitive DFM property handling, VCL alpha-blend and dialog-border
 translations, and FMX-compatible canvas text and rectangle calls. The release
-gate also retains 64 regression guards, 62 acceptance checks, mapping-pack
+gate also retains 65 regression guards, 63 acceptance checks, mapping-pack
 schema validation, the French field regression, and Win32/Win64 Release builds.
 
 This iteration strengthens validation without promising compiler-grade
 semantic conversion. Project-wide compiler-style architecture remains a
 measured research track rather than a v6 release commitment.
+
+## Iteration 022 - Release-Gate Stabilization
+
+Navigator Build 022 closed the remaining review findings around compiled
+contract timing, reporting integrity, and isolated validation. The 227-contract
+suite completed cleanly when rerun under isolated conditions.
+
+## Iteration 023 - Designer-Owned Release Candidate
+
+Navigator Build 023 moves the main-window presentation fully into the FMX
+designer, removes runtime-created visual controls and runtime geometry, and
+adds regression enforcement for that ownership boundary. The validated release
+candidate passes 227 conversion contracts, 65 regression guards, 63 acceptance
+checks, and Win32/Win64 Release builds.

@@ -4,7 +4,7 @@ interface
 
 uses System.SysUtils;
 
-{$I C:\New Delphi Projects\VCL2FMXConverterV5\contracts\include_analysis\outside_shared\OutsideSource.inc}
+{$I ..\outside_shared\OutsideSource.inc}
 
 type
   TIncludeOutsideSource = class

@@ -1,4 +1,4 @@
-# VCL2FMXConverter v5.0 Mapping Packs
+# VCL2FMXConverter v6.0 Navigator Mapping Packs
 
 Mapping packs are optional JSON files that add transparent component mapping rules without baking third-party commercial-library assumptions into the converter core.
 
@@ -36,10 +36,10 @@ Rules below 50 percent confidence do not automatically convert.
 
 Mapping-pack usage is reported in the conversion report so third-party behavior is visible to the user.
 
-## Beta Release Notes
+## Navigator Release Notes
 
-The v5.0 distribution includes the same 22 starter mapping packs released with v4.1.8 for common Delphi third-party libraries. These packs are intentionally conservative: simple controls may convert, approximate controls may convert with review notes, and complex controls are usually report-only.
+The v6.0 Navigator distribution includes 22 schema-validated mapping packs containing 493 disciplined rules for common Delphi third-party libraries. These packs are intentionally conservative: simple controls may convert, approximate controls may convert with review notes, and complex controls are usually report-only.
 
-Revision date: August 1, 2026
+Revision date: August 2, 2026
 
 Mapping packs are extension data, not vendor runtimes. They do not install or replace commercial component libraries. Always review the generated report and test the converted FMX project in Delphi.

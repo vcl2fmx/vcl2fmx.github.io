@@ -14,7 +14,7 @@ if ([string]::IsNullOrWhiteSpace($ProjectRoot)) {
 
 $ProjectRoot = (Resolve-Path $ProjectRoot).Path
 $auditScriptPath = [IO.Path]::GetFullPath($PSCommandPath)
-$buildOutputDirectoryNames = @('Win32', 'Win64', '__history')
+$buildOutputDirectoryNames = @('Win32', 'Win64', '__history', 'tests')
 
 if ([string]::IsNullOrWhiteSpace($ReportPath)) {
   $reportDir = Join-Path $ProjectRoot 'docs\notes\release_audits'
@@ -211,7 +211,7 @@ $warningCount = @($Findings | Where-Object { $_.Severity -eq 'Warning' }).Count
 $infoCount = @($Findings | Where-Object { $_.Severity -eq 'Info' }).Count
 
 $sb = New-Object System.Text.StringBuilder
-[void]$sb.AppendLine('VCL2FMXConverter V3 Release Readiness Audit')
+[void]$sb.AppendLine('VCL2FMXConverter v6.0 Navigator Release Readiness Audit')
 [void]$sb.AppendLine('===========================================')
 [void]$sb.AppendLine('')
 [void]$sb.AppendLine('Generated: ' + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'))

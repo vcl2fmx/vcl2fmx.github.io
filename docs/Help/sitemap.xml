@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>topics/vcl2fmxconverter-v5-0-user-guide.html</loc></url>
+  <url><loc>topics/vcl2fmxconverter-v6-0-navigator-user-guide.html</loc></url>
   <url><loc>topics/purpose-and-audience.html</loc></url>
   <url><loc>topics/what-the-converter-is-and-what-it-is-not.html</loc></url>
   <url><loc>topics/mapping-packs-optional-third-party-component-support.html</loc></url>
@@ -25,5 +25,5 @@
   <url><loc>topics/appendix-c-post-conversion-review-checklist.html</loc></url>
   <url><loc>topics/appendix-d-glossary.html</loc></url>
   <url><loc>topics/index.html</loc></url>
-  <url><loc>topics/conversion-contracts-in-v5-0.html</loc></url>
+  <url><loc>topics/conversion-contracts-in-v6-0-navigator.html</loc></url>
 </urlset>
