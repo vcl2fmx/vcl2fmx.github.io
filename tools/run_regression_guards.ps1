@@ -142,6 +142,8 @@ $mainFormText = Get-SourceText -RelativePath 'MainForm.pas'
 $mainFormFmxText = Get-SourceText -RelativePath 'MainForm.fmx'
 $projectFileText = Get-SourceText -RelativePath 'VCL2FMXConverter.dproj'
 $readmeText = Get-SourceText -RelativePath 'README.md'
+$indexPageText = Get-SourceText -RelativePath 'index.html'
+$downloadsPageText = Get-SourceText -RelativePath 'downloads.html'
 $contractRunnerText = Get-SourceText -RelativePath 'tools\run_conversion_contracts.ps1'
 $reportGoldenExpectationsText = @(
   Get-SourceText -RelativePath 'contracts\project_integration\05_real_world_report_shape\RealWorldReportShapeProject.expected.json'
@@ -460,15 +462,25 @@ if (-not [string]::IsNullOrWhiteSpace($mainFormText)) {
     -FailDetails 'Runtime-created controls, runtime geometry, missing designer components, or runtime-only form events have returned.'
 
   Add-RuleResult -Condition (
+      ($mainFormFmxText -match '(?ms)object\s+btnConvert:\s*TButton.*?Position\.X\s*=\s*600\..*?object\s+btnReset:\s*TButton.*?Position\.X\s*=\s*784\..*?object\s+btnOpenReport:\s*TButton.*?Position\.X\s*=\s*908\..*?object\s+btnPrintReport:\s*TButton.*?Position\.X\s*=\s*1032\..*?object\s+btnHelp:\s*TButton.*?Position\.X\s*=\s*1156\..*?OnClick\s*=\s*btnHelpClick') -and
+      ($mainFormText -match 'procedure\s+TfrmMain\.btnHelpClick') -and
+      ($mainFormText -match '''\.\.\\\.\.\\docs\\Help\\index\.html''')
+    ) -Area 'Designer UI' -Check 'Hero actions retain equal spacing and local Help access' `
+    -PassDetails 'The five designer-owned hero actions retain 12-pixel gaps and the Help button opens the local HTML help.' `
+    -FailDetails 'Hero action spacing, designer ownership, or the local Help action has regressed.'
+
+  Add-RuleResult -Condition (
       ($designerBuildNumber -ge 1) -and
       ($mainFormText -match ('Version v6\.0 Navigator Build ' + [regex]::Escape($designerBuildText))) -and
       ($mainFormFmxText -match ("Caption = 'VCL to FMX Converter v6\.0 Navigator - Build " + [regex]::Escape($designerBuildText) + "'")) -and
       ($projectFileText -match ('FileVersion=6\.0\.0\.' + $designerBuildNumber + '(?:;|<)')) -and
       ($projectFileText -match ('<VerInfo_Build>' + $designerBuildNumber + '</VerInfo_Build>')) -and
-      ($readmeText -match ('VCL2FMXConverter v6\.0 Navigator.+Build ' + [regex]::Escape($designerBuildText)))
+      ($indexPageText -match ('Navigator Build ' + [regex]::Escape($designerBuildText))) -and
+      ($downloadsPageText -match ('Navigator Build ' + [regex]::Escape($designerBuildText))) -and
+      (-not ($readmeText -match 'VCL2FMXConverter v6\.0 Navigator.+Build \d+'))
     ) -Area 'Build identity' -Check 'Navigator build identity is synchronized' `
-    -PassDetails ('Source header, designer text, timestamp, executable version metadata, and README identify Navigator Build ' + $designerBuildText + '.') `
-    -FailDetails 'Navigator build identity is inconsistent across source, designer, project metadata, or README.'
+    -PassDetails ('Source header, designer text, timestamp, executable version metadata, and both public pages identify Navigator Build ' + $designerBuildText + '; README remains build-neutral.') `
+    -FailDetails 'Navigator build identity is inconsistent across source, designer, project metadata, public pages, or the build-neutral README policy.'
 
   Add-RuleResult -Condition (
       ($designerBadgeWidth -ge 380) -and

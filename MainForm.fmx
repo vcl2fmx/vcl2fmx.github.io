@@ -2,7 +2,7 @@
   Left = 0
   Top = 0
   ActiveControl = edtSource
-  Caption = 'VCL to FMX Converter v6.0 Navigator - Build 025'
+  Caption = 'VCL to FMX Converter v6.0 Navigator - Build 026'
   ClientHeight = 820
   ClientWidth = 1345
   Constraints.MinHeight = 700.000000000000000000
@@ -382,7 +382,7 @@
         TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
         TextSettings.HorzAlign = Center
-        Text = 'Navigator Release v6.0  Build 025  8/3/26 4:03 PM'
+        Text = 'Navigator Release v6.0  Build 026  8/3/26 6:56 PM'
       end
       object lblStatusCaption: TLabel
         StyledSettings = []
@@ -409,7 +409,7 @@
       end
       object btnConvert: TButton
         StyledSettings = []
-        Position.X = 700.000000000000000000
+        Position.X = 600.000000000000000000
         Position.Y = 120.000000000000000000
         Size.Width = 172.000000000000000000
         Size.Height = 42.000000000000000000
@@ -421,7 +421,7 @@
       end
       object btnReset: TButton
         StyledSettings = []
-        Position.X = 902.000000000000000000
+        Position.X = 784.000000000000000000
         Position.Y = 120.000000000000000000
         Size.Width = 112.000000000000000000
         Size.Height = 42.000000000000000000
@@ -432,7 +432,7 @@
       end
       object btnOpenReport: TButton
         StyledSettings = []
-        Position.X = 1022.000000000000000000
+        Position.X = 908.000000000000000000
         Position.Y = 120.000000000000000000
         Size.Width = 112.000000000000000000
         Size.Height = 42.000000000000000000
@@ -443,7 +443,7 @@
       end
       object btnPrintReport: TButton
         StyledSettings = []
-        Position.X = 1148.000000000000000000
+        Position.X = 1032.000000000000000000
         Position.Y = 120.000000000000000000
         Size.Width = 112.000000000000000000
         Size.Height = 42.000000000000000000
@@ -451,6 +451,17 @@
         Text = 'Print Report'
         TextSettings.Font.Size = 13.000000000000000000
         OnClick = btnPrintReportClick
+      end
+      object btnHelp: TButton
+        StyledSettings = []
+        Position.X = 1156.000000000000000000
+        Position.Y = 120.000000000000000000
+        Size.Width = 112.000000000000000000
+        Size.Height = 42.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Help'
+        TextSettings.Font.Size = 13.000000000000000000
+        OnClick = btnHelpClick
       end
     end
     object TabNavBar: TLayout

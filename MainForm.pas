@@ -1,6 +1,6 @@
 ﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
-Version v6.0 Navigator Build 025
+Version v6.0 Navigator Build 026
  Written and built in the USA}
 
 unit MainForm;
@@ -88,6 +88,7 @@ type
     btnReset: TButton;
     btnOpenReport: TButton;
     btnPrintReport: TButton;
+    btnHelp: TButton;
     TabControlMain: TTabControl;
     tabDashboard: TTabItem;
     tabProjectScan: TTabItem;
@@ -182,6 +183,7 @@ type
     procedure btnBrowseTargetClick(Sender: TObject);
     procedure btnOpenReportClick(Sender: TObject);
     procedure btnPrintReportClick(Sender: TObject);
+    procedure btnHelpClick(Sender: TObject);
     procedure btnOpenOutputClick(Sender: TObject);
     procedure btnCloseAppClick(Sender: TObject);
     procedure btnResetClick(Sender: TObject);
@@ -1866,6 +1868,28 @@ begin
   end;
 
   ResetToStartupState;
+end;
+
+procedure TfrmMain.btnHelpClick(Sender: TObject);
+var
+  HelpPath: string;
+begin
+  HelpPath := ExpandFileName(IncludeTrailingPathDelimiter(
+    ExtractFilePath(ParamStr(0))) + '..\..\docs\Help\index.html');
+  if not FileExists(HelpPath) then
+    HelpPath := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) +
+      'docs\Help\index.html';
+
+  if not FileExists(HelpPath) then
+  begin
+    TDialogService.ShowMessage(
+      'The VCL2FMXConverter help documentation could not be found.');
+    Exit;
+  end;
+
+  if not ExecuteShellVerb('open', HelpPath) then
+    TDialogService.ShowMessage(
+      'Could not open the VCL2FMXConverter help documentation.');
 end;
 
 function TfrmMain.ExecuteShellVerb(const AVerb, ATarget: string;
