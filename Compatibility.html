@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Understand which Delphi versions are verified for VCL2FMXConverter, how older VCL projects can be analyzed, and which Delphi releases should compile the generated FireMonkey output.">
+  <meta name="theme-color" content="#0757b8">
+  <link rel="canonical" href="https://vcl2fmx.github.io/Compatibility.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VCL2FMXConverter">
+  <meta property="og:title" content="Delphi Compatibility | VCL2FMXConverter">
+  <meta property="og:description" content="A plain explanation of converter, source-project, and generated-output compatibility across Delphi generations.">
+  <meta property="og:url" content="https://vcl2fmx.github.io/Compatibility.html">
+  <meta property="og:image" content="https://vcl2fmx.github.io/assets/vcl2fmx-v6-screen.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Delphi Compatibility | VCL2FMXConverter">
+  <meta name="twitter:description" content="Learn what is verified, what may work, and what older Delphi projects may require before conversion.">
+  <meta name="twitter:image" content="https://vcl2fmx.github.io/assets/vcl2fmx-v6-screen.png">
+  <title translate="no">Delphi Compatibility | VCL2FMXConverter</title>
+  <link rel="icon" href="assets/vcl2fmx-icon.png" type="image/png">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="preconnect" href="https://cdn.gtranslate.net">
+  <link rel="preconnect" href="https://translate.google.com">
+  <link rel="preconnect" href="https://translate.googleapis.com">
+  <style>
+    .compatibility-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 88px 0 72px;
+      background:
+        radial-gradient(circle at 84% 18%, rgba(25, 169, 212, .3), transparent 30%),
+        linear-gradient(135deg, #071f3d 0%, #063b7a 54%, #0757b8 100%);
+      color: white;
+    }
+    .compatibility-hero::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      bottom: -210px;
+      width: 480px;
+      height: 480px;
+      border: 68px solid rgba(242, 138, 37, .15);
+      border-radius: 50%;
+    }
+    .compatibility-hero-inner { position: relative; z-index: 1; }
+    .compatibility-hero .eyebrow { color: #8ee6ff; }
+    .compatibility-hero h1 { max-width: 920px; font-size: clamp(3rem, 7vw, 5.3rem); }
+    .compatibility-hero .lede { max-width: 880px; color: #d8eafb; }
+
+    .plain-summary { padding: 48px 0; border-bottom: 1px solid var(--line); background: var(--mist); }
+    .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .summary-card {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-top: 6px solid var(--blue);
+      border-radius: 17px;
+      background: white;
+      box-shadow: 0 9px 25px rgba(16, 34, 58, .05);
+    }
+    .summary-card:nth-child(2) { border-top-color: var(--cyan); }
+    .summary-card:nth-child(3) { border-top-color: var(--orange); }
+    .summary-card h2 { margin-bottom: 9px; font-size: 1.45rem; }
+    .summary-card p { margin: 0; color: var(--muted); }
+
+    .compatibility-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 9px 25px rgba(16, 34, 58, .05);
+    }
+    .compatibility-table th,
+    .compatibility-table td {
+      padding: 19px 22px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    .compatibility-table tr:last-child th,
+    .compatibility-table tr:last-child td { border-bottom: 0; }
+    .compatibility-table th { width: 29%; color: var(--blue-dark); background: #eef6ff; }
+    .compatibility-table td { color: #40566e; }
+    .verification {
+      display: inline-block;
+      margin-top: 7px;
+      padding: .25rem .65rem;
+      border-radius: 999px;
+      background: #e5f5ed;
+      color: var(--success);
+      font-size: .76rem;
+      font-weight: 900;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .verification.possible { background: #fff1df; color: #a64e05; }
+    .compatibility-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      padding: 0;
+      list-style: none;
+    }
+    .compatibility-list li {
+      padding: 18px 20px;
+      border-left: 4px solid var(--orange);
+      border-radius: 0 12px 12px 0;
+      background: white;
+      color: #40566e;
+      box-shadow: 0 5px 18px rgba(16, 34, 58, .05);
+    }
+    .definition-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .definition-card {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: white;
+      box-shadow: 0 8px 24px rgba(16, 34, 58, .05);
+    }
+    .definition-card h3 { color: var(--blue-dark); }
+    .definition-card p { margin-bottom: 0; color: var(--muted); }
+    .honest-note {
+      padding: 32px;
+      border-left: 7px solid var(--orange);
+      border-radius: 16px;
+      background: linear-gradient(110deg, #fff6e9, #eef6ff);
+    }
+    .honest-note h2 { margin-bottom: 10px; font-size: clamp(1.8rem, 4vw, 2.6rem); }
+    .honest-note p:last-child { margin-bottom: 0; }
+    .workflow-list { counter-reset: compatibility-steps; display: grid; gap: 14px; padding: 0; list-style: none; }
+    .workflow-list li {
+      position: relative;
+      min-height: 58px;
+      padding: 14px 18px 14px 70px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: white;
+      color: #40566e;
+    }
+    .workflow-list li::before {
+      counter-increment: compatibility-steps;
+      content: counter(compatibility-steps);
+      position: absolute;
+      left: 16px;
+      top: 11px;
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      font-weight: 900;
+    }
+    .compatibility-cta { padding: 58px 0; background: linear-gradient(120deg, #eaf3ff, #fff4e6); }
+    .compatibility-cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 42px; }
+    .compatibility-cta h2 { margin-bottom: 8px; }
+    .compatibility-cta p { max-width: 760px; margin: 0; color: var(--muted); }
+
+    @media (max-width: 940px) {
+      .summary-grid { grid-template-columns: 1fr; }
+      .compatibility-cta-inner { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 700px) {
+      .compatibility-hero { padding: 62px 0 54px; }
+      .definition-grid, .compatibility-list { grid-template-columns: 1fr; }
+      .compatibility-table,
+      .compatibility-table tbody,
+      .compatibility-table tr,
+      .compatibility-table th,
+      .compatibility-table td { display: block; width: 100%; }
+      .compatibility-table tr { border-bottom: 1px solid var(--line); }
+      .compatibility-table tr:last-child { border-bottom: 0; }
+      .compatibility-table th { border-bottom: 0; }
+      .compatibility-table td { border-bottom: 0; }
+    }
+    @media print {
+      .compatibility-hero, .plain-summary, .compatibility-cta { padding: 22px 0; background: white; color: black; }
+      .summary-card, .definition-card, .compatibility-table, .compatibility-list li { break-inside: avoid; box-shadow: none; }
+    }
+  </style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R67HW0Z3L"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3R67HW0Z3L');
+  </script>
+</head>
+<body>
+  <div class="gtranslate_wrapper notranslate" translate="no"></div>
+  <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"detect_browser_language":true,"wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right"}</script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+  <script src="assets/translation-selector.js" defer></script>
+  <script>
+    window.addEventListener('load', function () {
+      document.querySelector('.gtranslate_wrapper').dispatchEvent(new Event('focusin', { bubbles: true }));
+    });
+  </script>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="index.html" aria-label="VCL2FMXConverter home">
+        <img src="assets/vcl2fmx-logo.png" alt="VCL2FMXConverter">
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="index.html#features">Features</a>
+        <a href="Compatibility.html" aria-current="page">Compatibility</a>
+        <a href="BeforeYouPay.html">Before You Pay</a>
+        <a href="ChangeLog.html">Change Log</a>
+        <a href="downloads.html">Downloads</a>
+        <a class="nav-cta" href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="compatibility-hero" aria-labelledby="compatibility-title">
+      <div class="shell compatibility-hero-inner">
+        <p class="eyebrow">Delphi compatibility</p>
+        <h1 id="compatibility-title">Older VCL source can still have a modern FireMonkey future.</h1>
+        <p class="lede"><span class="notranslate" translate="no">VCL2FMXConverter v6.0 Navigator</span> is built and validated with Delphi 12 and Delphi 13/13.1. It can also analyze many projects created with earlier Delphi releases because it works directly with Pascal source, form definitions, project files, and related resources.</p>
+        <div class="actions">
+          <a class="button orange" href="#compatibility-details">See the compatibility details</a>
+          <a class="button secondary" href="downloads.html">View downloads</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="plain-summary" aria-label="Compatibility at a glance">
+      <div class="shell summary-grid">
+        <article class="summary-card">
+          <h2>Build the converter</h2>
+          <p>Delphi 12 and Delphi 13/13.1 are the officially verified development environments.</p>
+        </article>
+        <article class="summary-card">
+          <h2>Analyze older projects</h2>
+          <p>Many earlier VCL projects may be analyzed. Their components, dependencies, source format, and architecture matter more than their original Delphi version alone.</p>
+        </article>
+        <article class="summary-card">
+          <h2>Compile the FMX output</h2>
+          <p>The generated FireMonkey project is intended to be opened, reviewed, compiled, and tested in a modern Delphi environment.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="compatibility-details" aria-labelledby="three-questions-title">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow">Three different questions</p>
+          <h2 id="three-questions-title">What does “Delphi compatible” actually mean?</h2>
+          <p>Converter compatibility, original-project compatibility, and generated-output compatibility are related, but they are not the same thing.</p>
+        </div>
+        <div class="definition-grid">
+          <article class="definition-card">
+            <h3>The converter itself</h3>
+            <p>This means the Delphi version used to open and compile the VCL2FMXConverter source code.</p>
+          </article>
+          <article class="definition-card">
+            <h3>The original VCL project</h3>
+            <p>This means the Delphi generation in which the application was originally created and maintained.</p>
+          </article>
+          <article class="definition-card">
+            <h3>The converted FMX project</h3>
+            <p>This means the Delphi version used to open, compile, test, and continue developing the generated FireMonkey application.</p>
+          </article>
+          <article class="definition-card">
+            <h3>The application’s dependencies</h3>
+            <p>This includes component packages, databases, reporting systems, Windows APIs, resources, and other technologies used by the original project.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" aria-labelledby="build-compatibility-title">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow">Converter build compatibility</p>
+          <h2 id="build-compatibility-title">What is verified, and what is only possible?</h2>
+          <p>The distinction is deliberate. A version is not advertised as supported merely because the source appears likely to compile.</p>
+        </div>
+        <table class="compatibility-table">
+          <tbody>
+            <tr>
+              <th scope="row">Delphi 12 Athens</th>
+              <td>Officially supported and validated.<br><span class="verification">Verified</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Delphi 13 and 13.1</th>
+              <td>Officially supported and validated. The current release is built with Delphi 13.1.<br><span class="verification">Verified</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Delphi 11 Alexandria</th>
+              <td>The converter source is likely to be compatible, but this version has not completed the full build and validation suite.<br><span class="verification possible">Possible—not yet verified</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Delphi 10.4 Sydney</th>
+              <td>Compatibility appears possible, but it has not been established by the complete build, form-loading, and contract tests.<br><span class="verification possible">Possible—not yet verified</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Delphi 10.3 Rio</th>
+              <td>This is the theoretical language-syntax floor because the source uses inline variables and <code>for var</code> declarations introduced in Delphi 10.3. Other project, form, and API differences may still prevent a clean build.<br><span class="verification possible">Theoretical—not supported</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Delphi 10.2 and earlier</th>
+              <td>The current converter source will not compile as-is. Supporting these development environments would require source modifications.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="source-project-title">
+      <div class="shell split">
+        <div>
+          <p class="eyebrow">Original VCL project compatibility</p>
+          <h2 id="source-project-title">The source project does not need to have started in Delphi 12 or 13.</h2>
+          <p><span class="notranslate" translate="no">Navigator</span> examines Pascal units, form definitions, project files, include files, resources, and component declarations as source material. That makes many projects from earlier Delphi generations possible candidates for analysis and conversion.</p>
+          <p>Compatibility depends more on what the application contains than on the version number in its project file. A conventional older forms application using standard VCL controls may be easier to process than a newer application built around Windows messages, custom painting, unsupported libraries, or platform-specific behavior.</p>
+        </div>
+        <aside class="callout">
+          <p class="eyebrow">The practical distinction</p>
+          <h3>Older input. Modern output.</h3>
+          <p>An application may have begun life in an older Delphi release, while its converted FireMonkey version becomes a modern Delphi project.</p>
+          <p>The currently verified environment for reviewing and compiling that generated output is Delphi 12 or Delphi 13/13.1.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section alt" aria-labelledby="legacy-factors-title">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow">Factors affecting legacy projects</p>
+          <h2 id="legacy-factors-title">Age alone does not determine convertibility.</h2>
+          <p>Older applications may use technologies with no direct FireMonkey equivalent or dependencies that are no longer available in modern Delphi.</p>
+        </div>
+        <ul class="compatibility-list">
+          <li>Obsolete or unavailable third-party components</li>
+          <li>BDE and other legacy database technologies</li>
+          <li>Binary or unusually formatted form resources</li>
+          <li>ANSI or mixed source encodings</li>
+          <li>Old unit and namespace conventions</li>
+          <li>Windows messages and direct Win32 API calls</li>
+          <li>GDI drawing and custom-painted controls</li>
+          <li>Legacy reporting systems</li>
+          <li>Platform-specific resources and services</li>
+          <li>Components whose original packages are unavailable</li>
+          <li>Media, printing, shell, and hardware-dependent behavior</li>
+          <li>Language constructs treated differently by modern Delphi</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="meaning-title">
+      <div class="shell">
+        <div class="honest-note">
+          <p class="eyebrow">A clear meaning of compatibility</p>
+          <h2 id="meaning-title">Compatible does not mean guaranteed one-click conversion.</h2>
+          <p>VCL and FireMonkey are different application frameworks. Some behavior has a direct equivalent, some can be translated with a warning, and some requires a developer to redesign the feature for FireMonkey or for multiple platforms.</p>
+          <p><span class="notranslate" translate="no">VCL2FMXConverter</span> identifies automatically converted items, warnings, mapping gaps, Windows-specific behavior, and manual-review work. Its purpose is to produce a useful, inspectable FireMonkey starting point without hiding the remaining engineering work.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" aria-labelledby="legacy-workflow-title">
+      <div class="shell split">
+        <div>
+          <p class="eyebrow">Recommended legacy-project workflow</p>
+          <h2 id="legacy-workflow-title">Evaluate before you commit to a full conversion.</h2>
+          <p>Navigator keeps the original source separate from the generated output and provides a dry-run path for understanding the likely work first.</p>
+        </div>
+        <ol class="workflow-list">
+          <li>Preserve a complete backup of the original project.</li>
+          <li>Make sure the Pascal and form source files are available.</li>
+          <li>Run the project scan or dry-run preview.</li>
+          <li>Review component, mapping-pack, Windows API, drawing, database, and reporting findings.</li>
+          <li>Convert into a separate output folder.</li>
+          <li>Open the generated project in Delphi 12 or Delphi 13/13.1.</li>
+          <li>Compile, test, and visually compare each converted form and workflow.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="compatibility-cta" aria-labelledby="compatibility-cta-title">
+      <div class="shell compatibility-cta-inner">
+        <div>
+          <p class="eyebrow">Not sure about your project?</p>
+          <h2 id="compatibility-cta-title">Let the project contents—not merely its age—guide the decision.</h2>
+          <p>Use the project scan and dry-run preview to inventory the application, identify conversion risks, expose mapping gaps, and locate areas likely to require manual attention.</p>
+        </div>
+        <a class="button orange" href="downloads.html">Get VCL2FMXConverter</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <p>&copy; 2026 VCL2FMXConverter</p>
+      <p><a href="index.html">Home</a> &middot; <a href="downloads.html">Downloads</a> &middot; Free and open-source Delphi VCL-to-FMX migration assistance</p>
+      <p>Automatic translations are machine-generated by <span class="notranslate" translate="no">GTranslate</span>; select English to view the original.</p>
+    </div>
+  </footer>
+</body>
+</html>
