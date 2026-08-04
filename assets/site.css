@@ -243,7 +243,7 @@ h3 { margin-bottom: 10px; font-size: 1.25rem; }
 .evidence-card h2 { margin-bottom: 23px; font-size: clamp(1.65rem, 3vw, 2.3rem); }
 .evidence-list { margin: 0; padding: 0; list-style: none; }
 .evidence-list li { position: relative; padding: 12px 0 12px 32px; border-top: 1px solid rgba(255, 255, 255, .15); }
-.evidence-list li::before { content: "?"; position: absolute; left: 0; color: var(--orange); font-weight: 900; }
+.evidence-list li::before { content: "•"; position: absolute; left: 0; color: var(--orange); font-weight: 900; }
 .evidence-note { margin: 20px 0 0; padding: 14px 16px; border-left: 4px solid var(--orange); background: rgba(242, 138, 37, .12); font-weight: 800; }
 
 .truth-band { padding: 54px 0; border-bottom: 1px solid #efcfaa; background: #fff5e9; }
