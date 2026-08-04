@@ -111,16 +111,6 @@
       color: #40566e;
       box-shadow: 0 5px 18px rgba(16, 34, 58, .05);
     }
-    .definition-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-    .definition-card {
-      padding: 28px;
-      border: 1px solid var(--line);
-      border-radius: 17px;
-      background: white;
-      box-shadow: 0 8px 24px rgba(16, 34, 58, .05);
-    }
-    .definition-card h3 { color: var(--blue-dark); }
-    .definition-card p { margin-bottom: 0; color: var(--muted); }
     .honest-note {
       padding: 32px;
       border-left: 7px solid var(--orange);
@@ -165,7 +155,7 @@
     }
     @media (max-width: 700px) {
       .compatibility-hero { padding: 62px 0 54px; }
-      .definition-grid, .compatibility-list { grid-template-columns: 1fr; }
+      .compatibility-list { grid-template-columns: 1fr; }
       .compatibility-table,
       .compatibility-table tbody,
       .compatibility-table tr,
@@ -178,7 +168,7 @@
     }
     @media print {
       .compatibility-hero, .plain-summary, .compatibility-cta { padding: 22px 0; background: white; color: black; }
-      .summary-card, .definition-card, .compatibility-table, .compatibility-list li { break-inside: avoid; box-shadow: none; }
+      .summary-card, .compatibility-table, .compatibility-list li { break-inside: avoid; box-shadow: none; }
     }
   </style>
   <!-- Google tag (gtag.js) -->
@@ -226,7 +216,7 @@
         <h1 id="compatibility-title">Older VCL source can still have a modern FireMonkey future.</h1>
         <p class="lede"><span class="notranslate" translate="no">VCL2FMXConverter v6.0 Navigator</span> is built and validated with Delphi 12 and Delphi 13/13.1. It can also analyze many projects created with earlier Delphi releases because it works directly with Pascal source, form definitions, project files, and related resources.</p>
         <div class="actions">
-          <a class="button orange" href="#compatibility-details">See the compatibility details</a>
+          <a class="button orange" href="#build-compatibility">See the compatibility details</a>
           <a class="button secondary" href="downloads.html">View downloads</a>
         </div>
       </div>
@@ -249,35 +239,7 @@
       </div>
     </section>
 
-    <section class="section" id="compatibility-details" aria-labelledby="three-questions-title">
-      <div class="shell">
-        <div class="section-head">
-          <p class="eyebrow">Three different questions</p>
-          <h2 id="three-questions-title">What does “Delphi compatible” actually mean?</h2>
-          <p>Converter compatibility, original-project compatibility, and generated-output compatibility are related, but they are not the same thing.</p>
-        </div>
-        <div class="definition-grid">
-          <article class="definition-card">
-            <h3>The converter itself</h3>
-            <p>This means the Delphi version used to open and compile the VCL2FMXConverter source code.</p>
-          </article>
-          <article class="definition-card">
-            <h3>The original VCL project</h3>
-            <p>This means the Delphi generation in which the application was originally created and maintained.</p>
-          </article>
-          <article class="definition-card">
-            <h3>The converted FMX project</h3>
-            <p>This means the Delphi version used to open, compile, test, and continue developing the generated FireMonkey application.</p>
-          </article>
-          <article class="definition-card">
-            <h3>The application’s dependencies</h3>
-            <p>This includes component packages, databases, reporting systems, Windows APIs, resources, and other technologies used by the original project.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section alt" aria-labelledby="build-compatibility-title">
+    <section class="section alt" id="build-compatibility" aria-labelledby="build-compatibility-title">
       <div class="shell">
         <div class="section-head">
           <p class="eyebrow">Converter build compatibility</p>
@@ -320,14 +282,12 @@
         <div>
           <p class="eyebrow">Original VCL project compatibility</p>
           <h2 id="source-project-title">The source project does not need to have started in Delphi 12 or 13.</h2>
-          <p><span class="notranslate" translate="no">Navigator</span> examines Pascal units, form definitions, project files, include files, resources, and component declarations as source material. That makes many projects from earlier Delphi generations possible candidates for analysis and conversion.</p>
-          <p>Compatibility depends more on what the application contains than on the version number in its project file. A conventional older forms application using standard VCL controls may be easier to process than a newer application built around Windows messages, custom painting, unsupported libraries, or platform-specific behavior.</p>
+          <p><span class="notranslate" translate="no">Navigator</span> examines Pascal units, form definitions, project files, include files, resources, and component declarations. This makes many projects from earlier Delphi generations possible candidates for analysis.</p>
+          <p>What the application contains matters more than its original version number. A conventional older application using standard VCL controls may be easier to convert than a newer project built around unsupported libraries or Windows-specific behavior.</p>
         </div>
         <aside class="callout">
-          <p class="eyebrow">The practical distinction</p>
           <h3>Older input. Modern output.</h3>
-          <p>An application may have begun life in an older Delphi release, while its converted FireMonkey version becomes a modern Delphi project.</p>
-          <p>The currently verified environment for reviewing and compiling that generated output is Delphi 12 or Delphi 13/13.1.</p>
+          <p>An application may have begun in an older Delphi release, while its converted FireMonkey version becomes a modern Delphi project. Delphi 12 and Delphi 13/13.1 are the verified environments for reviewing and compiling the generated output.</p>
         </aside>
       </div>
     </section>
@@ -340,18 +300,12 @@
           <p>Older applications may use technologies with no direct FireMonkey equivalent or dependencies that are no longer available in modern Delphi.</p>
         </div>
         <ul class="compatibility-list">
-          <li>Obsolete or unavailable third-party components</li>
-          <li>BDE and other legacy database technologies</li>
-          <li>Binary or unusually formatted form resources</li>
-          <li>ANSI or mixed source encodings</li>
-          <li>Old unit and namespace conventions</li>
-          <li>Windows messages and direct Win32 API calls</li>
-          <li>GDI drawing and custom-painted controls</li>
-          <li>Legacy reporting systems</li>
-          <li>Platform-specific resources and services</li>
-          <li>Components whose original packages are unavailable</li>
-          <li>Media, printing, shell, and hardware-dependent behavior</li>
-          <li>Language constructs treated differently by modern Delphi</li>
+          <li>Obsolete or unavailable third-party components and packages</li>
+          <li>BDE, legacy databases, and older reporting systems</li>
+          <li>Binary forms, ANSI text, mixed encodings, and old unit conventions</li>
+          <li>Windows messages, Win32 APIs, GDI drawing, and custom painting</li>
+          <li>Platform-specific resources, media, printing, shell, and hardware behavior</li>
+          <li>Language constructs or project settings treated differently by modern Delphi</li>
         </ul>
       </div>
     </section>
@@ -376,12 +330,9 @@
         </div>
         <ol class="workflow-list">
           <li>Preserve a complete backup of the original project.</li>
-          <li>Make sure the Pascal and form source files are available.</li>
-          <li>Run the project scan or dry-run preview.</li>
-          <li>Review component, mapping-pack, Windows API, drawing, database, and reporting findings.</li>
-          <li>Convert into a separate output folder.</li>
-          <li>Open the generated project in Delphi 12 or Delphi 13/13.1.</li>
-          <li>Compile, test, and visually compare each converted form and workflow.</li>
+          <li>Run the project scan or dry-run preview and review the reported risks.</li>
+          <li>Convert into a separate output folder and open the result in Delphi 12 or Delphi 13/13.1.</li>
+          <li>Compile, test, and visually compare the converted forms and application workflows.</li>
         </ol>
       </div>
     </section>
