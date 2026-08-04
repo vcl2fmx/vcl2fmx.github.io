@@ -4,7 +4,8 @@
 
 - Effective August 4, 2026, all project backups must be written to the `G:\` drive.
 - The `G:\` drive replaces the previously used `D:\` backup drive. Do not use `D:\` for future backups.
-- Project backup folders must continue to identify the applicable project clearly.
+- The required backup folder for this project is `G:\VCL2FMX Converter V6 Backup`.
+- Do not use differently spelled or unspaced variants of this V6 backup-folder name for future backups.
 
 ## Documentation identity
 
