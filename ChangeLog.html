@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Separate release histories for VCL2FMXConverter v5.0 Vanguard and v6.0 Navigator, including conversion, reporting, mapping-pack, validation, UI, documentation, and known-limit changes.">
+  <meta name="theme-color" content="#0757b8">
+  <link rel="canonical" href="https://vcl2fmx.github.io/ChangeLog.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VCL2FMXConverter">
+  <meta property="og:title" content="VCL2FMXConverter Change Log">
+  <meta property="og:description" content="What changed in v5.0 Vanguard and the forthcoming v6.0 Navigator release.">
+  <meta property="og:url" content="https://vcl2fmx.github.io/ChangeLog.html">
+  <meta property="og:image" content="https://vcl2fmx.github.io/assets/vcl2fmx-v6-screen.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="VCL2FMXConverter Change Log">
+  <meta name="twitter:description" content="Separate, detailed release histories for Vanguard and Navigator.">
+  <meta name="twitter:image" content="https://vcl2fmx.github.io/assets/vcl2fmx-v6-screen.png">
+  <title translate="no">Change Log | VCL2FMXConverter</title>
+  <link rel="icon" href="assets/vcl2fmx-icon.png" type="image/png">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="preconnect" href="https://cdn.gtranslate.net">
+  <link rel="preconnect" href="https://translate.google.com">
+  <link rel="preconnect" href="https://translate.googleapis.com">
+  <style>
+    .change-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 88px 0 72px;
+      background:
+        radial-gradient(circle at 84% 18%, rgba(25, 169, 212, .3), transparent 30%),
+        linear-gradient(135deg, #071f3d 0%, #063b7a 54%, #0757b8 100%);
+      color: white;
+    }
+    .change-hero::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      bottom: -210px;
+      width: 480px;
+      height: 480px;
+      border: 68px solid rgba(242, 138, 37, .15);
+      border-radius: 50%;
+    }
+    .change-hero-inner { position: relative; z-index: 1; }
+    .change-hero .eyebrow { color: #8ee6ff; }
+    .change-hero h1 { max-width: 900px; font-size: clamp(3rem, 7vw, 5.5rem); }
+    .change-hero .lede { max-width: 850px; color: #d8eafb; }
+    .release-jump { display: flex; flex-wrap: wrap; gap: 13px; }
+    .release-jump .button.secondary { border-color: white; }
+
+    .release-overview { padding: 42px 0; border-bottom: 1px solid var(--line); background: var(--mist); }
+    .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .overview-card {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: white;
+      box-shadow: 0 10px 28px rgba(16, 34, 58, .06);
+    }
+    .overview-card.current { border-top: 6px solid var(--blue); }
+    .overview-card.future { border-top: 6px solid var(--orange); }
+    .overview-card h2 { margin-bottom: 8px; font-size: clamp(1.7rem, 3vw, 2.35rem); }
+    .overview-card p { margin: 0; color: var(--muted); }
+    .release-state {
+      display: inline-block;
+      margin-bottom: 15px;
+      padding: .3rem .72rem;
+      border-radius: 999px;
+      background: #e5f5ed;
+      color: var(--success);
+      font-size: .76rem;
+      font-weight: 900;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+    .future .release-state { background: #fff1df; color: #a64e05; }
+
+    .log-release { padding: 78px 0; scroll-margin-top: 92px; }
+    .log-release.alt { background: var(--mist); }
+    .release-heading {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: end;
+      margin-bottom: 34px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+    }
+    .release-heading h2 { margin-bottom: 8px; font-size: clamp(2.35rem, 5vw, 4.3rem); }
+    .release-heading p { max-width: 790px; margin: 0; color: var(--muted); font-size: 1.08rem; }
+    .release-mark {
+      min-width: 125px;
+      padding: 12px 18px;
+      border-radius: 14px;
+      background: var(--blue);
+      color: white;
+      text-align: center;
+      font-size: 1.45rem;
+      font-weight: 950;
+      letter-spacing: -.03em;
+    }
+    .navigator .release-mark { background: var(--orange); color: #1e2630; }
+
+    .metric-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 32px; }
+    .metric {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: white;
+      text-align: center;
+      box-shadow: 0 7px 20px rgba(16, 34, 58, .04);
+    }
+    .metric strong { display: block; color: var(--blue); font-size: 1.7rem; line-height: 1.1; }
+    .navigator .metric strong { color: var(--orange-dark); }
+    .metric span { display: block; margin-top: 5px; color: var(--muted); font-size: .82rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
+
+    .log-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 19px; align-items: start; }
+    .log-card {
+      padding: 27px 28px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: white;
+      box-shadow: 0 8px 24px rgba(16, 34, 58, .05);
+    }
+    .log-card.wide { grid-column: 1 / -1; }
+    .log-card h3 { margin-bottom: 15px; color: var(--blue-dark); font-size: 1.35rem; }
+    .log-card ul { margin: 0; padding-left: 1.25rem; }
+    .log-card li { margin: .48rem 0; color: #40566e; }
+    .log-card li::marker { color: var(--orange); }
+    .log-card p { margin: 0 0 12px; color: #40566e; }
+    .log-card p:last-child { margin-bottom: 0; }
+    .log-card code { overflow-wrap: anywhere; }
+    .sub-list { margin-top: .3rem !important; }
+
+    .deferred-card {
+      border-color: #efcfaa;
+      border-left: 6px solid var(--orange);
+      background: #fff9f0;
+    }
+    .validation-card {
+      border-color: #bcd7ef;
+      border-left: 6px solid var(--blue);
+      background: linear-gradient(110deg, #eef6ff, white);
+    }
+    .release-note {
+      margin-top: 24px;
+      padding: 24px 27px;
+      border-radius: 16px;
+      background: #091a2c;
+      color: white;
+    }
+    .release-note p { margin: 0; color: #d8eafb; }
+    .release-note strong { color: white; }
+
+    .change-footer-note { padding: 56px 0; background: linear-gradient(120deg, #eaf3ff, #fff4e6); text-align: center; }
+    .change-footer-note h2 { margin-bottom: 10px; }
+    .change-footer-note p { max-width: 760px; margin: 0 auto; color: var(--muted); }
+
+    @media (max-width: 940px) {
+      .metric-strip { grid-template-columns: 1fr 1fr; }
+      .release-heading { grid-template-columns: 1fr; align-items: start; }
+      .release-mark { justify-self: start; }
+    }
+    @media (max-width: 700px) {
+      .change-hero { padding: 62px 0 54px; }
+      .overview-grid, .log-grid, .metric-strip { grid-template-columns: 1fr; }
+      .log-card.wide { grid-column: auto; }
+      .release-heading { gap: 20px; }
+      .log-card { padding: 23px; }
+    }
+    @media print {
+      .change-hero, .release-overview, .log-release, .log-release.alt, .change-footer-note { padding: 22px 0; background: white; color: black; }
+      .release-jump { display: none; }
+      .log-card, .overview-card, .metric { break-inside: avoid; box-shadow: none; }
+    }
+  </style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R67HW0Z3L"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3R67HW0Z3L');
+  </script>
+</head>
+<body>
+  <div class="gtranslate_wrapper notranslate" translate="no"></div>
+  <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"detect_browser_language":true,"wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right"}</script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+  <script src="assets/translation-selector.js" defer></script>
+  <script>
+    window.addEventListener('load', function () {
+      document.querySelector('.gtranslate_wrapper').dispatchEvent(new Event('focusin', { bubbles: true }));
+    });
+  </script>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="index.html" aria-label="VCL2FMXConverter home">
+        <img src="assets/vcl2fmx-logo.png" alt="VCL2FMXConverter">
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="index.html#features">Features</a>
+        <a href="BeforeYouPay.html">Before You Pay</a>
+        <a href="downloads.html">Downloads</a>
+        <a class="nav-cta" href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="change-hero" aria-labelledby="change-title">
+      <div class="shell change-hero-inner">
+        <p class="eyebrow">Release history</p>
+        <h1 id="change-title">VCL2FMXConverter change log</h1>
+        <p class="lede">A clear record of what changed in the current v5.0 Vanguard release and what has been completed for the forthcoming v6.0 Navigator release.</p>
+        <div class="release-jump">
+          <a class="button secondary" href="#v5">Review v5.0 Vanguard</a>
+          <a class="button orange" href="#v6">Preview v6.0 Navigator</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="release-overview" aria-label="Release status overview">
+      <div class="shell overview-grid">
+        <article class="overview-card current">
+          <span class="release-state">Current public release</span>
+          <h2 class="notranslate" translate="no">v5.0 Vanguard</h2>
+          <p>Field-tested, contract-driven, and publicly available. The final maintenance baseline was completed August 1, 2026.</p>
+        </article>
+        <article class="overview-card future">
+          <span class="release-state">Local release candidate</span>
+          <h2 class="notranslate" translate="no">v6.0 Navigator</h2>
+          <p>Completed locally and undergoing release timing review. Navigator has not replaced the public v5 release and has not been pushed to GitHub.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="log-release vanguard" id="v5" aria-labelledby="v5-title">
+      <div class="shell">
+        <header class="release-heading">
+          <div>
+            <p class="eyebrow">Current public release</p>
+            <h2 id="v5-title" class="notranslate" translate="no">VCL2FMXConverter v5.0 Vanguard</h2>
+            <p>Vanguard established the converter's mature, field-tested, contract-driven baseline and strengthened conversion behavior across real Delphi projects.</p>
+          </div>
+          <div class="release-mark notranslate" translate="no">v5.0</div>
+        </header>
+
+        <div class="metric-strip" aria-label="Vanguard release metrics">
+          <div class="metric"><strong>227</strong><span>Conversion contracts</span></div>
+          <div class="metric"><strong>Win32</strong><span>Release build</span></div>
+          <div class="metric"><strong>Win64</strong><span>Release build</span></div>
+          <div class="metric"><strong>Apache 2.0</strong><span>Open-source license</span></div>
+        </div>
+
+        <div class="log-grid">
+          <article class="log-card">
+            <h3>Contract-driven engineering</h3>
+            <ul>
+              <li>Introduced executable conversion contracts as the principal trust mechanism.</li>
+              <li>Expanded the final v5 suite to 227 expectations.</li>
+              <li>Covered Pascal rewriting, DFM conversion, project generation, reporting, uses clauses, Windows messages, graphics, data-aware controls, LiveBindings, encoding, includes, and third-party mappings.</li>
+              <li>Turned real field failures into reusable project-independent regression fixtures.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Dry-run and include analysis</h3>
+            <ul>
+              <li>Added dry-run preview without writing converted source, form, or project files.</li>
+              <li>Analyzed Delphi include files while preserving the original directives.</li>
+              <li>Copied included files to matching output locations.</li>
+              <li>Handled nested, missing, external, conditional, recursive, and UTF-8 include cases.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Pascal and project conversion</h3>
+            <ul>
+              <li>Strengthened class, record, helper, routine, attribute, overload, constructor, destructor, and parameterless-method recognition.</li>
+              <li>Corrected wrapped parameter boundaries and inline class terminators.</li>
+              <li>Improved compiler-directive, comment, string, inactive-code, and encoding protection.</li>
+              <li>Improved generated project files, unit references, conditional uses blocks, and implementation-only units.</li>
+              <li>Prevented unnecessary VCL, Winapi, and FMX unit insertion.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Windows messaging</h3>
+            <ul>
+              <li>Added category-based recognition of message APIs, message declarations, overrides, records, constants, and custom offsets.</li>
+              <li>Covered <code>SendMessage</code>, <code>PostMessage</code>, message pumps, <code>Control.Perform</code>, <code>WndProc</code>, and major message families.</li>
+              <li>Protected comments, strings, user-defined methods, and unrelated names from false positives.</li>
+              <li>Improved system-command reporting and unsupported-routine boundaries, including nested <code>try/except</code> structures.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Graphics and form fidelity</h3>
+            <ul>
+              <li>Converted common VCL and GDI drawing operations toward FMX canvas operations where reliable.</li>
+              <li>Added visual-review warnings where mechanical conversion cannot guarantee equivalence.</li>
+              <li>Improved pens, brushes, fonts, rectangles, ellipses, polygons, text drawing, image APIs, form dimensions, and integer math.</li>
+              <li>Added DFM/FMXL fidelity checks for missing events, objects, visual properties, captions, and child ordering.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Data and third-party components</h3>
+            <ul>
+              <li>Improved data-source, dataset, data-aware control, grid, navigator, lookup, and client-dataset analysis.</li>
+              <li>Expanded transparent JSON mapping packs for major third-party component families.</li>
+              <li>Added mapping-gap detection and starter mapping suggestions.</li>
+              <li>Distinguished converted, partial, report-only, and manual-review outcomes.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Reporting</h3>
+            <ul>
+              <li>Improved text and HTML reports, totals, grouping, issue locations, and recommendations.</li>
+              <li>Reduced duplicate or misleading issue counts.</li>
+              <li>Improved explanations for unsupported APIs, Windows behavior, mapping-pack decisions, unknown components, properties, and events.</li>
+              <li>Kept dry-run and normal conversion reporting consistent.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Field-test corrections</h3>
+            <ul>
+              <li>Corrected regressions found across approximately 15 real Delphi projects and repeated Carillon testing.</li>
+              <li>Recognized <code>TBitBtn</code> as a standard control with a conservative FMX substitution.</li>
+              <li>Recognized <code>TTrayIcon</code> as a platform-specific manual-review item.</li>
+              <li>Prevented database fields and application-owned forms from being classified as unknown third-party components.</li>
+              <li>Prevented SQL expressions such as <code>COUNT(*)</code> from being interpreted as Pascal comments.</li>
+              <li>Added large-unit coverage and corrected parser, tokenizer, report, and dry-run regressions.</li>
+            </ul>
+          </article>
+
+          <article class="log-card wide">
+            <h3>Documentation, website, and distribution</h3>
+            <ul>
+              <li>Added or substantially updated the User Guide, Engineering Guide, Contracts Guide, Contract System Overview, Runtime Flow, rules and component references, mapping-pack documentation, and known limits.</li>
+              <li>Prepared Apache 2.0 source distributions while excluding executables, DCUs, build output, private tools, and temporary artifacts.</li>
+              <li>Added the home and downloads pages, canonical URLs, sitemaps, analytics, Search Console verification, and automatic translation.</li>
+              <li>Protected product names from translation and added bilingual, alphabetized language labels.</li>
+            </ul>
+          </article>
+
+          <article class="log-card validation-card">
+            <h3>Validation completed</h3>
+            <ul>
+              <li>227 of 227 conversion contracts passed.</li>
+              <li>Win32 and Win64 Release builds passed.</li>
+              <li>Multiple independent static-review rounds were completed.</li>
+              <li>Real-project testing passed after confirmed regressions were corrected.</li>
+            </ul>
+          </article>
+
+          <article class="log-card deferred-card">
+            <h3>Known boundaries</h3>
+            <ul>
+              <li>Vanguard is a migration assistant, not a complete VCL-to-FMX compiler.</li>
+              <li>Windows behavior, GDI drawing, custom painting, and some media events may require redesign.</li>
+              <li>Include files are analyzed and preserved rather than fully inlined.</li>
+              <li>Full compiler-grade cross-unit resolution is incomplete.</li>
+              <li>Every generated project still requires compilation, testing, and developer review.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="log-release alt navigator" id="v6" aria-labelledby="v6-title">
+      <div class="shell">
+        <header class="release-heading">
+          <div>
+            <p class="eyebrow">Forthcoming release</p>
+            <h2 id="v6-title" class="notranslate" translate="no">VCL2FMXConverter v6.0 Navigator</h2>
+            <p>Navigator concentrates on maintainability, report integrity, designer-owned UI, mapping-pack discipline, and stronger proof that generated output behaves as intended.</p>
+          </div>
+          <div class="release-mark notranslate" translate="no">v6.0</div>
+        </header>
+
+        <div class="metric-strip" aria-label="Navigator release metrics">
+          <div class="metric"><strong>227</strong><span>Contracts passed</span></div>
+          <div class="metric"><strong>189</strong><span>Generated fixtures compiled</span></div>
+          <div class="metric"><strong>65 / 63</strong><span>Guards / acceptance</span></div>
+          <div class="metric"><strong>22 / 493</strong><span>Packs / rules</span></div>
+        </div>
+
+        <div class="log-grid">
+          <article class="log-card">
+            <h3>Navigator identity and UI</h3>
+            <ul>
+              <li>Renamed the active release from Vanguard to Navigator.</li>
+              <li>Synchronized the form caption, designer badge, source identity, project metadata, executable information, and local website.</li>
+              <li>Added a per-iteration application build number, date, and time while keeping ordinary documentation build-neutral.</li>
+              <li>Moved the dry-run control and remaining visual ownership into <code>MainForm.fmx</code>.</li>
+              <li>Removed runtime-created visual controls and runtime-painted Vanguard branding.</li>
+              <li>Corrected badge sizing, centering, Navigator color, hero-button spacing, and Help access.</li>
+              <li>Added designer-owned minimum window constraints and UI ownership guards.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Report architecture</h3>
+            <ul>
+              <li>Captured exact normalized golden outputs for representative text and HTML reports.</li>
+              <li>Added explicit checks for totals, severity, category, file, line, ordering, escaping, recommendations, and parity.</li>
+              <li>Introduced a shared internal report snapshot and stable issue identity.</li>
+              <li>Moved text rendering to <code>Converter.Reporting.Text</code>.</li>
+              <li>Moved HTML rendering to <code>Converter.Reporting.Html</code>.</li>
+              <li>Reduced the principal report procedure to approximately 552 lines while preserving normalized output.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Deterministic JSON reporting</h3>
+            <ul>
+              <li>Added <code>VCL_to_FMX_Conversion_Report.json</code>.</li>
+              <li>Established schema <code>vcl2fmx.report.v1</code>.</li>
+              <li>Added raw issues, stable identities, risk outcomes, manual-review groups, loaded packs, mapping usage, and conversion-log entries.</li>
+              <li>Distinguished detailed, dry-run-preview, and actionable informational issues.</li>
+              <li>Protected representative text, HTML, and JSON artifacts with exact normalized contracts.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Maintainability and verified cleanup</h3>
+            <ul>
+              <li>Centralized shared lexical behavior and removed duplicate string-literal stripping routines.</li>
+              <li>Reviewed dictionary comparers individually and applied case-insensitive semantics only to appropriate Delphi, vendor, component, and path keys.</li>
+              <li>Completed the E35 reachability audit.</li>
+              <li>Removed only methods proven unreferenced and unreachable through events, published members, interfaces, pointers, or RTTI.</li>
+              <li>Added permanent guards for the verified cleanup boundaries.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Parser, generator, and mapper split</h3>
+            <ul>
+              <li>Separated DFM object parsing from FMX text generation.</li>
+              <li>Established <code>Converter.Generator.FMX</code> as the FMX emission owner.</li>
+              <li>Separated static mapping catalogs into <code>Converter.Mapper.Catalog</code>.</li>
+              <li>Preserved public parser and mapper entry points.</li>
+              <li>Added delegation guards and registered extracted units in the Delphi project.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Mapping-pack discipline</h3>
+            <ul>
+              <li>Established schema <code>vcl2fmx.mapping-pack.v1</code>.</li>
+              <li>Validated 22 bundled packs containing 493 rules.</li>
+              <li>Rejected invalid schemas, semantic versions, actions, modes, classes, confidence values, pack IDs, and class collisions.</li>
+              <li>Added reusable positive and negative schema validation.</li>
+              <li>Renamed bundled packs to stable, version-neutral filenames.</li>
+              <li>Changed mapping-gap export into a complete, schema-bearing starter pack with deduplicated candidates and preserved evidence.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Isolated, trustworthy validation</h3>
+            <ul>
+              <li>Added contract-runner provenance, timestamps, SHA-256 recording, and stale-runner rejection.</li>
+              <li>Moved contracts and field regressions into unique temporary workspaces.</li>
+              <li>Prevented validation from modifying tracked fixtures or accumulating generated reports.</li>
+              <li>Parsed and validated every generated JSON report and declared auxiliary JSON artifact.</li>
+              <li>Added isolated reruns for timing-sensitive large-unit analysis without weakening its budget.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Compiled generated output</h3>
+            <ul>
+              <li>Added compiler-backed validation for every eligible generated contract fixture.</li>
+              <li>Aligned Pascal filenames, declared unit names, project references, and paired form resources in isolated staging.</li>
+              <li>Required explicit reasons for malformed, missing-dependency, dry-run, or manual-review compile exclusions.</li>
+              <li>Integrated coverage enforcement, generated compilation, and both Release architectures into the acceptance gate.</li>
+            </ul>
+          </article>
+
+          <article class="log-card wide">
+            <h3>Corrections discovered by the compiler gate</h3>
+            <ul>
+              <li>Corrected conditional uses-clause punctuation and bare implementation-unit normalization.</li>
+              <li>Added required FMX list, tree, tab, and action-list units.</li>
+              <li>Added required System UI, types, classes, and utility units.</li>
+              <li>Corrected case-sensitive DFM geometry and caption-property handling.</li>
+              <li>Corrected alpha-blend and dialog-border translations.</li>
+              <li>Corrected FMX canvas text and rectangle operations.</li>
+              <li>Corrected generated-project filenames, unit references, and form-resource alignment.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Documentation and release discipline</h3>
+            <ul>
+              <li>Updated active guides, references, Help Doc Creator content, PDFs, runtime flow, contract documentation, and application inventory.</li>
+              <li>Removed per-iteration build numbers from ordinary documentation.</li>
+              <li>Added a comprehensive post-coding release checklist.</li>
+              <li>Added repository-completeness, fork-readiness, graphics, artifact, documentation, website, and publication gates.</li>
+              <li>Added source-package content, exclusion, filename, entry-count, and SHA-256 verification.</li>
+            </ul>
+          </article>
+
+          <article class="log-card">
+            <h3>Local website preparation</h3>
+            <ul>
+              <li>Prepared Navigator branding, metadata, structured data, screenshots, and responsive image behavior.</li>
+              <li>Preserved automatic translation and protected product names.</li>
+              <li>Added the professional <code>BeforeYouPay.html</code> buyer-guidance page.</li>
+              <li>Flagged the Complete Source link for replacement with the approved v6 release archive at publication.</li>
+              <li>Kept all Navigator web work local; the public site remains v5 until release authorization.</li>
+            </ul>
+          </article>
+
+          <article class="log-card validation-card">
+            <h3>Current verified release gate</h3>
+            <ul>
+              <li>227 conversion contracts passed.</li>
+              <li>189 eligible generated fixtures compiled successfully.</li>
+              <li>38 intentional compile exclusions were documented.</li>
+              <li>65 regression guards passed.</li>
+              <li>63 release-readiness acceptance checks passed.</li>
+              <li>22 mapping packs and 493 rules validated.</li>
+              <li>Win32 and Win64 Release builds passed.</li>
+            </ul>
+          </article>
+
+          <article class="log-card deferred-card">
+            <h3>Explicitly deferred research</h3>
+            <ul>
+              <li>Full Pascal and DFM intermediate models.</li>
+              <li>Compiler-grade project-wide symbol resolution.</li>
+              <li>Edit-based Pascal generation.</li>
+              <li>Conversion-confidence scoring and visual diffing.</li>
+              <li>Replay mode and telemetry.</li>
+              <li>Bidirectional FMX-to-VCL conversion.</li>
+              <li>Automatic media-notification replacement and full include inlining.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="release-note">
+          <p><strong>Release position:</strong> Navigator remains a migration assistant, not a one-click compiler. Its principal advance is stronger evidence that automated work is maintainable, traceable, reproducible, and honestly reported.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="change-footer-note" aria-labelledby="status-title">
+      <div class="shell">
+        <p class="eyebrow">Publication status</p>
+        <h2 id="status-title">Vanguard remains the public release.</h2>
+        <p>Navigator and this change-log page remain local until the developer authorizes the complete v6 source, documentation, website, release archive, and GitHub publication sequence.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <p>&copy; 2026 VCL2FMXConverter</p>
+      <p><a href="index.html">Home</a> &middot; <a href="downloads.html">Downloads</a> &middot; Free and open-source Delphi VCL-to-FMX migration assistance</p>
+      <p>Automatic translations are machine-generated by <span class="notranslate" translate="no">GTranslate</span>; select English to view the original.</p>
+    </div>
+  </footer>
+</body>
+</html>
