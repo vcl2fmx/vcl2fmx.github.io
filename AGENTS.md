@@ -1,5 +1,11 @@
 # VCL2FMXConverter v6.0 Navigator Project Directives
 
+## Backup destination
+
+- Effective August 4, 2026, all project backups must be written to the `G:\` drive.
+- The `G:\` drive replaces the previously used `D:\` backup drive. Do not use `D:\` for future backups.
+- Project backup folders must continue to identify the applicable project clearly.
+
 ## Documentation identity
 
 - Current user-facing documentation must identify the product as `VCL2FMXConverter v6.0 Navigator`.
