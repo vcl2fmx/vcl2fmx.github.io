@@ -384,7 +384,7 @@ Compiler feedback exposed and corrected conditional uses-clause punctuation,
 bare implementation-unit normalization, missing FMX and System units,
 case-sensitive DFM property handling, VCL alpha-blend and dialog-border
 translations, and FMX-compatible canvas text and rectangle calls. The release
-gate also retains 65 regression guards, 63 acceptance checks, mapping-pack
+gate also retains 66 regression guards, 63 acceptance checks, mapping-pack
 schema validation, the French field regression, and Win32/Win64 Release builds.
 
 This iteration strengthens validation without promising compiler-grade
@@ -402,5 +402,5 @@ suite completed cleanly when rerun under isolated conditions.
 This milestone moves the main-window presentation fully into the FMX
 designer, removes runtime-created visual controls and runtime geometry, and
 adds regression enforcement for that ownership boundary. The validated release
-candidate passes 227 conversion contracts, 65 regression guards, 63 acceptance
+candidate passes 227 conversion contracts, 66 regression guards, 63 acceptance
 checks, and Win32/Win64 Release builds.

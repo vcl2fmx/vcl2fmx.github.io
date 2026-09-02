@@ -1,6 +1,6 @@
 ﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
-Version v6.0 Navigator Build 026
+Version v6.0 Navigator Build 027
  Written and built in the USA}
 
 unit MainForm;

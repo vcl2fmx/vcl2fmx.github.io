@@ -27,7 +27,7 @@ The original VCL project remains the source of truth. Generated output is writte
 - 22 schema-validated JSON mapping packs containing 493 disciplined rules
 - Mapping-gap export as a valid starter mapping pack
 - 227 executable conversion contracts, including compilation of eligible generated fixtures
-- 65 regression guards and 63 release-readiness acceptance checks
+- 66 regression guards and 63 release-readiness acceptance checks
 - Complete Navigator user and engineering guides with companion PDFs
 
 ## Requirements
