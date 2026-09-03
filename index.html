@@ -19,6 +19,76 @@
   <title translate="no">VCL2FMXConverter v6.0 Navigator | VCL-to-FMX Migration</title>
   <link rel="icon" href="assets/vcl2fmx-icon.png" type="image/png">
   <link rel="stylesheet" href="assets/site.css">
+  <style id="rtl-layout">
+    html[dir="rtl"] body {
+      direction: rtl;
+      text-align: right;
+    }
+
+    html[dir="rtl"] .site-nav,
+    html[dir="rtl"] .actions,
+    html[dir="rtl"] .tag-list,
+    html[dir="rtl"] .contact-inner,
+    html[dir="rtl"] .buyer-invitation-inner,
+    html[dir="rtl"] .footer-inner {
+      direction: rtl;
+    }
+
+    html[dir="rtl"] .section-head,
+    html[dir="rtl"] .release-card,
+    html[dir="rtl"] .notice,
+    html[dir="rtl"] .card,
+    html[dir="rtl"] .step,
+    html[dir="rtl"] .callout,
+    html[dir="rtl"] .split > div {
+      text-align: right;
+    }
+
+    html[dir="rtl"] .check-list li {
+      padding-right: 1.6rem;
+      padding-left: 0;
+    }
+
+    html[dir="rtl"] .check-list li::before {
+      right: 0;
+      left: auto;
+    }
+
+    html[dir="rtl"] .limit-list li,
+    html[dir="rtl"] .notice {
+      border-right: 4px solid var(--orange);
+      border-left: 0;
+    }
+
+    html[dir="rtl"] .notice {
+      border-right-width: 5px;
+    }
+
+    html[dir="rtl"] .notranslate,
+    html[dir="rtl"] code,
+    html[dir="rtl"] .version,
+    html[dir="rtl"] .status {
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    html[dir="rtl"] .gtranslate_wrapper a[data-gt-lang] {
+      direction: auto;
+      unicode-bidi: plaintext;
+    }
+
+    html[dir="rtl"] .skip-link {
+      right: 10px;
+      left: auto;
+      transform: translateY(-200%);
+    }
+
+    html[dir="rtl"] .skip-link:focus {
+      right: 10px;
+      left: auto;
+      transform: none;
+    }
+  </style>
   <link rel="preconnect" href="https://cdn.gtranslate.net">
   <link rel="preconnect" href="https://translate.google.com">
   <link rel="preconnect" href="https://translate.googleapis.com">
@@ -41,6 +111,84 @@
     window.addEventListener('load', function () {
       document.querySelector('.gtranslate_wrapper').dispatchEvent(new Event('focusin', { bubbles: true }));
     });
+  </script>
+  <script id="rtl-direction">
+    (function () {
+      'use strict';
+
+      var rtlLanguageCodes = new Set([
+        'ar', 'ckb', 'dv', 'fa', 'he', 'iw', 'ku', 'ps', 'sd', 'ug', 'ur', 'yi'
+      ]);
+
+      function normalizeLanguageCode(languageCode) {
+        return (languageCode || 'en').trim().replace('_', '-');
+      }
+
+      function baseLanguageCode(languageCode) {
+        return normalizeLanguageCode(languageCode).split('-')[0].toLowerCase();
+      }
+
+      function applyPageDirection(languageCode) {
+        var normalizedCode = normalizeLanguageCode(languageCode);
+        var isRightToLeft = rtlLanguageCodes.has(baseLanguageCode(normalizedCode));
+        var documentElement = document.documentElement;
+
+        documentElement.dir = isRightToLeft ? 'rtl' : 'ltr';
+        documentElement.dataset.translationDirection = isRightToLeft ? 'rtl' : 'ltr';
+        documentElement.dataset.translationLanguage = normalizedCode;
+      }
+
+      function languageFromTranslationCookie() {
+        var cookieMatch = document.cookie.match(/(?:^|;\s*)googtrans=\/[^/;]+\/([^;]+)/);
+        return cookieMatch ? decodeURIComponent(cookieMatch[1]) : '';
+      }
+
+      function selectedWidgetLanguage() {
+        var selectedLanguage = document.querySelector(
+          '.gtranslate_wrapper a[data-gt-lang][aria-current="true"], ' +
+          '.gtranslate_wrapper .gt_options a.gt-current[data-gt-lang], ' +
+          '.gtranslate_wrapper .gt-selected a[data-gt-lang], ' +
+          '.gtranslate_wrapper .gt-current-lang[data-gt-lang]'
+        );
+
+        return selectedLanguage ? selectedLanguage.dataset.gtLang : '';
+      }
+
+      function synchronizePageDirection() {
+        applyPageDirection(
+          selectedWidgetLanguage() ||
+          languageFromTranslationCookie() ||
+          document.documentElement.lang ||
+          'en'
+        );
+      }
+
+      document.addEventListener('click', function (event) {
+        var languageLink = event.target.closest('.gtranslate_wrapper a[data-gt-lang]');
+
+        if (!languageLink) {
+          return;
+        }
+
+        window.setTimeout(synchronizePageDirection, 100);
+        window.setTimeout(synchronizePageDirection, 750);
+        window.setTimeout(synchronizePageDirection, 1500);
+      });
+
+      window.addEventListener('load', function () {
+        var translationWrapper = document.querySelector('.gtranslate_wrapper');
+
+        synchronizePageDirection();
+
+        if (translationWrapper) {
+          new MutationObserver(synchronizePageDirection).observe(translationWrapper, {
+            attributes: true,
+            childList: true,
+            subtree: true
+          });
+        }
+      });
+    }());
   </script>
   <script type="application/ld+json">
   {
