@@ -77,6 +77,10 @@
       unicode-bidi: plaintext;
     }
 
+    html[dir="rtl"] body font[dir="auto"] {
+      direction: rtl;
+    }
+
     html[dir="rtl"] .skip-link {
       right: 10px;
       left: auto;
@@ -117,7 +121,7 @@
       'use strict';
 
       var rtlLanguageCodes = new Set([
-        'ar', 'ckb', 'dv', 'fa', 'he', 'iw', 'ku', 'ps', 'sd', 'ug', 'ur', 'yi'
+        'ar', 'ckb', 'dv', 'fa', 'he', 'iw', 'ps', 'sd', 'ug', 'ur', 'yi'
       ]);
 
       function normalizeLanguageCode(languageCode) {
