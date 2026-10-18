@@ -1,6 +1,6 @@
-﻿{VCL2FMX © 2026 echurchsites.wixsite.com
+{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
- Version v6.0 Navigator
+ Version v7.0 Atlas
  Written and built in the USA}
 
 unit Converter.Core.Types;
@@ -44,11 +44,15 @@ const
   VCL2FMX_MAPPING_PACK_SCHEMA = 'vcl2fmx.mapping-pack.v1';
 
 function VCL2FMXIsBuildArtifactFolder(const AFolderName: string): Boolean;
+function VCL2FMXCanonicalPath(const APath: string): string;
+procedure VCL2FMXCheckPlainDirectoryTree(const APath: string;
+  CheckOutputHardLinks: Boolean = False);
 function VCL2FMXIsValidUTF8Bytes(const Bytes: TBytes): Boolean;
 function VCL2FMXDetectTextEncoding(const AFileName: string;
   const ABuffer: TBytes = nil): TEncoding;
 function VCL2FMXTryReadTextFile(const AFileName: string; out Text: string;
   out EncodingName: string): Boolean;
+function VCL2FMXUTF8SourceText(const Text: string): string;
 function VCL2FMXIsPascalKeywordLine(const Line, Keyword: string): Boolean;
 function VCL2FMXStripCommentsForAnalysis(const Code: string;
   PreserveCompilerDirectives: Boolean = True): string;
@@ -253,6 +257,114 @@ type
 
 implementation
 
+{$WARN SYMBOL_PLATFORM OFF}
+
+uses
+  System.RegularExpressions
+  {$IFDEF MSWINDOWS}, Winapi.Windows{$ENDIF};
+
+function VCL2FMXCanonicalPath(const APath: string): string;
+{$IFDEF MSWINDOWS}
+var
+  ExistingPath, Tail, ParentPath: string;
+  Handle: THandle;
+  Required: DWORD;
+{$ENDIF}
+begin
+  if Trim(APath) = '' then
+    raise EArgumentException.Create('A source or output path is empty.');
+  Result := ExpandFileName(APath);
+  {$IFDEF MSWINDOWS}
+  ExistingPath := Result;
+  if not SameText(IncludeTrailingPathDelimiter(ExtractFileDrive(Result)), Result) then
+    ExistingPath := ExcludeTrailingPathDelimiter(Result);
+  Tail := '';
+  while not FileExists(ExistingPath) and not DirectoryExists(ExistingPath) do
+  begin
+    ParentPath := ExtractFileDir(ExistingPath);
+    if (ParentPath = '') or SameText(ParentPath, ExistingPath) then
+      raise EInOutError.Create('Cannot resolve path: ' + APath);
+    Tail := PathDelim + ExtractFileName(ExistingPath) + Tail;
+    ExistingPath := ParentPath;
+  end;
+  Handle := CreateFile(PChar(ExistingPath), 0,
+    FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE, nil,
+    OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, 0);
+  if Handle = INVALID_HANDLE_VALUE then RaiseLastOSError;
+  try
+    Required := GetFinalPathNameByHandle(Handle, nil, 0, 0);
+    if Required = 0 then RaiseLastOSError;
+    SetLength(Result, Required);
+    Required := GetFinalPathNameByHandle(Handle, PChar(Result), Length(Result), 0);
+    if Required = 0 then RaiseLastOSError;
+    if Required >= DWORD(Length(Result)) then
+      raise EInOutError.Create('Path changed while resolving: ' + APath);
+    SetLength(Result, Required);
+    if Result.StartsWith('\\?\UNC\', True) then
+      Result := '\\' + Copy(Result, 9, MaxInt)
+    else if Result.StartsWith('\\?\') then
+      Delete(Result, 1, 4);
+    if Tail <> '' then Result := ExcludeTrailingPathDelimiter(Result) + Tail;
+  finally
+    CloseHandle(Handle);
+  end;
+  {$ENDIF}
+end;
+
+procedure VCL2FMXCheckPlainDirectoryTree(const APath: string;
+  CheckOutputHardLinks: Boolean);
+var
+  Entry: TSearchRec;
+  Status: Integer;
+  Path: string;
+  {$IFDEF MSWINDOWS}
+  FileHandle: THandle;
+  FileInfo: TByHandleFileInformation;
+  {$ENDIF}
+begin
+  if not DirectoryExists(APath) then Exit;
+  Status := FindFirst(IncludeTrailingPathDelimiter(APath) + '*', faAnyFile, Entry);
+  if Status <> 0 then
+  begin
+    if (Status <> 2) and (Status <> 18) then
+      raise EInOutError.Create('Cannot enumerate directory: ' + APath);
+    Exit;
+  end;
+  try
+    repeat
+      if (Entry.Name <> '.') and (Entry.Name <> '..') then
+      begin
+        Path := TPath.Combine(APath, Entry.Name);
+        if (Entry.Attr and faSymLink) <> 0 then
+          raise EInOutError.Create('Directory links and reparse points are not supported inside conversion trees: ' + Path);
+        if (Entry.Attr and faDirectory) <> 0 then
+          VCL2FMXCheckPlainDirectoryTree(Path, CheckOutputHardLinks)
+        {$IFDEF MSWINDOWS}
+        else if CheckOutputHardLinks then
+        begin
+          FileHandle := CreateFile(PChar(Path), 0,
+            FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE, nil,
+            OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, 0);
+          if FileHandle = INVALID_HANDLE_VALUE then RaiseLastOSError;
+          try
+            if not GetFileInformationByHandle(FileHandle, FileInfo) then RaiseLastOSError;
+            if FileInfo.nNumberOfLinks > 1 then
+              raise EInOutError.Create('Output contains a hard-linked file. Select an ordinary output folder: ' + Path);
+          finally
+            CloseHandle(FileHandle);
+          end;
+        end
+        {$ENDIF};
+      end;
+      Status := FindNext(Entry);
+    until Status <> 0;
+    if Status <> 18 then
+      raise EInOutError.Create('Directory enumeration did not complete: ' + APath);
+  finally
+    System.SysUtils.FindClose(Entry);
+  end;
+end;
+
 function VCL2FMXIsBuildArtifactFolder(const AFolderName: string): Boolean;
 var
   Excluded: string;
@@ -310,6 +422,8 @@ var
   HasNulls: Boolean;
   NullAtEven: Integer;
   NullAtOdd: Integer;
+  CodePageDirective: TMatch;
+  CodePage: Integer;
 begin
   if Length(ABuffer) > 0 then
     Buffer := ABuffer
@@ -349,7 +463,7 @@ begin
   end;
 
   HasHighAscii := False;
-  for I := 0 to Min(1000, Length(Buffer) - 1) do
+  for I := 0 to High(Buffer) do
     if Buffer[I] > 127 then
     begin
       HasHighAscii := True;
@@ -358,6 +472,15 @@ begin
 
   if HasHighAscii then
   begin
+    CodePageDirective := TRegEx.Match(VCL2FMXStripStringLiteralsForAnalysis(
+      VCL2FMXStripCommentsForAnalysis(TEncoding.ASCII.GetString(Buffer))),
+      '\{\$\s*CODEPAGE\s+([0-9]+|UTF8|UTF-8)\s*\}', [roIgnoreCase]);
+    if CodePageDirective.Success then
+    begin
+      if not TryStrToInt(CodePageDirective.Groups[1].Value, CodePage) then
+        CodePage := 65001;
+      Exit(TEncoding.GetEncoding(CodePage));
+    end;
     if VCL2FMXIsValidUTF8Bytes(Buffer) then
       Exit(TEncoding.UTF8);
 
@@ -377,13 +500,9 @@ end;
 
 function VCL2FMXTryReadTextFile(const AFileName: string; out Text: string;
   out EncodingName: string): Boolean;
-const
-  FALLBACK_CODEPAGES: array[0..7] of Integer =
-    (1252, 28591, 1250, 1251, 1253, 1254, 1257, 437);
 var
   Bytes: TBytes;
   Encoding: TEncoding;
-  CodePage: Integer;
   OwnsEncoding: Boolean;
 begin
   Text := '';
@@ -417,30 +536,24 @@ begin
     EncodingName := '';
   end;
 
-  for CodePage in FALLBACK_CODEPAGES do
-  begin
-    try
-      Encoding := TEncoding.GetEncoding(CodePage);
-      try
-        Text := Encoding.GetString(Bytes);
-        if (Length(Text) > 0) and (Text[1] = #$FEFF) then
-          Delete(Text, 1, 1);
-        EncodingName := Encoding.EncodingName;
-        Exit(True);
-      finally
-        if not TEncoding.IsStandardEncoding(Encoding) then
-          Encoding.Free;
-      end;
-    except
-    end;
-  end;
+  Result := False;
+end;
 
-  try
-    Text := TEncoding.Default.GetString(Bytes);
-    EncodingName := TEncoding.Default.EncodingName;
-    Result := True;
-  except
-    Result := False;
+function VCL2FMXUTF8SourceText(const Text: string): string;
+var
+  Matches: TMatchCollection;
+  Index: Integer;
+begin
+  Result := Text;
+  if not Text.ToUpperInvariant.Contains('CODEPAGE') then Exit;
+  // Analyze with positions preserved; examples inside comments/strings are data.
+  Matches := TRegEx.Matches(VCL2FMXStripStringLiteralsForAnalysis(
+    VCL2FMXStripCommentsForAnalysis(Text)),
+    '\{\$\s*CODEPAGE\s+(?:[0-9]+|UTF8|UTF-8)\s*\}', [roIgnoreCase]);
+  for Index := Matches.Count - 1 downto 0 do
+  begin
+    Delete(Result, Matches[Index].Index, Matches[Index].Length);
+    Insert('{$CODEPAGE UTF8}', Result, Matches[Index].Index);
   end;
 end;
 

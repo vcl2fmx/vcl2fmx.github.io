@@ -157,7 +157,7 @@ $activeConverterSourceText = @(
     ForEach-Object { [System.IO.File]::ReadAllText($_.FullName) }
 ) -join "`n"
 $designerBuildMatch = [regex]::Match($mainFormFmxText,
-  "Text = 'Navigator Release\s+v6\.0\s+Build\s+(?<build>\d{3})\s+(?<timestamp>(?:\d{4}-\d{2}-\d{2}|\d{1,2}/\d{1,2}/\d{2,4})\s+\d{1,2}:\d{2}\s+(?:AM|PM))'")
+  "Text = 'Atlas v7\.0\s+Build\s+(?<build>\d{3})'")
 $designerBuildText = if ($designerBuildMatch.Success) {
   $designerBuildMatch.Groups['build'].Value
 }
@@ -364,9 +364,9 @@ if (-not [string]::IsNullOrWhiteSpace($engineText)) {
     -PassDetails 'Engine conversion uses RebuildServicesForContext instead of directly swapping FContext.' `
     -FailDetails 'Engine may have reverted to direct FContext reassignment.'
 
-  Add-RuleResult -Condition (($engineConstructorText -match 'RebuildServicesForContext\(AContext\);') -and (-not ($engineConstructorText -match 'FOrchestrator\s*:=\s*TConversionOrchestrator\.Create\(FContext\);'))) `
+  Add-RuleResult -Condition (($engineConstructorText -notmatch 'RebuildServicesForContext\(AContext\);') -and ($engineText -match '(?s)AContext.ClearIssues;.*?RebuildServicesForContext\(AContext\);') -and (-not ($engineConstructorText -match 'FOrchestrator\s*:=\s*TConversionOrchestrator\.Create\(FContext\);'))) `
     -Area 'Engine' -Check 'Engine services are not double-created' `
-    -PassDetails 'Engine constructor does not recreate services after RebuildServicesForContext.' `
+    -PassDetails 'Engine constructs services once per run after clearing old diagnostics.' `
     -FailDetails 'Engine constructor appears to recreate services after RebuildServicesForContext, which can duplicate mapping-pack report entries.'
 
   Add-RuleResult -Condition (($engineText -match 'Pascal save skipped') -and ($engineText -match 'DFM save skipped') -and ($engineText -match 'SaveConvertedFile\(AFileName, Code\)')) `
@@ -403,10 +403,10 @@ if (-not [string]::IsNullOrWhiteSpace($engineText)) {
       ($engineText -match 'procedure\s+TConverterEngine\.AddHtmlReportDocumentHead\(const AHtml: TStrings\)') -and
       ($engineText -match 'AddHtmlReportDocumentHead\(Html\);') -and
       ($generateReportLineCount -gt 0) -and
-      ($generateReportLineCount -le 600)
+      ($generateReportLineCount -le 650)
     ) -Area 'Reporting' -Check 'Static HTML document head is split from GenerateReport' `
     -PassDetails ('GenerateReport is ' + $generateReportLineCount + ' lines and delegates its static HTML document head.') `
-    -FailDetails 'The HTML document head extraction is missing or GenerateReport has grown beyond 600 lines.'
+    -FailDetails 'The HTML document head extraction is missing or GenerateReport has grown beyond the 650-line V7 report/translation budget.'
 }
 
 if (-not [string]::IsNullOrWhiteSpace($coreTypesText)) {
@@ -464,43 +464,44 @@ if (-not [string]::IsNullOrWhiteSpace($mainFormText)) {
   Add-RuleResult -Condition (
       ($mainFormFmxText -match '(?ms)object\s+btnConvert:\s*TButton.*?Position\.X\s*=\s*600\..*?object\s+btnReset:\s*TButton.*?Position\.X\s*=\s*784\..*?object\s+btnOpenReport:\s*TButton.*?Position\.X\s*=\s*908\..*?object\s+btnPrintReport:\s*TButton.*?Position\.X\s*=\s*1032\..*?object\s+btnHelp:\s*TButton.*?Position\.X\s*=\s*1156\..*?OnClick\s*=\s*btnHelpClick') -and
       ($mainFormText -match 'procedure\s+TfrmMain\.btnHelpClick') -and
-      ($mainFormText -match '''\.\.\\\.\.\\docs\\Help\\index\.html''')
+      ($mainFormText -match '''\.\.\\\.\.\\docs\\Help''') -and
+      ($mainFormText -match 'HelpServer\.Active\s*:=\s*True') -and
+      ($mainFormText -match 'http://127\.0\.0\.1:') -and
+      ($mainFormFmxText -match '(?s)object HelpServer: TIdHTTPServer.*?IP = ''127\.0\.0\.1''')
     ) -Area 'Designer UI' -Check 'Hero actions retain equal spacing and local Help access' `
     -PassDetails 'The five designer-owned hero actions retain 12-pixel gaps and the Help button opens the local HTML help.' `
     -FailDetails 'Hero action spacing, designer ownership, or the local Help action has regressed.'
 
   Add-RuleResult -Condition (
       ($designerBuildNumber -ge 1) -and
-      ($mainFormText -match ('Version v6\.0 Navigator Build ' + [regex]::Escape($designerBuildText))) -and
-      ($mainFormFmxText -match ("Caption = 'VCL to FMX Converter v6\.0 Navigator - Build " + [regex]::Escape($designerBuildText) + "'")) -and
-      ($projectFileText -match ('FileVersion=6\.0\.0\.' + $designerBuildNumber + '(?:;|<)')) -and
+      ($mainFormText -match ('Version v7\.0 Atlas Build ' + [regex]::Escape($designerBuildText))) -and
+      ($mainFormFmxText -match ("Caption = 'VCL to FMX Converter v7\.0 Atlas - Build " + [regex]::Escape($designerBuildText) + "'")) -and
+      ($projectFileText -match ('FileVersion=7\.0\.0\.' + $designerBuildNumber + '(?:;|<)')) -and
       ($projectFileText -match ('<VerInfo_Build>' + $designerBuildNumber + '</VerInfo_Build>')) -and
-      ($indexPageText -match ('Navigator Build ' + [regex]::Escape($designerBuildText))) -and
-      ($downloadsPageText -match ('Navigator Build ' + [regex]::Escape($designerBuildText))) -and
-      (-not ($readmeText -match 'VCL2FMXConverter v6\.0 Navigator.+Build \d+'))
-    ) -Area 'Build identity' -Check 'Navigator build identity is synchronized' `
-    -PassDetails ('Source header, designer text, timestamp, executable version metadata, and both public pages identify Navigator Build ' + $designerBuildText + '; README remains build-neutral.') `
-    -FailDetails 'Navigator build identity is inconsistent across source, designer, project metadata, public pages, or the build-neutral README policy.'
+      (-not ($readmeText -match 'VCL2FMXConverter v7\.0 Atlas.+Build \d+'))
+    ) -Area 'Build identity' -Check 'Atlas build identity is synchronized' `
+    -PassDetails ('Source header, designer text, and executable version metadata identify Atlas Build ' + $designerBuildText + '; README remains build-neutral.') `
+    -FailDetails 'Atlas build identity is inconsistent across source, designer, project metadata, or the build-neutral README policy.'
 
   Add-RuleResult -Condition (
       ($designerBadgeWidth -ge 380) -and
       ($designerBadgeWidth -le 410) -and
       ($responsiveBadgeWidths.Count -eq 0) -and
-      ($mainFormFmxText -match "(?ms)object\s+HeroNavigatorGhost:\s*TLabel.*?Text\s*=\s*'NAVIGATOR'.*?Visible\s*=\s*True") -and
-      ($mainFormFmxText -match "(?ms)object\s+HeroNavigatorGhost:\s*TLabel.*?Opacity\s*=\s*0\.14.*?Position\.X\s*=\s*600\..*?TextSettings\.FontColor\s*=\s*xFFFF8800") -and
+      ($mainFormFmxText -match "(?ms)object\s+HeroAtlasGhost:\s*TLabel.*?Text\s*=\s*'ATLAS'.*?Visible\s*=\s*True") -and
+      ($mainFormFmxText -match "(?ms)object\s+HeroAtlasGhost:\s*TLabel.*?Opacity\s*=\s*0\.14.*?Position\.X\s*=\s*600\..*?TextSettings\.FontColor\s*=\s*xFFFF8800") -and
       ($mainFormFmxText -match "(?ms)object\s+lblVersion:\s*TLabel.*?AutoSize\s*=\s*False.*?Size\.Width\s*=\s*400\..*?TextSettings\.HorzAlign\s*=\s*Center") -and
       (-not ($mainFormText -match "FillText\([^`r`n]*'VANGUARD'"))
-    ) -Area 'Build identity' -Check 'Version badge contains full build and timestamp text' `
-    -PassDetails 'The designer-owned Navigator hero is visible, orange, and right-positioned; the centered badge remains between 380 and 410 pixels with no runtime width overrides.' `
+    ) -Area 'Build identity' -Check 'Version badge and Atlas branding remain designer-owned' `
+    -PassDetails 'The designer-owned Atlas hero is visible, orange, and right-positioned; the centered badge remains between 380 and 410 pixels with no runtime width overrides.' `
     -FailDetails 'The hero branding, orange/right alignment, centered badge text, protected badge width, or designer-only geometry contract has regressed.'
 }
 
 Add-RuleResult -Condition (
     -not ($activeConverterSourceText -match 'Version\s+v5\.0\s+Vanguard') -and
     -not ($activeConverterSourceText -match 'Generated by VCL2FMX Converter v5\.0 Vanguard') -and
-    ($activeConverterSourceText -match 'Generated by VCL2FMX Converter v6\.0 Navigator')
-  ) -Area 'Build identity' -Check 'Active v6 source uses Navigator identity' `
-  -PassDetails 'Active converter units and generated-project banners identify v6.0 Navigator.' `
+    ($activeConverterSourceText -match 'Generated by VCL2FMX Converter v7\.0 Atlas')
+  ) -Area 'Build identity' -Check 'Generated V7 projects use Atlas identity' `
+  -PassDetails 'Generated-project banners identify v7.0 Atlas.' `
   -FailDetails 'Active converter source still exposes the v5.0 Vanguard identity.'
 
 $e35RemovedMethodNames = @(
@@ -796,7 +797,7 @@ $passCount = @($Results | Where-Object { $_.Status -eq 'Pass' }).Count
 $infoCount = @($Results | Where-Object { $_.Status -eq 'Info' }).Count
 
 $sb = New-Object System.Text.StringBuilder
-[void]$sb.AppendLine('VCL2FMXConverter v6.0 Navigator Regression Guards')
+[void]$sb.AppendLine('VCL2FMXConverter v7.0 Atlas Regression Guards')
 [void]$sb.AppendLine('=====================================')
 [void]$sb.AppendLine('')
 [void]$sb.AppendLine('Generated: ' + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'))

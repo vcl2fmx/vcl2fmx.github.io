@@ -1,6 +1,6 @@
 ﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
- Version v6.0 Navigator
+ Version v7.0 Atlas
  Written and built in the USA}
 
 unit Converter.Mapper.Catalog;
@@ -19,6 +19,54 @@ procedure PopulateFMXComponentCatalog(
 
 implementation
 
+
+resourcestring
+  SDisplayMappingTypeDirect = 'Direct';
+  SDisplayMappingTypeSubstitute = 'Substitute';
+  SDisplayMappingTypeUnmapped = 'Unmapped';
+
+resourcestring
+  SDisplayRootFormsAreConvertedThroughDedicatedParser = 'Root forms are converted through dedicated parser rules; this row keeps form properties and events explicit in the mapping matrix.';
+  SDisplayFmxFramesAreAvailableAndShouldBe = 'FMX frames are available and should be treated as first-class matrix entries.';
+  SDisplayUseFmxTeditAndReviewEditmaskBehavior = 'Use FMX TEdit and review EditMask behavior manually.';
+  SDisplayStaticTextConvertsCleanlyToAnFmx = 'Static text converts cleanly to an FMX label.';
+  SDisplayPreserveVisualFmxPanelSemanticsForContainer = 'Preserve visual FMX panel semantics for container controls';
+  SDisplayPreserveVisualFmxGroupBoxSemanticsAnd = 'Preserve visual FMX group box semantics and caption handling';
+  SDisplayUseFmxTflowlayoutAsTheClosestStandard = 'Use FMX TFlowLayout as the closest standard flow container.';
+  SDisplayUseFmxTgridpanellayoutAsTheClosestStandard = 'Use FMX TGridPanelLayout as the closest standard grid layout container.';
+  SDisplayItemObjectsNeedConversion = 'Item objects need conversion';
+  SDisplayUseFmxTlistboxAndReviewCheckedItem = 'Use FMX TListBox and review checked-item behavior manually.';
+  SDisplayUseLivebindingsWithFmxTlistboxAndReview = 'Use LiveBindings with FMX TListBox and review lookup/list-source behavior manually.';
+  SDisplayFmxTnumberboxIsAvailableInFmxNumberbox = 'FMX TNumberBox is available in FMX.NumberBox';
+  SDisplayFmxTspinboxIsAvailableInFmxSpinbox = 'FMX TSpinBox is available in FMX.SpinBox';
+  SDisplayFmxColorSelectionEquivalentIsTcolorcomboboxIn = 'FMX color-selection equivalent is TColorComboBox in FMX.Colors';
+  SDisplayUseFmxTmemoAndReviewRichText = 'Use FMX TMemo and review rich-text formatting behavior manually.';
+  SDisplayFmxTpaintboxIsAvailableInFmxObjects = 'FMX TPaintBox is available in FMX.Objects';
+  SDisplayDataModelCompletelyDifferentRequiresLivebindings = 'Data model completely different - requires LiveBindings';
+  SDisplayUseLivebindingsToConnectToDataSource = 'Use LiveBindings to connect to data source';
+  SDisplayMajorArchitecturalDifferenceRequiresLivebindingsCompletely = 'Major architectural difference - requires LiveBindings completely';
+  SDisplayUseFmxTstringgridAndReviewCustomDrawing = 'Use FMX TStringGrid and review custom drawing/cell rendering manually.';
+  SDisplayMajorStructuralDifferenceRequiresLivebindingsAndManual = 'Major structural difference - requires LiveBindings and manual layout review.';
+  SDisplayUseFmxLivebindingsNavigatorWithGeneratedTbindsourcedb = 'Use FMX LiveBindings navigator with generated TBindSourceDB hookup';
+  SDisplayUseFmxTopendialogAsTheClosestStandard = 'Use FMX TOpenDialog as the closest standard substitute';
+  SDisplayUseFmxTsavedialogAsTheClosestStandard = 'Use FMX TSaveDialog as the closest standard substitute.';
+  SDisplayGeneratedCompatibilityDialogWithAStreamedFont = 'Generated compatibility dialog with a streamed Font property and Execute support';
+  SDisplayGeneratedCompatibilityGroupThatRebuildsInternalFmx = 'Generated compatibility group that rebuilds internal FMX radio buttons from Items';
+  SDisplayHyperlinkBehaviorRequiresManualReviewButThe = 'Hyperlink behavior requires manual review, but the visual text target is an FMX label.';
+  SDisplayNoStandardFmxTrayIconComponentRequires = 'No standard FMX tray icon component - requires platform-specific code';
+  SDisplayThirdPartySerialCommunicationsComponentRequiresA = 'Third-party serial communications component - requires a custom FMX/WinAPI replacement';
+  SDisplayGeneratedCompatibilityDialogWithAColorProperty = 'Generated compatibility dialog with a Color property and Execute support';
+  SDisplayUseTrectangleWithAppropriateFillAndStroke = 'Use TRectangle with appropriate Fill and Stroke';
+  SDisplayUseTbuttonWithImagesProperty = 'Use TButton with Images property';
+  SDisplayCreateTlayoutWithTlabelAndTedit = 'Create TLayout with TLabel and TEdit';
+  SDisplayComplexRequiresCustomGridImplementation = 'Complex - requires custom grid implementation';
+  SDisplayRequiresTmsFmxChartOrSimilarThird = 'Requires TMS FMX Chart or similar third-party component';
+  SDisplayNoStandardFmxTaskDialogComponentRequires = 'No standard FMX task dialog component - requires a custom dialog implementation.';
+  SDisplayDatasetComponentRequiresManualReviewPreserveOnly = 'Dataset component requires manual review; preserve only if the target platform and supporting units are appropriate.';
+  SDisplayLegacyQueryComponentRequiresManualReviewOr = 'Legacy query component requires manual review or replacement.';
+  SDisplayWindowsSpecificAdoDatasetRequiresManualReview = 'Windows-specific ADO dataset requires manual review for FMX targets.';
+  SDisplayDbexpressDatasetRequiresManualReviewForFmx = 'dbExpress dataset requires manual review for FMX targets.';
+
 procedure PopulateBuiltInMappings(AMappingDatabase: TObjectList<TComponentMapping>);
 var
   Mapping: TComponentMapping;
@@ -29,9 +77,9 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TForm';
   Mapping.FMXClassName := 'TForm';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 100;
-  Mapping.Notes := 'Root forms are converted through dedicated parser rules; this row keeps form properties and events explicit in the mapping matrix.';
+  Mapping.Notes := SDisplayRootFormsAreConvertedThroughDedicatedParser;
 
   PropMap.VCLProp := 'Caption';
   PropMap.FMXProp := 'Caption';
@@ -71,15 +119,15 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TFrame';
   Mapping.FMXClassName := 'TFrame';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 95;
-  Mapping.Notes := 'FMX frames are available and should be treated as first-class matrix entries.';
+  Mapping.Notes := SDisplayFmxFramesAreAvailableAndShouldBe;
   AMappingDatabase.Add(Mapping);
 
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TButton';
   Mapping.FMXClassName := 'TButton';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 100;
 
   PropMap.VCLProp := 'Caption';
@@ -105,7 +153,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TEdit';
   Mapping.FMXClassName := 'TEdit';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 100;
 
   PropMap.VCLProp := 'Text';
@@ -157,9 +205,9 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TMaskEdit';
   Mapping.FMXClassName := 'TEdit';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 80;
-  Mapping.Notes := 'Use FMX TEdit and review EditMask behavior manually.';
+  Mapping.Notes := SDisplayUseFmxTeditAndReviewEditmaskBehavior;
 
   PropMap.VCLProp := 'Text';
   PropMap.FMXProp := 'Text';
@@ -196,7 +244,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TLabel';
   Mapping.FMXClassName := 'TLabel';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 100;
 
   PropMap.VCLProp := 'Caption';
@@ -217,9 +265,9 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TStaticText';
   Mapping.FMXClassName := 'TLabel';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 90;
-  Mapping.Notes := 'Static text converts cleanly to an FMX label.';
+  Mapping.Notes := SDisplayStaticTextConvertsCleanlyToAnFmx;
 
   PropMap.VCLProp := 'Caption';
   PropMap.FMXProp := 'Text';
@@ -233,18 +281,18 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TPanel';
   Mapping.FMXClassName := 'TPanel';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 95;
-  Mapping.Notes := 'Preserve visual FMX panel semantics for container controls';
+  Mapping.Notes := SDisplayPreserveVisualFmxPanelSemanticsForContainer;
   AMappingDatabase.Add(Mapping);
 
   // TGroupBox -> TGroupBox
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TGroupBox';
   Mapping.FMXClassName := 'TGroupBox';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 95;
-  Mapping.Notes := 'Preserve visual FMX group box semantics and caption handling';
+  Mapping.Notes := SDisplayPreserveVisualFmxGroupBoxSemanticsAnd;
 
   PropMap.VCLProp := 'Caption';
   PropMap.FMXProp := 'Text';
@@ -258,25 +306,25 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TFlowPanel';
   Mapping.FMXClassName := 'TFlowLayout';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 85;
-  Mapping.Notes := 'Use FMX TFlowLayout as the closest standard flow container.';
+  Mapping.Notes := SDisplayUseFmxTflowlayoutAsTheClosestStandard;
   AMappingDatabase.Add(Mapping);
 
   // TGridPanel -> TGridPanelLayout
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TGridPanel';
   Mapping.FMXClassName := 'TGridPanelLayout';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 85;
-  Mapping.Notes := 'Use FMX TGridPanelLayout as the closest standard grid layout container.';
+  Mapping.Notes := SDisplayUseFmxTgridpanellayoutAsTheClosestStandard;
   AMappingDatabase.Add(Mapping);
 
   // TCheckBox mapping
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TCheckBox';
   Mapping.FMXClassName := 'TCheckBox';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 100;
 
   PropMap.VCLProp := 'Caption';
@@ -302,7 +350,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TRadioButton';
   Mapping.FMXClassName := 'TRadioButton';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 100;
 
   PropMap.VCLProp := 'Caption';
@@ -328,9 +376,9 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TListBox';
   Mapping.FMXClassName := 'TListBox';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 90;
-  Mapping.Notes := 'Item objects need conversion';
+  Mapping.Notes := SDisplayItemObjectsNeedConversion;
 
   PropMap.VCLProp := 'Items';
   PropMap.FMXProp := 'Items';
@@ -360,9 +408,9 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TCheckListBox';
   Mapping.FMXClassName := 'TListBox';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 70;
-  Mapping.Notes := 'Use FMX TListBox and review checked-item behavior manually.';
+  Mapping.Notes := SDisplayUseFmxTlistboxAndReviewCheckedItem;
 
   PropMap.VCLProp := 'Items';
   PropMap.FMXProp := 'Items';
@@ -382,16 +430,16 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TDBListBox';
   Mapping.FMXClassName := 'TListBox';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 60;
-  Mapping.Notes := 'Use LiveBindings with FMX TListBox and review lookup/list-source behavior manually.';
+  Mapping.Notes := SDisplayUseLivebindingsWithFmxTlistboxAndReview;
   AMappingDatabase.Add(Mapping);
 
   // TComboBox mapping
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TComboBox';
   Mapping.FMXClassName := 'TComboBox';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 90;
 
   PropMap.VCLProp := 'Text';
@@ -454,9 +502,9 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TNumberBox';
   Mapping.FMXClassName := 'TNumberBox';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 95;
-  Mapping.Notes := 'FMX TNumberBox is available in FMX.NumberBox';
+  Mapping.Notes := SDisplayFmxTnumberboxIsAvailableInFmxNumberbox;
 
   PropMap.VCLProp := 'MinValue';
   PropMap.FMXProp := 'Min';
@@ -482,9 +530,9 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TSpinEdit';
   Mapping.FMXClassName := 'TSpinBox';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 90;
-  Mapping.Notes := 'FMX TSpinBox is available in FMX.SpinBox';
+  Mapping.Notes := SDisplayFmxTspinboxIsAvailableInFmxSpinbox;
 
   PropMap.VCLProp := 'MinValue';
   PropMap.FMXProp := 'Min';
@@ -510,16 +558,16 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TColorBox';
   Mapping.FMXClassName := 'TColorComboBox';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 85;
-  Mapping.Notes := 'FMX color-selection equivalent is TColorComboBox in FMX.Colors';
+  Mapping.Notes := SDisplayFmxColorSelectionEquivalentIsTcolorcomboboxIn;
   AMappingDatabase.Add(Mapping);
 
   // TMemo mapping
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TMemo';
   Mapping.FMXClassName := 'TMemo';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 90;
 
   PropMap.VCLProp := 'Lines';
@@ -561,9 +609,9 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TRichEdit';
   Mapping.FMXClassName := 'TMemo';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 75;
-  Mapping.Notes := 'Use FMX TMemo and review rich-text formatting behavior manually.';
+  Mapping.Notes := SDisplayUseFmxTmemoAndReviewRichText;
 
   PropMap.VCLProp := 'Lines';
   PropMap.FMXProp := 'Lines';
@@ -589,16 +637,16 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TPaintBox';
   Mapping.FMXClassName := 'TPaintBox';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 90;
-  Mapping.Notes := 'FMX TPaintBox is available in FMX.Objects';
+  Mapping.Notes := SDisplayFmxTpaintboxIsAvailableInFmxObjects;
   AMappingDatabase.Add(Mapping);
 
   // TImage mapping
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TImage';
   Mapping.FMXClassName := 'TImage';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 80;
 
   PropMap.VCLProp := 'Picture';
@@ -613,7 +661,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TPageControl';
   Mapping.FMXClassName := 'TTabControl';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 85;
   AMappingDatabase.Add(Mapping);
 
@@ -621,7 +669,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TTabSheet';
   Mapping.FMXClassName := 'TTabItem';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 90;
   AMappingDatabase.Add(Mapping);
 
@@ -629,7 +677,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TScrollBox';
   Mapping.FMXClassName := 'TScrollBox';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 90;
   AMappingDatabase.Add(Mapping);
 
@@ -637,79 +685,79 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TStringGrid';
   Mapping.FMXClassName := 'TStringGrid';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 70;
-  Mapping.Notes := 'Data model completely different - requires LiveBindings';
+  Mapping.Notes := SDisplayDataModelCompletelyDifferentRequiresLivebindings;
   AMappingDatabase.Add(Mapping);
 
   // TDBEdit -> TEdit (with LiveBindings)
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TDBEdit';
   Mapping.FMXClassName := 'TEdit';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 60;
-  Mapping.Notes := 'Use LiveBindings to connect to data source';
+  Mapping.Notes := SDisplayUseLivebindingsToConnectToDataSource;
   AMappingDatabase.Add(Mapping);
 
   // TDBCheckBox -> TCheckBox (with LiveBindings)
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TDBCheckBox';
   Mapping.FMXClassName := 'TCheckBox';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 55;
-  Mapping.Notes := 'Use LiveBindings to connect to data source';
+  Mapping.Notes := SDisplayUseLivebindingsToConnectToDataSource;
   AMappingDatabase.Add(Mapping);
 
   // TDBComboBox -> TComboEdit (with LiveBindings)
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TDBComboBox';
   Mapping.FMXClassName := 'TComboEdit';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 50;
-  Mapping.Notes := 'Use LiveBindings to connect to data source';
+  Mapping.Notes := SDisplayUseLivebindingsToConnectToDataSource;
   AMappingDatabase.Add(Mapping);
 
   // TDBGrid -> TStringGrid
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TDBGrid';
   Mapping.FMXClassName := 'TStringGrid';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 50;
-  Mapping.Notes := 'Major architectural difference - requires LiveBindings completely';
+  Mapping.Notes := SDisplayMajorArchitecturalDifferenceRequiresLivebindingsCompletely;
   AMappingDatabase.Add(Mapping);
 
   // TDrawGrid -> TStringGrid
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TDrawGrid';
   Mapping.FMXClassName := 'TStringGrid';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 55;
-  Mapping.Notes := 'Use FMX TStringGrid and review custom drawing/cell rendering manually.';
+  Mapping.Notes := SDisplayUseFmxTstringgridAndReviewCustomDrawing;
   AMappingDatabase.Add(Mapping);
 
   // TDBCtrlGrid -> TStringGrid
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TDBCtrlGrid';
   Mapping.FMXClassName := 'TStringGrid';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 45;
-  Mapping.Notes := 'Major structural difference - requires LiveBindings and manual layout review.';
+  Mapping.Notes := SDisplayMajorStructuralDifferenceRequiresLivebindingsAndManual;
   AMappingDatabase.Add(Mapping);
 
   // TDBNavigator -> TBindNavigator
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TDBNavigator';
   Mapping.FMXClassName := 'TBindNavigator';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 85;
-  Mapping.Notes := 'Use FMX LiveBindings navigator with generated TBindSourceDB hookup';
+  Mapping.Notes := SDisplayUseFmxLivebindingsNavigatorWithGeneratedTbindsourcedb;
   AMappingDatabase.Add(Mapping);
 
   // TMainMenu -> TMenuBar
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TMainMenu';
   Mapping.FMXClassName := 'TMenuBar';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 85;
   AMappingDatabase.Add(Mapping);
 
@@ -717,7 +765,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TMenuItem';
   Mapping.FMXClassName := 'TMenuItem';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 95;
   AMappingDatabase.Add(Mapping);
 
@@ -725,7 +773,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TPopupMenu';
   Mapping.FMXClassName := 'TPopupMenu';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 90;
   AMappingDatabase.Add(Mapping);
 
@@ -733,7 +781,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TTimer';
   Mapping.FMXClassName := 'TTimer';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 100;
 
   EventMap.VCLEvent := 'OnTimer';
@@ -747,7 +795,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TOpenDialog';
   Mapping.FMXClassName := 'TOpenDialog';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 90;
 
   PropMap.VCLProp := 'FileName';
@@ -786,16 +834,16 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TFileOpenDialog';
   Mapping.FMXClassName := 'TOpenDialog';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 60;
-  Mapping.Notes := 'Use FMX TOpenDialog as the closest standard substitute';
+  Mapping.Notes := SDisplayUseFmxTopendialogAsTheClosestStandard;
   AMappingDatabase.Add(Mapping);
 
   // TSaveDialog -> TSaveDialog
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TSaveDialog';
   Mapping.FMXClassName := 'TSaveDialog';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 90;
 
   PropMap.VCLProp := 'FileName';
@@ -834,9 +882,9 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TFileSaveDialog';
   Mapping.FMXClassName := 'TSaveDialog';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 65;
-  Mapping.Notes := 'Use FMX TSaveDialog as the closest standard substitute.';
+  Mapping.Notes := SDisplayUseFmxTsavedialogAsTheClosestStandard;
 
   PropMap.VCLProp := 'FileName';
   PropMap.FMXProp := 'FileName';
@@ -868,18 +916,18 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TFontDialog';
   Mapping.FMXClassName := 'TFontDialog';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 70;
-  Mapping.Notes := 'Generated compatibility dialog with a streamed Font property and Execute support';
+  Mapping.Notes := SDisplayGeneratedCompatibilityDialogWithAStreamedFont;
   AMappingDatabase.Add(Mapping);
 
   // TRadioGroup -> generated compatibility class
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TRadioGroup';
   Mapping.FMXClassName := 'TRadioGroup';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 75;
-  Mapping.Notes := 'Generated compatibility group that rebuilds internal FMX radio buttons from Items';
+  Mapping.Notes := SDisplayGeneratedCompatibilityGroupThatRebuildsInternalFmx;
 
   PropMap.VCLProp := 'Items';
   PropMap.FMXProp := 'Items';
@@ -899,9 +947,9 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TLinkLabel';
   Mapping.FMXClassName := 'TLabel';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 65;
-  Mapping.Notes := 'Hyperlink behavior requires manual review, but the visual text target is an FMX label.';
+  Mapping.Notes := SDisplayHyperlinkBehaviorRequiresManualReviewButThe;
 
   PropMap.VCLProp := 'Caption';
   PropMap.FMXProp := 'Text';
@@ -915,34 +963,34 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TTrayIcon';
   Mapping.FMXClassName := '';
-  Mapping.MappingType := 'Unmapped';
+  Mapping.MappingType := SDisplayMappingTypeUnmapped;
   Mapping.Confidence := 0;
-  Mapping.Notes := 'No standard FMX tray icon component - requires platform-specific code';
+  Mapping.Notes := SDisplayNoStandardFmxTrayIconComponentRequires;
   AMappingDatabase.Add(Mapping);
 
   // TApdComPort -> third-party serial component with no generic FMX equivalent
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TApdComPort';
   Mapping.FMXClassName := '';
-  Mapping.MappingType := 'Unmapped';
+  Mapping.MappingType := SDisplayMappingTypeUnmapped;
   Mapping.Confidence := 0;
-  Mapping.Notes := 'Third-party serial communications component - requires a custom FMX/WinAPI replacement';
+  Mapping.Notes := SDisplayThirdPartySerialCommunicationsComponentRequiresA;
   AMappingDatabase.Add(Mapping);
 
   // TColorDialog -> generated compatibility class
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TColorDialog';
   Mapping.FMXClassName := 'TColorDialog';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 70;
-  Mapping.Notes := 'Generated compatibility dialog with a Color property and Execute support';
+  Mapping.Notes := SDisplayGeneratedCompatibilityDialogWithAColorProperty;
   AMappingDatabase.Add(Mapping);
 
   // TActionList -> TActionList
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TActionList';
   Mapping.FMXClassName := 'TActionList';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 95;
   AMappingDatabase.Add(Mapping);
 
@@ -950,7 +998,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TAction';
   Mapping.FMXClassName := 'TAction';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 95;
   AMappingDatabase.Add(Mapping);
 
@@ -958,7 +1006,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TImageList';
   Mapping.FMXClassName := 'TImageList';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 80;
   AMappingDatabase.Add(Mapping);
 
@@ -966,7 +1014,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TSplitter';
   Mapping.FMXClassName := 'TSplitter';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 90;
   AMappingDatabase.Add(Mapping);
 
@@ -974,7 +1022,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TStatusBar';
   Mapping.FMXClassName := 'TStatusBar';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 80;
   AMappingDatabase.Add(Mapping);
 
@@ -982,7 +1030,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TToolBar';
   Mapping.FMXClassName := 'TToolBar';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 85;
   AMappingDatabase.Add(Mapping);
 
@@ -990,7 +1038,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TProgressBar';
   Mapping.FMXClassName := 'TProgressBar';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 95;
 
   PropMap.VCLProp := 'Position';
@@ -1005,7 +1053,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TTrackBar';
   Mapping.FMXClassName := 'TTrackBar';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 95;
 
   PropMap.VCLProp := 'Position';
@@ -1020,7 +1068,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TUpDown';
   Mapping.FMXClassName := 'TSpinBox';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 70;
 
   PropMap.VCLProp := 'Position';
@@ -1047,7 +1095,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TDateTimePicker';
   Mapping.FMXClassName := 'TDateEdit';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 75;
 
   PropMap.VCLProp := 'Date';
@@ -1101,7 +1149,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TMonthCalendar';
   Mapping.FMXClassName := 'TCalendar';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 80;
 
   PropMap.VCLProp := 'Date';
@@ -1116,7 +1164,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TTreeView';
   Mapping.FMXClassName := 'TTreeView';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 85;
   AMappingDatabase.Add(Mapping);
 
@@ -1124,7 +1172,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TListView';
   Mapping.FMXClassName := 'TListView';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 80;
   AMappingDatabase.Add(Mapping);
 
@@ -1132,7 +1180,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TWebBrowser';
   Mapping.FMXClassName := 'TWebBrowser';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 80;
   AMappingDatabase.Add(Mapping);
 
@@ -1140,7 +1188,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TShape';
   Mapping.FMXClassName := 'TShape';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 70;
 
   PropMap.VCLProp := 'Brush';
@@ -1161,16 +1209,16 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TBevel';
   Mapping.FMXClassName := 'TRectangle';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 60;
-  Mapping.Notes := 'Use TRectangle with appropriate Fill and Stroke';
+  Mapping.Notes := SDisplayUseTrectangleWithAppropriateFillAndStroke;
   AMappingDatabase.Add(Mapping);
 
   // TScrollBar -> TScrollBar
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TScrollBar';
   Mapping.FMXClassName := 'TScrollBar';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 85;
   AMappingDatabase.Add(Mapping);
 
@@ -1178,7 +1226,7 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TSpeedButton';
   Mapping.FMXClassName := 'TSpeedButton';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 85;
   AMappingDatabase.Add(Mapping);
 
@@ -1186,85 +1234,85 @@ begin
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TBitBtn';
   Mapping.FMXClassName := 'TButton';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 75;
-  Mapping.Notes := 'Use TButton with Images property';
+  Mapping.Notes := SDisplayUseTbuttonWithImagesProperty;
   AMappingDatabase.Add(Mapping);
 
   // TLabeledEdit -> TLayout + TEdit
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TLabeledEdit';
   Mapping.FMXClassName := '';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 65;
-  Mapping.Notes := 'Create TLayout with TLabel and TEdit';
+  Mapping.Notes := SDisplayCreateTlayoutWithTlabelAndTedit;
   AMappingDatabase.Add(Mapping);
 
   // TValueListEditor -> TGrid
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TValueListEditor';
   Mapping.FMXClassName := 'TGrid';
-  Mapping.MappingType := 'Substitute';
+  Mapping.MappingType := SDisplayMappingTypeSubstitute;
   Mapping.Confidence := 50;
-  Mapping.Notes := 'Complex - requires custom grid implementation';
+  Mapping.Notes := SDisplayComplexRequiresCustomGridImplementation;
   AMappingDatabase.Add(Mapping);
 
   // TChart -> Not available in standard FMX
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TChart';
   Mapping.FMXClassName := '';
-  Mapping.MappingType := 'Unmapped';
+  Mapping.MappingType := SDisplayMappingTypeUnmapped;
   Mapping.Confidence := 0;
-  Mapping.Notes := 'Requires TMS FMX Chart or similar third-party component';
+  Mapping.Notes := SDisplayRequiresTmsFmxChartOrSimilarThird;
   AMappingDatabase.Add(Mapping);
 
   // TTaskDialog -> no standard FMX equivalent
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TTaskDialog';
   Mapping.FMXClassName := '';
-  Mapping.MappingType := 'Unmapped';
+  Mapping.MappingType := SDisplayMappingTypeUnmapped;
   Mapping.Confidence := 0;
-  Mapping.Notes := 'No standard FMX task dialog component - requires a custom dialog implementation.';
+  Mapping.Notes := SDisplayNoStandardFmxTaskDialogComponentRequires;
   AMappingDatabase.Add(Mapping);
 
   // Explicit dataset rows for matrix completeness
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TClientDataSet';
   Mapping.FMXClassName := '';
-  Mapping.MappingType := 'Unmapped';
+  Mapping.MappingType := SDisplayMappingTypeUnmapped;
   Mapping.Confidence := 0;
-  Mapping.Notes := 'Dataset component requires manual review; preserve only if the target platform and supporting units are appropriate.';
+  Mapping.Notes := SDisplayDatasetComponentRequiresManualReviewPreserveOnly;
   AMappingDatabase.Add(Mapping);
 
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TQuery';
   Mapping.FMXClassName := '';
-  Mapping.MappingType := 'Unmapped';
+  Mapping.MappingType := SDisplayMappingTypeUnmapped;
   Mapping.Confidence := 0;
-  Mapping.Notes := 'Legacy query component requires manual review or replacement.';
+  Mapping.Notes := SDisplayLegacyQueryComponentRequiresManualReviewOr;
   AMappingDatabase.Add(Mapping);
 
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TADODataSet';
   Mapping.FMXClassName := '';
-  Mapping.MappingType := 'Unmapped';
+  Mapping.MappingType := SDisplayMappingTypeUnmapped;
   Mapping.Confidence := 0;
-  Mapping.Notes := 'Windows-specific ADO dataset requires manual review for FMX targets.';
+  Mapping.Notes := SDisplayWindowsSpecificAdoDatasetRequiresManualReview;
   AMappingDatabase.Add(Mapping);
 
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TSQLDataSet';
   Mapping.FMXClassName := '';
-  Mapping.MappingType := 'Unmapped';
+  Mapping.MappingType := SDisplayMappingTypeUnmapped;
   Mapping.Confidence := 0;
-  Mapping.Notes := 'dbExpress dataset requires manual review for FMX targets.';
+  Mapping.Notes := SDisplayDbexpressDatasetRequiresManualReviewForFmx;
   AMappingDatabase.Add(Mapping);
 
   // TMediaPlayer -> TMediaPlayer
   Mapping := TComponentMapping.Create;
   Mapping.VCLClassName := 'TMediaPlayer';
   Mapping.FMXClassName := 'TMediaPlayer';
-  Mapping.MappingType := 'Direct';
+  Mapping.MappingType := SDisplayMappingTypeDirect;
   Mapping.Confidence := 80;
   AMappingDatabase.Add(Mapping);
 end;

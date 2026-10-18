@@ -55,6 +55,33 @@ tests/french_beta_regression/output/
 # Local Codex/agent state
 .agents/
 
+# Temporary translation processing; maintained catalogs and packs are in Localization/
+/export/translation-work/
+/export/release-phases/
+/export/release-final/
+/Executable/
+
 # OS/editor clutter
 Thumbs.db
 Desktop.ini
+
+# Private working material: never publish in this project's Git repository.
+*.[mM][dD]
+*.markdown
+.codex/
+.claude/
+export/
+docs/notes/
+docs/archive/
+docs/pdf/
+docs/references/
+docs/website_mockups/
+docs/guides/*.docx
+tests/**/*output*/
+samples/**/*output*/
+tests/mapping_pack_smoke/DELETE_ME_MANIFEST.txt
+tests/mapping_pack_smoke/run_manual_test_checklist.txt
+tools/build_contracts_guide_docx.py
+tools/build_engineering_guide_docx.ps1
+tools/repair_v5_guides_from_masters.ps1
+tools/update_v5_help_project_sources.ps1

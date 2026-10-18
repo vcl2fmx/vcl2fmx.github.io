@@ -11,7 +11,12 @@
 *.rc text
 *.h text
 *.txt text
-*.md text
+*.[mM][dD] export-ignore
+*.markdown export-ignore
+docs/notes/ export-ignore
+.codex/ export-ignore
+.claude/ export-ignore
+export/ export-ignore
 *.html text
 *.css text
 *.json text
@@ -33,3 +38,5 @@
 *.db binary
 *.sqlite binary
 *.sqlite3 binary
+# Preserve the pinned upstream snapshot byte-for-byte, including its SHA-256 manifest.
+dependencies/DelphiAppTranslation/** -text

@@ -1,4 +1,4 @@
-IDH_VCL2FMXCONVERTER_V6_0_NAVIGATOR_USER_GUIDE=vcl2fmxconverter-v6-0-navigator-user-guide.html
+IDH_VCL2FMXCONVERTER_V7_0_ATLAS_USER_GUIDE=vcl2fmxconverter-v7-0-atlas-user-guide.html
 IDH_PURPOSE_AND_AUDIENCE=purpose-and-audience.html
 IDH_WHAT_THE_CONVERTER_IS_AND_WHAT_IT_IS_NOT=what-the-converter-is-and-what-it-is-not.html
 IDH_MAPPING_PACKS_OPTIONAL_THIRD_PARTY_COMPONENT_SUPPORT=mapping-packs-optional-third-party-component-support.html
@@ -23,4 +23,4 @@ IDH_APPENDIX_B_PRE_CONVERSION_CHECKLIST=appendix-b-pre-conversion-checklist.html
 IDH_APPENDIX_C_POST_CONVERSION_REVIEW_CHECKLIST=appendix-c-post-conversion-review-checklist.html
 IDH_APPENDIX_D_GLOSSARY=appendix-d-glossary.html
 IDH_INDEX=index.html
-IDH_CONVERSION_CONTRACTS_IN_V6_0_NAVIGATOR=conversion-contracts-in-v6-0-navigator.html
+IDH_CONVERSION_CONTRACTS_IN_V7_0_ATLAS=conversion-contracts-in-v7-0-atlas.html

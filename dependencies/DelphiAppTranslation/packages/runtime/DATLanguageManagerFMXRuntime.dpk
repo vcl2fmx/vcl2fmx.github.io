@@ -1,0 +1,21 @@
+package DATLanguageManagerFMXRuntime;
+
+{$DESCRIPTION 'DAT Language Manager FireMonkey runtime package'}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  fmx,
+  DATLanguageManagerCoreRuntime;
+
+contains
+  DAT.Runtime.FMX in '..\..\source\runtime\DAT.Runtime.FMX.pas',
+  DAT.Runtime.SplashTranslation.FMX in
+    '..\..\source\runtime\DAT.Runtime.SplashTranslation.FMX.pas',
+  DAT.Runtime.TemplateRewrite.FMX in
+    '..\..\source\runtime\DAT.Runtime.TemplateRewrite.FMX.pas',
+  DAT.Components.FMX in '..\..\source\components\DAT.Components.FMX.pas',
+  DAT.Components.FMX.LanguageSelector in '..\..\source\components\DAT.Components.FMX.LanguageSelector.pas';
+
+end.

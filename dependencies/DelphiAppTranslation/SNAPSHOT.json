@@ -1,0 +1,375 @@
+{
+  "name": "Delphi App Translation",
+  "snapshotDate": "2026-09-09",
+  "purpose": "Pinned source dependency for VCL2FMXConverter v7.0 Atlas",
+  "files": [
+    {
+      "path": "LICENSE",
+      "sha256": "C71D239DF91726FC519C6EB72D318EC65820627232B2F796219E87DCF35D0AB4"
+    },
+    {
+      "path": "packages/design/DATLanguageManagerFMXDesign.dpk",
+      "sha256": "FC5C6E8BF8BBF6AECC82A8509DC726CED78AEC462346064014C3EF702CDBF07A"
+    },
+    {
+      "path": "packages/design/DATLanguageManagerFMXDesign.dproj",
+      "sha256": "B1AC18C6F62431FD1C0E90C6978CCA0D91ADEF2AF9FEAF98BF97DC2CACD6631D"
+    },
+    {
+      "path": "packages/design/DATLanguageManagerFMXDesign.res",
+      "sha256": "79011865AB64D33576E68242F80BC5820736F26950D9E81217C9A755333828D5"
+    },
+    {
+      "path": "packages/design/DATLanguageManagerVCLDesign.dpk",
+      "sha256": "2CA10D6620E9C92AC797765A4F33396F057378563E6E5842E5F53127B89C3FE4"
+    },
+    {
+      "path": "packages/design/DATLanguageManagerVCLDesign.dproj",
+      "sha256": "47A9D6CEBB45426CAE02AB19499269D0BA9E3DDE49E6A252C2B2DB1CA61B2974"
+    },
+    {
+      "path": "packages/design/DATLanguageManagerVCLDesign.res",
+      "sha256": "F292E878BE3264201A4DAF2F777FFEC523365A9BCC68D0275800CF7BA24C48CE"
+    },
+    {
+      "path": "packages/runtime/DATLanguageManagerCoreRuntime.dpk",
+      "sha256": "73982BC167BBA67F87B1A7DF1ED3103D6531E0D9B3F67286ADCB3DBC57E7A8DC"
+    },
+    {
+      "path": "packages/runtime/DATLanguageManagerCoreRuntime.dproj",
+      "sha256": "4BFCF26A5111A05EED5601B8AB2DAE4DD19DD4E4B173B8AAF08EBB92384F8DCD"
+    },
+    {
+      "path": "packages/runtime/DATLanguageManagerCoreRuntime.res",
+      "sha256": "F292E878BE3264201A4DAF2F777FFEC523365A9BCC68D0275800CF7BA24C48CE"
+    },
+    {
+      "path": "packages/runtime/DATLanguageManagerFMXRuntime.dpk",
+      "sha256": "AD79FE63CD3798787E7B5A0ECE01467B7BC5F7D07459042976AE29E4E673874E"
+    },
+    {
+      "path": "packages/runtime/DATLanguageManagerFMXRuntime.dproj",
+      "sha256": "AFDEA0A6185E383BC07AA93D23937944E4A634BE9389B9896AEBCAE05D95E32B"
+    },
+    {
+      "path": "packages/runtime/DATLanguageManagerFMXRuntime.res",
+      "sha256": "F292E878BE3264201A4DAF2F777FFEC523365A9BCC68D0275800CF7BA24C48CE"
+    },
+    {
+      "path": "packages/runtime/DATLanguageManagerVCLRuntime.dpk",
+      "sha256": "163EF13A4E83E0FF0E5DD1E2A37B05A7C8819A00AF400A3C18B83CF3F806DA72"
+    },
+    {
+      "path": "packages/runtime/DATLanguageManagerVCLRuntime.dproj",
+      "sha256": "6E2EA0BAE660D2C44C2EE9DD61657859CE164F5EF8C14E7A8BF6B4DFDDA15B9D"
+    },
+    {
+      "path": "packages/runtime/DATLanguageManagerVCLRuntime.res",
+      "sha256": "F292E878BE3264201A4DAF2F777FFEC523365A9BCC68D0275800CF7BA24C48CE"
+    },
+    {
+      "path": "source/components/DAT.Components.Core.pas",
+      "sha256": "3D97CD054160E63DC1EF90DD72E5AF1E3E560077FF6B01B7C8F4935EEEA9034E"
+    },
+    {
+      "path": "source/components/DAT.Components.FMX.LanguageSelector.pas",
+      "sha256": "D3821B7B428F091CD63CE079D6B9B5299EA885A099869E0785367DF362CC2C4D"
+    },
+    {
+      "path": "source/components/DAT.Components.FMX.pas",
+      "sha256": "1F0752F873B4A86E971BDA46E98607E90147BDC3A2A3243C3778B1EC5E22EAE4"
+    },
+    {
+      "path": "source/components/DAT.Components.FMX.Spike.pas",
+      "sha256": "720CFA6E4CE08732D77BA127A956AF5D82C1188B6F44EC49C273B0306E5AFD69"
+    },
+    {
+      "path": "source/components/DAT.Components.VCL.LanguageSelector.pas",
+      "sha256": "DEAB32F3201EDBAC8882EDD21D69BB18B930BE2CA42286E958E617CF48CF2E60"
+    },
+    {
+      "path": "source/components/DAT.Components.VCL.pas",
+      "sha256": "D4A99265E4B6FB9D5998DAF4CFF9ABBEE69A404C63A460ECA73004DE2E689498"
+    },
+    {
+      "path": "source/components/DAT.Components.VCL.Spike.pas",
+      "sha256": "6B808C969967BC66C69D54B160744CC92771D17B4B4C600368E3F4D3D2A88B33"
+    },
+    {
+      "path": "source/core/DAT.Core.AITranslation.pas",
+      "sha256": "57B0EC65719DC4016C41CEB6694521EA8015027E549AFF88DF919CB24A0418AE"
+    },
+    {
+      "path": "source/core/DAT.Core.AtomicFile.pas",
+      "sha256": "D4415B44A2C6E931AFC184730A6516650252E5BD61A126A9078D2CBA02ED6900"
+    },
+    {
+      "path": "source/core/DAT.Core.BuildInfo.pas",
+      "sha256": "E2BE39A6AEBCC981F132A9C5195FEEBFBDC02F41519EB9F12CA78715C36CDBE6"
+    },
+    {
+      "path": "source/core/DAT.Core.CatalogJson.pas",
+      "sha256": "84F953767468D0A05DE7DE15B82EC9160B3849B3FA6E8FA74681185210E1A8F3"
+    },
+    {
+      "path": "source/core/DAT.Core.Diagnostics.pas",
+      "sha256": "087BB30B9881DEFA0366111954E19E95ECC71C9B35CE4487E44CED6F2122609A"
+    },
+    {
+      "path": "source/core/DAT.Core.Glossary.pas",
+      "sha256": "04A087713630C897418287780F9572D98CA46D2A723C65299DDA512F0992A3AA"
+    },
+    {
+      "path": "source/core/DAT.Core.Hyphenation.pas",
+      "sha256": "E6BF492A823C2FCBD49D3920BD516E035B8876FFB0AB3F1C6BD0673B682A0529"
+    },
+    {
+      "path": "source/core/DAT.Core.Interchange.pas",
+      "sha256": "A945C9F9EA705EDBDD453F086DB356D1AFA6BE27B996269C88CDC44F9A06EC27"
+    },
+    {
+      "path": "source/core/DAT.Core.LocaleFacts.pas",
+      "sha256": "554856B35A5266129E70440420AFE4951C7B3EBC49F4AB9845BE6706E97CC74C"
+    },
+    {
+      "path": "source/core/DAT.Core.ProjectDetection.pas",
+      "sha256": "458EA87196532B428F57727082BC92B36B01BEF7D06326EE96A5F0750986F567"
+    },
+    {
+      "path": "source/core/DAT.Core.RuntimePack.pas",
+      "sha256": "E328B614CBF3BE2DBCE7D9B1C4EDD09A0CA107783385708C982D0033B3E9A76D"
+    },
+    {
+      "path": "source/core/DAT.Core.SharedDictionary.pas",
+      "sha256": "2B4D386888816A4F3AB894D8897D63321832256841A0F3B78DDC83BADF727A67"
+    },
+    {
+      "path": "source/core/DAT.Core.Terminology.pas",
+      "sha256": "5A2BD0BF0715605FDBB31EDE29787B3995D2FC4CFAA61B8E9F3E9AB6AC460083"
+    },
+    {
+      "path": "source/core/DAT.Core.TranslationMemory.pas",
+      "sha256": "627B72913FE4BB4EF021D58DFFAF6DDC30A4E6F3977A88491B2036B238E169F3"
+    },
+    {
+      "path": "source/core/DAT.Core.TranslationWorkspace.pas",
+      "sha256": "94701D438803F91710DE3B8C1F61CF330579C0346E290729380306797733C8B1"
+    },
+    {
+      "path": "source/core/DAT.Core.Types.pas",
+      "sha256": "7BB4B5416D1EECB2F6758649CEA42F486646DB1B54DF79A5318DE78C351ED342"
+    },
+    {
+      "path": "source/design/DAT.Design.FMX.Register.pas",
+      "sha256": "8B47A4A8F577F84B86D1BC79CB232AB5DFE1ECE9DC9D7634F5B3FD35681B7552"
+    },
+    {
+      "path": "source/design/DAT.Design.VCL.Register.pas",
+      "sha256": "7C9E32FA81ADB74627005AF0B6D827D6857A9C56FC300C0D1D3440D763C7AE79"
+    },
+    {
+      "path": "source/integration/DAT.Integration.BuildDeploy.pas",
+      "sha256": "44A44AA9B19B5FF1CC96502E1EBF7D15FC196575A3F4270FF46A7F2D6FC1F1E0"
+    },
+    {
+      "path": "source/integration/DAT.Integration.ComponentPackage.pas",
+      "sha256": "43CF1543ACF2412B5871D7E2B65A75B18EDE0BBDA3ADAB061C0E1FB8D8B6CCF8"
+    },
+    {
+      "path": "source/integration/DAT.Integration.DelphiSource.pas",
+      "sha256": "DF42D1665B128116984E1360AEE54E581323359F7A00DE742334F4C26A109FCA"
+    },
+    {
+      "path": "source/integration/DAT.Integration.MenuResource.pas",
+      "sha256": "EBE34AFDAC5EF246866D11F2C03948DD3976AB59C81763BDF00DFA10BD7EC838"
+    },
+    {
+      "path": "source/integration/DAT.Integration.Package.pas",
+      "sha256": "CF3BA74F25D1C8449DE788DCA6D01FA118BB6F84499835512C512E7BF10CDD36"
+    },
+    {
+      "path": "source/provider/DAT.Provider.Batching.pas",
+      "sha256": "8C659FF2461069E8ADCD1F9361C428AF7F162948723D20216094A86F52A117F3"
+    },
+    {
+      "path": "source/provider/DAT.Provider.CalendarTerms.pas",
+      "sha256": "BAD10FDBEE01EDEB39C27A5EC69C7D56456226FE99F0EC1090D7ABEEEAFE3CCB"
+    },
+    {
+      "path": "source/provider/DAT.Provider.Client.pas",
+      "sha256": "2A437EB2E051E5ACE3C059B12EC3E7E5906A81FBFB0F30E00D88FE44F75B6AAA"
+    },
+    {
+      "path": "source/provider/DAT.Provider.CredentialStore.pas",
+      "sha256": "5B0E258125FDB4880F7E5E52D944DA219201F305920A2AD7AE4F82F6E7A2260E"
+    },
+    {
+      "path": "source/provider/DAT.Provider.Glossary.pas",
+      "sha256": "AC9968BEBE3271E05F0201991270BFD74AAC095A0CCC34F0EFF036765847DC42"
+    },
+    {
+      "path": "source/provider/DAT.Provider.LanguageCodes.pas",
+      "sha256": "66B968F266D6B08EFB4D11C06FF070E37A5DBDE80D82CB76581F6C459CE4401D"
+    },
+    {
+      "path": "source/provider/DAT.Provider.Placeholders.pas",
+      "sha256": "DBE4FF68488EBA0889EEB60F1EFFB15CA7E088291E49E628D23B359081E1553A"
+    },
+    {
+      "path": "source/provider/DAT.Provider.Retry.pas",
+      "sha256": "59E2DC3401CCE81FB40EBED871C2FB49A4B0091BC194756FF7D7C09EB7BC8DA5"
+    },
+    {
+      "path": "source/provider/DAT.Provider.Settings.pas",
+      "sha256": "39371CAE5C0590F7D636FD109EE2EF1485CE4451964A01C649C41859134A9343"
+    },
+    {
+      "path": "source/provider/DAT.Provider.Types.pas",
+      "sha256": "6C8820F4DA40FF82EB9BF74488D789E2652AAF49E1F266EF99C87D830D0FAE54"
+    },
+    {
+      "path": "source/review/DAT.Review.ApplicationStrings.pas",
+      "sha256": "B7BFB823F735E90ED7E49D6E0C6257309F60B523B099B0F875B376C995AF776B"
+    },
+    {
+      "path": "source/review/DAT.Review.CodeGeometry.pas",
+      "sha256": "223C9ED6FFE8FFED2C45C7226722CC941FDAAEACBD9796231E8DAA8749954CD3"
+    },
+    {
+      "path": "source/review/DAT.Review.Localization.pas",
+      "sha256": "5E506BFFD7F38345FE01DF12C29E25843FDEF73F2E0ED7F88CE984A1FF614322"
+    },
+    {
+      "path": "source/review/DAT.Review.TextMeasurement.FMX.pas",
+      "sha256": "3FE9CDE48BC82B0A0145BB9C22DA416D554057FE05C8BC4E835D22FD8A1698D8"
+    },
+    {
+      "path": "source/review/DAT.Review.TextMeasurement.GDI.pas",
+      "sha256": "B903E51E172E8EAD30C0C1A156549908E1B0F782772E4D24CF04AD6F7734483D"
+    },
+    {
+      "path": "source/review/DAT.Review.TextMeasurement.pas",
+      "sha256": "6A7814CC7F3F0AD3B10E0AE48E3DD4BD2705E58F3D91B8767057114A6289CAC6"
+    },
+    {
+      "path": "source/runtime/DAT.Runtime.FMX.pas",
+      "sha256": "8F75A1C53416BE45CE343D0188AA97505840939DD9F3519064F1EC2EF763D9A0"
+    },
+    {
+      "path": "source/runtime/DAT.Runtime.LanguagePack.pas",
+      "sha256": "ED36C46DB4084A915489B60515F2BF54F90360557F41A1EA2E634FF31E237E25"
+    },
+    {
+      "path": "source/runtime/DAT.Runtime.LayoutOverrides.pas",
+      "sha256": "6339734F48D8CBCCC09D45DDE462B59C45D82EDA90BB3565829BDD75160F83FD"
+    },
+    {
+      "path": "source/runtime/DAT.Runtime.Manager.pas",
+      "sha256": "0647BC54987D0EB1217684AEE24349180884A25C59169249A5C1E548933F5C2F"
+    },
+    {
+      "path": "source/runtime/DAT.Runtime.Preference.pas",
+      "sha256": "7858B816E7902BA032D7C6537CCB91ADA82EDC43740A01EA4EB9204CB78B7DCC"
+    },
+    {
+      "path": "source/runtime/DAT.Runtime.SplashTranslation.FMX.pas",
+      "sha256": "2CB2345AB0BF2641D8775AA30C35BE05F46ABC65CEF994293171444A5CEBD286"
+    },
+    {
+      "path": "source/runtime/DAT.Runtime.SplashTranslation.pas",
+      "sha256": "C23B8942D96F2AA98C125BA927D11F052B46D660A19A917CB6463DFCEC8A716E"
+    },
+    {
+      "path": "source/runtime/DAT.Runtime.SplashTranslation.VCL.pas",
+      "sha256": "C6CB8C5A73B583E8284C71814979649AC7846B94DAA2449EBC32161B658886FC"
+    },
+    {
+      "path": "source/runtime/DAT.Runtime.TemplateRewrite.FMX.pas",
+      "sha256": "AAF4F1DE70510863A9C0C6F57F36B21EDC2BD1EF610AF8C1090148001B888191"
+    },
+    {
+      "path": "source/runtime/DAT.Runtime.TemplateRewrite.pas",
+      "sha256": "787EC861FFAB984F148D3CAF6DB6DBFCE7308748FDE4C6772320107750F45E84"
+    },
+    {
+      "path": "source/runtime/DAT.Runtime.TemplateRewrite.VCL.pas",
+      "sha256": "116DA98EBF9454E808FAC19B667A5E17643779F2B2A6416E786B985CDF092B24"
+    },
+    {
+      "path": "source/runtime/DAT.Runtime.VCL.pas",
+      "sha256": "B7AF50AB9CB7BC27D60A8750FFC05CDCB651D1E88EB456D721606B9979BB1370"
+    },
+    {
+      "path": "source/scan/DAT.Scan.CatalogMerge.pas",
+      "sha256": "4960FB4AAD6A3D3177831A8061A252169326012C35DA8944BE875FCDAE0AF263"
+    },
+    {
+      "path": "source/scan/DAT.Scan.Context.pas",
+      "sha256": "983AE1DC62A5345EECADF284913540F60B4FC3260C4E3946CB29F7236728FF70"
+    },
+    {
+      "path": "source/scan/DAT.Scan.DomainProfile.pas",
+      "sha256": "3FA9E7A7301FDD3B4800EBE6BD23B5F5C40BBE515D6F3177E2FD133D3AC245C1"
+    },
+    {
+      "path": "source/scan/DAT.Scan.FormText.pas",
+      "sha256": "B62DEDD0F71323916DC71D8AE9959D7FB4619CFA109623B79217494C6E716A43"
+    },
+    {
+      "path": "source/scan/DAT.Scan.PascalResources.pas",
+      "sha256": "ADAD07BE77B23C3B27D1CFE2C5E524E9BD3D1884C8F6F4E32A30EB9FCF7B5A18"
+    },
+    {
+      "path": "source/scan/DAT.Scan.Project.pas",
+      "sha256": "A491B89EE584C7BB2BB7E4E7D5D700814EB559CCD12893AEE4371454C07523F2"
+    },
+    {
+      "path": "source/scan/DAT.Scan.Quality.pas",
+      "sha256": "43C99AFF0C674FF046E2E5537757A1D2B65192AC012AE98FD65963084EA0E727"
+    },
+    {
+      "path": "source/scan/DAT.Scan.Rules.pas",
+      "sha256": "C2468F50DADADF9D11A9D025C236756DD1B90A3B3BFF92F66E79D8CAC0301CE6"
+    },
+    {
+      "path": "source/scan/DAT.Scan.TextCodec.pas",
+      "sha256": "611FC94CA6B3E69CEACC6B0F476AAC74BD2D2B2F9C1DA8E73D203C42F3F19267"
+    },
+    {
+      "path": "source/scan/DAT.Scan.Types.pas",
+      "sha256": "D187564584C12F703F6BB3002B36E09CE8A797BFF3E943D504DBB39E8F46DA2C"
+    },
+    {
+      "path": "source/studio/DAT.Studio.LocalizationReview.fmx",
+      "sha256": "07A15E9C6B609FC2CA51B1D717101403AB8506ABE7FC9E59435CBAD7646B3F51"
+    },
+    {
+      "path": "source/studio/DAT.Studio.LocalizationReview.pas",
+      "sha256": "F0E870678A3C308FDF091FFEE276B6227C05E40DFD850DBFBF2E7F872BAAB019"
+    },
+    {
+      "path": "source/studio/DAT.Studio.MainForm.fmx",
+      "sha256": "DD88B53B3B5CD7062D5213715713DE53D69A06930D4E0EABF64CAFE6083ABE2C"
+    },
+    {
+      "path": "source/studio/DAT.Studio.MainForm.pas",
+      "sha256": "49B68B8EF47F74B02AC1F25DCEEE65583B7D638422F515BE14E27A477D017015"
+    },
+    {
+      "path": "source/studio/DAT.Studio.SetupWizard.fmx",
+      "sha256": "6997358247924F20C4239FBDC4B3641640BFA1AC0209FCED54C024D223F6F868"
+    },
+    {
+      "path": "source/studio/DAT.Studio.SetupWizard.pas",
+      "sha256": "85C61463D326D182CF792932D51F19C8454DB32303D1D8549B703A5E1F9B4526"
+    },
+    {
+      "path": "source/studio/DAT.Studio.Translation.pas",
+      "sha256": "AACFD9EB87590F84E8A962AE0A6CBEE9FB165D06D363844D26566D000B2C4EE6"
+    },
+    {
+      "path": "source/validation/DAT.Validation.Catalog.pas",
+      "sha256": "217830C11C6CE7D3298D585E4D1AA99018D1C26CBF68E2D7DDF70D5AF154893B"
+    }
+  ]
+}

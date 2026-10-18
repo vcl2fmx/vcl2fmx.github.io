@@ -1,6 +1,6 @@
 ﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
- Version v6.0 Navigator
+ Version v7.0 Atlas
  Written and built in the USA}
 
 unit Converter.Core.FileManager;
@@ -45,6 +45,8 @@ type
 
 implementation
 
+{$WARN SYMBOL_PLATFORM OFF}
+
 constructor TFileManager.Create(AContext: TConversionContext);
 begin
   inherited Create;
@@ -64,6 +66,9 @@ var
 begin
   FFiles.Clear;
   FIndex := 0;
+  FContext.Options.SourcePath := VCL2FMXCanonicalPath(FContext.Options.SourcePath);
+  if FContext.Options.OutputPath <> '' then
+    FContext.Options.OutputPath := VCL2FMXCanonicalPath(FContext.Options.OutputPath);
 
   if not DirectoryExists(FContext.Options.SourcePath) then
   begin
@@ -72,6 +77,8 @@ begin
   end;
 
   try
+    if FContext.Options.ProcessSubdirectories then
+      VCL2FMXCheckPlainDirectoryTree(FContext.Options.SourcePath);
     if FContext.Options.OutputPath <> '' then
       NormalizedOutput := ExcludeTrailingPathDelimiter(ExpandFileName(FContext.Options.OutputPath))
     else
@@ -103,6 +110,7 @@ procedure TFileManager.CollectMatchingFiles(const DirectoryPath,
 var
   SearchRec: TSearchRec;
   EntryPath: string;
+  Status: Integer;
 begin
   if not DirectoryExists(DirectoryPath) then
     Exit;
@@ -111,14 +119,25 @@ begin
      IsExcludedSourceFile(DirectoryPath) then
     Exit;
 
-  if FindFirst(TPath.Combine(DirectoryPath, '*'), faAnyFile, SearchRec) <> 0 then
+  Status := FindFirst(TPath.Combine(DirectoryPath, '*'), faAnyFile, SearchRec);
+  if Status <> 0 then
+  begin
+    if (Status <> 2) and (Status <> 18) then
+      raise EInOutError.Create('Cannot enumerate source directory: ' + DirectoryPath);
     Exit;
+  end;
   try
     repeat
-      if (SearchRec.Name = '.') or (SearchRec.Name = '..') then
-        Continue;
-
+      if (SearchRec.Name <> '.') and (SearchRec.Name <> '..') then
+      begin
       EntryPath := TPath.Combine(DirectoryPath, SearchRec.Name);
+      if (SearchRec.Attr and faSymLink) <> 0 then
+        raise EInOutError.Create('Source links and reparse points must be replaced by ordinary files or folders: ' + EntryPath);
+      if SameText(SearchRec.Name, 'VCL_to_FMX_Conversion_Report.html') or
+         SameText(SearchRec.Name, 'VCL_to_FMX_Conversion_Report.txt') or
+         SameText(SearchRec.Name, 'VCL_to_FMX_Compatibility_Analysis_Report.html') or
+         SameText(SearchRec.Name, 'VCL_to_FMX_Compatibility_Analysis_Report.txt') then
+        raise EInOutError.Create('A previous conversion report exists in the selected source tree. Select the original VCL project: ' + EntryPath);
       if (SearchRec.Attr and faDirectory) <> 0 then
       begin
         if FContext.Options.ProcessSubdirectories then
@@ -126,7 +145,11 @@ begin
       end
       else
         AddFileIfEligible(EntryPath, NormalizedOutput);
-    until FindNext(SearchRec) <> 0;
+      end;
+      Status := FindNext(SearchRec);
+    until Status <> 0;
+    if Status <> 18 then
+      raise EInOutError.Create('Source enumeration did not complete: ' + DirectoryPath);
   finally
     FindClose(SearchRec);
   end;
@@ -192,8 +215,8 @@ begin
   end;
 
   try
-    SourcePath := ExpandFileName(FContext.Options.SourcePath);
-    OutputPath := ExpandFileName(FContext.Options.OutputPath);
+    SourcePath := VCL2FMXCanonicalPath(FContext.Options.SourcePath);
+    OutputPath := VCL2FMXCanonicalPath(FContext.Options.OutputPath);
 
     if SameText(ExcludeTrailingPathDelimiter(SourcePath),
       ExcludeTrailingPathDelimiter(OutputPath)) then
@@ -221,9 +244,11 @@ begin
       Exit(False);
     end;
 
+    VCL2FMXCheckPlainDirectoryTree(OutputPath, True);
     if not DirectoryExists(FContext.Options.OutputPath) then
       ForceDirectories(FContext.Options.OutputPath);
 
+    if not FContext.Options.DryRunPreview then
     for FolderName in VCL2FMX_STALE_OUTPUT_FOLDERS do
     begin
       FolderPath := TPath.Combine(FContext.Options.OutputPath, FolderName);
@@ -275,17 +300,24 @@ var
   RelativePath: string;
 begin
   RelativePath := ExtractRelativePath(
-    IncludeTrailingPathDelimiter(FContext.Options.SourcePath),
-    OriginalFile
+    IncludeTrailingPathDelimiter(VCL2FMXCanonicalPath(FContext.Options.SourcePath)),
+    VCL2FMXCanonicalPath(OriginalFile)
   );
 
   if RelativePath = '' then
     RelativePath := ExtractFileName(OriginalFile);
+  if TPath.IsPathRooted(RelativePath) or
+     (RelativePath = '..') or StartsText('..' + PathDelim, RelativePath) then
+    raise EInOutError.Create('Source file is outside the selected source tree: ' + OriginalFile);
 
   if SameText(ExtractFileExt(RelativePath), '.dfm') then
     RelativePath := ChangeFileExt(RelativePath, '.fmx');
 
   Result := TPath.Combine(FContext.Options.OutputPath, RelativePath);
+  Result := VCL2FMXCanonicalPath(Result);
+  if not IsSameOrChildPath(Result, VCL2FMXCanonicalPath(FContext.Options.OutputPath)) or
+     IsSameOrChildPath(Result, VCL2FMXCanonicalPath(FContext.Options.SourcePath)) then
+    raise EInOutError.Create('Refusing to write outside the output directory: ' + Result);
 end;
 
 function TFileManager.SanitizeOutputText(const Text: string): string;
@@ -331,7 +363,7 @@ begin
   if ShouldWriteUTF8BOM(OutputFile) then
   begin
     Preamble := TEncoding.UTF8.GetPreamble;
-    OutputBytes := TEncoding.UTF8.GetBytes(Text);
+    OutputBytes := TEncoding.UTF8.GetBytes(VCL2FMXUTF8SourceText(Text));
     SetLength(Combined, Length(Preamble) + Length(OutputBytes));
     for i := 0 to High(Preamble) do
       Combined[i] := Preamble[i];

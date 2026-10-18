@@ -1,2 +1,0 @@
-const
-  SubfolderIncludeValue = 'subfolder include';

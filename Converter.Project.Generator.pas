@@ -1,6 +1,6 @@
-﻿{VCL2FMX © 2026 echurchsites.wixsite.com
+{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
- Version v6.0 Navigator
+ Version v7.0 Atlas
  Written and built in the USA}
 
 unit Converter.Project.Generator;
@@ -15,6 +15,7 @@ uses
   System.IOUtils,
   System.RegularExpressions,
   System.StrUtils,
+  System.NetEncoding,
   System.Types,
   Converter.Core.Types;
 
@@ -24,6 +25,8 @@ type
     FContext: TConversionContext;
     FImportedAssetPaths: TDictionary<string, string>;
     FImportedAssetTargets: TDictionary<string, string>;
+    FSelectedDPR: string;
+    FSelectedDPROJ: string;
 
     function GetProjectSearchOption: TSearchOption;
     function FindFirstProjectFile(const Pattern: string): string;
@@ -63,6 +66,7 @@ type
     constructor Create(AContext: TConversionContext);
     destructor Destroy; override;
     procedure GenerateProject;
+    function ValidateProjectSelection: Boolean;
   end;
 
 implementation
@@ -93,11 +97,55 @@ end;
 function TProjectGenerator.FindFirstProjectFile(const Pattern: string): string;
 var
   Files: TStringDynArray;
+  Candidates, RootCandidates: TStringList;
+  FileName, Part, RelativePath: string;
+  Excluded: Boolean;
 begin
   Result := '';
   Files := TDirectory.GetFiles(FContext.Options.SourcePath, Pattern, GetProjectSearchOption);
-  if Length(Files) > 0 then
-    Result := Files[0];
+  Candidates := TStringList.Create;
+  RootCandidates := TStringList.Create;
+  try
+    for FileName in Files do
+    begin
+      RelativePath := ExtractRelativePath(IncludeTrailingPathDelimiter(FContext.Options.SourcePath), FileName);
+      Excluded := False;
+      for Part in RelativePath.Split(['\', '/']) do
+        Excluded := Excluded or VCL2FMXIsBuildArtifactFolder(Part);
+      if Excluded then Continue;
+      Candidates.Add(FileName);
+      if SameText(ExcludeTrailingPathDelimiter(ExtractFilePath(FileName)),
+        ExcludeTrailingPathDelimiter(FContext.Options.SourcePath)) then
+        RootCandidates.Add(FileName);
+    end;
+    if RootCandidates.Count > 0 then Candidates.Assign(RootCandidates);
+    if Candidates.Count > 1 then
+      raise EInOutError.Create('More than one ' + Pattern + ' project was found. Select the folder containing one project.');
+    if Candidates.Count = 1 then Result := Candidates[0];
+  finally
+    RootCandidates.Free;
+    Candidates.Free;
+  end;
+end;
+
+function TProjectGenerator.ValidateProjectSelection: Boolean;
+var
+  ProjectText, EncodingName, MainSource: string;
+  Match: TMatch;
+begin
+  FSelectedDPR := FindFirstProjectFile('*.dpr');
+  FSelectedDPROJ := FindFirstProjectFile('*.dproj');
+  Result := (FSelectedDPR <> '') or (FindFirstProjectFile('*.dpk') <> '');
+  if (FSelectedDPR = '') or (FSelectedDPROJ = '') then Exit;
+  if not VCL2FMXTryReadTextFile(FSelectedDPROJ, ProjectText, EncodingName) then
+    raise EInOutError.Create('Cannot read the selected DPROJ.');
+  Match := TRegEx.Match(ProjectText, '<MainSource>\s*([^<]+?)\s*</MainSource>', [roIgnoreCase]);
+  if Match.Success then
+    MainSource := ExpandFileName(TPath.Combine(ExtractFilePath(FSelectedDPROJ), TNetEncoding.HTML.Decode(Match.Groups[1].Value)))
+  else
+    MainSource := ChangeFileExt(FSelectedDPROJ, '.dpr');
+  if not SameText(VCL2FMXCanonicalPath(MainSource), VCL2FMXCanonicalPath(FSelectedDPR)) then
+    raise EInOutError.Create('The selected DPR and DPROJ do not describe the same project. Select a matching project pair.');
 end;
 
 function TProjectGenerator.GetProjectRelativeOutputPath(
@@ -114,12 +162,12 @@ end;
 
 function TProjectGenerator.FindOriginalDPR: string;
 begin
-  Result := FindFirstProjectFile('*.dpr');
+  Result := FSelectedDPR;
 end;
 
 function TProjectGenerator.FindOriginalDPROJ: string;
 begin
-  Result := FindFirstProjectFile('*.dproj');
+  Result := FSelectedDPROJ;
 end;
 
 function TProjectGenerator.NormalizeAssetReference(const RawPath: string): string;
@@ -771,7 +819,7 @@ begin
     if not VCL2FMXTryReadTextFile(SourceDPR, SourceCode, EncodingName) then
       raise Exception.Create('Could not read DPR with supported encodings: ' + SourceDPR);
     SourceCode := TransformDPRContent(SourceCode);
-    TFile.WriteAllText(TargetDPR, SourceCode, TEncoding.UTF8);
+    TFile.WriteAllText(TargetDPR, VCL2FMXUTF8SourceText(SourceCode), TEncoding.UTF8);
   except
     on E: Exception do
       FContext.AddIssue(csError, 'Failed to generate DPR: ' + E.Message);
@@ -821,7 +869,7 @@ begin
       if not VCL2FMXTryReadTextFile(SourceFile, SourceCode, EncodingName) then
         raise Exception.Create('Could not read DPK with supported encodings: ' + SourceFile);
       SourceCode := TransformDPKContent(SourceCode);
-      TFile.WriteAllText(TargetFile, SourceCode, TEncoding.UTF8);
+      TFile.WriteAllText(TargetFile, VCL2FMXUTF8SourceText(SourceCode), TEncoding.UTF8);
       FContext.AddIssue(csInfo,
         'Delphi package file generated for FMX output: ' +
         GetProjectRelativeOutputPath(SourceFile));
@@ -1197,6 +1245,7 @@ end;
 
 procedure TProjectGenerator.GenerateProject;
 begin
+  ValidateProjectSelection;
   CopyDPR;
   CopyDPROJ;
   CopyDPKFiles;
@@ -1222,7 +1271,7 @@ begin
   try
     Content.Add('{VCL2FMX © 2026 echurchsites.wixsite.com');
     Content.Add(' FMXMessageBridge.pas — Cross-platform message bridge');
-    Content.Add(' Generated by VCL2FMX Converter v6.0 Navigator');
+    Content.Add(' Generated by VCL2FMX Converter v7.0 Atlas');
     Content.Add(' Replaces Windows WM_USER messaging with TMessageManager.}');
     Content.Add('');
     Content.Add('unit FMXMessageBridge;');

@@ -16,6 +16,31 @@
     ? new Intl.DisplayNames(['en'], { type: 'language' })
     : null;
 
+  var selectedHelpLanguage = '';
+  var websiteRoot = new URL('../', document.currentScript.src);
+
+  function updateHelpLinks() {
+    var selected = document.querySelector('.gtranslate_wrapper a[data-gt-lang][aria-current="true"], .gtranslate_wrapper .gt_options a.gt-current[data-gt-lang], .gtranslate_wrapper .gt-current-lang[data-gt-lang]');
+    var cookie = document.cookie.match(/(?:^|;\s*)googtrans=\/[^/;]+\/([^;]+)/);
+    var language = selectedHelpLanguage || (selected && selected.dataset.gtLang) ||
+      (cookie && decodeURIComponent(cookie[1])) || 'en';
+    document.querySelectorAll('a[href]').forEach(function (link) {
+      var target = new URL(link.href, location.href);
+      if (target.origin === websiteRoot.origin &&
+          target.pathname.indexOf(websiteRoot.pathname + 'docs/Help/') === 0 &&
+          /\.html$/i.test(target.pathname)) {
+        target.searchParams.set('lang', language);
+        link.href = target.href;
+      }
+    });
+  }
+
+  document.addEventListener('click', function (event) {
+    var choice = event.target.closest('.gtranslate_wrapper a[data-gt-lang]');
+    if (choice) selectedHelpLanguage = choice.dataset.gtLang;
+    updateHelpLinks();
+  }, true);
+
   function getEnglishLanguageName(languageCode) {
     if (englishNameOverrides[languageCode]) {
       return englishNameOverrides[languageCode];
@@ -33,6 +58,7 @@
   }
 
   function addBilingualLanguageLabels() {
+    updateHelpLinks();
     document.querySelectorAll('.gtranslate_wrapper a[data-gt-lang]').forEach(function (languageLink) {
       if (languageLink.dataset.bilingualLabel === 'true') {
         return;
@@ -74,6 +100,7 @@
   }
 
   window.addEventListener('load', function () {
+    updateHelpLinks();
     var wrapper = document.querySelector('.gtranslate_wrapper');
 
     if (!wrapper) {

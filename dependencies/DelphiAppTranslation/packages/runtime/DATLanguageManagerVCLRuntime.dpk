@@ -1,0 +1,21 @@
+package DATLanguageManagerVCLRuntime;
+
+{$DESCRIPTION 'DAT Language Manager VCL runtime package'}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  DATLanguageManagerCoreRuntime;
+
+contains
+  DAT.Runtime.VCL in '..\..\source\runtime\DAT.Runtime.VCL.pas',
+  DAT.Runtime.SplashTranslation.VCL in
+    '..\..\source\runtime\DAT.Runtime.SplashTranslation.VCL.pas',
+  DAT.Runtime.TemplateRewrite.VCL in
+    '..\..\source\runtime\DAT.Runtime.TemplateRewrite.VCL.pas',
+  DAT.Components.VCL in '..\..\source\components\DAT.Components.VCL.pas',
+  DAT.Components.VCL.LanguageSelector in '..\..\source\components\DAT.Components.VCL.LanguageSelector.pas';
+
+end.

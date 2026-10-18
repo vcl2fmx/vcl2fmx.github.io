@@ -1,1 +1,0 @@
-{$I LoopB.inc}

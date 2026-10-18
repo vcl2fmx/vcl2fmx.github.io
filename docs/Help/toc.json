@@ -1,158 +1,144 @@
 [
   {
-    "title": "VCL2FMXConverter v6.0 Navigator User Guide",
-    "url": "topics/vcl2fmxconverter-v6-0-navigator-user-guide.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "title": "V7 languages and reports",
+    "url": "topics/v7-languages-and-reports.html",
+    "status": "Draft",
+    "tags": "language,translation,reports,dry-run,feedback,correction,terminology,clipping"
+  },
+  {
+    "title": "Using and maintaining translations",
+    "url": "topics/using-and-maintaining-translations.html",
+    "tags": "language,translation,studio,editing,add language,glossary,export,install,offline,help,feedback",
+    "helpId": "IDH_USING_AND_MAINTAINING_TRANSLATIONS"
+  },
+  {
+    "title": "VCL2FMXConverter v7.0 Atlas User Guide",
+    "url": "topics/vcl2fmxconverter-v7-0-atlas-user-guide.html",
+    "status": "Approved"
   },
   {
     "title": "Purpose and Audience",
     "url": "topics/purpose-and-audience.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "What the Converter Is, and What It Is Not",
     "url": "topics/what-the-converter-is-and-what-it-is-not.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Mapping Packs: Optional Third-Party Component Support",
     "url": "topics/mapping-packs-optional-third-party-component-support.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "System Requirements and Workspace Preparation",
     "url": "topics/system-requirements-and-workspace-preparation.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Building and Launching the Converter",
     "url": "topics/building-and-launching-the-converter.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Main Window and Control-by-Control Walkthrough",
     "url": "topics/main-window-and-control-by-control-walkthrough.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Run the converted app and validate real user workflows.",
     "url": "topics/run-the-converted-app-and-validate-real-user-workflows.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Practical Operator Workflow",
     "url": "topics/practical-operator-workflow.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Preparing a Source Project for Best Results",
     "url": "topics/preparing-a-source-project-for-best-results.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Running a Conversion",
     "url": "topics/running-a-conversion.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Reading the Log and the Conversion Report",
     "url": "topics/reading-the-log-and-the-conversion-report.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Understanding the Output Folder and Files",
     "url": "topics/understanding-the-output-folder-and-files.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Opening the Converted Project in Delphi",
     "url": "topics/opening-the-converted-project-in-delphi.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Validating the Converted Application",
     "url": "topics/validating-the-converted-application.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Test startup and shutdown behavior.",
     "url": "topics/test-startup-and-shutdown-behavior.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Troubleshooting and Recovery Procedures",
     "url": "topics/troubleshooting-and-recovery-procedures.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Making Changes to the Converter Software",
     "url": "topics/making-changes-to-the-converter-software.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Operational Best Practices",
     "url": "topics/operational-best-practices.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Frequently Asked Questions",
     "url": "topics/frequently-asked-questions.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Appendix A. Quick Start Checklist",
     "url": "topics/appendix-a-quick-start-checklist.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Appendix B. Pre-Conversion Checklist",
     "url": "topics/appendix-b-pre-conversion-checklist.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Appendix C. Post-Conversion Review Checklist",
     "url": "topics/appendix-c-post-conversion-review-checklist.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Appendix D. Glossary",
     "url": "topics/appendix-d-glossary.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "status": "Approved"
   },
   {
     "title": "Index",
     "url": "topics/index.html",
-    "status": "Approved",
-    "owner": "Thomas H Martin"
+    "status": "Approved"
   },
   {
-    "title": "Conversion Contracts in v6.0 Navigator",
-    "url": "topics/conversion-contracts-in-v6-0-navigator.html",
-    "status": "Approved",
-    "owner": "Auto Import"
+    "title": "Conversion Contracts in v7.0 Atlas",
+    "url": "topics/conversion-contracts-in-v7-0-atlas.html",
+    "status": "Approved"
   }
 ]

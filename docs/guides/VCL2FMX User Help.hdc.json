@@ -1,28 +1,28 @@
 {
-  "name": "New Help Project",
-  "version": "1.0",
-  "company": "Your Company",
-  "outputPath": "C:\\New Delphi Projects\\VCL2FMX Converter V6\\docs\\Help",
+  "name": "VCL2FMXConverter v7.0 Atlas",
+  "version": "7.0",
+  "company": "VCL2FMXConverter",
+  "outputPath": "docs/Help",
   "variables": [
     {
       "key": "Version",
-      "value": "1.0"
+      "value": "7.0"
     },
     {
       "key": "ProductName",
-      "value": "New Help Project"
+      "value": "VCL2FMXConverter v7.0 Atlas"
     },
     {
       "key": "BuildDate",
-      "value": "2026-06-26 20:00"
+      "value": "2026-10-15"
     },
     {
       "key": "BuildNumber",
-      "value": "11"
+      "value": "001"
     },
     {
       "key": "Company",
-      "value": "Your Company"
+      "value": "VCL2FMXConverter"
     }
   ],
   "snippets": [
@@ -52,7 +52,7 @@
   "assets": [
     {
       "key": "image1.png",
-      "value": "ImportedAssets\\VCL2FMXConverter v6.0 Navigator User Guide\\image1.png"
+      "value": "ImportedAssets\\VCL2FMXConverter v7.0 Atlas User Guide\\image1.png"
     }
   ],
   "templates": [
@@ -71,30 +71,150 @@
   ],
   "glossary": [
     {
-      "key": "Snippet",
-      "value": "A reusable block of documentation inserted into one or more topics."
+      "key": "VCL",
+      "value": "Visual Component Library, Delphi's traditional Windows UI framework."
     },
     {
-      "key": "Topic",
-      "value": "A standalone documentation page that can be authored, reviewed, indexed, and published."
+      "key": "FMX",
+      "value": "FireMonkey, Delphi's multi-platform UI framework."
     },
     {
-      "key": "Condition",
-      "value": "A build rule that includes or excludes content for a specific audience, edition, or version."
+      "key": "DFM",
+      "value": "A Delphi form definition file used by VCL projects."
+    },
+    {
+      "key": "FMX form",
+      "value": "The converted FireMonkey form file, typically emitted as .fmx."
+    },
+    {
+      "key": "LiveBindings",
+      "value": "The FMX binding model used for data-aware behavior."
+    },
+    {
+      "key": "Global fix",
+      "value": "A converter change that benefits multiple current or future projects, not just one output file."
+    },
+    {
+      "key": "Mapping pack",
+      "value": "Optional JSON file that adds transparent third-party component detection, conversion, preservation, or manual-review rules."
+    },
+    {
+      "key": "Language pack",
+      "value": "A JSON file containing translated interface text and language-specific presentation settings. It does not change conversion rules."
+    },
+    {
+      "key": "Dry-run preview",
+      "value": "Inspects the conversion without writing converted source or project files. Reports may still be written and the output folder may be created."
     }
   ],
   "indexKeywords": [
     {
-      "key": "getting started",
-      "value": "Getting Started"
+      "key": "V7 languages and reports",
+      "value": "V7 languages and reports"
     },
     {
-      "key": "troubleshooting",
-      "value": "Troubleshooting"
+      "key": "VCL2FMXConverter v7.0 Atlas User Guide",
+      "value": "VCL2FMXConverter v7.0 Atlas User Guide"
     },
     {
-      "key": "reference",
-      "value": "Reference"
+      "key": "Purpose and Audience",
+      "value": "Purpose and Audience"
+    },
+    {
+      "key": "What the Converter Is, and What It Is Not",
+      "value": "What the Converter Is, and What It Is Not"
+    },
+    {
+      "key": "Mapping Packs: Optional Third-Party Component Support",
+      "value": "Mapping Packs: Optional Third-Party Component Support"
+    },
+    {
+      "key": "System Requirements and Workspace Preparation",
+      "value": "System Requirements and Workspace Preparation"
+    },
+    {
+      "key": "Building and Launching the Converter",
+      "value": "Building and Launching the Converter"
+    },
+    {
+      "key": "Main Window and Control-by-Control Walkthrough",
+      "value": "Main Window and Control-by-Control Walkthrough"
+    },
+    {
+      "key": "Run the converted app and validate real user workflows.",
+      "value": "Run the converted app and validate real user workflows."
+    },
+    {
+      "key": "Practical Operator Workflow",
+      "value": "Practical Operator Workflow"
+    },
+    {
+      "key": "Preparing a Source Project for Best Results",
+      "value": "Preparing a Source Project for Best Results"
+    },
+    {
+      "key": "Running a Conversion",
+      "value": "Running a Conversion"
+    },
+    {
+      "key": "Reading the Log and the Conversion Report",
+      "value": "Reading the Log and the Conversion Report"
+    },
+    {
+      "key": "Understanding the Output Folder and Files",
+      "value": "Understanding the Output Folder and Files"
+    },
+    {
+      "key": "Opening the Converted Project in Delphi",
+      "value": "Opening the Converted Project in Delphi"
+    },
+    {
+      "key": "Validating the Converted Application",
+      "value": "Validating the Converted Application"
+    },
+    {
+      "key": "Test startup and shutdown behavior.",
+      "value": "Test startup and shutdown behavior."
+    },
+    {
+      "key": "Troubleshooting and Recovery Procedures",
+      "value": "Troubleshooting and Recovery Procedures"
+    },
+    {
+      "key": "Making Changes to the Converter Software",
+      "value": "Making Changes to the Converter Software"
+    },
+    {
+      "key": "Operational Best Practices",
+      "value": "Operational Best Practices"
+    },
+    {
+      "key": "Frequently Asked Questions",
+      "value": "Frequently Asked Questions"
+    },
+    {
+      "key": "Appendix A. Quick Start Checklist",
+      "value": "Appendix A. Quick Start Checklist"
+    },
+    {
+      "key": "Appendix B. Pre-Conversion Checklist",
+      "value": "Appendix B. Pre-Conversion Checklist"
+    },
+    {
+      "key": "Appendix C. Post-Conversion Review Checklist",
+      "value": "Appendix C. Post-Conversion Review Checklist"
+    },
+    {
+      "key": "Appendix D. Glossary",
+      "value": "Appendix D. Glossary"
+    },
+    {
+      "key": "Index",
+      "value": "Index"
+    },
+    {
+      "key": "Conversion Contracts in v7.0 Atlas",
+      "value": "Conversion Contracts in v7.0 Atlas"
     }
   ],
   "buildProfiles": [
@@ -114,7 +234,7 @@
   "projectSettings": [
     {
       "key": "HtmlTitle",
-      "value": "VCL2FMXConverter v6.0 Navigator"
+      "value": "VCL2FMXConverter v7.0 Atlas"
     },
     {
       "key": "SupportUrl",
@@ -142,15 +262,15 @@
     },
     {
       "key": "LastBuildAt",
-      "value": "2026-06-26 20:00"
+      "value": "2026-09-09"
     },
     {
       "key": "OutputPath",
-      "value": "C:\\New Delphi Projects\\VCL2FMX Converter V6\\docs\\Help"
+      "value": "docs/Help"
     },
     {
       "key": "BuildNumber",
-      "value": "11"
+      "value": "001"
     },
     {
       "key": "PortalTitle",
@@ -158,7 +278,7 @@
     },
     {
       "key": "Copyright",
-      "value": "Copyright 2026 Your Company"
+      "value": "Copyright 2026 Tommy Martin"
     },
     {
       "key": "StopWords",
@@ -207,18 +327,46 @@
   ],
   "topics": [
     {
+      "id": "{A561AE00-C912-4A16-A73F-DAA87A288DD0}",
+      "parentId": "",
+      "title": "V7 languages and reports",
+      "body": "<h1>V7 languages and reports</h1><p>VCL2FMXConverter v7.0 Atlas. Updated October 15, 2026.</p>\n<h2>Choose a language</h2><p>Use the Language selector in the header. The 35 bundled language packs work offline. The selection is saved for the next launch. Product names, Delphi identifiers and source evidence retain their original spelling.</p>\n<h2>Conversion output</h2><p>Live messages are translated for display. The language selected at the start of a conversion is captured for its saved HTML and text reports. A later language change does not rewrite an existing report. JSON remains canonical English with the stable vcl2fmx.report.v1 schema.</p>\n<p>Generated Pascal and FMX application content is not translated into natural languages. Built-in interface and report messages use machine-generated translations; custom mapping-pack notes and external exception messages may remain original. The Help button opens the installed manual in the selected interface language. Translation requires Internet access; English Help remains available offline. Keep Atlas running while navigating Help.</p>\n<h2>Dry-run preview and outcomes</h2><p>A dry run can write reports and create the output folder, but it preserves existing build/history folders and does not write converted source. An unreadable Pascal input produces a blocking issue. Mapping-pack loading diagnostics are retained. Report buttons refer only to reports successfully written during the current run.</p>\n<h2>Portable installation</h2><p>Extract the complete release ZIP. Keep Localization/Languages, mapping_packs and docs/Help beside the executable. Use a dedicated output folder for ordinary conversions.</p>\n<h2>Source and output safeguards</h2><p>Select one project folder and a separate, dedicated output folder. Relative paths are resolved before conversion. If multiple project files are found at the selected level, select a narrower folder. A DPR and DPROJ must refer to the same main program. Empty selections, unreadable folders and directory links or junctions in scanned trees are blocked before output cleanup. Use ordinary folders for conversion; the source remains unchanged.</p>\n<h2>Source text encoding</h2><p>UTF-8 with or without a byte-order mark and UTF-16 are supported. For legacy Pascal source, an explicit {$CODEPAGE 1251} or other supported numeric code-page directive identifies its encoding. Without a byte-order mark or directive, valid UTF-8 is preferred and other legacy bytes default to Windows-1252; other legacy encodings cannot be inferred reliably. Save such files as UTF-8 in Delphi before conversion. Generated Pascal source uses UTF-8 and its code-page directive is updated accordingly.</p>\n<h2>Before relying on converted output</h2><p>Review all blocking and manual-review findings, compile the generated project in Delphi, and test its behavior.</p><h2 id=\"interface-terms\">Interface terminology</h2><dl><dt>Project Scan</dt><dd>The page where you choose the source project, output folder and conversion options. Start the conversion with Convert Project.</dd><dt>Conversion Output</dt><dd>The page containing the live conversion log and report status. Open Report opens the saved report from the current run.</dd><dt>Rules</dt><dd>The rule-family switches used for the next conversion. The Dashboard and Current rule state summaries use the same names as these switches.</dd><dt>Dry-run preview</dt><dd>Inspects the conversion without writing converted source or project files. Reports may still be written and the output folder may be created.</dd><dt>Language packs and mapping packs</dt><dd>Language packs translate displayed text. Mapping packs define conversion rules; editing a translation does not change a conversion rule.</dd></dl><h2 id=\"translation-feedback\">Report a translation correction</h2><p>Include the converter version, the language and locale shown in the Language selector, the screen or Help topic, the exact current wording, and your suggested wording. Explain the correction if helpful.</p><p>For clipped or overlapping text, also include the window size and Windows display scaling. Crop screenshots to the affected text and remove private paths, names and project information.</p><p><a href=\"mailto:churchesite@gmail.com?subject=VCL2FMXConverter%20V7%20translation%20feedback&amp;body=Converter%20version%3A%20%0ALanguage%20and%20locale%3A%20%0AScreen%20or%20Help%20topic%3A%20%0ACurrent%20wording%3A%20%0ASuggested%20wording%3A%20%0AReason%20%28optional%29%3A%20%0AFor%20clipping%3A%20window%20size%20and%20Windows%20display%20scaling%3A%20%0A%0APlease%20remove%20private%20details%20from%20any%20screenshot%20before%20attaching%20it.\">Email a translation correction</a>. This opens a message template in your email application; nothing is sent automatically. You can also edit translations and glossaries using the Delphi App Translation Studio.</p><p>For the complete procedures for editing translations, adding languages, maintaining glossaries and installing packs, see <a href=\"using-and-maintaining-translations.html\">Using and maintaining translations</a>.</p>",
+      "status": "Draft",
+      "iconName": "auto",
+      "owner": "",
+      "helpId": "IDH_V7_LANGUAGES_AND_REPORTS",
+      "language": "en-US",
+      "tags": "language,translation,reports,dry-run,feedback,correction,terminology,clipping",
+      "conditions": "",
+      "updatedAt": "2026-09-11T00:00:00Z"
+    },
+    {
+      "id": "{8E1003D7-520C-404F-91B7-F803D90ED3AC}",
+      "parentId": "",
+      "title": "Using and maintaining translations",
+      "body": "\n<h1>Using and maintaining translations</h1><section id=\"complete-installation\"><h2>Installing the complete Windows package</h2><p>Download the Win32 or Win64 application ZIP and extract the entire ZIP into its own writable folder before starting VCL2FMXConverter.exe. Win64 needs 64-bit Windows. Keep the Win32 and Win64 editions in separate folders. Do not run from inside the ZIP or copy only the executable. RAD Studio is needed to build Delphi projects, not to run the downloaded converter.</p><p>Keep this layout together: VCL2FMXConverter.exe and WebView2Loader.dll in the same folder; Localization\\Languages containing all 35 JSON language packs; mapping_packs containing the 22 supplied JSON packs; docs\\Help containing the complete Help tree and guides; and the supplied licenses and README.txt. These are relative paths beneath the executable folder, not folders beside the ZIP.</p><p>Localization\\Languages is required for interface and report translations. Preserve the English en-US.json pack as well as the other supplied languages. A missing or unreadable selected report language pack can stop a conversion with &quot;The selected report language pack could not be loaded.&quot; Restore the complete folder from the same release ZIP and restart the converter.</p><p>WebView2Loader.dll must be directly beside VCL2FMXConverter.exe and match the executable architecture: x86 for Win32, x64 for Win64, even when running Win32 on 64-bit Windows. Use the DLL supplied in that edition of the release ZIP. The loader supports the embedded mapping browsers; it is not the WebView2 Runtime.</p><p>Install or update Microsoft Edge WebView2 Evergreen Runtime if it is absent. Obtain it from https://developer.microsoft.com/microsoft-edge/webview2/ under Download the WebView2 Runtime. The Evergreen Bootstrapper needs Internet access; use the appropriate Evergreen Standalone Installer for an offline computer. Having the Microsoft Edge browser installed is not a substitute for the Runtime. Do not download replacement DLLs from third-party DLL sites.</p><p>The embedded browsers use Edge when available and may fall back to an older browser engine if WebView2 is unavailable. A window that opens is therefore not proof of correct WebView2 deployment. If mapping views are blank or render incorrectly, check the loader location and architecture, then the Runtime installation. Close and reopen the converter after correcting the installation.</p><p>Keep mapping_packs with the application even when mapping-pack support is not currently enabled. Missing packs remove that optional conversion coverage. Preserve docs\\Help and all its subfolders; missing Help files prevent Help from opening. Help opens in your default browser. Keep the converter running while using its local Help URL; English Help is available offline, while automatic Help translation needs Internet access.</p><p>Use a writable output folder separate from both the original VCL project and the converter installation. Keep an independent backup of the original project. The signed-in Windows account also needs access to its local application-data folder for language settings and browser data. Before replacing an installation, close the converter and back up customized language or mapping packs. Extract a fresh complete release rather than mixing files from different releases.</p><p>Before the first conversion, verify that the Language selector lists the supplied languages, the mapping views display, and Help opens. Review the conversion report, then compile and test the generated project in Delphi. Successful conversion does not remove the need to review unsupported components and manual changes.</p></section>\n<p>VCL2FMXConverter v7.0 Atlas. Updated October 15, 2026.</p>\n<p>This guide explains how to use the 35 included languages, correct a translation, add a language, and install the resulting language pack. It also explains which text is translated and how translated Help differs from the converter interface.</p>\n<p>PDF and editable DOCX editions are included in <code>docs/Help/guides</code>. Open these files from the documentation folder, or use the Translation Guide links on the downloads page.</p>\n\n<h2 id=\"choose\">Choosing a language and opening Help</h2>\n<p>Start Atlas and use the <strong>Language</strong> selector in the header. Each choice includes its native name and locale code, such as <code>fr-FR</code>. Select a language to update the interface. The selection is saved for the next launch. On first use, Atlas attempts to use a supported system language; English is the fallback.</p>\n<p>The 35 bundled interface packs work offline. Select English at any time to return to the source wording. Language selection changes presentation; it does not change the conversion rules or translate the application you are converting.</p>\n<ol>\n<li>Select the desired language in Atlas.</li>\n<li>Click <strong>Help</strong>. The installed manual opens in your browser with that language requested.</li>\n<li>Allow the online translation service time to load. Keep Atlas running while navigating Help.</li>\n<li>After changing the converter language, click Help again to open it with the new selection. An already open Help tab does not automatically follow later changes in Atlas.</li>\n</ol>\n<p>English Help remains readable offline. Opening <code>docs/Help/index.html</code> directly as a file also provides English Help. Use the Help button for automatic translation. Downloaded PDF and DOCX guides are English documents and are not translated by the Help widget.</p>\n\n<h2 id=\"scope\">Understanding what is translated</h2>\n<p>The interface pack supplies captions, instructions, built-in messages, reference-table explanations and other display text. Arabic, Persian, Hebrew, Pashto and Urdu also use right-to-left text presentation. Delphi identifiers, component names, paths, code examples and source evidence retain their original spelling where protected by the application.</p>\n<p>The live conversion log is translated for display. Saved HTML and text reports use the language selected when the conversion starts. Selecting another language afterward does not rewrite reports already saved. JSON reports retain canonical English text and the stable report schema so tools can process them consistently.</p>\n<p>Generated Pascal, FMX forms and project files are conversion output, not natural-language translations. A language pack changes displayed explanations; a mapping pack changes conversion mappings. Custom mapping-pack notes and external exception messages may remain in their original language.</p>\n<p>Help uses a separate online translation service. Atlas serves the installed English pages through a local browser connection and passes the selected language to the translation widget. Help text is processed by that service. The converter's offline interface translation does not require that connection.</p>\n<p>The included packs are machine translations and have not been reviewed by native speakers. Structural validation checks such things as placeholders and pack identity; it does not establish linguistic accuracy. Correcting an interface pack does not correct an online Help translation. Permanent Help wording changes belong in the English Help source; translation-service wording is a separate concern.</p>\n\n<h2 id=\"prepare\">Preparing Translation Studio</h2>\n<p>Download <a href=\"https://delphitranslate.github.io/\">the Delphi App Translation Studio</a> (https://delphitranslate.github.io/) and its manuals and guides. Use its Maintenance Studio for the already integrated Atlas project. Atlas already contains its language manager and selector; ordinary translation maintenance does not require repeating component integration or rebuilding the converter.</p>\n<p>Use a separate working copy of the matching V7 complete source package. It must contain <code>VCL2FMXConverter.dproj</code>, the source files, <code>Localization/Development</code>, <code>Localization/Languages</code> and the supplied translation metadata. Open the converter project, not the project you intend to convert. The executable-only package is sufficient to run Atlas, but is not the complete Studio editing workspace.</p>\n<p>Development catalogs, named <code>VCL2FMXConverter.&lt;locale&gt;.translation-project.json</code>, contain editable entries, source keys and review information. The smaller <code>&lt;locale&gt;.json</code> runtime packs are what Atlas loads. Keep both kinds of file; a runtime pack is not a replacement for its development catalog.</p>\n<p>Back up the working catalogs and installed packs before editing. Keep the original V7 English catalog and existing catalogs together so scanning can recover the project's runtime text contracts.</p>\n<p>Manual editing needs no translation-provider account. Studio's <strong>Translate Automatically</strong> command uses its configured provider settings. Follow the Studio guide for the provider you select; those settings are separate from Atlas Help's online widget. Review exactly which text a provider operation will send.</p>\n\n<h2 id=\"correct\">Correcting an existing translation</h2>\n<ol>\n<li>Open <strong>Maintenance Studio</strong>. Under <strong>Project</strong>, open <code>VCL2FMXConverter.dproj</code> from the matching source workspace.</li>\n<li>Under <strong>Translate</strong>, use <strong>Open...</strong> to open the existing development catalog for the language you want to correct. Check its target locale and native language name.</li>\n<li>Choose <strong>Scan Project</strong> to compare the catalog with the saved forms and source. Review entries marked new, changed or obsolete. Do not discard runtime entries merely because they are not visible form captions.</li>\n<li>Select the affected entry. Read its source text and context, edit <strong>Translated text</strong>, and choose <strong>Apply Translation</strong>. Use <strong>Save</strong> to save the catalog.</li>\n<li>Use <strong>Mark Reviewed</strong> only after reviewing the translation's meaning. <strong>Approve</strong> records a separate final decision. Do not bulk-approve machine output just to clear a status.</li>\n<li>Continue with validation, export and installation as described below.</li>\n</ol>\n<p>Preserve format placeholders such as <code>%s</code>, <code>%d</code> and indexed variants, deliberate line breaks, HTML structure and protected Delphi identifiers. Translate the surrounding sentence rather than changing keys, component names or metadata.</p>\n<p>For work outside Studio, <strong>CSV Out</strong> and <strong>CSV In</strong> provide an interchange workflow. Edit only the Translation column, then review the import's conflicts and protected-entry decisions. The development JSON catalog remains the complete record.</p>\n\n<h2 id=\"add\">Adding another language</h2>\n<ol>\n<li>Save and close any catalog you are editing. Start a fresh Maintenance Studio session and open the same V7 converter source project.</li>\n<li>Run <strong>Scan Project</strong> to create a fresh catalog from the converter and its supplied workspace metadata. Do not open an existing non-English catalog and simply change its locale; that can retain the old translations and catalog filename.</li>\n<li>Under <strong>Translate</strong>, keep the source language English and choose the new target language. Verify its native name, direction and locale formats.</li>\n<li>Choose <strong>Save</strong>. Check that the resulting development filename contains the new locale and does not overwrite an existing language.</li>\n<li>Translate the entries manually, through CSV interchange, or with the Studio's configured automatic provider. Review dynamic messages and reference-table descriptions as well as form captions.</li>\n<li>Validate, export the new runtime pack and install it beside the existing packs. Restart Atlas and select the new language.</li>\n</ol>\n<p>The filename and pack metadata must describe the same locale. For example, a pack for locale <code>xx-YY</code> is named <code>xx-YY.json</code>; this is a placeholder, not a real language to select. Renaming another language's file does not create a translation.</p>\n<p>A supported, valid additional interface pack is discovered at startup without recompiling Atlas. Additional Help languages are not automatic: the Help script has an explicit supported-language list. A maintainer must confirm service support, language-code mapping and right-to-left handling before extending that list. Otherwise Help falls back to English for an unsupported language.</p>\n\n<h2 id=\"glossary\">Keeping terminology consistent</h2>\n<p>Use Studio's <strong>Glossary</strong> page to maintain preferred wording for a particular project and language. A glossary is useful when the same concept appears in a button, status summary, report and reference description.</p>\n<ol>\n<li>Open the V7 converter project and select the glossary's target language.</li>\n<li>Enter the <strong>Source term</strong> and <strong>Preferred translation</strong>. Add a semantic concept or explanatory note when it helps distinguish meanings.</li>\n<li>Choose <strong>Add / Update Term</strong>, then <strong>Save Glossary</strong>. Mark terminology approved only when that wording has actually been accepted.</li>\n<li>Review the affected catalog entries. Use <strong>Apply and Deploy</strong> when you intend Studio to apply the terms and regenerate/deploy the corresponding pack to its detected application outputs. Confirm the reported destinations.</li>\n<li>If you export or install manually, follow the next section. Restart the particular Atlas copy you are testing.</li>\n</ol>\n<p>Saving a glossary alone stores the terminology; it does not update an already running converter. Keep the glossary with the source workspace so later translation work uses the same vocabulary.</p>\n<p>Check context rather than applying a literal substitution everywhere. For example, a conversion mapping and a language translation are different operations. Preserve product names and Delphi API names. Keep rule-family names identical in their switches and summaries.</p>\n<p>Studio glossary changes affect exported interface/report text. They do not configure the online Help translation service. If a Help term needs clarification, improve the English explanation and check the translated page separately.</p>\n\n<h2 id=\"deploy\">Exporting installing and testing a pack</h2>\n<ol>\n<li>Save source files and the development catalog. Run a fresh <strong>Scan Project</strong> if source files were saved after the last scan.</li>\n<li>Under <strong>Validation</strong>, choose <strong>Run Validation</strong>. Correct blocking errors and inspect warnings. Review status and structural validity are separate checks.</li>\n<li>Under <strong>Export</strong>, choose <strong>Export Runtime Pack</strong>. Studio reports the output path. Keep any accepted layout settings associated with the export; replacing them with another language's geometry can cause clipping.</li>\n<li>Close the Atlas copy you are updating. Back up its existing pack outside its language folder, then copy the exported <code>&lt;locale&gt;.json</code> into <code>Localization/Languages</code> beside that executable. Do not put development catalogs or backup JSON files in this runtime folder.</li>\n<li>Keep <code>en-US.json</code> installed. Restart Atlas, select the language and check the result. Ordinary text-pack updates do not require recompiling the executable.</li>\n</ol>\n<p>Test all seven pages, narrow and maximized windows, the display scaling you use, scrolling to the last paragraph, and switching back to English. Check longer captions, rule summaries, right-to-left text, live messages and reference-table notes.</p>\n<p>Run a small sample conversion in a dedicated output folder. Inspect its newly generated HTML and text reports, and open Help from Atlas. Test Help separately because its translations do not come from the interface pack.</p>\n<p>To undo an update, close Atlas and restore the backed-up pack, then restart. Keep customized catalogs and exported packs separately before replacing Atlas with a later version; an application update may replace bundled files.</p>\n\n<h2 id=\"troubleshoot\">Resolving problems and reporting corrections</h2>\n<p><strong>A language is absent.</strong> Confirm you updated the folder beside the executable you actually launched, that the file is a runtime pack rather than a development catalog, and that its locale, application identity and framework are valid. Restart Atlas after adding files. Do not create duplicate packs for the same locale.</p>\n<p><strong>Some text remains English.</strong> First distinguish protected identifiers and source evidence from user-facing prose. Missing translations can fall back to English. Check the matching catalog entry, validate and export again. Custom mapping notes and external exception messages may require separate attention.</p>\n<p><strong>Text is clipped or overlaps.</strong> Record the selected locale, affected page, window size and Windows display scaling. Check the wording and accepted layout settings. Do not shorten a translation so much that it changes the instruction's meaning.</p>\n<p><strong>Help remains English.</strong> Open it from Atlas, keep Atlas running, and check Internet access and browser restrictions on the translation widget. A newly added interface language may need a Help mapping update. English remains available if translation cannot load.</p>\n<p><strong>A saved report uses the previous language.</strong> Existing reports retain the language captured for that run. Choose the language before starting the next conversion.</p>\n<p>To report a correction, email churchesite@gmail.com or use <a href=\"v7-languages-and-reports.html#translation-feedback\">the translation feedback instructions</a>. Include the converter version, locale, screen or Help topic, current wording and proposed wording. Remove private paths and project details from screenshots and reports. An email template opens for review; it sends nothing automatically.</p>\n\n<h2 id=\"maintenance\">Translation files and maintenance responsibilities</h2>\n<p><code>Localization/Languages</code> contains the installed runtime packs. They identify <code>applicationId</code> as <code>VCL2FMXConverter</code>, use the <code>FireMonkey</code> framework, and retain <code>en-US</code> as the source language. The selector discovers compatible packs; the advertised count of 35 describes the bundled set, not a hard-coded interface limit.</p>\n<p><code>Localization/Development</code> contains the editable catalogs. <code>Localization/Layout</code> records language layout proposals, while runtime packs contain accepted layout rules used by the application. Preserve these files and the project terminology metadata when maintaining translations.</p>\n<p>The designer-owned language manager applies the selected pack to form controls, dynamic text and embedded reference content. It preserves control state, saves the user's selection, and falls back to source-language behavior when a pack is unavailable. Developers should keep control properties editable in the Form Designer.</p>\n<p>The installed Help lives under <code>docs/Help</code>. Its editable Help Doc Creator project is <code>docs/guides/VCL2FMX User Help.hdc.json</code> in the source workspace. Keep that project, exported topics, navigation/search indexes and printable manual synchronized when changing English Help.</p>\n<p><code>docs/Help/assets/help-translation.js</code> maps converter locale codes to the online service. Maintainers adding Help support must check the supported list, aliases and direction handling, then run the Help translation checks. Adding a JSON interface pack alone does not alter this script or the website's language list.</p>\n<p>For source maintenance, the existing language, form, report and Help checks under <code>tools</code> help verify coverage and behavior. These checks complement native-speaker review and visual testing; they do not replace either.</p>\n",
+      "status": "Draft",
+      "iconName": "auto",
+      "owner": "",
+      "helpId": "IDH_USING_AND_MAINTAINING_TRANSLATIONS",
+      "language": "en-US",
+      "tags": "language,translation,studio,editing,add language,glossary,export,install,offline,help,feedback",
+      "conditions": "",
+      "updatedAt": "2026-09-11T00:00:00Z"
+    },
+    {
       "id": "{B2838A7B-98B3-4242-A869-FED002C676D8}",
       "parentId": "",
-      "title": "VCL2FMXConverter v6.0 Navigator User Guide",
-      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1 style=\"text-align: center;\">VCL2FMX Converter v6.0 Navigator User Guide</h1><div style=\"text-align: center;\"><span style=\"font-family:&quot;Segoe UI&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\"><span style=\"font-family:&quot;Segoe Script&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\"><span style=\"font-family:&quot;Segoe Script&quot;;font-size:30pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\">Navigator</span></span></span></div>\n\n\n\n<p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><span style=\"font-family:&quot;Segoe UI&quot;;font-size:14pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\">Detailed Operator, Validation, and Workflow Manual</span></p>\n\n<p style=\"text-align: center;\">Updated August 3, 2026</p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p>\n\n<p>Audience: developers, technical operators, project owners, and maintainers who will run the converter and validate converted Delphi projects.</p>\n</article>",
+      "title": "VCL2FMXConverter v7.0 Atlas User Guide",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1 style=\"text-align: center;\">VCL2FMX Converter v7.0 Atlas User Guide</h1><div style=\"text-align: center;\"><span style=\"font-family:&quot;Segoe UI&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\"><span style=\"font-family:&quot;Segoe Script&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\"><span style=\"font-family:&quot;Segoe Script&quot;;font-size:30pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\">Atlas</span></span></span></div>\n\n\n\n<p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><span style=\"font-family:&quot;Segoe UI&quot;;font-size:14pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;\">Detailed Operator, Validation, and Workflow Manual</span></p>\n\n<p style=\"text-align: center;\">Updated September 9, 2026</p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p>\n\n<p>Audience: developers, technical operators, project owners, and maintainers who will run the converter and validate converted Delphi projects.</p>\n</article><p>For V7 language selection, translated Help and reports, and language-pack maintenance, see <a href=\"using-and-maintaining-translations.html\">Using and maintaining translations</a>.</p>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
-      "helpId": "IDH_VCL2FMXCONVERTER_V6_0_NAVIGATOR_USER_GUIDE",
+      "owner": "",
+      "helpId": "IDH_VCL2FMXCONVERTER_V7_0_ATLAS_USER_GUIDE",
       "language": "en-US",
       "tags": "imported,docx",
       "conditions": "",
-      "updatedAt": "2026-06-26T20:00:29.609Z"
+      "updatedAt": "2026-09-11T00:00:00Z"
     },
     {
       "id": "{2FE4BFFC-3492-4EAE-BA5A-4636750302A3}",
@@ -227,7 +375,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>1. Purpose and Audience</h1>\n\n<p>The VCL2FMXConverter exists to automate the majority of the engineering work involved in moving a Delphi application from standard VCL to FMX. It is intended to reduce repetitive migration labor, surface the most important conversion risks early, and leave the user with an FMX project that can be compiled, tested, and polished in Delphi.</p>\n\n<p>This manual is written for people who will actually operate the converter. That includes developers converting their own applications, technical staff helping with migration efforts, project owners supervising conversion work, and maintainers who need to understand how to rerun the tool safely and interpret its output.</p>\n\n<ol start=\"1\"><li>Use this guide when you need to run the converter, interpret its output, and validate the converted FMX project.</li><li>Use the engineering guide when you need to understand the converter internals</li><li>Use both guides together when a conversion is being actively refined and stabilized.</li></ol>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_PURPOSE_AND_AUDIENCE",
       "language": "en-US",
       "tags": "imported,docx",
@@ -238,10 +386,10 @@
       "id": "{F107B60E-A818-4985-A987-3A3CAE692A62}",
       "parentId": "",
       "title": "What the Converter Is, and What It Is Not",
-      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>2. What the Converter Is, and What It Is Not</h1>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Converter Behavior</th><th>What It Means in Practice</th></tr>\n<tr><td>Automates most of the migration work</td><td>The converter handles the majority of syntax, form, mapping, and startup translation work automatically.</td></tr>\n<tr><td>Works as a migration system, not a blind text replacer</td><td>It uses parsing, mapping, and rewrite logic rather than relying only on global text substitution.</td></tr>\n<tr><td>Aims for buildable and reviewable output</td><td>The goal is not merely changed text; the goal is a project that can be opened, built, and exercised in Delphi.</td></tr>\n<tr><td>Leaves a small review tail</td><td>A converted application can still need font, layout, or minor behavioral review after the automated pass.</td></tr>\n<tr><td>Does not replace software testing</td><td>A successful conversion still needs compile, runtime, and user validation to confirm the result is correct.</td></tr>\n</tbody></table>\n\n<p>A useful way to think about the converter is this: it is a serious productivity accelerator, not a promise that every converted application is instantly production-ready without verification. In practice, it can bring the vast majority of a migration under control and make the remaining issues understandable.</p>\n\n<p>The current generic baseline is broader than the earlier public-review drafts. It now includes safer FMX form emission, broader standard-control coverage for items such as TMaskEdit, TStaticText, TFlowPanel, TGridPanel, TCheckListBox, TRichEdit, TDrawGrid, TDBCtrlGrid, TFileSaveDialog, and TLinkLabel, and direct numeric-control handling for TNumberBox and converted TSpinBox workflows. It also adds generated compatibility paths for TRadioGroup and TFontDialog, along with more honest blocking-issue reporting when the converter knows the output is not yet trustworthy.</p>\n\n<p>The live Component Map, Property Map, and Event Map pages are now backed by the same current mapper knowledge used during conversion. That makes them the best quick-reference view of what the current v6.0 Navigator build knows about standard component, property, and event coverage. Version 6.0 Navigator also supports optional JSON mapping packs that make third-party component handling visible and auditable before a conversion run.</p>\n</article>",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>2. What the Converter Is, and What It Is Not</h1>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Converter Behavior</th><th>What It Means in Practice</th></tr>\n<tr><td>Automates most of the migration work</td><td>The converter handles the majority of syntax, form, mapping, and startup translation work automatically.</td></tr>\n<tr><td>Works as a migration system, not a blind text replacer</td><td>It uses parsing, mapping, and rewrite logic rather than relying only on global text substitution.</td></tr>\n<tr><td>Aims for buildable and reviewable output</td><td>The goal is not merely changed text; the goal is a project that can be opened, built, and exercised in Delphi.</td></tr>\n<tr><td>Leaves a small review tail</td><td>A converted application can still need font, layout, or minor behavioral review after the automated pass.</td></tr>\n<tr><td>Does not replace software testing</td><td>A successful conversion still needs compile, runtime, and user validation to confirm the result is correct.</td></tr>\n</tbody></table>\n\n<p>A useful way to think about the converter is this: it is a serious productivity accelerator, not a promise that every converted application is instantly production-ready without verification. In practice, it can bring the vast majority of a migration under control and make the remaining issues understandable.</p>\n\n<p>The current generic baseline is broader than the earlier public-review drafts. It now includes safer FMX form emission, broader standard-control coverage for items such as TMaskEdit, TStaticText, TFlowPanel, TGridPanel, TCheckListBox, TRichEdit, TDrawGrid, TDBCtrlGrid, TFileSaveDialog, and TLinkLabel, and direct numeric-control handling for TNumberBox and converted TSpinBox workflows. It also adds generated compatibility paths for TRadioGroup and TFontDialog, along with more honest blocking-issue reporting when the converter knows the output is not yet trustworthy.</p>\n\n<p>The live Component Map, Property Map, and Event Map pages are now backed by the same current mapper knowledge used during conversion. That makes them the best quick-reference view of what the current v7.0 Atlas build knows about standard component, property, and event coverage. Version 7.0 Atlas also supports optional JSON mapping packs that make third-party component handling visible and auditable before a conversion run.</p>\n</article>",
       "status": "Approved",
       "iconName": "page",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_WHAT_THE_CONVERTER_IS_AND_WHAT_IT_IS_NOT",
       "language": "en-US",
       "tags": "imported,docx,procedure,reference",
@@ -255,7 +403,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>2.1 Mapping Packs: Optional Third-Party Component Support</h1>\n\n<p>A mapping pack is an optional JSON file that gives the converter explicit knowledge about component libraries outside standard VCL. The converter still performs the normal VCL-to-FMX migration work on its own but mapping packs add a separate, visible layer for third-party controls so those decisions can be reviewed instead of hidden inside converter code.</p>\n\n<p>Use mapping packs when a project contains controls from libraries such as DevExpress, TMS, Raize/Konopka, JVCL, EhLib, InfoPower, TeeChart, FastReport, Devart, IntraWeb, UniGUI, or VirtualTreeView. The pack can identify the original VCL class, choose a safe action, map simple properties and events, and explain anything that still requires manual review. This version includes mapping packs for the stated third-party vendors, but while these are included, they do not represent full conversions of the components but rather as much as possible at this point in Delphi FMX.</p>\n\n<p>A mapping pack does not install a vendor product, prove that a commercial component has a full FMX equivalent, or remove the need to test the converted application. Its purpose is to make third-party handling predictable: simple controls may convert, approximate controls may convert with warnings, complex controls may be report-only, and nonvisual or cross-platform items may be preserved when that is the safest choice. Again, they do not represent full conversions of the components but rather as much as possible at this point.</p>\n\n<h3>Mapping-pack actions</h3>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Action</th><th>What it means for the user</th></tr>\n<tr><td>convert</td><td>The converter can generate the target FMX component with reasonable confidence.</td></tr>\n<tr><td>partial</td><td>The converter can generate an approximate FMX component, but the report must describe the limitations.</td></tr>\n<tr><td>manual_review</td><td>The converter should report the component and avoid unsafe automatic conversion.</td></tr>\n<tr><td>detect_only</td><td>The converter identifies the component or vendor but does not generate a replacement.</td></tr>\n<tr><td>preserve</td><td>The converter may keep the original class/reference when preservation is safer or explicitly intended.</td></tr>\n</tbody></table>\n\n<p>For normal operation, keep the mapping_packs folder beside VCL2FMXConverter.exe, in whatever folder you install it.</p>\n\n<p>For example if the converter structure is similar to: C:\\converter\\VCL2FMXConverter.exe</p>\n\n<p>then the mapping packs would be in: C:\\converter\\mapping_packs\\</p>\n\n<p>The packs act as companion files in unison with the converter executable. After a run, review the generated report and their associated report sections for loaded packs, converted third-party components, partial conversions, detect-only findings, preserved components, unknown third-party-looking components, and manual-review reasons.</p>\n\n<h3>How to read mapping-pack results</h3>\n\n<p>The generated report is a detailed audit trail. If a pack converts a component, the report should say which pack was used and what confidence level was declared. If a pack only detects a component, the report should explain why no FMX replacement was generated.</p>\n\n<p>When testing without owning the vendor library, a mock DFM can still exercise the mapping logic because the converter reads class names from the DFM. That kind of test confirms loader behavior, rule selection, generated output, and report wording, but it does not validate the real vendor component's runtime behavior. The following is an example of a mock .dfm which may be modified for your own use for testing:object FormDevExpressMock: TFormDevExpressMock</p>\n\n<p>Left = 0</p>\n\n<p>Top = 0</p>\n\n<p>Caption = 'DevExpress Mapping Pack Mock Test'</p>\n\n<p>ClientHeight = 360</p>\n\n<p>ClientWidth = 560</p>\n\n<p>object cxButton1: TcxButton</p>\n\n<p>Left = 24</p>\n\n<p>Top = 24</p>\n\n<p>Width = 120</p>\n\n<p>Height = 32</p>\n\n<p>Caption = 'Click Me'</p>\n\n<p>Enabled = True</p>\n\n<p>Visible = True</p>\n\n<p>Hint = 'Button hint'</p>\n\n<p>OnClick = cxButton1Click</p>\n\n<p>end</p>\n\n<p>object cxTextEdit1: TcxTextEdit</p>\n\n<p>Left = 24</p>\n\n<p>Top = 72</p>\n\n<p>Width = 180</p>\n\n<p>Height = 24</p>\n\n<p>Text = 'Sample text'</p>\n\n<p>Enabled = True</p>\n\n<p>Visible = True</p>\n\n<p>OnChange = cxTextEdit1Change</p>\n\n<p>end</p>\n\n<p>object cxMemo1: TcxMemo</p>\n\n<p>Left = 24</p>\n\n<p>Top = 112</p>\n\n<p>Width = 220</p>\n\n<p>Height = 80</p>\n\n<p>Text = 'Sample memo'</p>\n\n<p>Enabled = True</p>\n\n<p>Visible = True</p>\n\n<p>end</p>\n\n<p>object cxMaskEdit1: TcxMaskEdit</p>\n\n<p>Left = 24</p>\n\n<p>Top = 208</p>\n\n<p>Width = 180</p>\n\n<p>Height = 24</p>\n\n<p>Text = '12345'</p>\n\n<p>end</p>\n\n<p>object cxGrid1: TcxGrid</p>\n\n<p>Left = 260</p>\n\n<p>Top = 24</p>\n\n<p>Width = 260</p>\n\n<p>Height = 180</p>\n\n<p>end</p>\n\n<p>object dxRibbon1: TdxRibbon</p>\n\n<p>Left = 0</p>\n\n<p>Top = 264</p>\n\n<p>Width = 560</p>\n\n<p>Height = 80</p>\n\n<p>end</p>\n\n<p>end</p>\n\n<p>Here is the companion .pas file that goes with this .dfmunit UnitDevExpressMock;</p>\n\n<p>interface</p>\n\n<p>uses</p>\n\n<p>System.SysUtils, System.Classes, Vcl.Forms;</p>\n\n<p>type</p>\n\n<p>TFormDevExpressMock = class(TForm)</p>\n\n<p>cxButton1: TcxButton;</p>\n\n<p>cxTextEdit1: TcxTextEdit;</p>\n\n<p>cxMemo1: TcxMemo;</p>\n\n<p>cxMaskEdit1: TcxMaskEdit;</p>\n\n<p>cxGrid1: TcxGrid;</p>\n\n<p>dxRibbon1: TdxRibbon;</p>\n\n<p>procedure cxButton1Click(Sender: TObject);</p>\n\n<p>procedure cxTextEdit1Change(Sender: TObject);</p>\n\n<p>end;</p>\n\n<p>implementation</p>\n\n<p>{$R *.dfm}</p>\n\n<p>procedure TFormDevExpressMock.cxButton1Click(Sender: TObject);</p>\n\n<p>begin</p>\n\n<p>end;</p>\n\n<p>procedure TFormDevExpressMock.cxTextEdit1Change(Sender: TObject);</p>\n\n<p>begin</p>\n\n<p>end;</p>\n\n<p>end.</p>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_MAPPING_PACKS_OPTIONAL_THIRD_PARTY_COMPONENT_SUPPORT",
       "language": "en-US",
       "tags": "imported,docx,procedure,reference",
@@ -266,10 +414,10 @@
       "id": "{FBA24CB2-EEF7-4067-B88B-1FA44A3B9632}",
       "parentId": "",
       "title": "System Requirements and Workspace Preparation",
-      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>3. System Requirements and Workspace Preparation</h1>\n\n<ol start=\"1\"><li>A Windows development environment with Delphi installed and working.</li></ol>\n<ol start=\"2\"><li>Access to the original VCL source code and form files.</li></ol>\n<ol start=\"3\"><li>A separate target directory for generated FMX output.</li></ol>\n<ol start=\"4\"><li>Sufficient disk space for source, output, reports, and milestone backups.</li></ol>\n<ol start=\"5\"><li>A backup strategy before major converter runs or large rule changes.</li></ol>\n<p>A clean folder layout is strongly recommended. Keep the converter source, the original VCL project, and the converted FMX output in separate locations. This prevents stale output files from being mistaken for current results and makes it much easier to compare source and target artifacts during troubleshooting.</p>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Workspace Area</th><th>Recommended Use</th></tr>\n<tr><td>Converter folder</td><td>Contains the converter source and its own documentation/scripts.</td></tr>\n<tr><td>Source project folder</td><td>Contains the original VCL application being migrated.</td></tr>\n<tr><td>Output folder</td><td>Contains only the newly generated FMX project for the current run.</td></tr>\n<tr><td>Backup storage</td><td>Contains milestone snapshots, cloud copies, or archived converter states.</td></tr>\n</tbody></table>\n</article>",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>3. System Requirements and Workspace Preparation</h1><section id=\"complete-installation\"><h2>Installing the complete Windows package</h2><p>Download the Win32 or Win64 application ZIP and extract the entire ZIP into its own writable folder before starting VCL2FMXConverter.exe. Win64 needs 64-bit Windows. Keep the Win32 and Win64 editions in separate folders. Do not run from inside the ZIP or copy only the executable. RAD Studio is needed to build Delphi projects, not to run the downloaded converter.</p><p>Keep this layout together: VCL2FMXConverter.exe and WebView2Loader.dll in the same folder; Localization\\Languages containing all 35 JSON language packs; mapping_packs containing the 22 supplied JSON packs; docs\\Help containing the complete Help tree and guides; and the supplied licenses and README.txt. These are relative paths beneath the executable folder, not folders beside the ZIP.</p><p>Localization\\Languages is required for interface and report translations. Preserve the English en-US.json pack as well as the other supplied languages. A missing or unreadable selected report language pack can stop a conversion with &quot;The selected report language pack could not be loaded.&quot; Restore the complete folder from the same release ZIP and restart the converter.</p><p>WebView2Loader.dll must be directly beside VCL2FMXConverter.exe and match the executable architecture: x86 for Win32, x64 for Win64, even when running Win32 on 64-bit Windows. Use the DLL supplied in that edition of the release ZIP. The loader supports the embedded mapping browsers; it is not the WebView2 Runtime.</p><p>Install or update Microsoft Edge WebView2 Evergreen Runtime if it is absent. Obtain it from https://developer.microsoft.com/microsoft-edge/webview2/ under Download the WebView2 Runtime. The Evergreen Bootstrapper needs Internet access; use the appropriate Evergreen Standalone Installer for an offline computer. Having the Microsoft Edge browser installed is not a substitute for the Runtime. Do not download replacement DLLs from third-party DLL sites.</p><p>The embedded browsers use Edge when available and may fall back to an older browser engine if WebView2 is unavailable. A window that opens is therefore not proof of correct WebView2 deployment. If mapping views are blank or render incorrectly, check the loader location and architecture, then the Runtime installation. Close and reopen the converter after correcting the installation.</p><p>Keep mapping_packs with the application even when mapping-pack support is not currently enabled. Missing packs remove that optional conversion coverage. Preserve docs\\Help and all its subfolders; missing Help files prevent Help from opening. Help opens in your default browser. Keep the converter running while using its local Help URL; English Help is available offline, while automatic Help translation needs Internet access.</p><p>Use a writable output folder separate from both the original VCL project and the converter installation. Keep an independent backup of the original project. The signed-in Windows account also needs access to its local application-data folder for language settings and browser data. Before replacing an installation, close the converter and back up customized language or mapping packs. Extract a fresh complete release rather than mixing files from different releases.</p><p>Before the first conversion, verify that the Language selector lists the supplied languages, the mapping views display, and Help opens. Review the conversion report, then compile and test the generated project in Delphi. Successful conversion does not remove the need to review unsupported components and manual changes.</p></section>\n\n<ol start=\"1\"><li>A Windows computer to run the downloaded converter. Delphi is required to build and test generated projects.</li></ol>\n<ol start=\"2\"><li>Access to the original VCL source code and form files.</li></ol>\n<ol start=\"3\"><li>A separate target directory for generated FMX output.</li></ol>\n<ol start=\"4\"><li>Sufficient disk space for source, output, reports, and milestone backups.</li></ol>\n<ol start=\"5\"><li>A backup strategy before major converter runs or large rule changes.</li></ol>\n<p>A clean folder layout is strongly recommended. Keep the converter source, the original VCL project, and the converted FMX output in separate locations. This prevents stale output files from being mistaken for current results and makes it much easier to compare source and target artifacts during troubleshooting.</p>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Workspace Area</th><th>Recommended Use</th></tr>\n<tr><td>Converter folder</td><td>Contains the converter source and its own documentation/scripts.</td></tr>\n<tr><td>Source project folder</td><td>Contains the original VCL application being migrated.</td></tr>\n<tr><td>Output folder</td><td>Contains only the newly generated FMX project for the current run.</td></tr>\n<tr><td>Backup storage</td><td>Contains milestone snapshots, cloud copies, or archived converter states.</td></tr>\n</tbody></table>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_SYSTEM_REQUIREMENTS_AND_WORKSPACE_PREPARATION",
       "language": "en-US",
       "tags": "imported,docx,troubleshooting,procedure",
@@ -280,10 +428,10 @@
       "id": "{D7711B1F-A8FC-4EC9-A0FA-F55C76286675}",
       "parentId": "",
       "title": "Building and Launching the Converter",
-      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>4. Building and Launching the Converter</h1>\n\n<ol start=\"1\"><li>Open the VCL2FMXConverter project in Delphi.</li></ol>\n<ol start=\"2\"><li>Build the converter and confirm the build completes cleanly.</li></ol>\n<ol start=\"3\"><li>Run the converter application.</li></ol>\n<p>Verify that the tabbed workspace opens and that Dashboard, Project Scan, Component Map, Property Map, Event Map, Conversion Output, and Rules are available.</p>\n\n<p>If the converter itself does not build, stop there and resolve that issue before attempting any project migration. The converter must be treated like any other software tool: it needs a healthy build before its output can be trusted.</p>\n</article>",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>4. Building and Launching the Converter</h1><section id=\"complete-installation\"><h2>Installing the complete Windows package</h2><p>Download the Win32 or Win64 application ZIP and extract the entire ZIP into its own writable folder before starting VCL2FMXConverter.exe. Win64 needs 64-bit Windows. Keep the Win32 and Win64 editions in separate folders. Do not run from inside the ZIP or copy only the executable. RAD Studio is needed to build Delphi projects, not to run the downloaded converter.</p><p>Keep this layout together: VCL2FMXConverter.exe and WebView2Loader.dll in the same folder; Localization\\Languages containing all 35 JSON language packs; mapping_packs containing the 22 supplied JSON packs; docs\\Help containing the complete Help tree and guides; and the supplied licenses and README.txt. These are relative paths beneath the executable folder, not folders beside the ZIP.</p><p>Localization\\Languages is required for interface and report translations. Preserve the English en-US.json pack as well as the other supplied languages. A missing or unreadable selected report language pack can stop a conversion with &quot;The selected report language pack could not be loaded.&quot; Restore the complete folder from the same release ZIP and restart the converter.</p><p>WebView2Loader.dll must be directly beside VCL2FMXConverter.exe and match the executable architecture: x86 for Win32, x64 for Win64, even when running Win32 on 64-bit Windows. Use the DLL supplied in that edition of the release ZIP. The loader supports the embedded mapping browsers; it is not the WebView2 Runtime.</p><p>Install or update Microsoft Edge WebView2 Evergreen Runtime if it is absent. Obtain it from https://developer.microsoft.com/microsoft-edge/webview2/ under Download the WebView2 Runtime. The Evergreen Bootstrapper needs Internet access; use the appropriate Evergreen Standalone Installer for an offline computer. Having the Microsoft Edge browser installed is not a substitute for the Runtime. Do not download replacement DLLs from third-party DLL sites.</p><p>The embedded browsers use Edge when available and may fall back to an older browser engine if WebView2 is unavailable. A window that opens is therefore not proof of correct WebView2 deployment. If mapping views are blank or render incorrectly, check the loader location and architecture, then the Runtime installation. Close and reopen the converter after correcting the installation.</p><p>Keep mapping_packs with the application even when mapping-pack support is not currently enabled. Missing packs remove that optional conversion coverage. Preserve docs\\Help and all its subfolders; missing Help files prevent Help from opening. Help opens in your default browser. Keep the converter running while using its local Help URL; English Help is available offline, while automatic Help translation needs Internet access.</p><p>Use a writable output folder separate from both the original VCL project and the converter installation. Keep an independent backup of the original project. The signed-in Windows account also needs access to its local application-data folder for language settings and browser data. Before replacing an installation, close the converter and back up customized language or mapping packs. Extract a fresh complete release rather than mixing files from different releases.</p><p>Before the first conversion, verify that the Language selector lists the supplied languages, the mapping views display, and Help opens. Review the conversion report, then compile and test the generated project in Delphi. Successful conversion does not remove the need to review unsupported components and manual changes.</p></section>\n\n<ol start=\"1\"><li>Open the VCL2FMXConverter project in Delphi.</li></ol>\n<ol start=\"2\"><li>Build the converter and confirm the build completes cleanly.</li></ol>\n<ol start=\"3\"><li>Run the converter application.</li></ol>\n<p>Verify that the tabbed workspace opens and that Dashboard, Project Scan, Component Map, Property Map, Event Map, Conversion Output, and Rules are available.</p>\n\n<p>If the converter itself does not build, stop there and resolve that issue before attempting any project migration. The converter must be treated like any other software tool: it needs a healthy build before its output can be trusted.</p>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_BUILDING_AND_LAUNCHING_THE_CONVERTER",
       "language": "en-US",
       "tags": "imported,docx",
@@ -294,15 +442,15 @@
       "id": "{A067C35D-3EA9-474A-846F-7CD3C7538083}",
       "parentId": "",
       "title": "Main Window and Control-by-Control Walkthrough",
-      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>5. Main Window and Control-by-Control Walkthrough</h1>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Control</th><th>Purpose</th><th>How a User Should Think About It</th></tr>\n<tr><td>Source project</td><td>Points at the original VCL project or source root.</td><td>This is the source of truth the converter will scan.</td></tr>\n<tr><td>Output folder</td><td>Points at the output directory for generated FMX artifacts.</td><td>Treat this as disposable and regenerable output, not as your only copy of the application.</td></tr>\n<tr><td>Files to convert</td><td>Chooses PAS only, DFM only, or both.</td><td>Use narrower scopes for focused retests, and use both for full conversions.</td></tr>\n<tr><td>Include subfolders</td><td>Controls whether subdirectories are scanned.</td><td>Leave it enabled for complete projects unless you intentionally want to limit the run.</td></tr>\n<tr><td>Report and output actions</td><td>Opens the generated report, prints it when supported, or opens the output folder.</td><td>Use these after every run so report review is part of the normal workflow.</td></tr>\n<tr><td>Critical Areas / Data Aware / 3rd Party / WinAPI</td><td>Per-run rule toggles for the specialized conversion families.</td><td>Leave these enabled for a normal full pass, and only turn one off when intentionally isolating behavior.</td></tr>\n<tr><td>Convert Project</td><td>Starts the conversion process.</td><td>Only press this after source, output, scope, and rule choices are correct.</td></tr>\n<tr><td>Conversion Output log</td><td>Displays progress and key messages while also supporting report review.</td><td>Read it after every run; it is the first indicator of what happened.</td></tr>\n</tbody></table>\n\n<p>The current v6.0 Navigator main window is a tabbed workspace. Dashboard shows the latest run summary and quick actions. Project Scan holds the path and scope controls, Component Map / Property Map / Event Map expose the live mapper reference surface, Conversion Output shows the live log and report status, and Rules controls the four specialized conversion families. The converter still does its real work behind the scenes, but the operator needs to use the front end carefully because path mistakes, stale output folders, and poorly scoped runs can create misleading results.</p>\n</article>",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>5. Main Window and Control-by-Control Walkthrough</h1>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Control</th><th>Purpose</th><th>How a User Should Think About It</th></tr>\n<tr><td>Source project</td><td>Points at the original VCL project or source root.</td><td>This is the source of truth the converter will scan.</td></tr>\n<tr><td>Output folder</td><td>Points at the output directory for generated FMX artifacts.</td><td>Treat this as disposable and regenerable output, not as your only copy of the application.</td></tr>\n<tr><td>Files to convert</td><td>Chooses PAS only, DFM only, or both.</td><td>Use narrower scopes for focused retests, and use both for full conversions.</td></tr>\n<tr><td>Include subfolders</td><td>Controls whether subdirectories are scanned.</td><td>Leave it enabled for complete projects unless you intentionally want to limit the run.</td></tr>\n<tr><td>Report and output actions</td><td>Opens the generated report, prints it when supported, or opens the output folder.</td><td>Use these after every run so report review is part of the normal workflow.</td></tr>\n<tr><td>Critical Areas / Data Aware / 3rd Party / WinAPI</td><td>Per-run rule toggles for the specialized conversion families.</td><td>Leave these enabled for a normal full pass, and only turn one off when intentionally isolating behavior.</td></tr>\n<tr><td>Convert Project</td><td>Starts the conversion process.</td><td>Only press this after source, output, scope, and rule choices are correct.</td></tr>\n<tr><td>Conversion Output log</td><td>Displays progress and key messages while also supporting report review.</td><td>Read it after every run; it is the first indicator of what happened.</td></tr>\n</tbody></table>\n\n<p>The current v7.0 Atlas main window is a tabbed workspace. Dashboard shows the latest run summary and quick actions. Project Scan holds the path and scope controls, Component Map / Property Map / Event Map expose the live mapper reference surface, Conversion Output shows the live log and report status, and Rules controls the four specialized conversion families. The converter still does its real work behind the scenes, but the operator needs to use the front end carefully because path mistakes, stale output folders, and poorly scoped runs can create misleading results.</p>\n</article><p>Use the Language selector in the header to change the interface language. For detailed instructions, see <a href=\"using-and-maintaining-translations.html\">Using and maintaining translations</a>.</p>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_MAIN_WINDOW_AND_CONTROL_BY_CONTROL_WALKTHROUGH",
       "language": "en-US",
       "tags": "imported,docx,procedure,reference",
       "conditions": "",
-      "updatedAt": "2026-05-19T16:20:37.664Z"
+      "updatedAt": "2026-09-11T00:00:00Z"
     },
     {
       "id": "{46B5B10D-7BFE-4AD9-B6D9-236EF0E13B68}",
@@ -311,7 +459,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>5.1 Run the converted app and validate real user workflows.</h1><h1><span style=\"color: rgb(17, 24, 39); font-size: 15px;\">Only after runtime stability, review and tune layout or styling details.</span></h1>\n<p>This sequence matters. Trying to perfect colors or spacing before the application builds and runs cleanly is usually wasted effort. Stabilize structure first, runtime second, and presentation third. Fully exercise the app and try all options and verify their successful operation.</p>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_RUN_THE_CONVERTED_APP_AND_VALIDATE_REAL_USER_WORKFLOWS",
       "language": "en-US",
       "tags": "imported,docx",
@@ -325,7 +473,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>6. Recommended Conversion and Practical Operator Workflow</h1>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Stage</th><th>Operator action</th><th>Expected result</th></tr>\n<tr><td>Prepare</td><td>check source</td><td>set clean target</td></tr>\n<tr><td>Run</td><td>select options</td><td>start conversion</td></tr>\n<tr><td>Open</td><td>load FMX project</td><td>build in Delphi</td></tr>\n<tr><td>Validate</td><td>run app</td><td>exercise real workflows</td></tr>\n<tr><td>Refine</td><td>improve converter</td><td>rerun cleanly</td></tr>\n</tbody></table>\n\n<ol start=\"1\"><li>Prepare a clean output directory.</li></ol>\n<ol start=\"2\"><li>Run the converter against the selected VCL project.</li></ol>\n<ol start=\"3\"><li>Open the generated FMX project in Delphi.</li></ol>\n<ol start=\"4\"><li>Resolve structural and compile issues first.</li></ol>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_PRACTICAL_OPERATOR_WORKFLOW",
       "language": "en-US",
       "tags": "imported,docx,procedure,reference",
@@ -339,7 +487,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>7. Preparing a Source Project for Best Results</h1>\n\n<p>Some preparation work in the source project can make the converter easier to use and the output easier to validate. This is not always required, but it is often helpful.</p>\n\n<ol start=\"1\"><li>Know which folder is the real source root and which files are truly active in the project.</li></ol>\n<ol start=\"2\"><li>Be aware of duplicated unit names or old backup copies inside the source tree.</li></ol>\n<ol start=\"3\"><li>Understand any database, media, or file-path dependencies that the converted application will need at runtime.</li></ol>\n<ol start=\"4\"><li>Keep note of major workflows that must be validated after conversion, such as startup, scheduling, playback, database edits, dialogs, and reporting.</li></ol>\n<ol start=\"5\"><li>If possible, have the original VCL application available for side-by-side behavior comparison.</li></ol>\n<p>The converter can do a great deal, but it is still easier to use when the operator knows which source files matter and which business workflows are critical.</p>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_PREPARING_A_SOURCE_PROJECT_FOR_BEST_RESULTS",
       "language": "en-US",
       "tags": "imported,docx,procedure",
@@ -353,7 +501,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>8. Running a Conversion</h1>\n\n<ol start=\"1\"><li>Enter or browse to the source folder.</li></ol>\n<ol start=\"2\"><li>Enter or browse to the target folder. A convenience folder name is provided if you wish to use it.</li></ol>\n<ol start=\"3\"><li>Choose PAS only, DFM only, or both.</li></ol>\n<ol start=\"4\"><li>Set the include-subfolders option and the four rule toggles as needed.</li></ol>\n<ol start=\"5\"><li>Review the specialized rule choices if your workflow needs a focused retest.</li></ol>\n<ol start=\"6\"><li>Click Convert and allow the process to complete.</li></ol>\n<p>Read the log before opening the output in Delphi. When the HTML report exists, use Open Report or Print Report directly from the converter, and use Open Output Folder when you need the generated files immediately.</p>\n\n<p>For full project migrations, the normal choice is to convert both PAS and DFM files recursively into a clean output folder. Targeted runs are useful only when you already know that a specific phase is the thing under review.</p>\n\n<p>During the same run, the generator can inventory real support files in the source root and in existing build-output folders. That makes the report more trustworthy because helper executables, DLLs, library files, sound-font files, and similar runtime companions are reported from real locations instead of being guessed from quoted Pascal strings.</p>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_RUNNING_A_CONVERSION",
       "language": "en-US",
       "tags": "imported,docx,reference",
@@ -364,15 +512,15 @@
       "id": "{045E307D-71B4-4C2B-AA34-CD614F033B9C}",
       "parentId": "",
       "title": "Reading the Log and the Conversion Report",
-      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>9. Reading the Log and the Conversion Report</h1>\n\n<p>Every conversion run should be reviewed through two channels: the live log in the converter UI and the generated report files in the output folder. When the HTML report exists, the Open Report and Print Report buttons use it first. These are not optional extras; they are part of the operating workflow.</p>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Information Source</th><th>What It Tells You</th><th>How to Use It</th></tr>\n<tr><td>Conversion Output log</td><td>Live progress and immediate messages during the run.</td><td>Use it to see which files were processed and whether the run completed normally.</td></tr>\n<tr><td>Conversion reports</td><td>Persistent text and HTML records of what the converter saw and reported.</td><td>Use them for later review, troubleshooting, printing, and communication with other engineers.</td></tr>\n<tr><td>Delphi compile output</td><td>The authoritative correctness check after generation.</td><td>Use it to identify real syntax, unit, and form-reader issues.</td></tr>\n<tr><td>Runtime behavior</td><td>The final reality check for workflow correctness.</td><td>Use it to confirm that the converted application actually behaves acceptably.</td></tr>\n</tbody></table>\n\n<p><strong>v6.0 Navigator report totals:</strong> Total issues means warnings, manual-review items, and errors. Informational notices and dry-run notices are shown separately. Dry-run notices are not counted as conversion issues.</p><p><strong>Manual review groups:</strong> Click the &gt; arrow on each manual-review item to view affected locations and recommended fixes.</p>\n<p>Pay special attention to the final run status. The current v6.0 Navigator report flow distinguishes Blocking issues present, Manual review required, and Clean conversion. The generated report now calls out a recommended next step, Distinct files needing attention, and files with conversion errors. Treat blocking issues as stop conditions even if files were generated. Informational messages about external project assets are different: they warn that companion files may still need manual copying or relocation before runtime testing. Mapping-pack runs additionally report loaded packs, third-party conversions, partial conversions, detect-only findings, preserved components, and unknown third-party-looking classes.</p>\n\n<p>The current report also distinguishes between support files that were actually staged into the FMX output directory and support files that were only found in the source root or beside an existing built executable. Read those companion-file notes carefully, because staging a helper file into the output tree is not the same thing as confirming it will deploy beside the final built executable.</p>\n\n<p>If the report and the compiler disagree, the compiler wins. If Code Insight and the real compiler disagree, the compiler wins again. The memo log and report are aids, not replacements for build and run validation.</p>\n</article>",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>9. Reading the Log and the Conversion Report</h1>\n\n<p>Every conversion run should be reviewed through two channels: the live log in the converter UI and the generated report files in the output folder. When the HTML report exists, the Open Report and Print Report buttons use it first. These are not optional extras; they are part of the operating workflow.</p>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Information Source</th><th>What It Tells You</th><th>How to Use It</th></tr>\n<tr><td>Conversion Output log</td><td>Live progress and immediate messages during the run.</td><td>Use it to see which files were processed and whether the run completed normally.</td></tr>\n<tr><td>Conversion reports</td><td>Persistent text and HTML records of what the converter saw and reported.</td><td>Use them for later review, troubleshooting, printing, and communication with other engineers.</td></tr>\n<tr><td>Delphi compile output</td><td>The authoritative correctness check after generation.</td><td>Use it to identify real syntax, unit, and form-reader issues.</td></tr>\n<tr><td>Runtime behavior</td><td>The final reality check for workflow correctness.</td><td>Use it to confirm that the converted application actually behaves acceptably.</td></tr>\n</tbody></table>\n\n<p><strong>v7.0 Atlas report totals:</strong> Total issues means warnings, manual-review items, and errors. Informational notices and dry-run notices are shown separately. Dry-run notices are not counted as conversion issues.</p><p><strong>Manual review groups:</strong> Click the &gt; arrow on each manual-review item to view affected locations and recommended fixes.</p>\n<p>Pay special attention to the final run status. The current v7.0 Atlas report flow distinguishes Blocking issues present, Manual review required, and Clean conversion. The generated report now calls out a recommended next step, Distinct files needing attention, and files with conversion errors. Treat blocking issues as stop conditions even if files were generated. Informational messages about external project assets are different: they warn that companion files may still need manual copying or relocation before runtime testing. Mapping-pack runs additionally report loaded packs, third-party conversions, partial conversions, detect-only findings, preserved components, and unknown third-party-looking classes.</p>\n\n<p>The current report also distinguishes between support files that were actually staged into the FMX output directory and support files that were only found in the source root or beside an existing built executable. Read those companion-file notes carefully, because staging a helper file into the output tree is not the same thing as confirming it will deploy beside the final built executable.</p>\n\n<p>If the report and the compiler disagree, the compiler wins. If Code Insight and the real compiler disagree, the compiler wins again. The memo log and report are aids, not replacements for build and run validation.</p>\n</article><p>Saved HTML and text reports use the language selected when conversion starts; later language changes do not rewrite them. JSON reports remain canonical English. For details, see <a href=\"using-and-maintaining-translations.html\">Using and maintaining translations</a>.</p>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_READING_THE_LOG_AND_THE_CONVERSION_REPORT",
       "language": "en-US",
       "tags": "imported,docx,troubleshooting,procedure,reference",
       "conditions": "",
-      "updatedAt": "2026-05-19T16:22:22.120Z"
+      "updatedAt": "2026-09-11T00:00:00Z"
     },
     {
       "id": "{FB3420B3-53A1-4CF6-9217-A42AAA0F9E91}",
@@ -381,7 +529,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>10. Understanding the Output Folder and Files</h1>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Output Artifact</th><th>Purpose</th><th>User Action</th></tr>\n<tr><td>Converted .pas files</td><td>FMX-oriented Pascal source units derived from the original VCL source.</td><td>Open in Delphi and build as part of the generated project.</td></tr>\n<tr><td>Converted .fmx files</td><td>FireMonkey form definitions derived from DFM files.</td><td>Allow Delphi to load them and watch for reader errors.</td></tr>\n<tr><td>Project files</td><td>The FMX project shell and startup metadata.</td><td>Open the project file in Delphi and build it.</td></tr>\n<tr><td>Conversion report</td><td>Text summary of the run.</td><td>Keep it for diagnostics and engineering review.</td></tr>\n<tr><td>Milestone backups</td><td>Snapshots of converter state or other preserved artifacts.</td><td>Store separately so they do not pollute source or output folders.</td></tr>\n</tbody></table>\n\n<p>Project files now include a more complete FMX shell, and the generator attempts to carry along common companion assets such as .res, .ico, .manifest, and safe local project references. If the source project points at an absolute external asset outside the source tree, you should expect to verify or copy that file manually before runtime testing.</p>\n\n<p>The output folder may now also contain staged runtime companions such as helper executables, DLLs, library files, or sound-font style support files. The generator adds them when it finds real candidates in the source root or in existing build-output folders such as Win32, Win64, Debug, Release, or deploy. Those files are copied to make review easier, but you still need to verify the final deployment location expected by the generated app.</p>\n\n<p>A clean output folder is one of the most important habits in using the converter. Stale generated units and forms can create false problems, hide real changes, and lead Delphi to load the wrong copy of a file.</p>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_UNDERSTANDING_THE_OUTPUT_FOLDER_AND_FILES",
       "language": "en-US",
       "tags": "imported,docx,troubleshooting,procedure,reference",
@@ -395,7 +543,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>11. Opening the Converted Project in Delphi</h1>\n\n<ol start=\"1\"><li>Open the generated project in Delphi.</li></ol>\n<ol start=\"2\"><li>Let Delphi load the forms and watch for form-reader errors first.</li></ol>\n<ol start=\"3\"><li>Build the project and capture the real compiler results.</li></ol>\n<ol start=\"4\"><li>Fix structural problems before pursuing visual polish.</li></ol>\n<ol start=\"5\"><li>Rebuild and rerun after each significant converter improvement.</li></ol>\n<p>The converter now strips or remaps several common VCL-only form properties before Delphi sees the FMX output, so some earlier reader failures no longer appear. Even so, form-reader errors still deserve first priority because they block every later stage of validation.</p>\n\n<p>The first successful load of the project is a major milestone, but it is not the end of validation. A project can open and still fail at compile time, or compile and still fail at runtime. Treat these as separate checkpoints.</p>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_OPENING_THE_CONVERTED_PROJECT_IN_DELPHI",
       "language": "en-US",
       "tags": "imported,docx,troubleshooting",
@@ -409,7 +557,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>12. Validating the Converted Application</h1>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Validation Layer</th><th>Goal</th><th>Typical Questions</th></tr>\n<tr><td>Structural</td><td>Can Delphi read the generated forms and units?</td><td>Are there reader errors, malformed collections, or invalid properties?</td></tr>\n<tr><td>Compile-time</td><td>Does the project build on the first pass?</td><td>Are units missing, events wrong, or symbols unresolved?</td></tr>\n<tr><td>Runtime</td><td>Does the application start and execute real workflows?</td><td>Do timers, media, data, dialogs, and navigation work?</td></tr>\n<tr><td>Visual</td><td>Does the application look acceptable and remain usable?</td><td>Are fonts, labels, colors, and layouts readable and sensible?</td></tr>\n</tbody></table>\n\n<p>Validation should now explicitly cover the newer generic support surface. That includes numeric entry controls, radio-group style selections, font-picking workflows, scrollable long-message dialogs, and any wave-audio paths that depend on Winapi.MMSystem or waveOut APIs.</p>\n\n<p>Real validation means exercising the actual workflows that matter to the application: data entry, startup, scheduling, media playback, dialogs, and reporting. A converted app is only as good as the workflows it can successfully perform.</p>\n</article>",
       "status": "Approved",
       "iconName": "page",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_VALIDATING_THE_CONVERTED_APPLICATION",
       "language": "en-US",
       "tags": "imported,docx,troubleshooting,procedure",
@@ -423,7 +571,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>13. Test startup and shutdown behavior.</h1>\n<ol><li><span style=\"color: rgb(17, 24, 39); font-size: 15px;\">Test any timers or schedules if the original app depended on them.</span></li><li>Test data-aware screens and save/cancel workflows.</li><li>Test media or file operations where applicable.</li><li>Test secondary forms, help, menus, and common user actions.</li><li>Test numeric entry controls such as TNumberBox and converted TSpinBox screens.</li><li>Test TRadioGroup and TFontDialog workflows if the original application used them.</li><li>Test wave-audio or WinMM paths where the source project uses MMSystem or waveOut APIs.</li><li>If the application launches, check operation of help files, external documents, URLs, or utilities.</li><li>If a form uses shared datasets, shared datasources, shared navigators, or shared combo controls, close and reopen the form and verify the shared object still behaves correctly afterward.</li></ol>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_TEST_STARTUP_AND_SHUTDOWN_BEHAVIOR",
       "language": "en-US",
       "tags": "imported,docx,procedure",
@@ -434,10 +582,10 @@
       "id": "{08E324FA-3EBD-4489-A743-BB8747725625}",
       "parentId": "",
       "title": "Troubleshooting and Recovery Procedures",
-      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>14. Troubleshooting and Recovery Procedures</h1>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Symptom</th><th>Likely Cause</th><th>Recommended Response</th></tr>\n<tr><td>Form reader error</td><td>An unsupported VCL property or malformed FMX output was emitted.</td><td>Fix the converter rule, regenerate into a clean output folder, and retest.</td></tr>\n<tr><td>Compiler errors after regeneration</td><td>A converter rule is missing or incomplete.</td><td>Treat the compiler message as the next engineering target and improve the converter globally.</td></tr>\n<tr><td>Runtime access violation</td><td>A startup, event, media, drawing, or binding mismatch remains.</td><td>Trace the workflow, isolate the phase, and improve the converter behavior globally.</td></tr>\n<tr><td>Visual mismatch only</td><td>The app is basically working but presentation differs.</td><td>Defer deep visual polishing until structural and runtime behavior are stable.</td></tr>\n<tr><td>Code Insight disagreement</td><td>The IDE parser is stale or confused.</td><td>Trust the real compiler and reopen files or restart the IDE if needed.</td></tr>\n<tr><td>Conversion completed with blocking issues</td><td>A real unsupported component or blocking rule gap was detected.</td><td>Stop there, read the report, and improve the converter globally before trusting the output.</td></tr>\n<tr><td>External project asset reference not copied</td><td>The project shell references a file outside the source tree or in an unresolved path.</td><td>Copy or relocate the asset manually, then decide whether the generator needs a new generic asset-copy rule.</td></tr>\n</tbody></table>\n\n<p>If a run goes badly, do not try to repair everything at once. The fastest route is usually to identify the highest-severity problem, improve the converter globally, regenerate clean output, and retest.</p>\n</article>",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>14. Troubleshooting and Recovery Procedures</h1><section id=\"complete-installation\"><h2>Installing the complete Windows package</h2><p>Download the Win32 or Win64 application ZIP and extract the entire ZIP into its own writable folder before starting VCL2FMXConverter.exe. Win64 needs 64-bit Windows. Keep the Win32 and Win64 editions in separate folders. Do not run from inside the ZIP or copy only the executable. RAD Studio is needed to build Delphi projects, not to run the downloaded converter.</p><p>Keep this layout together: VCL2FMXConverter.exe and WebView2Loader.dll in the same folder; Localization\\Languages containing all 35 JSON language packs; mapping_packs containing the 22 supplied JSON packs; docs\\Help containing the complete Help tree and guides; and the supplied licenses and README.txt. These are relative paths beneath the executable folder, not folders beside the ZIP.</p><p>Localization\\Languages is required for interface and report translations. Preserve the English en-US.json pack as well as the other supplied languages. A missing or unreadable selected report language pack can stop a conversion with &quot;The selected report language pack could not be loaded.&quot; Restore the complete folder from the same release ZIP and restart the converter.</p><p>WebView2Loader.dll must be directly beside VCL2FMXConverter.exe and match the executable architecture: x86 for Win32, x64 for Win64, even when running Win32 on 64-bit Windows. Use the DLL supplied in that edition of the release ZIP. The loader supports the embedded mapping browsers; it is not the WebView2 Runtime.</p><p>Install or update Microsoft Edge WebView2 Evergreen Runtime if it is absent. Obtain it from https://developer.microsoft.com/microsoft-edge/webview2/ under Download the WebView2 Runtime. The Evergreen Bootstrapper needs Internet access; use the appropriate Evergreen Standalone Installer for an offline computer. Having the Microsoft Edge browser installed is not a substitute for the Runtime. Do not download replacement DLLs from third-party DLL sites.</p><p>The embedded browsers use Edge when available and may fall back to an older browser engine if WebView2 is unavailable. A window that opens is therefore not proof of correct WebView2 deployment. If mapping views are blank or render incorrectly, check the loader location and architecture, then the Runtime installation. Close and reopen the converter after correcting the installation.</p><p>Keep mapping_packs with the application even when mapping-pack support is not currently enabled. Missing packs remove that optional conversion coverage. Preserve docs\\Help and all its subfolders; missing Help files prevent Help from opening. Help opens in your default browser. Keep the converter running while using its local Help URL; English Help is available offline, while automatic Help translation needs Internet access.</p><p>Use a writable output folder separate from both the original VCL project and the converter installation. Keep an independent backup of the original project. The signed-in Windows account also needs access to its local application-data folder for language settings and browser data. Before replacing an installation, close the converter and back up customized language or mapping packs. Extract a fresh complete release rather than mixing files from different releases.</p><p>Before the first conversion, verify that the Language selector lists the supplied languages, the mapping views display, and Help opens. Review the conversion report, then compile and test the generated project in Delphi. Successful conversion does not remove the need to review unsupported components and manual changes.</p></section>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Symptom</th><th>Likely Cause</th><th>Recommended Response</th></tr>\n<tr><td>Form reader error</td><td>An unsupported VCL property or malformed FMX output was emitted.</td><td>Fix the converter rule, regenerate into a clean output folder, and retest.</td></tr>\n<tr><td>Compiler errors after regeneration</td><td>A converter rule is missing or incomplete.</td><td>Treat the compiler message as the next engineering target and improve the converter globally.</td></tr>\n<tr><td>Runtime access violation</td><td>A startup, event, media, drawing, or binding mismatch remains.</td><td>Trace the workflow, isolate the phase, and improve the converter behavior globally.</td></tr>\n<tr><td>Visual mismatch only</td><td>The app is basically working but presentation differs.</td><td>Defer deep visual polishing until structural and runtime behavior are stable.</td></tr>\n<tr><td>Code Insight disagreement</td><td>The IDE parser is stale or confused.</td><td>Trust the real compiler and reopen files or restart the IDE if needed.</td></tr>\n<tr><td>Conversion completed with blocking issues</td><td>A real unsupported component or blocking rule gap was detected.</td><td>Stop there, read the report, and improve the converter globally before trusting the output.</td></tr>\n<tr><td>External project asset reference not copied</td><td>The project shell references a file outside the source tree or in an unresolved path.</td><td>Copy or relocate the asset manually, then decide whether the generator needs a new generic asset-copy rule.</td></tr>\n</tbody></table>\n\n<p>If a run goes badly, do not try to repair everything at once. The fastest route is usually to identify the highest-severity problem, improve the converter globally, regenerate clean output, and retest.</p>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_TROUBLESHOOTING_AND_RECOVERY_PROCEDURES",
       "language": "en-US",
       "tags": "imported,docx,troubleshooting,procedure,reference",
@@ -448,15 +596,15 @@
       "id": "{50F51DA1-0B20-4EAD-A247-94CC90345BAC}",
       "parentId": "",
       "title": "Making Changes to the Converter Software",
-      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>15. Making Changes to the Converter Software</h1>\n\n<p>Refer to the Engineering Manual for guidance for making changes to the converter. It is a highly complex application which uses much integration and branches to many areas. Only qualified programmers who have a deep understanding of Delphi should attempt any modifications that may be required.</p>\n</article>",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>15. Making Changes to the Converter Software</h1>\n\n<p>Refer to the Engineering Manual for guidance for making changes to the converter. It is a highly complex application which uses much integration and branches to many areas. Only qualified programmers who have a deep understanding of Delphi should attempt any modifications that may be required.</p>\n</article><p>For maintaining translation catalogs, glossary terms, runtime packs and Help language mappings, see <a href=\"using-and-maintaining-translations.html\">Using and maintaining translations</a>.</p>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_MAKING_CHANGES_TO_THE_CONVERTER_SOFTWARE",
       "language": "en-US",
       "tags": "imported,docx",
       "conditions": "",
-      "updatedAt": "2026-06-26T03:55:23.722Z"
+      "updatedAt": "2026-09-11T00:00:00Z"
     },
     {
       "id": "{5EBE3D89-9CBD-453C-AE20-D8F5D9D8227D}",
@@ -465,7 +613,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>16. Operational Best Practices</h1>\n\n<ol start=\"1\"><li>Always keep the source project, output project, and converter workspace separate.</li></ol>\n<ol start=\"2\"><li>Use clean output folders for serious test cycles.</li></ol>\n<ol start=\"3\"><li>Back up milestone converter states before risky changes. Backups are extremely important to save accomplished work.</li></ol>\n<ol start=\"4\"><li>Keep zipped milestone backups out of the live converter workspace so later workspace backups do not recurse and grow uncontrollably. Make sure they are off the development computer in another location, like a cloud service like DropBox, Google Drive, etc.</li></ol>\n<ol start=\"5\"><li>Treat real compiler output as the authority over IDE-only hints or stale parse errors.</li></ol>\n<ol start=\"6\"><li>Record what was fixed globally so later projects benefit immediately.</li><li>Do not burn time on tiny visual tweaks until the application builds and runs</li></ol>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_OPERATIONAL_BEST_PRACTICES",
       "language": "en-US",
       "tags": "imported,docx,troubleshooting",
@@ -476,15 +624,15 @@
       "id": "{31F65B5E-18A0-4F47-8198-2C443E0D5F7E}",
       "parentId": "",
       "title": "Frequently Asked Questions",
-      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>17. Frequently Asked Questions</h1>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Question</th><th>Answer</th></tr>\n<tr><td>Will every project convert perfectly on the first run?</td><td>No. The converter is powerful, but real-world projects still expose new patterns that may need another global rule.</td></tr>\n<tr><td>Should I hand-edit the generated FMX project permanently?</td><td>Only for temporary testing or minor final polish. The real fix should go into the converter whenever the pattern is reusable.</td></tr>\n<tr><td>Why do I still need Delphi after conversion?</td><td>Because the generated project still has to be built, run, and validated in the real Delphi environment.</td></tr>\n<tr><td>Why are backups important?</td><td>Because converter improvements are cumulative, and known-good milestone states are valuable when comparing behavior or recovering from regressions.</td></tr>\n<tr><td>When should I review visuals?</td><td>After the project loads, compiles, and runs acceptably. Visual polish is usually the last phase.</td></tr>\n<tr><td>What does blocking issues mean?</td><td>It means the converter found a serious unsupported pattern or rule gap. Generated files may exist, but you should resolve the blocking issue before treating the output as a valid converted project.</td></tr>\n</tbody></table>\n</article>",
+      "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>17. Frequently Asked Questions</h1>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Question</th><th>Answer</th></tr>\n<tr><td>Will every project convert perfectly on the first run?</td><td>No. The converter is powerful, but real-world projects still expose new patterns that may need another global rule.</td></tr>\n<tr><td>Should I hand-edit the generated FMX project permanently?</td><td>Only for temporary testing or minor final polish. The real fix should go into the converter whenever the pattern is reusable.</td></tr>\n<tr><td>Why do I still need Delphi after conversion?</td><td>Because the generated project still has to be built, run, and validated in the real Delphi environment.</td></tr>\n<tr><td>Why are backups important?</td><td>Because converter improvements are cumulative, and known-good milestone states are valuable when comparing behavior or recovering from regressions.</td></tr>\n<tr><td>When should I review visuals?</td><td>After the project loads, compiles, and runs acceptably. Visual polish is usually the last phase.</td></tr>\n<tr><td>What does blocking issues mean?</td><td>It means the converter found a serious unsupported pattern or rule gap. Generated files may exist, but you should resolve the blocking issue before treating the output as a valid converted project.</td></tr>\n</tbody></table>\n</article><p>How do I add a language or correct a translation? See <a href=\"using-and-maintaining-translations.html\">Using and maintaining translations</a>.</p>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_FREQUENTLY_ASKED_QUESTIONS",
       "language": "en-US",
       "tags": "imported,docx,troubleshooting",
       "conditions": "",
-      "updatedAt": "2026-06-26T03:55:21.628Z"
+      "updatedAt": "2026-09-11T00:00:00Z"
     },
     {
       "id": "{46D64EE7-452E-4CCD-8C03-00BAFCAC30F6}",
@@ -493,7 +641,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>Appendix A. Quick Start Checklist</h1>\n\n<ol start=\"1\"><li>Build the converter.</li></ol>\n<ol start=\"2\"><li>Choose source and target folders.</li></ol>\n<ol start=\"3\"><li>Use a clean output directory.</li></ol>\n<ol start=\"4\"><li>Run conversion.</li></ol>\n<ol start=\"5\"><li>Open the FMX project in Delphi.</li></ol>\n<ol start=\"6\"><li>Build, run, and validate the converted app.</li></ol>\n<ol start=\"7\"><li>Improve the converter globally and regenerate as needed.</li></ol>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_APPENDIX_A_QUICK_START_CHECKLIST",
       "language": "en-US",
       "tags": "imported,docx,procedure",
@@ -507,7 +655,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>Appendix B. Pre-Conversion Checklist</h1>\n\n<ol start=\"1\"><li>Confirm the real source root folder.</li></ol>\n<ol start=\"2\"><li>Confirm the target output folder is correct and clean.</li></ol>\n<ol start=\"3\"><li>Know which workflows are critical in the original application.</li></ol>\n<ol start=\"4\"><li>Ensure supporting files such as databases or media are available for runtime testing.</li></ol>\n<ol start=\"5\"><li>Plan where milestone backups will be stored.</li></ol>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_APPENDIX_B_PRE_CONVERSION_CHECKLIST",
       "language": "en-US",
       "tags": "imported,docx",
@@ -521,7 +669,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>Appendix C. Post-Conversion Review Checklist</h1>\n\n<ol start=\"1\"><li>Did the forms open without reader errors?</li></ol>\n<ol start=\"2\"><li>Did the project compile on the first pass?</li></ol>\n<ol start=\"3\"><li>Did the application start and close normally?</li></ol>\n<ol start=\"4\"><li>Did core workflows run correctly?</li></ol>\n<ol start=\"5\"><li>Are the remaining issues structural, runtime, or merely visual?</li></ol>\n<ol start=\"6\"><li>Was the converter fixed globally if a reusable defect was found?</li></ol>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_APPENDIX_C_POST_CONVERSION_REVIEW_CHECKLIST",
       "language": "en-US",
       "tags": "imported,docx,troubleshooting,procedure",
@@ -535,7 +683,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>Appendix D. Glossary</h1>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Term</th><th>Meaning</th></tr>\n<tr><td>VCL</td><td>Visual Component Library, Delphi's traditional Windows UI framework.</td></tr>\n<tr><td>FMX</td><td>FireMonkey, Delphi's multi-platform UI framework.</td></tr>\n<tr><td>DFM</td><td>A Delphi form definition file used by VCL projects.</td></tr>\n<tr><td>FMX form</td><td>The converted FireMonkey form file, typically emitted as .fmx.</td></tr>\n<tr><td>LiveBindings</td><td>The FMX binding model used for data-aware behavior.</td></tr>\n<tr><td>Global fix</td><td>A converter change that benefits multiple current or future projects, not just one output file.</td></tr>\n<tr><td>Mapping pack</td><td>Optional JSON file that adds transparent third-party component detection, conversion, preservation, or manual-review rules.</td></tr>\n</tbody></table>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Auto Import",
+      "owner": "",
       "helpId": "IDH_APPENDIX_D_GLOSSARY",
       "language": "en-US",
       "tags": "imported,docx,troubleshooting,reference",
@@ -549,7 +697,7 @@
       "body": "<!-- HDC_HTML -->\r\n<article>\n<h1>Index</h1>\n\n<table class=\"doc-table\">\n<tbody><tr><th>Term</th><th>Section Reference</th></tr>\n<tr><td>Backups</td><td>Sections 3, 10, and 15</td></tr>\n<tr><td>Codex workflow</td><td>Section 14</td></tr>\n<tr><td>Delphi validation</td><td>Sections 11 and 12</td></tr>\n<tr><td>Output folder</td><td>Section 10</td></tr>\n<tr><td>Troubleshooting</td><td>Section 13</td></tr>\n</tbody></table>\n</article>",
       "status": "Approved",
       "iconName": "auto",
-      "owner": "Thomas H Martin",
+      "owner": "",
       "helpId": "IDH_INDEX",
       "language": "en-US",
       "tags": "imported,docx,troubleshooting,reference",
@@ -557,13 +705,13 @@
       "updatedAt": "2026-05-19T16:32:33.973Z"
     },
     {
-      "title": "Conversion Contracts in v6.0 Navigator",
-      "body": "<!-- HDC_HTML -->\r\n<article><h1>Conversion Contracts in v6.0 Navigator</h1><p>Version 6.0 Navigator adds an executable conversion-contract system. A contract is a small Delphi test case paired with an expectation file. The expectation records the required output, report behavior, uses-clause result, and validation rules for one known converter behavior.</p><p>The contract runner is the engineering test utility that finds each expectation file, runs the converter against the matching sample input, and fails if the generated result differs from the expected result. It is not runtime data for normal user conversions.</p><p>The current v6.0 Navigator contract suite contains 202 executable expectations, including dry-run report accounting, image API cleanup, unsupported-routine depth guards, field-test regressions, and manual-review report prompts.</p></article>",
+      "title": "Conversion Contracts in v7.0 Atlas",
+      "body": "<!-- HDC_HTML -->\n<div class=\"doc-topic\" style=\"display:block;\">\n<h1>Conversion Contracts in v7.0 Atlas</h1><p><strong>v7.0 Atlas - September 9, 2026:</strong> The suite now contains 227 executable expectations and the latest verification run passed 227 of 227 contracts. The current release also includes standard VCL classification for TBitBtn and TTrayIcon, with conservative FMX substitution or manual-review guidance where appropriate.</p>\n<p>Version 7.0 Atlas adds an executable conversion-contract system. A contract is a small Delphi test case paired with an expectation file. The expectation records the required output, report behavior, uses-clause result, and validation rules for one known converter behavior.</p>\n<p>The contract runner is the engineering test utility that finds each expectation file, runs the converter against the matching sample input, and fails if the generated result differs from the expected result. It is not runtime data for normal user conversions.</p>\n<table class=\"doc-table\">\n<tbody><tr><th>Contract Area</th><th>What It Protects</th></tr>\n<tr><td>Include analysis</td><td>Beside-source, subfolder, missing, outside-tree, nested, recursive, conditional, commented, and UTF-8 Pascal include directives.</td></tr>\n<tr><td>Windows messaging</td><td>SendMessage, PostMessage, Perform, WndProc, message declarations, WM/CM/CN/common-control families, WM_USER, system commands, and false positives.</td></tr>\n<tr><td>Uses cleanup</td><td>Removal or preservation of VCL and Winapi units, including protected/conditional uses blocks and Vcl.Themes cleanup.</td></tr>\n<tr><td>DFM/FMXL generation</td><td>TMemo string collections, TStringGrid event ordering, accented text, paired Pascal/DFM form behavior, and DFM/FMXL fidelity reporting.</td></tr>\n<tr><td>Reporting and dry run</td><td>Total-issue accounting, informational notices, dry-run notices, report-card layout, and manual-review group prompts.</td></tr>\n<tr><td>Graphics and GDI</td><td>FMX canvas substitutions where reliable, plus visual-review reporting where drawing still needs inspection.</td></tr>\n</tbody></table>\n<p>The current v7.0 Atlas contract suite contains 227 executable expectations. The current verification run passed with 227 passing and 0 failing contracts.</p>\n</div>",
       "status": "Approved",
-      "owner": "Auto Import",
-      "helpId": "IDH_CONVERSION_CONTRACTS_IN_V6_0_NAVIGATOR",
-      "tags": "contracts,regression,testing,v5"
+      "owner": "",
+      "helpId": "IDH_CONVERSION_CONTRACTS_IN_V7_0_ATLAS",
+      "tags": "contracts,regression,testing,v5",
+      "updatedAt": "2026-09-09T00:00:00Z"
     }
   ]
 }
-

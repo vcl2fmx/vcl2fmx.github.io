@@ -1,6 +1,6 @@
+param([string]$OutputRoot = (Join-Path $PSScriptRoot 'output'))
 $ErrorActionPreference = 'Stop'
 
-$OutputRoot = Join-Path $PSScriptRoot 'output'
 $FmxPath = Join-Path $OutputRoot 'UnitDevExpressMock.fmx'
 $ReportHtmlPath = Join-Path $OutputRoot 'VCL_to_FMX_Conversion_Report.html'
 $ReportTextPath = Join-Path $OutputRoot 'VCL_to_FMX_Conversion_Report.txt'
@@ -59,7 +59,8 @@ Test-AbsentText -Text $Fmx -Pattern 'cxGrid1: TcxGrid' -Label 'detect-only TcxGr
 Test-AbsentText -Text $Fmx -Pattern 'dxRibbon1: TdxRibbon' -Label 'detect-only TdxRibbon output'
 
 $CombinedReport = $ReportHtml + "`n" + $ReportText
-Test-RequiredText -Text $CombinedReport -Pattern 'DevExpress_MappingPack_v1' -Label 'DevExpress mapping pack name'
+Test-RequiredText -Text $CombinedReport -Pattern 'DevExpress_MappingPack' -Label 'DevExpress mapping pack name'
+Test-RequiredText -Text $CombinedReport -Pattern 'devexpress.complete.v2' -Label 'current DevExpress mapping pack identity'
 Test-RequiredText -Text $CombinedReport -Pattern 'Mapping pack partial conversion' -Label 'partial conversion report section'
 Test-RequiredText -Text $CombinedReport -Pattern 'TcxMaskEdit' -Label 'TcxMaskEdit report entry'
 Test-RequiredText -Text $CombinedReport -Pattern 'Mapping pack detection only' -Label 'detect-only report section'

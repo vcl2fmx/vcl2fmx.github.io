@@ -1,14 +1,117 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Print Manual</title><link rel="stylesheet" href="style.css"></head><body><div class="doc-topic" style="display:block;">
-<h1 style="text-align: center;">VCL2FMX Converter v6.0 Navigator User Guide</h1><div style="text-align: center;"><span style="font-family:&quot;Segoe UI&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;"><span style="font-family:&quot;Segoe Script&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;"><span style="font-family:&quot;Segoe Script&quot;;font-size:30pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;">Navigator</span></span></span></div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Atlas User Guide - Print view</title><link rel="stylesheet" href="style.css"></head><body><main><section>
+<h1>Using and maintaining translations</h1>
+<p>VCL2FMXConverter v7.0 Atlas. Updated October 15, 2026.</p>
+<p>This guide explains how to use the 35 included languages, correct a translation, add a language, and install the resulting language pack. It also explains which text is translated and how translated Help differs from the converter interface.</p>
+<p>PDF and editable DOCX editions are included in <code>docs/Help/guides</code>. Open these files from the documentation folder, or use the Translation Guide links on the downloads page.</p>
+
+<h2 id="choose">Choosing a language and opening Help</h2>
+<p>Start Atlas and use the <strong>Language</strong> selector in the header. Each choice includes its native name and locale code, such as <code>fr-FR</code>. Select a language to update the interface. The selection is saved for the next launch. On first use, Atlas attempts to use a supported system language; English is the fallback.</p>
+<p>The 35 bundled interface packs work offline. Select English at any time to return to the source wording. Language selection changes presentation; it does not change the conversion rules or translate the application you are converting.</p>
+<ol>
+<li>Select the desired language in Atlas.</li>
+<li>Click <strong>Help</strong>. The installed manual opens in your browser with that language requested.</li>
+<li>Allow the online translation service time to load. Keep Atlas running while navigating Help.</li>
+<li>After changing the converter language, click Help again to open it with the new selection. An already open Help tab does not automatically follow later changes in Atlas.</li>
+</ol>
+<p>English Help remains readable offline. Opening <code>docs/Help/index.html</code> directly as a file also provides English Help. Use the Help button for automatic translation. Downloaded PDF and DOCX guides are English documents and are not translated by the Help widget.</p>
+
+<h2 id="scope">Understanding what is translated</h2>
+<p>The interface pack supplies captions, instructions, built-in messages, reference-table explanations and other display text. Arabic, Persian, Hebrew, Pashto and Urdu also use right-to-left text presentation. Delphi identifiers, component names, paths, code examples and source evidence retain their original spelling where protected by the application.</p>
+<p>The live conversion log is translated for display. Saved HTML and text reports use the language selected when the conversion starts. Selecting another language afterward does not rewrite reports already saved. JSON reports retain canonical English text and the stable report schema so tools can process them consistently.</p>
+<p>Generated Pascal, FMX forms and project files are conversion output, not natural-language translations. A language pack changes displayed explanations; a mapping pack changes conversion mappings. Custom mapping-pack notes and external exception messages may remain in their original language.</p>
+<p>Help uses a separate online translation service. Atlas serves the installed English pages through a local browser connection and passes the selected language to the translation widget. Help text is processed by that service. The converter's offline interface translation does not require that connection.</p>
+<p>The included packs are machine translations and have not been reviewed by native speakers. Structural validation checks such things as placeholders and pack identity; it does not establish linguistic accuracy. Correcting an interface pack does not correct an online Help translation. Permanent Help wording changes belong in the English Help source; translation-service wording is a separate concern.</p>
+
+<h2 id="prepare">Preparing Translation Studio</h2>
+<p>Download <a href="https://delphitranslate.github.io/">the Delphi App Translation Studio</a> (https://delphitranslate.github.io/) and its manuals and guides. Use its Maintenance Studio for the already integrated Atlas project. Atlas already contains its language manager and selector; ordinary translation maintenance does not require repeating component integration or rebuilding the converter.</p>
+<p>Use a separate working copy of the matching V7 complete source package. It must contain <code>VCL2FMXConverter.dproj</code>, the source files, <code>Localization/Development</code>, <code>Localization/Languages</code> and the supplied translation metadata. Open the converter project, not the project you intend to convert. The executable-only package is sufficient to run Atlas, but is not the complete Studio editing workspace.</p>
+<p>Development catalogs, named <code>VCL2FMXConverter.&lt;locale&gt;.translation-project.json</code>, contain editable entries, source keys and review information. The smaller <code>&lt;locale&gt;.json</code> runtime packs are what Atlas loads. Keep both kinds of file; a runtime pack is not a replacement for its development catalog.</p>
+<p>Back up the working catalogs and installed packs before editing. Keep the original V7 English catalog and existing catalogs together so scanning can recover the project's runtime text contracts.</p>
+<p>Manual editing needs no translation-provider account. Studio's <strong>Translate Automatically</strong> command uses its configured provider settings. Follow the Studio guide for the provider you select; those settings are separate from Atlas Help's online widget. Review exactly which text a provider operation will send.</p>
+
+<h2 id="correct">Correcting an existing translation</h2>
+<ol>
+<li>Open <strong>Maintenance Studio</strong>. Under <strong>Project</strong>, open <code>VCL2FMXConverter.dproj</code> from the matching source workspace.</li>
+<li>Under <strong>Translate</strong>, use <strong>Open...</strong> to open the existing development catalog for the language you want to correct. Check its target locale and native language name.</li>
+<li>Choose <strong>Scan Project</strong> to compare the catalog with the saved forms and source. Review entries marked new, changed or obsolete. Do not discard runtime entries merely because they are not visible form captions.</li>
+<li>Select the affected entry. Read its source text and context, edit <strong>Translated text</strong>, and choose <strong>Apply Translation</strong>. Use <strong>Save</strong> to save the catalog.</li>
+<li>Use <strong>Mark Reviewed</strong> only after reviewing the translation's meaning. <strong>Approve</strong> records a separate final decision. Do not bulk-approve machine output just to clear a status.</li>
+<li>Continue with validation, export and installation as described below.</li>
+</ol>
+<p>Preserve format placeholders such as <code>%s</code>, <code>%d</code> and indexed variants, deliberate line breaks, HTML structure and protected Delphi identifiers. Translate the surrounding sentence rather than changing keys, component names or metadata.</p>
+<p>For work outside Studio, <strong>CSV Out</strong> and <strong>CSV In</strong> provide an interchange workflow. Edit only the Translation column, then review the import's conflicts and protected-entry decisions. The development JSON catalog remains the complete record.</p>
+
+<h2 id="add">Adding another language</h2>
+<ol>
+<li>Save and close any catalog you are editing. Start a fresh Maintenance Studio session and open the same V7 converter source project.</li>
+<li>Run <strong>Scan Project</strong> to create a fresh catalog from the converter and its supplied workspace metadata. Do not open an existing non-English catalog and simply change its locale; that can retain the old translations and catalog filename.</li>
+<li>Under <strong>Translate</strong>, keep the source language English and choose the new target language. Verify its native name, direction and locale formats.</li>
+<li>Choose <strong>Save</strong>. Check that the resulting development filename contains the new locale and does not overwrite an existing language.</li>
+<li>Translate the entries manually, through CSV interchange, or with the Studio's configured automatic provider. Review dynamic messages and reference-table descriptions as well as form captions.</li>
+<li>Validate, export the new runtime pack and install it beside the existing packs. Restart Atlas and select the new language.</li>
+</ol>
+<p>The filename and pack metadata must describe the same locale. For example, a pack for locale <code>xx-YY</code> is named <code>xx-YY.json</code>; this is a placeholder, not a real language to select. Renaming another language's file does not create a translation.</p>
+<p>A supported, valid additional interface pack is discovered at startup without recompiling Atlas. Additional Help languages are not automatic: the Help script has an explicit supported-language list. A maintainer must confirm service support, language-code mapping and right-to-left handling before extending that list. Otherwise Help falls back to English for an unsupported language.</p>
+
+<h2 id="glossary">Keeping terminology consistent</h2>
+<p>Use Studio's <strong>Glossary</strong> page to maintain preferred wording for a particular project and language. A glossary is useful when the same concept appears in a button, status summary, report and reference description.</p>
+<ol>
+<li>Open the V7 converter project and select the glossary's target language.</li>
+<li>Enter the <strong>Source term</strong> and <strong>Preferred translation</strong>. Add a semantic concept or explanatory note when it helps distinguish meanings.</li>
+<li>Choose <strong>Add / Update Term</strong>, then <strong>Save Glossary</strong>. Mark terminology approved only when that wording has actually been accepted.</li>
+<li>Review the affected catalog entries. Use <strong>Apply and Deploy</strong> when you intend Studio to apply the terms and regenerate/deploy the corresponding pack to its detected application outputs. Confirm the reported destinations.</li>
+<li>If you export or install manually, follow the next section. Restart the particular Atlas copy you are testing.</li>
+</ol>
+<p>Saving a glossary alone stores the terminology; it does not update an already running converter. Keep the glossary with the source workspace so later translation work uses the same vocabulary.</p>
+<p>Check context rather than applying a literal substitution everywhere. For example, a conversion mapping and a language translation are different operations. Preserve product names and Delphi API names. Keep rule-family names identical in their switches and summaries.</p>
+<p>Studio glossary changes affect exported interface/report text. They do not configure the online Help translation service. If a Help term needs clarification, improve the English explanation and check the translated page separately.</p>
+
+<h2 id="deploy">Exporting installing and testing a pack</h2>
+<ol>
+<li>Save source files and the development catalog. Run a fresh <strong>Scan Project</strong> if source files were saved after the last scan.</li>
+<li>Under <strong>Validation</strong>, choose <strong>Run Validation</strong>. Correct blocking errors and inspect warnings. Review status and structural validity are separate checks.</li>
+<li>Under <strong>Export</strong>, choose <strong>Export Runtime Pack</strong>. Studio reports the output path. Keep any accepted layout settings associated with the export; replacing them with another language's geometry can cause clipping.</li>
+<li>Close the Atlas copy you are updating. Back up its existing pack outside its language folder, then copy the exported <code>&lt;locale&gt;.json</code> into <code>Localization/Languages</code> beside that executable. Do not put development catalogs or backup JSON files in this runtime folder.</li>
+<li>Keep <code>en-US.json</code> installed. Restart Atlas, select the language and check the result. Ordinary text-pack updates do not require recompiling the executable.</li>
+</ol>
+<p>Test all seven pages, narrow and maximized windows, the display scaling you use, scrolling to the last paragraph, and switching back to English. Check longer captions, rule summaries, right-to-left text, live messages and reference-table notes.</p>
+<p>Run a small sample conversion in a dedicated output folder. Inspect its newly generated HTML and text reports, and open Help from Atlas. Test Help separately because its translations do not come from the interface pack.</p>
+<p>To undo an update, close Atlas and restore the backed-up pack, then restart. Keep customized catalogs and exported packs separately before replacing Atlas with a later version; an application update may replace bundled files.</p>
+
+<h2 id="troubleshoot">Resolving problems and reporting corrections</h2>
+<p><strong>A language is absent.</strong> Confirm you updated the folder beside the executable you actually launched, that the file is a runtime pack rather than a development catalog, and that its locale, application identity and framework are valid. Restart Atlas after adding files. Do not create duplicate packs for the same locale.</p>
+<p><strong>Some text remains English.</strong> First distinguish protected identifiers and source evidence from user-facing prose. Missing translations can fall back to English. Check the matching catalog entry, validate and export again. Custom mapping notes and external exception messages may require separate attention.</p>
+<p><strong>Text is clipped or overlaps.</strong> Record the selected locale, affected page, window size and Windows display scaling. Check the wording and accepted layout settings. Do not shorten a translation so much that it changes the instruction's meaning.</p>
+<p><strong>Help remains English.</strong> Open it from Atlas, keep Atlas running, and check Internet access and browser restrictions on the translation widget. A newly added interface language may need a Help mapping update. English remains available if translation cannot load.</p>
+<p><strong>A saved report uses the previous language.</strong> Existing reports retain the language captured for that run. Choose the language before starting the next conversion.</p>
+<p>To report a correction, email churchesite@gmail.com or use <a href="topics/v7-languages-and-reports.html#translation-feedback">the translation feedback instructions</a>. Include the converter version, locale, screen or Help topic, current wording and proposed wording. Remove private paths and project details from screenshots and reports. An email template opens for review; it sends nothing automatically.</p>
+
+<h2 id="maintenance">Translation files and maintenance responsibilities</h2>
+<p><code>Localization/Languages</code> contains the installed runtime packs. They identify <code>applicationId</code> as <code>VCL2FMXConverter</code>, use the <code>FireMonkey</code> framework, and retain <code>en-US</code> as the source language. The selector discovers compatible packs; the advertised count of 35 describes the bundled set, not a hard-coded interface limit.</p>
+<p><code>Localization/Development</code> contains the editable catalogs. <code>Localization/Layout</code> records language layout proposals, while runtime packs contain accepted layout rules used by the application. Preserve these files and the project terminology metadata when maintaining translations.</p>
+<p>The designer-owned language manager applies the selected pack to form controls, dynamic text and embedded reference content. It preserves control state, saves the user's selection, and falls back to source-language behavior when a pack is unavailable. Developers should keep control properties editable in the Form Designer.</p>
+<p>The installed Help lives under <code>docs/Help</code>. Its editable Help Doc Creator project is <code>docs/guides/VCL2FMX User Help.hdc.json</code> in the source workspace. Keep that project, exported topics, navigation/search indexes and printable manual synchronized when changing English Help.</p>
+<p><code>docs/Help/assets/help-translation.js</code> maps converter locale codes to the online service. Maintainers adding Help support must check the supported list, aliases and direction handling, then run the Help translation checks. Adding a JSON interface pack alone does not alter this script or the website's language list.</p>
+<p>For source maintenance, the existing language, form, report and Help checks under <code>tools</code> help verify coverage and behavior. These checks complement native-speaker review and visual testing; they do not replace either.</p>
+</section><section><h1>V7 languages and reports</h1><p>VCL2FMXConverter v7.0 Atlas. Updated October 15, 2026.</p>
+<h2>Choose a language</h2><p>Use the Language selector in the header. The 35 bundled language packs work offline. The selection is saved for the next launch. Product names, Delphi identifiers and source evidence retain their original spelling.</p>
+<h2>Conversion output</h2><p>Live messages are translated for display. The language selected at the start of a conversion is captured for its saved HTML and text reports. A later language change does not rewrite an existing report. JSON remains canonical English with the stable vcl2fmx.report.v1 schema.</p>
+<p>Generated Pascal and FMX application content is not translated into natural languages. Built-in interface and report messages use machine-generated translations; custom mapping-pack notes and external exception messages may remain original. The Help button opens the installed manual in the selected interface language. Translation requires Internet access; English Help remains available offline. Keep Atlas running while navigating Help.</p>
+<h2>Dry-run preview and outcomes</h2><p>A dry run can write reports and create the output folder, but it preserves existing build/history folders and does not write converted source. An unreadable Pascal input produces a blocking issue. Mapping-pack loading diagnostics are retained. Report buttons refer only to reports successfully written during the current run.</p>
+<h2>Portable installation</h2><p>Extract the complete release ZIP. Keep Localization/Languages, mapping_packs and docs/Help beside the executable. Use a dedicated output folder for ordinary conversions.</p>
+<h2>Source and output safeguards</h2><p>Select one project folder and a separate, dedicated output folder. Relative paths are resolved before conversion. If multiple project files are found at the selected level, select a narrower folder. A DPR and DPROJ must refer to the same main program. Empty selections, unreadable folders and directory links or junctions in scanned trees are blocked before output cleanup. Use ordinary folders for conversion; the source remains unchanged.</p>
+<h2>Source text encoding</h2><p>UTF-8 with or without a byte-order mark and UTF-16 are supported. For legacy Pascal source, an explicit {$CODEPAGE 1251} or other supported numeric code-page directive identifies its encoding. Without a byte-order mark or directive, valid UTF-8 is preferred and other legacy bytes default to Windows-1252; other legacy encodings cannot be inferred reliably. Save such files as UTF-8 in Delphi before conversion. Generated Pascal source uses UTF-8 and its code-page directive is updated accordingly.</p>
+<h2>Before relying on converted output</h2><p>Review all blocking and manual-review findings, compile the generated project in Delphi, and test its behavior.</p><h2 id="interface-terms">Interface terminology</h2><dl><dt>Project Scan</dt><dd>The page where you choose the source project, output folder and conversion options. Start the conversion with Convert Project.</dd><dt>Conversion Output</dt><dd>The page containing the live conversion log and report status. Open Report opens the saved report from the current run.</dd><dt>Rules</dt><dd>The rule-family switches used for the next conversion. The Dashboard and Current rule state summaries use the same names as these switches.</dd><dt>Dry-run preview</dt><dd>Inspects the conversion without writing converted source or project files. Reports may still be written and the output folder may be created.</dd><dt>Language packs and mapping packs</dt><dd>Language packs translate displayed text. Mapping packs define conversion rules; editing a translation does not change a conversion rule.</dd></dl><h2 id="translation-feedback">Report a translation correction</h2><p>Include the converter version, the language and locale shown in the Language selector, the screen or Help topic, the exact current wording, and your suggested wording. Explain the correction if helpful.</p><p>For clipped or overlapping text, also include the window size and Windows display scaling. Crop screenshots to the affected text and remove private paths, names and project information.</p><p><a href="mailto:churchesite@gmail.com?subject=VCL2FMXConverter%20V7%20translation%20feedback&amp;body=Converter%20version%3A%20%0ALanguage%20and%20locale%3A%20%0AScreen%20or%20Help%20topic%3A%20%0ACurrent%20wording%3A%20%0ASuggested%20wording%3A%20%0AReason%20%28optional%29%3A%20%0AFor%20clipping%3A%20window%20size%20and%20Windows%20display%20scaling%3A%20%0A%0APlease%20remove%20private%20details%20from%20any%20screenshot%20before%20attaching%20it.">Email a translation correction</a>. This opens a message template in your email application; nothing is sent automatically. You can also edit translations and glossaries using the Delphi App Translation Studio.</p><p>For the complete procedures for editing translations, adding languages, maintaining glossaries and installing packs, see <a href="topics/using-and-maintaining-translations.html">Using and maintaining translations</a>.</p></section><section><div class="doc-topic" style="display:block;">
+<h1 style="text-align: center;">VCL2FMX Converter v7.0 Atlas User Guide</h1><p><strong>v7.0 Atlas - September 9, 2026:</strong> The v7.0 Atlas validation suite now contains 227 executable contracts and passed 227 of 227 checks. Standard VCL controls including TBitBtn and TTrayIcon receive explicit classification and review guidance.</p><div style="text-align: center;"><span style="font-family:&quot;Segoe UI&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;"><span style="font-family:&quot;Segoe Script&quot;;font-size:16pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;"><span style="font-family:&quot;Segoe Script&quot;;font-size:30pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;">Atlas</span></span></span></div>
 
 
 
 <p style="text-align: center;"><br></p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p><p style="text-align: center;"><span style="font-family:&quot;Segoe UI&quot;;font-size:14pt;color:#111827;font-weight:400;font-style:normal;text-decoration:none;">Detailed Operator, Validation, and Workflow Manual</span></p>
 
-<p style="text-align: center;">Updated August 3, 2026</p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p>
+<p style="text-align: center;">Updated September 9, 2026</p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p><p style="text-align: center;"><br></p>
 
 <p>Audience: developers, technical operators, project owners, and maintainers who will run the converter and validate converted Delphi projects.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+</div><div class="build-stamp" style="display:block;width:100%;text-align:center;">VCL2FMXConverter v7.0 Atlas &bull; Updated September 9, 2026</div><p>For V7 language selection, translated Help and reports, and language-pack maintenance, see <a href="topics/using-and-maintaining-translations.html">Using and maintaining translations</a>.</p></section><section><div class="doc-topic" style="display:block;">
 <h1>1. Purpose and Audience</h1>
 
 <p>The VCL2FMXConverter exists to automate the majority of the engineering work involved in moving a Delphi application from standard VCL to FMX. It is intended to reduce repetitive migration labor, surface the most important conversion risks early, and leave the user with an FMX project that can be compiled, tested, and polished in Delphi.</p>
@@ -16,7 +119,7 @@
 <p>This manual is written for people who will actually operate the converter. That includes developers converting their own applications, technical staff helping with migration efforts, project owners supervising conversion work, and maintainers who need to understand how to rerun the tool safely and interpret its output.</p>
 
 <ol start="1"><li>Use this guide when you need to run the converter, interpret its output, and validate the converted FMX project.</li><li>Use the engineering guide when you need to understand the converter internals</li><li>Use both guides together when a conversion is being actively refined and stabilized.</li></ol>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>2. What the Converter Is, and What It Is Not</h1>
 
 <table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
@@ -32,8 +135,8 @@
 
 <p>The current generic baseline is broader than the earlier public-review drafts. It now includes safer FMX form emission, broader standard-control coverage for items such as TMaskEdit, TStaticText, TFlowPanel, TGridPanel, TCheckListBox, TRichEdit, TDrawGrid, TDBCtrlGrid, TFileSaveDialog, and TLinkLabel, and direct numeric-control handling for TNumberBox and converted TSpinBox workflows. It also adds generated compatibility paths for TRadioGroup and TFontDialog, along with more honest blocking-issue reporting when the converter knows the output is not yet trustworthy.</p>
 
-<p>The live Component Map, Property Map, and Event Map pages are now backed by the same current mapper knowledge used during conversion. That makes them the best quick-reference view of what the current v6.0 Navigator build knows about standard component, property, and event coverage. Version 6.0 Navigator also supports optional JSON mapping packs that make third-party component handling visible and auditable before a conversion run.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+<p>The live Component Map, Property Map, and Event Map pages are now backed by the same current mapper knowledge used during conversion. That makes them the best quick-reference view of what the current v7.0 Atlas build knows about standard component, property, and event coverage. Version 7.0 Atlas also supports optional JSON mapping packs that make third-party component handling visible and auditable before a conversion run.</p>
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>2.1 Mapping Packs: Optional Third-Party Component Support</h1>
 
 <p>A mapping pack is an optional JSON file that gives the converter explicit knowledge about component libraries outside standard VCL. The converter still performs the normal VCL-to-FMX migration work on its own but mapping packs add a separate, visible layer for third-party controls so those decisions can be reviewed instead of hidden inside converter code.</p>
@@ -224,7 +327,7 @@
 <p>end;</p>
 
 <p>end.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>3. System Requirements and Workspace Preparation</h1>
 
 <ol start="1"><li>A Windows development environment with Delphi installed and working.</li></ol>
@@ -241,7 +344,7 @@
 <tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Output folder</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Contains only the newly generated FMX project for the current run.</td></tr>
 <tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Backup storage</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Contains milestone snapshots, cloud copies, or archived converter states.</td></tr>
 </tbody></table>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>4. Building and Launching the Converter</h1>
 
 <ol start="1"><li>Open the VCL2FMXConverter project in Delphi.</li></ol>
@@ -250,7 +353,7 @@
 <p>Verify that the tabbed workspace opens and that Dashboard, Project Scan, Component Map, Property Map, Event Map, Conversion Output, and Rules are available.</p>
 
 <p>If the converter itself does not build, stop there and resolve that issue before attempting any project migration. The converter must be treated like any other software tool: it needs a healthy build before its output can be trusted.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>5. Main Window and Control-by-Control Walkthrough</h1>
 
 <table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
@@ -265,11 +368,11 @@
 <tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Conversion Output log</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Displays progress and key messages while also supporting report review.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Read it after every run; it is the first indicator of what happened.</td></tr>
 </tbody></table>
 
-<p>The current v6.0 Navigator main window is a tabbed workspace. Dashboard shows the latest run summary and quick actions. Project Scan holds the path and scope controls, Component Map / Property Map / Event Map expose the live mapper reference surface, Conversion Output shows the live log and report status, and Rules controls the four specialized conversion families. The converter still does its real work behind the scenes, but the operator needs to use the front end carefully because path mistakes, stale output folders, and poorly scoped runs can create misleading results.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+<p>The current v7.0 Atlas main window is a tabbed workspace. Dashboard shows the latest run summary and quick actions. Project Scan holds the path and scope controls, Component Map / Property Map / Event Map expose the live mapper reference surface, Conversion Output shows the live log and report status, and Rules controls the four specialized conversion families. The converter still does its real work behind the scenes, but the operator needs to use the front end carefully because path mistakes, stale output folders, and poorly scoped runs can create misleading results.</p>
+</div><p>Use the Language selector in the header to change the interface language. For detailed instructions, see <a href="topics/using-and-maintaining-translations.html">Using and maintaining translations</a>.</p></section><section><div class="doc-topic" style="display:block;">
 <h1>5.1 Run the converted app and validate real user workflows.</h1><h1><span style="color: rgb(17, 24, 39); font-size: 15px;">Only after runtime stability, review and tune layout or styling details.</span></h1>
 <p>This sequence matters. Trying to perfect colors or spacing before the application builds and runs cleanly is usually wasted effort. Stabilize structure first, runtime second, and presentation third. Fully exercise the app and try all options and verify their successful operation.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>6. Recommended Conversion and Practical Operator Workflow</h1>
 
 <table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
@@ -285,7 +388,7 @@
 <ol start="2"><li>Run the converter against the selected VCL project.</li></ol>
 <ol start="3"><li>Open the generated FMX project in Delphi.</li></ol>
 <ol start="4"><li>Resolve structural and compile issues first.</li></ol>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>7. Preparing a Source Project for Best Results</h1>
 
 <p>Some preparation work in the source project can make the converter easier to use and the output easier to validate. This is not always required, but it is often helpful.</p>
@@ -296,7 +399,7 @@
 <ol start="4"><li>Keep note of major workflows that must be validated after conversion, such as startup, scheduling, playback, database edits, dialogs, and reporting.</li></ol>
 <ol start="5"><li>If possible, have the original VCL application available for side-by-side behavior comparison.</li></ol>
 <p>The converter can do a great deal, but it is still easier to use when the operator knows which source files matter and which business workflows are critical.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>8. Running a Conversion</h1>
 
 <ol start="1"><li>Enter or browse to the source folder.</li></ol>
@@ -310,7 +413,7 @@
 <p>For full project migrations, the normal choice is to convert both PAS and DFM files recursively into a clean output folder. Targeted runs are useful only when you already know that a specific phase is the thing under review.</p>
 
 <p>During the same run, the generator can inventory real support files in the source root and in existing build-output folders. That makes the report more trustworthy because helper executables, DLLs, library files, sound-font files, and similar runtime companions are reported from real locations instead of being guessed from quoted Pascal strings.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>9. Reading the Log and the Conversion Report</h1>
 
 <p>Every conversion run should be reviewed through two channels: the live log in the converter UI and the generated report files in the output folder. When the HTML report exists, the Open Report and Print Report buttons use it first. These are not optional extras; they are part of the operating workflow.</p>
@@ -323,12 +426,14 @@
 <tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Runtime behavior</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">The final reality check for workflow correctness.</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Use it to confirm that the converted application actually behaves acceptably.</td></tr>
 </tbody></table>
 
-<p>Pay special attention to the final run status. The current v6.0 Navigator report flow distinguishes Blocking issues present, Manual review required, and Clean conversion. The generated report now calls out a recommended next step, Distinct files needing attention, and files with conversion errors. Treat blocking issues as stop conditions even if files were generated. Informational messages about external project assets are different: they warn that companion files may still need manual copying or relocation before runtime testing. Mapping-pack runs additionally report loaded packs, third-party conversions, partial conversions, detect-only findings, preserved components, and unknown third-party-looking classes.</p>
+<p><strong>v7.0 Atlas report totals:</strong> Total issues means warnings, manual-review items, and errors. Informational notices and dry-run notices are shown separately. Dry-run notices are not counted as conversion issues.</p>
+<p><strong>Manual review groups:</strong> Click the &gt; arrow on each manual-review item to view affected locations and recommended fixes.</p>
+<p>Pay special attention to the final run status. The current v7.0 Atlas report flow distinguishes Blocking issues present, Manual review required, and Clean conversion. The generated report now calls out a recommended next step, Distinct files needing attention, and files with conversion errors. Treat blocking issues as stop conditions even if files were generated. Informational messages about external project assets are different: they warn that companion files may still need manual copying or relocation before runtime testing. Mapping-pack runs additionally report loaded packs, third-party conversions, partial conversions, detect-only findings, preserved components, and unknown third-party-looking classes.</p>
 
 <p>The current report also distinguishes between support files that were actually staged into the FMX output directory and support files that were only found in the source root or beside an existing built executable. Read those companion-file notes carefully, because staging a helper file into the output tree is not the same thing as confirming it will deploy beside the final built executable.</p>
 
 <p>If the report and the compiler disagree, the compiler wins. If Code Insight and the real compiler disagree, the compiler wins again. The memo log and report are aids, not replacements for build and run validation.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+</div><p>Saved HTML and text reports use the language selected when conversion starts; later language changes do not rewrite them. JSON reports remain canonical English. For details, see <a href="topics/using-and-maintaining-translations.html">Using and maintaining translations</a>.</p></section><section><div class="doc-topic" style="display:block;">
 <h1>10. Understanding the Output Folder and Files</h1>
 
 <table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
@@ -345,7 +450,7 @@
 <p>The output folder may now also contain staged runtime companions such as helper executables, DLLs, library files, or sound-font style support files. The generator adds them when it finds real candidates in the source root or in existing build-output folders such as Win32, Win64, Debug, Release, or deploy. Those files are copied to make review easier, but you still need to verify the final deployment location expected by the generated app.</p>
 
 <p>A clean output folder is one of the most important habits in using the converter. Stale generated units and forms can create false problems, hide real changes, and lead Delphi to load the wrong copy of a file.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>11. Opening the Converted Project in Delphi</h1>
 
 <ol start="1"><li>Open the generated project in Delphi.</li></ol>
@@ -356,7 +461,7 @@
 <p>The converter now strips or remaps several common VCL-only form properties before Delphi sees the FMX output, so some earlier reader failures no longer appear. Even so, form-reader errors still deserve first priority because they block every later stage of validation.</p>
 
 <p>The first successful load of the project is a major milestone, but it is not the end of validation. A project can open and still fail at compile time, or compile and still fail at runtime. Treat these as separate checkpoints.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>12. Validating the Converted Application</h1>
 
 <table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
@@ -370,10 +475,10 @@
 <p>Validation should now explicitly cover the newer generic support surface. That includes numeric entry controls, radio-group style selections, font-picking workflows, scrollable long-message dialogs, and any wave-audio paths that depend on Winapi.MMSystem or waveOut APIs.</p>
 
 <p>Real validation means exercising the actual workflows that matter to the application: data entry, startup, scheduling, media playback, dialogs, and reporting. A converted app is only as good as the workflows it can successfully perform.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>13. Test startup and shutdown behavior.</h1>
 <ol><li><span style="color: rgb(17, 24, 39); font-size: 15px;">Test any timers or schedules if the original app depended on them.</span></li><li>Test data-aware screens and save/cancel workflows.</li><li>Test media or file operations where applicable.</li><li>Test secondary forms, help, menus, and common user actions.</li><li>Test numeric entry controls such as TNumberBox and converted TSpinBox screens.</li><li>Test TRadioGroup and TFontDialog workflows if the original application used them.</li><li>Test wave-audio or WinMM paths where the source project uses MMSystem or waveOut APIs.</li><li>If the application launches, check operation of help files, external documents, URLs, or utilities.</li><li>If a form uses shared datasets, shared datasources, shared navigators, or shared combo controls, close and reopen the form and verify the shared object still behaves correctly afterward.</li></ol>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>14. Troubleshooting and Recovery Procedures</h1>
 
 <table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
@@ -388,11 +493,11 @@
 </tbody></table>
 
 <p>If a run goes badly, do not try to repair everything at once. The fastest route is usually to identify the highest-severity problem, improve the converter globally, regenerate clean output, and retest.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>15. Making Changes to the Converter Software</h1>
 
 <p>Refer to the Engineering Manual for guidance for making changes to the converter. It is a highly complex application which uses much integration and branches to many areas. Only qualified programmers who have a deep understanding of Delphi should attempt any modifications that may be required.</p>
-</div><hr><div class="doc-topic" style="display:block;">
+</div><p>For maintaining translation catalogs, glossary terms, runtime packs and Help language mappings, see <a href="topics/using-and-maintaining-translations.html">Using and maintaining translations</a>.</p></section><section><div class="doc-topic" style="display:block;">
 <h1>16. Operational Best Practices</h1>
 
 <ol start="1"><li>Always keep the source project, output project, and converter workspace separate.</li></ol>
@@ -401,7 +506,7 @@
 <ol start="4"><li>Keep zipped milestone backups out of the live converter workspace so later workspace backups do not recurse and grow uncontrollably. Make sure they are off the development computer in another location, like a cloud service like DropBox, Google Drive, etc.</li></ol>
 <ol start="5"><li>Treat real compiler output as the authority over IDE-only hints or stale parse errors.</li></ol>
 <ol start="6"><li>Record what was fixed globally so later projects benefit immediately.</li><li>Do not burn time on tiny visual tweaks until the application builds and runs</li></ol>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>17. Frequently Asked Questions</h1>
 
 <table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
@@ -413,7 +518,7 @@
 <tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">When should I review visuals?</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">After the project loads, compiles, and runs acceptably. Visual polish is usually the last phase.</td></tr>
 <tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">What does blocking issues mean?</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">It means the converter found a serious unsupported pattern or rule gap. Generated files may exist, but you should resolve the blocking issue before treating the output as a valid converted project.</td></tr>
 </tbody></table>
-</div><hr><div class="doc-topic" style="display:block;">
+</div><p>How do I add a language or correct a translation? See <a href="topics/using-and-maintaining-translations.html">Using and maintaining translations</a>.</p></section><section><div class="doc-topic" style="display:block;">
 <h1>Appendix A. Quick Start Checklist</h1>
 
 <ol start="1"><li>Build the converter.</li></ol>
@@ -423,7 +528,7 @@
 <ol start="5"><li>Open the FMX project in Delphi.</li></ol>
 <ol start="6"><li>Build, run, and validate the converted app.</li></ol>
 <ol start="7"><li>Improve the converter globally and regenerate as needed.</li></ol>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>Appendix B. Pre-Conversion Checklist</h1>
 
 <ol start="1"><li>Confirm the real source root folder.</li></ol>
@@ -431,7 +536,7 @@
 <ol start="3"><li>Know which workflows are critical in the original application.</li></ol>
 <ol start="4"><li>Ensure supporting files such as databases or media are available for runtime testing.</li></ol>
 <ol start="5"><li>Plan where milestone backups will be stored.</li></ol>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>Appendix C. Post-Conversion Review Checklist</h1>
 
 <ol start="1"><li>Did the forms open without reader errors?</li></ol>
@@ -440,7 +545,7 @@
 <ol start="4"><li>Did core workflows run correctly?</li></ol>
 <ol start="5"><li>Are the remaining issues structural, runtime, or merely visual?</li></ol>
 <ol start="6"><li>Was the converter fixed globally if a reusable defect was found?</li></ol>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>Appendix D. Glossary</h1>
 
 <table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
@@ -453,7 +558,7 @@
 <tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Global fix</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">A converter change that benefits multiple current or future projects, not just one output file.</td></tr>
 <tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Mapping pack</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Optional JSON file that adds transparent third-party component detection, conversion, preservation, or manual-review rules.</td></tr>
 </tbody></table>
-</div><hr><div class="doc-topic" style="display:block;">
+</div></section><section><div class="doc-topic" style="display:block;">
 <h1>Index</h1>
 
 <table class="doc-table" style="border-collapse:collapse;width:94%;margin:18px 0 18px 18px;background:#f7fbf8;border:1px solid #333;" border="1" cellspacing="0" cellpadding="7">
@@ -464,4 +569,18 @@
 <tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Output folder</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Section 10</td></tr>
 <tr><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Troubleshooting</td><td style="border:1px solid #333;padding:7px 10px;vertical-align:top;text-align:left;line-height:1.35;height:auto;overflow:visible;">Section 13</td></tr>
 </tbody></table>
-</div><hr></body></html>
+</div></section><section><div class="doc-topic" style="display:block;">
+<h1>Conversion Contracts in v7.0 Atlas</h1><p><strong>v7.0 Atlas - September 9, 2026:</strong> The suite now contains 227 executable expectations and the latest verification run passed 227 of 227 contracts. The current release also includes standard VCL classification for TBitBtn and TTrayIcon, with conservative FMX substitution or manual-review guidance where appropriate.</p>
+<p>Version 7.0 Atlas adds an executable conversion-contract system. A contract is a small Delphi test case paired with an expectation file. The expectation records the required output, report behavior, uses-clause result, and validation rules for one known converter behavior.</p>
+<p>The contract runner is the engineering test utility that finds each expectation file, runs the converter against the matching sample input, and fails if the generated result differs from the expected result. It is not runtime data for normal user conversions.</p>
+<table class="doc-table">
+<tbody><tr><th>Contract Area</th><th>What It Protects</th></tr>
+<tr><td>Include analysis</td><td>Beside-source, subfolder, missing, outside-tree, nested, recursive, conditional, commented, and UTF-8 Pascal include directives.</td></tr>
+<tr><td>Windows messaging</td><td>SendMessage, PostMessage, Perform, WndProc, message declarations, WM/CM/CN/common-control families, WM_USER, system commands, and false positives.</td></tr>
+<tr><td>Uses cleanup</td><td>Removal or preservation of VCL and Winapi units, including protected/conditional uses blocks and Vcl.Themes cleanup.</td></tr>
+<tr><td>DFM/FMXL generation</td><td>TMemo string collections, TStringGrid event ordering, accented text, paired Pascal/DFM form behavior, and DFM/FMXL fidelity reporting.</td></tr>
+<tr><td>Reporting and dry run</td><td>Total-issue accounting, informational notices, dry-run notices, report-card layout, and manual-review group prompts.</td></tr>
+<tr><td>Graphics and GDI</td><td>FMX canvas substitutions where reliable, plus visual-review reporting where drawing still needs inspection.</td></tr>
+</tbody></table>
+<p>The current v7.0 Atlas contract suite contains 227 executable expectations. The current verification run passed with 227 passing and 0 failing contracts.</p>
+</div></section></main><script src="assets/help-translation.js"></script></body></html>

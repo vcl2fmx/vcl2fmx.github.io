@@ -1,6 +1,6 @@
-﻿{VCL2FMX © 2026 echurchsites.wixsite.com
+{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
-Version v6.0 Navigator Build 027
+Version v7.0 Atlas Build 001
  Written and built in the USA}
 
 unit MainForm;
@@ -8,7 +8,7 @@ unit MainForm;
 interface
 
 {$IFNDEF MSWINDOWS}
-  {$MESSAGE FATAL 'VCL2FMXConverter v6.0 Navigator desktop UI is currently supported only on Windows.'}
+  {$MESSAGE FATAL 'VCL2FMXConverter v7.0 Atlas desktop UI is currently supported only on Windows.'}
 {$ENDIF}
 
 uses
@@ -17,6 +17,7 @@ uses
   System.UITypes,
   System.Classes,
   System.IOUtils,
+  System.NetEncoding,
   System.Variants,
   System.Threading,
   FMX.Types,
@@ -36,6 +37,13 @@ uses
   FMX.WebBrowser,
   FMX.Controls.Presentation,
   FMX.DialogService,
+  IdHTTPServer,
+  IdCustomHTTPServer,
+  IdContext,
+  DAT.Components.Core,
+  DAT.Runtime.Manager,
+  DAT.Components.FMX,
+  DAT.Components.FMX.LanguageSelector,
   Converter.Core.Types,
   Converter.Mapper.Component,
   Converter.Core.Engine;
@@ -51,16 +59,26 @@ type
     ManualReviewCount: Integer;
     BlockingCount: Integer;
     RunDurationText: string;
+    TextReportPath: string;
+    HtmlReportPath: string;
   end;
 
   TfrmMain = class(TForm)
+    HelpServer: TIdHTTPServer;
+    DATLanguageManager: TDATFMXLanguageManager;
+    lblLanguage: TLabel;
+    cmbLanguage: TDATFMXLanguageComboBox;
     RootLayout: TLayout;
+    SourcePathRow: TLayout;
+    TargetPathRow: TLayout;
+    ProjectOptionsRow: TLayout;
     HeroCard: TRectangle;
     HeroArtworkLayer: TLayout;
     HeroAccentRibbonLarge: TRectangle;
     HeroAccentRibbonMid: TRectangle;
     HeroAccentRibbonSmall: TRectangle;
-    HeroNavigatorGhost: TLabel;
+    HeroAtlasLayout: TLayout;
+    HeroAtlasGhost: TLabel;
     HeroVersionBadge: TRectangle;
     TabNavBar: TLayout;
     TabButtonDashboard: TRectangle;
@@ -104,6 +122,7 @@ type
     EventMapScrollBox: TVertScrollBox;
     IssuesScrollBox: TVertScrollBox;
     RulesScrollBox: TVertScrollBox;
+    RulesSummaryScrollBox: TVertScrollBox;
     DashboardStatusCard: TRectangle;
     lblDashboardStatusTitle: TLabel;
     lblDashboardStatusValue: TLabel;
@@ -184,6 +203,8 @@ type
     procedure btnOpenReportClick(Sender: TObject);
     procedure btnPrintReportClick(Sender: TObject);
     procedure btnHelpClick(Sender: TObject);
+    procedure HelpServerCommandGet(AContext: TIdContext;
+      ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
     procedure btnOpenOutputClick(Sender: TObject);
     procedure btnCloseAppClick(Sender: TObject);
     procedure btnResetClick(Sender: TObject);
@@ -192,6 +213,7 @@ type
     procedure TabControlMainChange(Sender: TObject);
     procedure TabNavClick(Sender: TObject);
   private
+    FHelpRoot: string;
     FConversionThread: TThread;
     FLastOutputPath: string;
     FLastTextReportPath: string;
@@ -219,7 +241,7 @@ type
     FLastBlockingCount: Integer;
     FLastRunDurationText: string;
     procedure Log(const Msg: string);
-    function ConversionThreadProc(SourcePath, TargetPath: string;
+    function ConversionThreadProc(SourcePath, TargetPath, ReportLanguage: string;
       FileTypeIndex: Integer; Recursive, EnableCritical, EnableDataAware,
       EnableThirdParty, EnableWinAPI, DryRunPreview: Boolean;
       var Completion: TConversionCompletionSnapshot): string;
@@ -237,11 +259,7 @@ type
     procedure UpdateConversionOutputSummary(const ARunning: Boolean);
     function FormatReportDisplayText(const ReportPath: string): string;
     function FormatDurationText(const AStartTime, AEndTime: TDateTime): string;
-    function SourceFolderContainsVCL2FMXReport(const SourcePath: string): Boolean;
-    procedure ShowInvalidConvertedSourceFolderDialog;
     procedure ShowError(const Msg: string);
-    function GetTextReportPath(const TargetPath: string): string;
-    function GetHTMLReportPath(const TargetPath: string): string;
     function GetPreferredReportPath: string;
     function ExecuteShellVerb(const AVerb, ATarget: string;
       const HideWindow: Boolean = False): Boolean;
@@ -289,8 +307,94 @@ uses
 
 {$R *.fmx}
 
+
+resourcestring
+  SDisplayManualReplacementRequired = 'Manual replacement required';
+  SDisplayMappingPack = 'Mapping pack';
+  SDisplayDerivedFromLiveRttiAndFmxCatalog = 'Derived from live RTTI and FMX catalog research.';
+  SDisplayNoSuitableFmxComponentMatchIsCurrently = 'No suitable FMX component match is currently known.';
+  SDisplayStandardBuiltInMappingWithNoAdditional = 'Standard built-in mapping with no additional notes.';
+  SDisplayTransformed = 'Transformed';
+  SDisplayUsesAnExplicitTransformationRuleFromThe = 'Uses an explicit transformation rule from the built-in mapper.';
+  SDisplayDerivedFromConverterHeuristicColorMapsTo = 'Derived from converter heuristic: Color maps to Fill.Color using TransformColor.';
+  SDisplayDerivedFromConverterHeuristicColorRequiresTransformcolor = 'Derived from converter heuristic: Color requires TransformColor on the FMX target.';
+  SDisplayDirect = 'Direct';
+  SDisplayUsesAnExplicitDirectPropertyRuleFrom = 'Uses an explicit direct property rule from the built-in mapper.';
+  SDisplayDerivedFromRttiInventoryBecauseTheSame = 'Derived from RTTI inventory because the same published property exists on the FMX target.';
+  SDisplayRenamed = 'Renamed';
+  SDisplayUsesAnExplicitRenamedPropertyRuleFrom = 'Uses an explicit renamed property rule from the built-in mapper.';
+  SDisplayDerivedFromConverterHeuristicCaptionMapsTo = 'Derived from converter heuristic: Caption maps to Text on the FMX target.';
+  SDisplayDerivedFromRttiInventoryBecauseTheProperty = 'Derived from RTTI inventory because the property resolves to a different FMX target name.';
+  SDisplayManualReviewRequired = 'Manual review required';
+  SDisplayManualReview = 'Manual review';
+  SDisplayNoFmxTargetPropertyIsDefinedIn = 'No FMX target property is defined in the explicit mapper rule.';
+  SDisplayTheResearchedComponentMappingDoesNotCurrently = 'The researched component mapping does not currently resolve this property to an FMX target.';
+  SDisplayThisComponentDoesNotCurrentlyResolveTo = 'This component does not currently resolve to an FMX target class.';
+  SDisplayNoExplicitOrRttiDerivedFmxTarget = 'No explicit or RTTI-derived FMX target property was identified.';
+  SDisplaySSS = '%s.%s -> %s';
+  SDisplayRuleType = '  Rule type: ';
+  SDisplaySourceType = '  Source type: ';
+  SDisplayRuleSourceExplicitMapperRule = '  Rule source: explicit mapper rule';
+  SDisplayRuleSourceRttiInventory = '  Rule source: RTTI inventory';
+  SDisplayRuleSourceUnresolved = '  Rule source: unresolved';
+  SDisplayTransformer = '  Transformer: ';
+  SDisplayNotes = '  Notes: ';
+  SDisplayCompatible = 'Compatible';
+  SDisplayReviewRequired = 'Review required';
+  SDisplayUsesAnExplicitEventRuleFromThe = 'Uses an explicit event rule from the built-in mapper.';
+  SDisplayUsesAnExplicitEventRuleButThe = 'Uses an explicit event rule, but the stored signature check requires review.';
+  SDisplayDerivedFromRttiInventoryBecauseTheSame2 = 'Derived from RTTI inventory because the same published event exists on the FMX target.';
+  SDisplayDerivedFromRttiInventoryButTheEvent = 'Derived from RTTI inventory, but the event signatures require review.';
+  SDisplayNoFmxTargetEventIsDefinedIn = 'No FMX target event is defined in the explicit mapper rule.';
+  SDisplayTheResearchedComponentMappingDoesNotCurrently2 = 'The researched component mapping does not currently resolve this event to an FMX target.';
+  SDisplayNoExplicitOrRttiDerivedFmxEvent = 'No explicit or RTTI-derived FMX event was identified.';
+  SDisplayVclSignature = '  VCL signature: ';
+  SDisplayFmxSignature = '  FMX signature: ';
+  SDisplaySignatureStatus = '  Signature status: ';
+  SDisplayChooseAVclSourceFolderAndAn = 'Choose a VCL source folder and an FMX output folder, then start the conversion.';
+  SDisplayPreparingConversion = 'Preparing conversion...';
+  SDisplayStartingConversionEngine = 'Starting conversion engine...';
+
+resourcestring
+  SReferenceComponentMappingReference = 'Component Mapping Reference';
+  SReferenceComponentReference = 'Component reference';
+  SReferenceGeneratedFromTheConverterSComponentMapping = 'Generated from the converter''s component mapping database and RTTI inventories for operator review and migration planning.';
+  SReferenceDiscoverableComponents = 'Discoverable components';
+  SReferenceDirectConversions = 'Direct conversions';
+  SReferenceSubstituteMappings = 'Substitute mappings';
+  SReferenceManualReview = 'Manual review';
+  SReferenceReferenceNotes = 'Reference notes';
+  SReferenceEachRowShowsADiscoverableVclComponent = 'Each row shows a discoverable VCL component class, the FMX target class the converter currently routes toward, the mapping strategy, the confidence score, and any notes that still require operator attention. Property and event counts reflect the published VCL inventory currently discoverable for each source class.';
+  SReferenceComponentMappingReference2 = 'Component mapping reference';
+  SReferenceBuiltFromTheLiveMappingDatabaseAnd = 'Built from the live mapping database and RTTI inventories.';
+  SReferencePropertyMappingReference = 'Property Mapping Reference';
+  SReferencePropertyReference = 'Property reference';
+  SReferenceGeneratedFromTheConverterSExplicitProperty = 'Generated from the converter''s explicit property rules plus RTTI inventories so operators can review direct carries, renames, transformations, and review items before conversion.';
+  SReferencePropertyRules = 'Property rules';
+  SReferenceDirectRules = 'Direct rules';
+  SReferenceRenamedRules = 'Renamed rules';
+  SReferenceTransformedRules = 'Transformed rules';
+  SReferenceThisScreenCurrentlyCoversDMappedComponent = 'This screen currently covers %d mapped component classes with discoverable published properties. Use it to verify when a property carries across unchanged, when the converter renames the target property, when a value transformation routine is required, and when a property still needs review.';
+  SReferencePropertyMappingReference2 = 'Property mapping reference';
+  SReferenceBuiltFromExplicitPropertyRulesPlusRtti = 'Built from explicit property rules plus RTTI inventories.';
+  SReferenceEventMappingReference = 'Event Mapping Reference';
+  SReferenceEventReference = 'Event reference';
+  SReferenceGeneratedFromTheConverterSExplicitEvent = 'Generated from the converter''s explicit event rules plus RTTI inventories so operators can review handler carry-forward, renamed targets, and signature compatibility.';
+  SReferenceEventRules = 'Event rules';
+  SReferenceDirectEvents = 'Direct events';
+  SReferenceRenamedEvents = 'Renamed events';
+  SReferenceSignatureReview = 'Signature review';
+  SReferenceThisScreenCurrentlyCoversDMappedComponent2 = 'This screen currently covers %d mapped component classes with discoverable published events. Use it to verify whether a VCL handler can carry forward directly, whether the target event name changes, and whether the mapped signatures remain compatible. Rows flagged for review need operator attention before relying on automatic migration.';
+  SReferenceEventMappingReference2 = 'Event mapping reference';
+  SReferenceBuiltFromExplicitEventRulesPlusRtti = 'Built from explicit event rules plus RTTI inventories.';
+
+
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  FHelpRoot := IncludeTrailingPathDelimiter(ExpandFileName(
+    ExtractFilePath(ParamStr(0)) + '..\..\docs\Help'));
+  if not FileExists(FHelpRoot + 'index.html') then
+    FHelpRoot := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)) + 'docs\Help');
   FActiveEngineLock := TObject.Create;
 
   PopulateReferencePages;
@@ -301,6 +405,7 @@ begin
   UpdateRuleSummary;
   UpdateUIForConversion(False);
   BuildTabChrome;
+  RulesSummaryScrollBox.ViewportPosition := PointF(0, 0);
   TabControlMain.ActiveTab := tabProjectScan;
   UpdateTabChrome;
 end;
@@ -319,6 +424,8 @@ end;
 destructor TfrmMain.Destroy;
 begin
   FClosing := True;
+  if Assigned(HelpServer) then
+    HelpServer.Active := False;
   if Assigned(FConversionThread) then
   begin
     if Assigned(FActiveEngineLock) then
@@ -367,34 +474,6 @@ begin
   if not CanClose then
     TDialogService.ShowMessage(
       'A conversion is still running. Please wait for it to finish before closing the program.');
-end;
-
-function TfrmMain.SourceFolderContainsVCL2FMXReport(
-  const SourcePath: string): Boolean;
-var
-  BasePath: string;
-begin
-  BasePath := IncludeTrailingPathDelimiter(SourcePath);
-  Result :=
-    (Length(TDirectory.GetFiles(BasePath, 'VCL_to_FMX_Conversion_Report.html',
-      TSearchOption.soAllDirectories)) > 0) or
-    (Length(TDirectory.GetFiles(BasePath, 'VCL_to_FMX_Conversion_Report.txt',
-      TSearchOption.soAllDirectories)) > 0) or
-    (Length(TDirectory.GetFiles(BasePath, 'VCL_to_FMX_Compatibility_Analysis_Report.html',
-      TSearchOption.soAllDirectories)) > 0) or
-    (Length(TDirectory.GetFiles(BasePath, 'VCL_to_FMX_Compatibility_Analysis_Report.txt',
-      TSearchOption.soAllDirectories)) > 0);
-end;
-
-procedure TfrmMain.ShowInvalidConvertedSourceFolderDialog;
-begin
-  TDialogService.ShowMessage(
-    'The selected folder contains VCL2FMX conversion files and cannot be used.' +
-    sLineBreak + sLineBreak +
-    'It appears to contain a previous conversion session and therefore is not ' +
-    'a valid VCL source folder.' + sLineBreak + sLineBreak +
-    'Please select a valid VCL project folder that contains source .pas, .dfm, ' +
-    '.dpr, and .dproj files.');
 end;
 
 procedure TfrmMain.PopulateReferencePages;
@@ -526,6 +605,7 @@ var
   FMXDisplay: string;
   NotesDisplay: string;
   MappingClass: string;
+  MappingTypeDisplay: string;
   VCLInventory: TRttiClassInventory;
   VCLPropertyCount: Integer;
   VCLEventCount: Integer;
@@ -571,7 +651,7 @@ begin
             Inc(OtherCount);
         end;
 
-        AppendReferencePageHead(HtmlBuilder, 'Component Mapping Reference', 940,
+        AppendReferencePageHead(HtmlBuilder, SReferenceComponentMappingReference, 940,
           '.component-name { font-weight: 700; color: #17395d; } ' +
           '.fmx-name { font-weight: 600; color: #24527f; } ' +
           '.missing { color: #8a3a28; font-weight: 700; } ' +
@@ -583,24 +663,24 @@ begin
           '.badge.other { background: #eef1f4; color: #4e6278; } ' +
           '.count { color: #5c7893; white-space: nowrap; } ' +
           '.note { color: #4b6784; }', True);
-        AppendReferenceHeroStart(HtmlBuilder, 'Component reference',
-          'Component Mapping Reference',
-          'Generated from the converter''s component mapping database and RTTI inventories for operator review and migration planning.');
+        AppendReferenceHeroStart(HtmlBuilder, SReferenceComponentReference,
+          SReferenceComponentMappingReference,
+          SReferenceGeneratedFromTheConverterSComponentMapping);
         AppendReferenceMetricCard(HtmlBuilder, TotalMappings,
-          'Discoverable components');
+          SReferenceDiscoverableComponents);
         AppendReferenceMetricCard(HtmlBuilder, DirectCount,
-          'Direct conversions');
+          SReferenceDirectConversions);
         AppendReferenceMetricCard(HtmlBuilder, SubstituteCount,
-          'Substitute mappings');
+          SReferenceSubstituteMappings);
         AppendReferenceMetricCard(HtmlBuilder, UnmappedCount,
-          'Manual review');
+          SReferenceManualReview);
         AppendReferenceHeroEnd(HtmlBuilder);
-        AppendReferenceSectionStart(HtmlBuilder, 'Reference notes',
-          'Each row shows a discoverable VCL component class, the FMX target class the converter currently routes toward, the mapping strategy, the confidence score, and any notes that still require operator attention. Property and event counts reflect the published VCL inventory currently discoverable for each source class.',
+        AppendReferenceSectionStart(HtmlBuilder, SReferenceReferenceNotes,
+          SReferenceEachRowShowsADiscoverableVclComponent,
           '<thead><tr><th>VCL component</th><th>FMX target</th><th>Mapping</th><th>Confidence</th><th>Published properties</th><th>Published events</th><th>Notes</th></tr></thead>');
 
-        AppendReferenceTextIntro(TextBuilder, 'Component mapping reference',
-          'Built from the live mapping database and RTTI inventories.');
+        AppendReferenceTextIntro(TextBuilder, SReferenceComponentMappingReference2,
+          SReferenceBuiltFromTheLiveMappingDatabaseAnd);
 
         for VCLClassName in ComponentNames do
         begin
@@ -622,30 +702,33 @@ begin
 
           FMXDisplay := Mapping.FMXClassName;
           if FMXDisplay = '' then
-            FMXDisplay := 'Manual replacement required';
+            FMXDisplay := SDisplayManualReplacementRequired;
 
           NotesDisplay := Trim(Mapping.Notes);
           if NotesDisplay = '' then
             if SameText(Mapping.MappingType, 'Researched') then
-              NotesDisplay := 'Derived from live RTTI and FMX catalog research.'
+              NotesDisplay := SDisplayDerivedFromLiveRttiAndFmxCatalog
             else if SameText(Mapping.MappingType, 'Unmapped') then
-              NotesDisplay := 'No suitable FMX component match is currently known.'
+              NotesDisplay := SDisplayNoSuitableFmxComponentMatchIsCurrently
             else
-              NotesDisplay := 'Standard built-in mapping with no additional notes.';
+              NotesDisplay := SDisplayStandardBuiltInMappingWithNoAdditional;
 
           MappingClass := GetMappingBadgeCssClass(Mapping.MappingType);
+          MappingTypeDisplay := Mapping.MappingType;
+          if SameText(MappingTypeDisplay, 'Pack') then
+            MappingTypeDisplay := SDisplayMappingPack;
 
           HtmlBuilder.AppendLine('<tr>');
-          HtmlBuilder.AppendFormat('<td><div class="component-name">%s</div></td>',
+          HtmlBuilder.AppendFormat('<td><div class="component-name"><code>%s</code></div></td>',
             [HtmlEncode(VCLClassName)]).AppendLine;
           if Mapping.FMXClassName <> '' then
-            HtmlBuilder.AppendFormat('<td><div class="fmx-name">%s</div></td>',
+            HtmlBuilder.AppendFormat('<td><div class="fmx-name"><code>%s</code></div></td>',
               [HtmlEncode(FMXDisplay)]).AppendLine
           else
             HtmlBuilder.AppendFormat('<td><div class="missing">%s</div></td>',
               [HtmlEncode(FMXDisplay)]).AppendLine;
           HtmlBuilder.AppendFormat('<td><span class="badge %s">%s</span></td>',
-            [MappingClass, HtmlEncode(Mapping.MappingType)]).AppendLine;
+            [MappingClass, HtmlEncode(MappingTypeDisplay)]).AppendLine;
           HtmlBuilder.AppendFormat('<td class="count">%d%%</td>',
             [Mapping.Confidence]).AppendLine;
           HtmlBuilder.AppendFormat('<td class="count">%d</td>',
@@ -658,7 +741,7 @@ begin
 
           TextBuilder.AppendLine(Format('%s -> %s', [VCLClassName, FMXDisplay]));
           TextBuilder.AppendLine(Format('  Mapping type: %s  Confidence: %d%%',
-            [Mapping.MappingType, Mapping.Confidence]));
+            [MappingTypeDisplay, Mapping.Confidence]));
           TextBuilder.AppendLine(Format('  Published properties: %d  Published events: %d',
             [VCLPropertyCount, VCLEventCount]));
           TextBuilder.AppendLine('  Notes: ' + NotesDisplay);
@@ -799,60 +882,60 @@ begin
 
                 if ResolvedPropMap.NeedsTransformation then
                 begin
-                  RuleKind := 'Transformed';
+                  RuleKind := SDisplayTransformed;
                   if HasExplicitRule then
-                    NotesDisplay := 'Uses an explicit transformation rule from the built-in mapper.'
+                    NotesDisplay := SDisplayUsesAnExplicitTransformationRuleFromThe
                   else if SameText(TargetDisplay, 'Fill.Color') then
                   begin
                     IsInventoryDerived := True;
-                    NotesDisplay := 'Derived from converter heuristic: Color maps to Fill.Color using TransformColor.';
+                    NotesDisplay := SDisplayDerivedFromConverterHeuristicColorMapsTo;
                   end
                   else
                   begin
                     IsInventoryDerived := True;
-                    NotesDisplay := 'Derived from converter heuristic: Color requires TransformColor on the FMX target.';
+                    NotesDisplay := SDisplayDerivedFromConverterHeuristicColorRequiresTransformcolor;
                   end;
                 end
                 else if SameText(ResolvedPropMap.VCLProp, ResolvedPropMap.FMXProp) then
                 begin
-                  RuleKind := 'Direct';
+                  RuleKind := SDisplayDirect;
                   if HasExplicitRule then
-                    NotesDisplay := 'Uses an explicit direct property rule from the built-in mapper.'
+                    NotesDisplay := SDisplayUsesAnExplicitDirectPropertyRuleFrom
                   else
                   begin
                     IsInventoryDerived := True;
-                    NotesDisplay := 'Derived from RTTI inventory because the same published property exists on the FMX target.';
+                    NotesDisplay := SDisplayDerivedFromRttiInventoryBecauseTheSame;
                   end;
                 end
                 else
                 begin
-                  RuleKind := 'Renamed';
+                  RuleKind := SDisplayRenamed;
                   if HasExplicitRule then
-                    NotesDisplay := 'Uses an explicit renamed property rule from the built-in mapper.'
+                    NotesDisplay := SDisplayUsesAnExplicitRenamedPropertyRuleFrom
                   else
                   begin
                     IsInventoryDerived := True;
                     if SameText(PropName, 'Caption') and
                        SameText(TargetDisplay, 'Text') then
-                      NotesDisplay := 'Derived from converter heuristic: Caption maps to Text on the FMX target.'
+                      NotesDisplay := SDisplayDerivedFromConverterHeuristicCaptionMapsTo
                     else
-                      NotesDisplay := 'Derived from RTTI inventory because the property resolves to a different FMX target name.';
+                      NotesDisplay := SDisplayDerivedFromRttiInventoryBecauseTheProperty;
                   end;
                 end;
               end
               else
               begin
-                TargetDisplay := 'Manual review required';
+                TargetDisplay := SDisplayManualReviewRequired;
                 TransformerDisplay := '';
-                RuleKind := 'Manual review';
+                RuleKind := SDisplayManualReview;
                 if HasExplicitRule then
-                  NotesDisplay := 'No FMX target property is defined in the explicit mapper rule.'
+                  NotesDisplay := SDisplayNoFmxTargetPropertyIsDefinedIn
                 else if HasStoredRule then
-                  NotesDisplay := 'The researched component mapping does not currently resolve this property to an FMX target.'
+                  NotesDisplay := SDisplayTheResearchedComponentMappingDoesNotCurrently
                 else if not Assigned(Mapping) or (Trim(Mapping.FMXClassName) = '') then
-                  NotesDisplay := 'This component does not currently resolve to an FMX target class.'
+                  NotesDisplay := SDisplayThisComponentDoesNotCurrentlyResolveTo
                 else
-                  NotesDisplay := 'No explicit or RTTI-derived FMX target property was identified.';
+                  NotesDisplay := SDisplayNoExplicitOrRttiDerivedFmxTarget;
               end;
 
               if TransformerDisplay = '' then
@@ -875,12 +958,12 @@ begin
                 Inc(ReviewRules);
 
               RowsHtml.AppendLine('<tr>');
-              RowsHtml.AppendFormat('<td><div class="component-name">%s</div></td>',
+              RowsHtml.AppendFormat('<td><div class="component-name"><code>%s</code></div></td>',
                 [HtmlEncode(VCLClassName)]).AppendLine;
-              RowsHtml.AppendFormat('<td><div class="prop-name">%s</div></td>',
+              RowsHtml.AppendFormat('<td><div class="prop-name"><code>%s</code></div></td>',
                 [HtmlEncode(PropName)]).AppendLine;
               if not SameText(TargetDisplay, 'Manual review required') then
-                RowsHtml.AppendFormat('<td><div class="target-name">%s</div></td>',
+                RowsHtml.AppendFormat('<td><div class="target-name"><code>%s</code></div></td>',
                   [HtmlEncode(TargetDisplay)]).AppendLine
               else
                 RowsHtml.AppendFormat('<td><div class="missing">%s</div></td>',
@@ -893,18 +976,18 @@ begin
                 [HtmlEncode(NotesDisplay)]).AppendLine;
               RowsHtml.AppendLine('</tr>');
 
-              RowsText.AppendLine(Format('%s.%s -> %s',
+              RowsText.AppendLine(Format(SDisplaySSS,
                 [VCLClassName, PropName, TargetDisplay]));
-              RowsText.AppendLine('  Rule type: ' + RuleKind);
-              RowsText.AppendLine('  Source type: ' + PropTypeName);
+              RowsText.AppendLine(SDisplayRuleType + RuleKind);
+              RowsText.AppendLine(SDisplaySourceType + PropTypeName);
               if HasExplicitRule then
-                RowsText.AppendLine('  Rule source: explicit mapper rule')
+                RowsText.AppendLine(SDisplayRuleSourceExplicitMapperRule)
               else if IsInventoryDerived or ResolveSucceeded then
-                RowsText.AppendLine('  Rule source: RTTI inventory')
+                RowsText.AppendLine(SDisplayRuleSourceRttiInventory)
               else
-                RowsText.AppendLine('  Rule source: unresolved');
-              RowsText.AppendLine('  Transformer: ' + TransformerDisplay);
-              RowsText.AppendLine('  Notes: ' + NotesDisplay);
+                RowsText.AppendLine(SDisplayRuleSourceUnresolved);
+              RowsText.AppendLine(SDisplayTransformer + TransformerDisplay);
+              RowsText.AppendLine(SDisplayNotes + NotesDisplay);
               RowsText.AppendLine('');
             end;
           finally
@@ -912,7 +995,7 @@ begin
           end;
         end;
 
-        AppendReferencePageHead(HtmlBuilder, 'Property Mapping Reference', 980,
+        AppendReferencePageHead(HtmlBuilder, SReferencePropertyMappingReference, 980,
           '.component-name { font-weight: 700; color: #17395d; } ' +
           '.prop-name { font-weight: 700; color: #24527f; } ' +
           '.target-name { font-weight: 600; color: #24527f; } ' +
@@ -924,22 +1007,22 @@ begin
           '.badge.review { background: #fde8e4; color: #9b3e2e; } ' +
           '.transformer { color: #5c7893; white-space: nowrap; } ' +
           '.note { color: #4b6784; }', False);
-        AppendReferenceHeroStart(HtmlBuilder, 'Property reference',
-          'Property Mapping Reference',
-          'Generated from the converter''s explicit property rules plus RTTI inventories so operators can review direct carries, renames, transformations, and review items before conversion.');
-        AppendReferenceMetricCard(HtmlBuilder, TotalRules, 'Property rules');
-        AppendReferenceMetricCard(HtmlBuilder, DirectRules, 'Direct rules');
-        AppendReferenceMetricCard(HtmlBuilder, RenamedRules, 'Renamed rules');
+        AppendReferenceHeroStart(HtmlBuilder, SReferencePropertyReference,
+          SReferencePropertyMappingReference,
+          SReferenceGeneratedFromTheConverterSExplicitProperty);
+        AppendReferenceMetricCard(HtmlBuilder, TotalRules, SReferencePropertyRules);
+        AppendReferenceMetricCard(HtmlBuilder, DirectRules, SReferenceDirectRules);
+        AppendReferenceMetricCard(HtmlBuilder, RenamedRules, SReferenceRenamedRules);
         AppendReferenceMetricCard(HtmlBuilder, TransformedRules,
-          'Transformed rules');
+          SReferenceTransformedRules);
         AppendReferenceHeroEnd(HtmlBuilder);
-        AppendReferenceSectionStart(HtmlBuilder, 'Reference notes',
-          Format('This screen currently covers %d mapped component classes with discoverable published properties. Use it to verify when a property carries across unchanged, when the converter renames the target property, when a value transformation routine is required, and when a property still needs review.',
+        AppendReferenceSectionStart(HtmlBuilder, SReferenceReferenceNotes,
+          Format(SReferenceThisScreenCurrentlyCoversDMappedComponent,
             [ComponentsWithRules]),
           '<thead><tr><th>VCL component</th><th>VCL property</th><th>FMX property</th><th>Rule type</th><th>Transformer</th><th>Notes</th></tr></thead>');
 
-        AppendReferenceTextIntro(TextBuilder, 'Property mapping reference',
-          'Built from explicit property rules plus RTTI inventories.');
+        AppendReferenceTextIntro(TextBuilder, SReferencePropertyMappingReference2,
+          SReferenceBuiltFromExplicitPropertyRulesPlusRtti);
 
         HtmlBuilder.Append(RowsHtml.ToString);
 
@@ -1082,44 +1165,44 @@ begin
               begin
                 TargetDisplay := ResolvedEventMap.FMXEvent;
                 if SameText(ResolvedEventMap.VCLEvent, ResolvedEventMap.FMXEvent) then
-                  RuleKind := 'Direct'
+                  RuleKind := SDisplayDirect
                 else
-                  RuleKind := 'Renamed';
+                  RuleKind := SDisplayRenamed;
 
                 if ResolvedEventMap.SignatureMatch then
-                  SignatureDisplay := 'Compatible'
+                  SignatureDisplay := SDisplayCompatible
                 else
-                  SignatureDisplay := 'Review required';
+                  SignatureDisplay := SDisplayReviewRequired;
 
                 if HasExplicitRule then
                 begin
                   if SignatureDisplay = 'Compatible' then
-                    NotesDisplay := 'Uses an explicit event rule from the built-in mapper.'
+                    NotesDisplay := SDisplayUsesAnExplicitEventRuleFromThe
                   else
-                    NotesDisplay := 'Uses an explicit event rule, but the stored signature check requires review.';
+                    NotesDisplay := SDisplayUsesAnExplicitEventRuleButThe;
                 end
                 else
                 begin
                   IsInventoryDerived := True;
                   if SignatureDisplay = 'Compatible' then
-                    NotesDisplay := 'Derived from RTTI inventory because the same published event exists on the FMX target.'
+                    NotesDisplay := SDisplayDerivedFromRttiInventoryBecauseTheSame2
                   else
-                    NotesDisplay := 'Derived from RTTI inventory, but the event signatures require review.';
+                    NotesDisplay := SDisplayDerivedFromRttiInventoryButTheEvent;
                 end;
               end
               else
               begin
-                TargetDisplay := 'Manual review required';
-                RuleKind := 'Manual review';
-                SignatureDisplay := 'Review required';
+                TargetDisplay := SDisplayManualReviewRequired;
+                RuleKind := SDisplayManualReview;
+                SignatureDisplay := SDisplayReviewRequired;
                 if HasExplicitRule then
-                  NotesDisplay := 'No FMX target event is defined in the explicit mapper rule.'
+                  NotesDisplay := SDisplayNoFmxTargetEventIsDefinedIn
                 else if HasStoredRule then
-                  NotesDisplay := 'The researched component mapping does not currently resolve this event to an FMX target.'
+                  NotesDisplay := SDisplayTheResearchedComponentMappingDoesNotCurrently2
                 else if not Assigned(Mapping) or (Mapping.FMXClassName = '') then
-                  NotesDisplay := 'This component does not currently resolve to an FMX target class.'
+                  NotesDisplay := SDisplayThisComponentDoesNotCurrentlyResolveTo
                 else
-                  NotesDisplay := 'No explicit or RTTI-derived FMX event was identified.';
+                  NotesDisplay := SDisplayNoExplicitOrRttiDerivedFmxEvent;
               end;
 
               if (TargetDisplay <> 'Manual review required') and Assigned(FMXInventory) and
@@ -1143,12 +1226,12 @@ begin
                 Inc(SignatureWarnings);
 
               RowsHtml.AppendLine('<tr>');
-              RowsHtml.AppendFormat('<td><div class="component-name">%s</div></td>',
+              RowsHtml.AppendFormat('<td><div class="component-name"><code>%s</code></div></td>',
                 [HtmlEncode(VCLClassName)]).AppendLine;
-              RowsHtml.AppendFormat('<td><div class="event-name">%s</div></td>',
+              RowsHtml.AppendFormat('<td><div class="event-name"><code>%s</code></div></td>',
                 [HtmlEncode(EventName)]).AppendLine;
               if not SameText(TargetDisplay, 'Manual review required') then
-                RowsHtml.AppendFormat('<td><div class="target-name">%s</div></td>',
+                RowsHtml.AppendFormat('<td><div class="target-name"><code>%s</code></div></td>',
                   [HtmlEncode(TargetDisplay)]).AppendLine
               else
                 RowsHtml.AppendFormat('<td><div class="missing">%s</div></td>',
@@ -1162,20 +1245,20 @@ begin
                 [HtmlEncode(NotesDisplay)]).AppendLine;
               RowsHtml.AppendLine('</tr>');
 
-              RowsText.AppendLine(Format('%s.%s -> %s',
+              RowsText.AppendLine(Format(SDisplaySSS,
                 [VCLClassName, EventName, TargetDisplay]));
-              RowsText.AppendLine('  Rule type: ' + RuleKind);
+              RowsText.AppendLine(SDisplayRuleType + RuleKind);
               if HasExplicitRule then
-                RowsText.AppendLine('  Rule source: explicit mapper rule')
+                RowsText.AppendLine(SDisplayRuleSourceExplicitMapperRule)
               else if IsInventoryDerived or ResolveSucceeded then
-                RowsText.AppendLine('  Rule source: RTTI inventory')
+                RowsText.AppendLine(SDisplayRuleSourceRttiInventory)
               else
-                RowsText.AppendLine('  Rule source: unresolved');
-              RowsText.AppendLine('  VCL signature: ' + VCLSignature);
+                RowsText.AppendLine(SDisplayRuleSourceUnresolved);
+              RowsText.AppendLine(SDisplayVclSignature + VCLSignature);
               if FMXSignature <> '' then
-                RowsText.AppendLine('  FMX signature: ' + FMXSignature);
-              RowsText.AppendLine('  Signature status: ' + SignatureDisplay);
-              RowsText.AppendLine('  Notes: ' + NotesDisplay);
+                RowsText.AppendLine(SDisplayFmxSignature + FMXSignature);
+              RowsText.AppendLine(SDisplaySignatureStatus + SignatureDisplay);
+              RowsText.AppendLine(SDisplayNotes + NotesDisplay);
               RowsText.AppendLine('');
             end;
           finally
@@ -1183,7 +1266,7 @@ begin
           end;
         end;
 
-        AppendReferencePageHead(HtmlBuilder, 'Event Mapping Reference', 980,
+        AppendReferencePageHead(HtmlBuilder, SReferenceEventMappingReference, 980,
           '.component-name { font-weight: 700; color: #17395d; } ' +
           '.event-name { font-weight: 700; color: #24527f; } ' +
           '.target-name { font-weight: 600; color: #24527f; } ' +
@@ -1195,22 +1278,22 @@ begin
           '.badge.compatible { background: #dff4e8; color: #1f6a43; } ' +
           '.badge.warning { background: #fde8e4; color: #9b3e2e; } ' +
           '.note { color: #4b6784; }', False);
-        AppendReferenceHeroStart(HtmlBuilder, 'Event reference',
-          'Event Mapping Reference',
-          'Generated from the converter''s explicit event rules plus RTTI inventories so operators can review handler carry-forward, renamed targets, and signature compatibility.');
-        AppendReferenceMetricCard(HtmlBuilder, TotalRules, 'Event rules');
-        AppendReferenceMetricCard(HtmlBuilder, DirectRules, 'Direct events');
-        AppendReferenceMetricCard(HtmlBuilder, RenamedRules, 'Renamed events');
+        AppendReferenceHeroStart(HtmlBuilder, SReferenceEventReference,
+          SReferenceEventMappingReference,
+          SReferenceGeneratedFromTheConverterSExplicitEvent);
+        AppendReferenceMetricCard(HtmlBuilder, TotalRules, SReferenceEventRules);
+        AppendReferenceMetricCard(HtmlBuilder, DirectRules, SReferenceDirectEvents);
+        AppendReferenceMetricCard(HtmlBuilder, RenamedRules, SReferenceRenamedEvents);
         AppendReferenceMetricCard(HtmlBuilder, SignatureWarnings,
-          'Signature review');
+          SReferenceSignatureReview);
         AppendReferenceHeroEnd(HtmlBuilder);
-        AppendReferenceSectionStart(HtmlBuilder, 'Reference notes',
-          Format('This screen currently covers %d mapped component classes with discoverable published events. Use it to verify whether a VCL handler can carry forward directly, whether the target event name changes, and whether the mapped signatures remain compatible. Rows flagged for review need operator attention before relying on automatic migration.',
+        AppendReferenceSectionStart(HtmlBuilder, SReferenceReferenceNotes,
+          Format(SReferenceThisScreenCurrentlyCoversDMappedComponent2,
             [ComponentsWithRules]),
           '<thead><tr><th>VCL component</th><th>VCL event</th><th>FMX event</th><th>Rule type</th><th>Signature</th><th>Notes</th></tr></thead>');
 
-        AppendReferenceTextIntro(TextBuilder, 'Event mapping reference',
-          'Built from explicit event rules plus RTTI inventories.');
+        AppendReferenceTextIntro(TextBuilder, SReferenceEventMappingReference2,
+          SReferenceBuiltFromExplicitEventRulesPlusRtti);
 
         HtmlBuilder.Append(RowsHtml.ToString);
 
@@ -1256,7 +1339,8 @@ begin
   ABuilder.AppendFormat('<title>%s</title>', [HtmlEncode(ATitle)]).AppendLine;
   ABuilder.AppendLine('<style>');
   ABuilder.AppendLine('body { margin: 0; padding: 22px; background: #eef4fb; color: #17385c; font-family: "Segoe UI", Tahoma, sans-serif; }');
-  ABuilder.AppendLine('.page { max-width: 1180px; margin: 0 auto; }');
+  ABuilder.AppendLine('code { font: inherit; color: inherit; }');
+  ABuilder.AppendLine('.page { width: 100%; margin: 0; box-sizing: border-box; }');
   ABuilder.AppendLine('.hero { background: #e9f2ff; border: 1px solid #d2e2f6; border-radius: 20px; padding: 24px 26px; box-shadow: 0 10px 22px rgba(21, 49, 85, 0.08); }');
   ABuilder.AppendLine('.eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.16em; color: #557699; margin-bottom: 10px; }');
   ABuilder.AppendLine('h1 { margin: 0 0 10px 0; font-size: 28px; line-height: 1.15; color: #163a63; }');
@@ -1516,7 +1600,7 @@ begin
   FPendingCompletion := Default(TConversionCompletionSnapshot);
 
   MemoLog.Lines.Text :=
-    'Choose a VCL source folder and an FMX output folder, then start the conversion.';
+    DATTranslateDynamicText(SDisplayChooseAVclSourceFolderAndAn);
 
   PopulateReferencePages;
   LoadComponentMapReference;
@@ -1531,6 +1615,7 @@ begin
     if Assigned(FTabScrollBoxes[I]) then
       FTabScrollBoxes[I].ViewportPosition := PointF(0, 0);
 
+  RulesSummaryScrollBox.ViewportPosition := PointF(0, 0);
   TabControlMain.ActiveTab := tabProjectScan;
   UpdateTabChrome;
 
@@ -1707,7 +1792,7 @@ begin
 
   if TThread.CurrentThread.ThreadID = MainThreadID then
   begin
-    MemoLog.Lines.Add(Msg);
+    MemoLog.Lines.Add(DATTranslateDynamicText(Msg));
     MemoLog.GoToTextEnd;
   end
   else
@@ -1716,7 +1801,7 @@ begin
     TThread.Synchronize(nil,
       procedure
       begin
-        MemoLog.Lines.Add(LogMessage);
+        MemoLog.Lines.Add(DATTranslateDynamicText(LogMessage));
         MemoLog.GoToTextEnd;
       end);
   end;
@@ -1740,22 +1825,6 @@ begin
         TDialogService.ShowMessage('Error: ' + ErrorMessage);
       end);
   end;
-end;
-
-function TfrmMain.GetTextReportPath(const TargetPath: string): string;
-begin
-  if Trim(TargetPath) = '' then
-    Exit('');
-  Result := IncludeTrailingPathDelimiter(TargetPath) +
-    'VCL_to_FMX_Conversion_Report.txt';
-end;
-
-function TfrmMain.GetHTMLReportPath(const TargetPath: string): string;
-begin
-  if Trim(TargetPath) = '' then
-    Exit('');
-  Result := IncludeTrailingPathDelimiter(TargetPath) +
-    'VCL_to_FMX_Conversion_Report.html';
 end;
 
 function TfrmMain.GetPreferredReportPath: string;
@@ -1784,8 +1853,8 @@ begin
   FLastBlockingCount := FPendingCompletion.BlockingCount;
   FLastRunDurationText := FPendingCompletion.RunDurationText;
   FLastOutputPath := TargetPath;
-  FLastTextReportPath := GetTextReportPath(TargetPath);
-  FLastHTMLReportPath := GetHTMLReportPath(TargetPath);
+  FLastTextReportPath := FPendingCompletion.TextReportPath;
+  FLastHTMLReportPath := FPendingCompletion.HtmlReportPath;
   PreferredReportPath := GetPreferredReportPath;
 
   lblStatusValue.Text := StatusText;
@@ -1872,26 +1941,96 @@ end;
 
 procedure TfrmMain.btnHelpClick(Sender: TObject);
 var
-  HelpPath: string;
+  HelpTarget: string;
 begin
-  HelpPath := ExpandFileName(IncludeTrailingPathDelimiter(
-    ExtractFilePath(ParamStr(0))) + '..\..\docs\Help\index.html');
-  if not FileExists(HelpPath) then
-    HelpPath := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) +
-      'docs\Help\index.html';
-
-  if not FileExists(HelpPath) then
+  if not FileExists(FHelpRoot + 'index.html') then
   begin
     TDialogService.ShowMessage(
       'The VCL2FMXConverter help documentation could not be found.');
     Exit;
   end;
 
-  if not ExecuteShellVerb('open', HelpPath) then
+  try
+    // The designer-owned server listens only on this PC, on an available port.
+    // HTTP lets the free website widget work without publishing any Help files.
+    HelpServer.Active := True;
+    HelpTarget := 'http://127.0.0.1:' + IntToStr(HelpServer.Bindings[0].Port) +
+      '/index.html?lang=' + TNetEncoding.URL.Encode(DATActiveLanguageCode);
+  except
+    // The installed English manual remains available if local hosting fails.
+    HelpTarget := FHelpRoot + 'index.html';
+  end;
+  if not ExecuteShellVerb('open', HelpTarget) then
     TDialogService.ShowMessage(
       'Could not open the VCL2FMXConverter help documentation.');
 end;
 
+procedure TfrmMain.HelpServerCommandGet(AContext: TIdContext;
+  ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
+var
+  RelativePath, FileName, Extension: string;
+begin
+  AResponseInfo.CloseConnection := True;
+  AResponseInfo.ContentType := 'text/plain';
+  AResponseInfo.CharSet := 'utf-8';
+  AResponseInfo.CustomHeaders.Values['Cache-Control'] := 'no-store';
+  AResponseInfo.CustomHeaders.Values['X-Content-Type-Options'] := 'nosniff';
+  if not SameText(ARequestInfo.Command, 'GET') and
+     not SameText(ARequestInfo.Command, 'HEAD') then
+  begin
+    AResponseInfo.ResponseNo := 405;
+    Exit;
+  end;
+  if not SameText(ARequestInfo.Host, '127.0.0.1:' +
+    IntToStr(HelpServer.Bindings[0].Port)) then
+  begin
+    AResponseInfo.ResponseNo := 403;
+    Exit;
+  end;
+  try
+    RelativePath := TNetEncoding.URL.Decode(ARequestInfo.Document);
+    if RelativePath = '/' then
+      RelativePath := '/index.html';
+    if not RelativePath.StartsWith('/') or RelativePath.Contains(':') or
+       RelativePath.Contains('\') or RelativePath.Contains(#0) then
+    begin
+      AResponseInfo.ResponseNo := 403;
+      Exit;
+    end;
+    FileName := ExpandFileName(FHelpRoot +
+      StringReplace(Copy(RelativePath, 2, MaxInt), '/', '\', [rfReplaceAll]));
+    if not SameText(Copy(FileName, 1, Length(FHelpRoot)), FHelpRoot) then
+    begin
+      AResponseInfo.ResponseNo := 403;
+      Exit;
+    end;
+    if not FileExists(FileName) then
+    begin
+      AResponseInfo.ResponseNo := 404;
+      Exit;
+    end;
+    Extension := LowerCase(ExtractFileExt(FileName));
+    if Extension = '.html' then AResponseInfo.ContentType := 'text/html'
+    else if Extension = '.css' then AResponseInfo.ContentType := 'text/css'
+    else if Extension = '.js' then AResponseInfo.ContentType := 'text/javascript'
+    else if Extension = '.json' then AResponseInfo.ContentType := 'application/json'
+    else if Extension = '.svg' then AResponseInfo.ContentType := 'image/svg+xml'
+    else if Extension = '.png' then AResponseInfo.ContentType := 'image/png'
+    else if (Extension = '.jpg') or (Extension = '.jpeg') then AResponseInfo.ContentType := 'image/jpeg'
+    else if Extension = '.gif' then AResponseInfo.ContentType := 'image/gif'
+    else if Extension = '.ico' then AResponseInfo.ContentType := 'image/x-icon'
+    else
+    begin
+      AResponseInfo.ResponseNo := 403;
+      Exit;
+    end;
+    AResponseInfo.ContentStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyWrite);
+    AResponseInfo.FreeContentStream := True;
+  except
+    AResponseInfo.ResponseNo := 500;
+    AResponseInfo.ContentText := 'Help content is unavailable.';
+  end;
+end;
 function TfrmMain.ExecuteShellVerb(const AVerb, ATarget: string;
   const HideWindow: Boolean): Boolean;
 {$IFDEF MSWINDOWS}
@@ -1921,13 +2060,6 @@ begin
   Dir := edtSource.Text;
   if SelectDirectory('Select Source Folder', '', Dir) then
   begin
-    if SourceFolderContainsVCL2FMXReport(Dir) then
-    begin
-      ShowInvalidConvertedSourceFolderDialog;
-      TabControlMain.ActiveTab := tabProjectScan;
-      Exit;
-    end;
-
     edtSource.Text := Dir;
     SuggestTargetFromSource(Dir);
   end;
@@ -2004,6 +2136,7 @@ var
   EnableThirdParty: Boolean;
   EnableWinAPI: Boolean;
   DryRunPreview: Boolean;
+  ReportLanguage: string;
 begin
   if Assigned(FConversionThread) then
   begin
@@ -2035,13 +2168,6 @@ begin
     Exit;
   end;
 
-  if SourceFolderContainsVCL2FMXReport(Src) then
-  begin
-    ShowInvalidConvertedSourceFolderDialog;
-    TabControlMain.ActiveTab := tabProjectScan;
-    Exit;
-  end;
-
   if SameText(ExcludeTrailingPathDelimiter(ExpandFileName(Src)),
     ExcludeTrailingPathDelimiter(ExpandFileName(Dst))) then
   begin
@@ -2052,7 +2178,7 @@ begin
   end;
 
   MemoLog.Lines.Clear;
-  MemoLog.Lines.Add('Preparing conversion...');
+  MemoLog.Lines.Add(DATTranslateDynamicText(SDisplayPreparingConversion));
   TabControlMain.ActiveTab := tabIssues;
 
   FileTypeIndex := cmbFileTypes.ItemIndex;
@@ -2062,6 +2188,7 @@ begin
   EnableThirdParty := chkThirdParty.IsChecked;
   EnableWinAPI := chkWinAPI.IsChecked;
   DryRunPreview := chkDryRunPreview.IsChecked;
+  ReportLanguage := DATActiveLanguageCode;
 
   FLastOutputPath := Dst;
   FLastTextReportPath := '';
@@ -2085,7 +2212,7 @@ begin
       Completion.TargetPath := Dst;
       StatusText := 'Conversion failed';
       try
-        StatusText := ConversionThreadProc(Src, Dst, FileTypeIndex, Recursive,
+        StatusText := ConversionThreadProc(Src, Dst, ReportLanguage, FileTypeIndex, Recursive,
           EnableCritical, EnableDataAware, EnableThirdParty, EnableWinAPI,
           DryRunPreview, Completion);
       finally
@@ -2105,13 +2232,14 @@ begin
   FConversionThread.Start;
 end;
 
-function TfrmMain.ConversionThreadProc(SourcePath, TargetPath: string;
+function TfrmMain.ConversionThreadProc(SourcePath, TargetPath, ReportLanguage: string;
   FileTypeIndex: Integer; Recursive, EnableCritical, EnableDataAware,
   EnableThirdParty, EnableWinAPI, DryRunPreview: Boolean;
   var Completion: TConversionCompletionSnapshot): string;
 var
   Context: TConversionContext;
   Engine: TConverterEngine;
+  ReportRuntime: TTranslationRuntime;
 begin
   Result := 'Conversion failed';
   Completion := Default(TConversionCompletionSnapshot);
@@ -2138,10 +2266,25 @@ begin
         Context.Options.FileTypes := ftBoth;
       end;
 
-      Log('Starting conversion engine...');
+      Log(SDisplayStartingConversionEngine);
 
       Engine := TConverterEngine.Create(Context);
+      ReportRuntime := nil;
       try
+        ReportRuntime := TTranslationRuntime.Create('VCL2FMXConverter',
+          System.IOUtils.TPath.Combine(ExtractFilePath(ParamStr(0)), 'Localization\Languages'),
+          System.IOUtils.TPath.Combine(GetEnvironmentVariable('LOCALAPPDATA'), 'VCL2FMXConverter\report-language.ini'),
+          'en-US', 'FireMonkey');
+        if not ReportRuntime.LoadLanguage(ReportLanguage) then
+          raise Exception.Create('The selected report language pack could not be loaded.');
+        Engine.ReportLanguageCode := ReportLanguage;
+        Engine.ReportTextDirection := 'ltr';
+        if Assigned(ReportRuntime.ActivePack) then
+          Engine.ReportTextDirection := ReportRuntime.ActivePack.TextDirection;
+        Engine.ReportTextTranslator := function(Text: string): string
+          begin Result := ReportRuntime.TranslateDynamicText(Text); end;
+        Engine.ReportHtmlTranslator := function(Text: string): string
+          begin Result := ReportRuntime.TranslateHtmlText(Text); end;
         TMonitor.Enter(FActiveEngineLock);
         try
           FActiveEngine := Engine;
@@ -2155,6 +2298,8 @@ begin
             Log(MessageText);
           end;
         Engine.Convert(Context);
+        Completion.TextReportPath := Engine.TextReportPath;
+        Completion.HtmlReportPath := Engine.HtmlReportPath;
 
         Completion.FilesProcessed := Engine.FilesProcessed;
         Completion.FilesConverted := Engine.FilesConverted;
@@ -2182,6 +2327,7 @@ begin
           TMonitor.Exit(FActiveEngineLock);
         end;
         Engine.Free;
+        ReportRuntime.Free;
       end;
     finally
       Context.Free;
@@ -2197,4 +2343,3 @@ begin
 end;
 
 end.
-

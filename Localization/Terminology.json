@@ -1,0 +1,67 @@
+{
+  "description": "Translation context for ambiguous software terms; English catalog keys remain stable.",
+  "contexts": {
+    "Property Map": "Component property mappings",
+    "Property mapping": "Component property mappings",
+    "Property Mapping Reference": "Component property mapping reference",
+    "Property mapping reference": "Component property mapping reference",
+    "Property reference": "Component property reference",
+    "Property rules": "Component property rules",
+    "Mapping pack": "Component mapping package",
+    "Dashboard": "Application overview"
+  },
+  "overrides": {
+    "de-DE": {
+      "Property Map": "Eigenschaftszuordnung",
+      "Property mapping": "Eigenschaftszuordnung",
+      "Mapping pack": "Zuordnungspaket",
+      "Dashboard": "Übersicht",
+      "Injected TTrackBar compatibility helper.": "Kompatibilitätshelfer für TTrackBar eingefügt.",
+      "Pascal include copy skipped": "Kopieren der Pascal-Include-Datei übersprungen"
+    },
+    "zh-TW": {
+      "Property Map": "屬性對應",
+      "Property mapping": "屬性對應",
+      "Dashboard": "總覽",
+      "VCL TO FMX CONVERSION STARTED": "VCL 至 FMX 轉換已開始"
+    },
+    "zh-CN": {
+      "Property Map": "属性映射",
+      "Property mapping": "属性映射",
+      "Dashboard": "概览"
+    },
+    "fr-FR": {
+      "Property Map": "Correspondance des propriétés",
+      "Dashboard": "Vue d’ensemble"
+    },
+    "es-ES": {
+      "Property Map": "Mapa de propiedades",
+      "Dashboard": "Resumen"
+    },
+    "it-IT": {
+      "Property Map": "Mappa delle proprietà",
+      "Dashboard": "Panoramica"
+    },
+    "nl-NL": {
+      "Property Map": "Eigenschapstoewijzing",
+      "Dashboard": "Overzicht",
+      "VCL component: %s (%s)": "VCL-component: %s (%s)",
+      "Pascal include outside source folder": "Pascal-invoegbestand buiten de bronmap"
+    },
+    "cs-CZ": {
+      "VCL ScaleBy fidelity review": "Kontrola věrnosti převodu VCL ScaleBy"
+    },
+    "fil-PH": {
+      "Injected FillAndStrokeEllipse canvas helper.": "Idinagdag ang pantulong na FillAndStrokeEllipse para sa pagguhit."
+    },
+    "hr-HR": {
+      "VCL ScaleBy fidelity review": "Provjera vjernosti pretvorbe VCL ScaleBy"
+    },
+    "sk-SK": {
+      "VCL ScaleBy fidelity review": "Kontrola vernosti prevodu VCL ScaleBy"
+    },
+    "vi-VN": {
+      "Pascal include copy skipped": "Đã bỏ qua việc sao chép tệp include Pascal"
+    }
+  }
+}

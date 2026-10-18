@@ -1,0 +1,24 @@
+package DATLanguageManagerCoreRuntime;
+
+{$DESCRIPTION 'DAT Language Manager shared runtime package'}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl;
+
+contains
+  DAT.Core.AtomicFile in '..\..\source\core\DAT.Core.AtomicFile.pas',
+  DAT.Core.Diagnostics in '..\..\source\core\DAT.Core.Diagnostics.pas',
+  DAT.Runtime.LanguagePack in '..\..\source\runtime\DAT.Runtime.LanguagePack.pas',
+  DAT.Runtime.Preference in '..\..\source\runtime\DAT.Runtime.Preference.pas',
+  DAT.Runtime.LayoutOverrides in
+    '..\..\source\runtime\DAT.Runtime.LayoutOverrides.pas',
+  DAT.Runtime.Manager in '..\..\source\runtime\DAT.Runtime.Manager.pas',
+  DAT.Runtime.SplashTranslation in
+    '..\..\source\runtime\DAT.Runtime.SplashTranslation.pas',
+  DAT.Runtime.TemplateRewrite in
+    '..\..\source\runtime\DAT.Runtime.TemplateRewrite.pas',
+  DAT.Components.Core in '..\..\source\components\DAT.Components.Core.pas';
+
+end.

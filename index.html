@@ -3,22 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="VCL2FMXConverter v6.0 Navigator, released September 2, 2026, modernizes Delphi VCL applications with disciplined mapping packs, deterministic reports, and compiler-backed conversion contracts.">
+  <meta name="description" content="V7 Atlas can now be viewed in 35 languages. Explore the included languages, edit translations and glossaries, or add languages with Delphi App Translation Studio.">
   <meta name="theme-color" content="#0757b8">
-  <link rel="canonical" href="https://vcl2fmx.github.io/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="VCL2FMXConverter">
-  <meta property="og:title" content="VCL2FMXConverter v6.0 Navigator — Build 027">
-  <meta property="og:description" content="Released September 2, 2026: a contract-driven Delphi VCL-to-FMX migration utility with disciplined mapping packs, deterministic reports, and compiler-backed validation.">
-  <meta property="og:url" content="https://vcl2fmx.github.io/">
-  <meta property="og:image" content="https://vcl2fmx.github.io/assets/vcl2fmx-v6-screen.png">
+  <meta property="og:title" content="VCL2FMXConverter v7.0 Atlas">
+  <meta property="og:description" content="V7 Atlas can now be viewed in 35 languages. Explore the included languages, edit translations and glossaries, or add languages with Delphi App Translation Studio.">
+  <meta property="og:image" content="assets/vcl2fmx-logo.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="VCL2FMXConverter v6.0 Navigator — Build 027">
-  <meta name="twitter:description" content="Released September 2, 2026: contract-driven Delphi VCL-to-FMX migration with transparent reporting and compiler-backed validation.">
-  <meta name="twitter:image" content="https://vcl2fmx.github.io/assets/vcl2fmx-v6-screen.png">
-  <title translate="no">VCL2FMXConverter v6.0 Navigator | VCL-to-FMX Migration</title>
+  <meta name="twitter:title" content="VCL2FMXConverter v7.0 Atlas">
+  <meta name="twitter:description" content="V7 Atlas can now be viewed in 35 languages. Explore the included languages, edit translations and glossaries, or add languages with Delphi App Translation Studio.">
+  <meta name="twitter:image" content="assets/vcl2fmx-logo.png">
+  <title translate="no">VCL2FMXConverter v7.0 Atlas</title>
   <link rel="icon" href="assets/vcl2fmx-icon.png" type="image/png">
-  <link rel="stylesheet" href="assets/site.css?rev=20260902-2">
+  <link rel="stylesheet" href="assets/site.css">
   <style id="rtl-layout">
     html[dir="rtl"] body {
       direction: rtl;
@@ -96,19 +94,53 @@
   <link rel="preconnect" href="https://cdn.gtranslate.net">
   <link rel="preconnect" href="https://translate.google.com">
   <link rel="preconnect" href="https://translate.googleapis.com">
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R67HW0Z3L"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+  <meta name="robots" content="index, follow">
 
-    gtag('config', 'G-3R67HW0Z3L');
-  </script>
+  <style id="v7-release-styles">
+    .v7-hero { scroll-margin-top: 110px; padding: 70px 0; background: linear-gradient(120deg,#f0f7ff,#fff9f1); }
+    .v7-hero-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.2fr); align-items: center; gap: 36px; }
+    .v7-hero h1 { font-size: clamp(2.2rem,4vw,3.5rem); max-width: 780px; }
+    .v7-hero h1 span { color: #0757b8; }
+    .v7-hero .lede { font-size: 1.12rem; }
+    .v7-release-graphic { margin: 0; min-width: 0; }
+    .v7-release-graphic img { width: 100%; height: auto; border-radius: 18px; box-shadow: 0 18px 40px #0757b822; }
+    @media (max-width: 940px) { .v7-hero-grid { grid-template-columns: 1fr; } }
+    .v7-section { padding: 58px 0; scroll-margin-top: 110px; }
+    .v7-section h2 { font-size: clamp(1.9rem,3vw,2.65rem); }
+    #v7-languages { padding-block: 30px; }
+    #v7-languages h2 { font-size: 1.9rem; margin-bottom: 12px; }
+    .v7-language-box { padding: 16px; background: #f5f9ff; border: 1px solid #ccddf1; border-radius: 12px; }
+    .v7-language-box > p { margin: 0 0 12px; color: #52657a; font-size: .9rem; }
+    .v7-language-list { display: flex; flex-flow: row wrap; gap: 5px 7px; list-style: none; padding: 0; margin: 0; direction: ltr; text-align: left; }
+    .v7-language-list li { flex: 0 1 auto; padding: 3px 8px; border: 1px solid #d9e3ee; border-radius: 5px; background: white; font-size: .85rem; line-height: 1.5; overflow-wrap: anywhere; }
+    .v7-language-list li > span { font-weight: 700; color: #163a63; }
+    .v7-language-list bdi { font-weight: 400; }
+    .v7-translation-note { margin-top: 24px; padding: 20px 24px; border-inline-start: 4px solid #f28a25; background: #fff7ed; border-radius: 0 12px 12px 0; }
+    .v7-translation-note p { margin: 0; }
+    .v7-translation-note p + p { margin-top: 12px; }
+    .v7-studio { background: #f5f8fc; }
+    .v7-studio-card { display: grid; grid-template-columns: minmax(0,1.7fr) minmax(200px,.75fr); gap: 40px; align-items: center; padding: 36px; border: 1px solid #d9e3ee; border-radius: 20px; background: white; }
+    .v7-studio-card h2 { font-size: 2rem; }
+    .v7-studio-card p:last-child { margin-bottom: 0; }
+    .v7-studio-actions .button { width: 100%; }
+    .v7-studio-actions p { font-size: .88rem; color: #52657a; }
+    .v7-legacy-divider { border-top: 1px solid #d9e3ee; border-bottom: 1px solid #d9e3ee; padding: 16px 20px; text-align: center; color: #52657a; background: #fff; font-size: .88rem; }
+    .v7-download-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; margin: 28px 0; }
+    .v7-download-card { border: 1px solid #d9e3ee; border-radius: 16px; background: white; padding: 26px; display: flex; flex-direction: column; align-items: flex-start; }
+    .v7-download-card p { flex: 1; color: #52657a; }
+    @media (max-width: 760px) {
+      .v7-hero { padding: 42px 0; }
+      .v7-hero-grid, .v7-studio-card, .v7-download-grid { grid-template-columns: 1fr; gap: 24px; }
+      .v7-section { padding: 36px 0; }
+      .v7-language-box { padding: 12px; }
+      .v7-studio-card { padding: 20px; }
+      .v7-language-list li { max-width: 100%; }
+    }
+  </style>
 </head>
 <body>
   <div class="gtranslate_wrapper notranslate" translate="no"></div>
-  <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"detect_browser_language":true,"wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right"}</script>
+  <script>window.gtranslateSettings = {"default_language":"en","languages":["ar","bg","bn","cs","de","el","en","es","fa","fi","tl","fr","he","hi","hr","hu","id","it","ja","ko","pl","ps","pt","ro","ru","sk","sr","sv","th","tr","uk","ur","vi","zh-CN","zh-TW"],"native_language_names":true,"detect_browser_language":true,"wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right"}</script>
   <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
   <script src="assets/translation-selector.js" defer></script>
   <script>
@@ -194,23 +226,6 @@
       });
     }());
   </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "VCL2FMXConverter",
-    "alternateName": "VCL2FMXConverter v6.0 Navigator",
-    "softwareVersion": "6.0 Build 027",
-    "datePublished": "2026-09-02",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Windows",
-    "softwareRequirements": "Embarcadero Delphi/RAD Studio 12 or later with FireMonkey support",
-    "license": "https://www.apache.org/licenses/LICENSE-2.0",
-    "downloadUrl": "https://github.com/vcl2fmx/vcl2fmx.github.io/releases/download/v6.0.0/VCL2FMXConverter_v6_0_Navigator_Build027_Source_Distribution_2026-09-02_151952.zip",
-    "codeRepository": "https://github.com/vcl2fmx/vcl2fmx.github.io",
-    "url": "https://vcl2fmx.github.io/"
-  }
-  </script>
 
   <a class="skip-link" href="#main">Skip to main content</a>
   <header class="site-header">
@@ -223,6 +238,7 @@
         <a href="#features">Features</a>
         <a href="Compatibility.html">Compatibility</a>
         <a href="BeforeYouPay.html">Before You Buy a Converter</a>
+        <a href="index.html#v7-languages">Languages</a>
         <a href="ChangeLog.html">Change Log</a>
         <a href="downloads.html">Downloads</a>
         <a class="nav-cta" href="#contact">Contact</a>
@@ -231,54 +247,88 @@
   </header>
 
   <main id="main">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="shell hero-grid">
-        <div>
-          <p class="eyebrow">Open-source Delphi migration utility</p>
-          <h1 id="hero-title">Modernize Delphi VCL applications by converting them to FireMonkey.</h1>
-          <p class="lede">VCL2FMXConverter handles much of the repetitive work in a VCL-to-FMX migration—Pascal and DFM analysis, forms, components, properties, events, and project structure—then clearly reports the items that still need a developer's judgment.</p>
-          <div class="actions">
-            <a class="button orange" href="downloads.html#current-source">Get the v6.0 source</a>
-            <a class="button secondary" href="docs/pdf/VCL2FMXConverter_v6_0_Navigator_User_Guide.pdf">Read the User Guide</a>
-          </div>
+
+    <!-- V7 language support -->
+    <section class="v7-hero" id="v7" aria-labelledby="v7-title">
+      <div class="shell v7-hero-grid">
+        <div><p class="eyebrow notranslate" translate="no">VCL2FMXConverter v7.0 Atlas</p>
+          <h1 id="v7-title">Your VCL to FMX converter.<br><span>Now in 35 languages.</span></h1>
+          <p class="lede"><span class="notranslate" translate="no">VCL2FMXConverter V7</span> can now be viewed in 35 different languages. Language support is the major change for this version. The established conversion workflow is retained, with additional input, output and encoding safeguards.</p>
+          <div class="actions"><a class="button orange" href="#v7-languages">Explore the 35 languages</a><a class="button secondary" href="downloads.html#v7-downloads">V7 downloads</a></div>
         </div>
-        <aside class="release-card" aria-label="VCL2FMXConverter v6.0 Navigator release">
-          <p class="eyebrow">Release date</p>
-          <div class="version notranslate" translate="no">v6.0</div>
-          <span class="status notranslate" translate="no">September 2, 2026</span>
-          <ul class="check-list">
-            <li>Navigator Build 027</li>
-            <li>Delphi 12+; built with Delphi 13.1</li>
-            <li>227 executable conversion contracts</li>
-            <li>22 validated mapping packs; 493 rules</li>
-            <li>Apache 2.0 licensed</li>
+        <figure class="v7-release-graphic"><img src="assets/v7-release-wide.png" width="1774" height="887" alt="VCL2FMXConverter V7 Atlas. Now supporting 35 interface languages. Delphi VCL to FireMonkey conversion."></figure>
+      </div>
+    </section>
+    <section class="v7-section" id="v7-languages" aria-labelledby="v7-languages-title">
+      <div class="shell"><p class="eyebrow">Included with V7</p><h2 id="v7-languages-title">Find your language.</h2>
+        <div class="v7-language-box"><p>All 35 included languages and regional variants, listed alphabetically. English names are followed by native names in parentheses.</p>
+          <ul class="v7-language-list notranslate" translate="no" aria-label="35 included languages, English and native names">
+            <li data-language="ar-SA"><span>Arabic</span> (<bdi lang="ar-SA" dir="auto">العربية</bdi>)</li>
+            <li data-language="bn-BD"><span>Bengali</span> (<bdi lang="bn-BD" dir="auto">বাংলা</bdi>)</li>
+            <li data-language="bg-BG"><span>Bulgarian</span> (<bdi lang="bg-BG" dir="auto">Български</bdi>)</li>
+            <li data-language="zh-CN"><span>Chinese · Simplified</span> (<bdi lang="zh-CN" dir="auto">简体中文</bdi>)</li>
+            <li data-language="zh-TW"><span>Chinese · Traditional</span> (<bdi lang="zh-TW" dir="auto">繁體中文</bdi>)</li>
+            <li data-language="hr-HR"><span>Croatian</span> (<bdi lang="hr-HR" dir="auto">Hrvatski</bdi>)</li>
+            <li data-language="cs-CZ"><span>Czech</span> (<bdi lang="cs-CZ" dir="auto">Čeština</bdi>)</li>
+            <li data-language="en-US"><span>English</span> (<bdi lang="en-US" dir="auto">English</bdi>)</li>
+            <li data-language="fil-PH"><span>Filipino</span> (<bdi lang="fil-PH" dir="auto">Filipino</bdi>)</li>
+            <li data-language="fi-FI"><span>Finnish</span> (<bdi lang="fi-FI" dir="auto">Suomi</bdi>)</li>
+            <li data-language="fr-FR"><span>French</span> (<bdi lang="fr-FR" dir="auto">Français</bdi>)</li>
+            <li data-language="de-DE"><span>German</span> (<bdi lang="de-DE" dir="auto">Deutsch</bdi>)</li>
+            <li data-language="el-GR"><span>Greek</span> (<bdi lang="el-GR" dir="auto">Ελληνικά</bdi>)</li>
+            <li data-language="he-IL"><span>Hebrew</span> (<bdi lang="he-IL" dir="auto">עברית</bdi>)</li>
+            <li data-language="hi-IN"><span>Hindi</span> (<bdi lang="hi-IN" dir="auto">हिन्दी</bdi>)</li>
+            <li data-language="hu-HU"><span>Hungarian</span> (<bdi lang="hu-HU" dir="auto">Magyar</bdi>)</li>
+            <li data-language="id-ID"><span>Indonesian</span> (<bdi lang="id-ID" dir="auto">Bahasa Indonesia</bdi>)</li>
+            <li data-language="it-IT"><span>Italian</span> (<bdi lang="it-IT" dir="auto">Italiano</bdi>)</li>
+            <li data-language="ja-JP"><span>Japanese</span> (<bdi lang="ja-JP" dir="auto">日本語</bdi>)</li>
+            <li data-language="ko-KR"><span>Korean</span> (<bdi lang="ko-KR" dir="auto">한국어</bdi>)</li>
+            <li data-language="ps-AF"><span>Pashto</span> (<bdi lang="ps-AF" dir="auto">پښتو</bdi>)</li>
+            <li data-language="fa-IR"><span>Persian</span> (<bdi lang="fa-IR" dir="auto">فارسی</bdi>)</li>
+            <li data-language="pl-PL"><span>Polish</span> (<bdi lang="pl-PL" dir="auto">Polski</bdi>)</li>
+            <li data-language="pt-BR"><span>Portuguese · Brazil</span> (<bdi lang="pt-BR" dir="auto">Português do Brasil</bdi>)</li>
+            <li data-language="ro-RO"><span>Romanian</span> (<bdi lang="ro-RO" dir="auto">Română</bdi>)</li>
+            <li data-language="ru-RU"><span>Russian</span> (<bdi lang="ru-RU" dir="auto">Русский</bdi>)</li>
+            <li data-language="sr-Cyrl-RS"><span>Serbian · Cyrillic</span> (<bdi lang="sr-Cyrl-RS" dir="auto">Српски</bdi>)</li>
+            <li data-language="sk-SK"><span>Slovak</span> (<bdi lang="sk-SK" dir="auto">Slovenčina</bdi>)</li>
+            <li data-language="es-ES"><span>Spanish</span> (<bdi lang="es-ES" dir="auto">Español</bdi>)</li>
+            <li data-language="sv-SE"><span>Swedish</span> (<bdi lang="sv-SE" dir="auto">Svenska</bdi>)</li>
+            <li data-language="th-TH"><span>Thai</span> (<bdi lang="th-TH" dir="auto">ไทย</bdi>)</li>
+            <li data-language="tr-TR"><span>Turkish</span> (<bdi lang="tr-TR" dir="auto">Türkçe</bdi>)</li>
+            <li data-language="uk-UA"><span>Ukrainian</span> (<bdi lang="uk-UA" dir="auto">Українська</bdi>)</li>
+            <li data-language="ur-PK"><span>Urdu</span> (<bdi lang="ur-PK" dir="auto">اردو</bdi>)</li>
+            <li data-language="vi-VN"><span>Vietnamese</span> (<bdi lang="vi-VN" dir="auto">Tiếng Việt</bdi>)</li>
           </ul>
-          <p><a href="docs/pdf/VCL2FMXConverter_v6_0_Navigator_Engineering_Guide.pdf">Read the Navigator Engineering Guide</a></p>
-        </aside>
+        </div>
+        <div class="v7-translation-note" role="note"><p><strong>Machine translations — native-speaker review pending.</strong> The 35 language packs contain machine-generated translations that have not been reviewed by native speakers. Translations can be corrected or refined using the <span class="notranslate" translate="no">Delphi App Translation Studio</span>. Translation errors and changes may be sent to the developer for adjustments.</p><p>The included languages were selected based on the countries and language preferences of users who have previously downloaded the converter.</p></div>
       </div>
     </section>
 
-    <div class="shell">
-      <div class="notice maintenance-notice" aria-label="VCL2FMXConverter v6.0 Navigator release date">
-        <p class="notice-label release-date-label"><span class="notranslate" translate="no">Navigator v6.0</span> Release Date — <time datetime="2026-09-02">September 2, 2026</time></p>
-        <p><span class="notranslate" translate="no">VCL2FMXConverter v6.0 Navigator</span> centers on maintainability, reporting integrity, designer-owned UI, mapping-pack discipline, and stronger validation. Its release gate includes 227 conversion contracts, compiler-backed generated-output checks, 66 regression guards, 63 acceptance checks, 22 validated mapping packs with 493 rules, and Win32/Win64 Release builds. Generated applications still require developer compilation, runtime testing, and visual review.</p>
+    <section class="v7-section v7-studio" id="v7-translation-studio" aria-labelledby="v7-studio-title">
+      <div class="shell v7-studio-card">
+        <div><p class="eyebrow">Add a language. Make a translation your own.</p>
+          <h2 id="v7-studio-title">Need another language or a translation correction?</h2>
+          <p>Use the <span class="notranslate" translate="no">Delphi App Translation Studio</span> to add more languages, edit existing translations, and edit the glossaries.</p>
+          <p><strong>Download the manuals and guides along with the software.</strong> They explain how to work with language packs, translations, and glossaries.</p><p><a href="docs/Help/topics/using-and-maintaining-translations.html">Read the V7 translation editing and installation instructions</a>.</p>
+        </div>
+        <div class="v7-studio-actions"><a class="button" href="https://delphitranslate.github.io/" target="_blank" rel="noopener">Get Translation Studio</a><p class="notranslate" translate="no">https://delphitranslate.github.io</p></div>
       </div>
-    </div>
+    </section>
 
-    <section class="section product-preview" aria-labelledby="preview-title">
+
+
+    <section class="section product-preview" aria-labelledby="atlas-preview-title">
       <div class="shell">
         <div class="section-head">
-          <p class="eyebrow">Version 6.0 Navigator</p>
-          <h2 id="preview-title">A focused workspace for scanning, mapping, converting, and reviewing.</h2>
-          <p>The tabbed interface keeps the source project, conversion rules, live output, and component maps visible without hiding the converter's decisions.</p>
+          <p class="eyebrow notranslate" translate="no">V7 Atlas</p>
+          <h2 id="atlas-preview-title">The familiar workspace, in your language.</h2>
+          <p>The Project Scan screen shown here uses English. Choose any of the 35 bundled languages in the converter.</p>
         </div>
         <figure class="product-shot">
-          <img src="assets/vcl2fmx-v6-screen.png" alt="VCL2FMXConverter v6.0 Navigator Build 027 Project Scan workspace with evenly spaced hero actions and Help">
-          <figcaption>The Project Scan workspace keeps the original source untouched and sends converted FMX output to a separate folder.</figcaption>
+          <img src="assets/vcl2fmx-v7-atlas-screen.png" style="background:#f2f7ff" alt="V7 Atlas Project Scan screen with the large centered Atlas hero title">
         </figure>
       </div>
     </section>
-
     <section class="section alt" id="features" aria-labelledby="features-title">
       <div class="shell">
         <div class="section-head">
@@ -345,7 +395,7 @@
           </ul>
         </div>
         <aside class="callout">
-          <p class="eyebrow">Included with v6.0</p>
+          <p class="eyebrow">Included with V7</p>
           <h3>Complete mapping pack collection</h3>
           <p>Start with the included packs, then use JSON Mapping Pack Studio or a text editor to tailor rules to your libraries and projects.</p>
           <div class="actions">
@@ -367,12 +417,12 @@
           </ul>
         </div>
         <aside class="callout">
-          <p class="eyebrow">Version 6.0 validation</p>
+          <p class="eyebrow">Established conversion validation</p>
           <h3>227 executable conversion contracts</h3>
           <p>The suite checks required and forbidden output patterns, report messages, added or removed units, generated files, blocking status, and compilation of every eligible generated fixture. Contracts run during engineering validation—not during an ordinary user conversion.</p>
           <div class="actions">
-            <a class="button orange" href="docs/pdf/VCL2FMXConverter_v6_0_Navigator_Engineering_Guide.pdf">Read the Engineering Guide</a>
-            <a class="button secondary" href="https://github.com/vcl2fmx/vcl2fmx.github.io/releases/download/v6.0.0/VCL2FMXConverter_v6_0_Navigator_Build027_Source_Distribution_2026-09-02_151952.zip">Download Complete Source Package</a>
+            <a class="button orange" href="docs/Help/index.html">Read the V7 Help</a>
+            <a class="button secondary" href="downloads.html#v7-downloads">Download Complete Source Package</a>
           </div>
         </aside>
       </div>
@@ -386,7 +436,7 @@
           <p>Generated output is a migration starting point. Compiling, testing, UI inspection, and programmer review remain essential.</p>
         </div>
         <ul class="limit-list">
-          <li><strong>Supported Delphi baseline:</strong> v6.0 is intended for modern Delphi/RAD Studio projects with FireMonkey support, specifically Delphi 12 or later. Very old source such as Delphi 3 may require manual modernization before the converter can be useful.</li>
+          <li><strong>Supported Delphi baseline:</strong> V7 is intended for modern Delphi/RAD Studio projects with FireMonkey support, specifically Delphi 12 or later. Very old source such as Delphi 3 may require manual modernization before the converter can be useful.</li>
           <li><strong>No direct FMX equivalent:</strong> some VCL and third-party controls must be replaced or redesigned.</li>
           <li><strong>Windows-specific code:</strong> handles, messages, GDI, and Windows API calls may need manual work.</li>
           <li><strong>Custom drawing:</strong> owner-draw and VCL canvas logic do not map directly to FMX rendering.</li>
@@ -399,7 +449,7 @@
       <div class="shell buyer-invitation-inner">
         <div>
           <p class="eyebrow">Considering a conversion product?</p>
-          <h2 id="buyer-invitation-title">Know what to verify before you pay.</h2>
+          <h2 id="buyer-invitation-title">Know what you are getting before you pay.</h2>
           <p>Learn why form translation is not complete application migration, which claims deserve scrutiny, and what evidence a responsible converter should provide.</p>
         </div>
         <a class="button orange" href="BeforeYouPay.html">Read Before You Pay</a>
@@ -411,7 +461,7 @@
         <div>
           <p class="eyebrow">Contact and feedback</p>
           <h2 id="contact-title">Found an issue or a conversion edge case?</h2>
-          <p>Include the converter version, Delphi version, a short project description, and the generated HTML report when possible.</p>
+          <p>Include the converter version, Delphi version, a short project description, and the generated HTML report when possible.</p><p>For a translation correction, include the language and locale, screen or Help topic, current wording and suggested wording. For clipped text, add the window size and Windows display scaling. Remove private details from screenshots and reports.</p><p><a class="button" href="mailto:churchesite@gmail.com?subject=VCL2FMXConverter%20V7%20translation%20feedback&amp;body=Converter%20version%3A%20%0ALanguage%20and%20locale%3A%20%0AScreen%20or%20Help%20topic%3A%20%0ACurrent%20wording%3A%20%0ASuggested%20wording%3A%20%0AReason%20%28optional%29%3A%20%0AFor%20clipping%3A%20window%20size%20and%20Windows%20display%20scaling%3A%20%0A%0APlease%20remove%20private%20details%20from%20any%20screenshot%20before%20attaching%20it.">Report a translation correction</a></p>
         </div>
         <a class="button" href="mailto:churchesite@gmail.com?subject=VCL2FMXConverter%20Feedback">Email churchesite@gmail.com</a>
       </div>
@@ -421,7 +471,7 @@
   <footer class="site-footer">
     <div class="shell footer-inner">
       <p>&copy; 2026 VCL2FMXConverter</p>
-      <p>Free and open-source Delphi VCL-to-FMX migration assistance &middot; <a href="docs/pdf/License.pdf">Apache License 2.0</a></p>
+      <p>Free and open-source Delphi VCL-to-FMX migration assistance &middot; <a href="LICENSE.txt">Apache License 2.0</a></p>
       <p>Automatic translations are machine-generated by <span class="notranslate" translate="no">GTranslate</span>; select English to view the original.</p>
     </div>
   </footer>

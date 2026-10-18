@@ -1,0 +1,22 @@
+{
+  "product": "VCL2FMXConverter v7.0 Atlas",
+  "version": "7.0.0.1",
+  "created": "2026-10-18_183014",
+  "artifacts": [
+    {
+      "file": "VCL2FMXConverter_v7_0_Atlas_Win32_2026-10-18_183014.zip",
+      "bytes": 11952532,
+      "sha256": "a5e7044a46b5b15f91bb04738ec63f9eb2f1e516f3023f696674e8f66d375f3e"
+    },
+    {
+      "file": "VCL2FMXConverter_v7_0_Atlas_Win64_2026-10-18_183014.zip",
+      "bytes": 13113280,
+      "sha256": "0b5b66b3c4e55a8118036a1d8d481cb0ea37f9bdb490f89b085c06804cc42386"
+    },
+    {
+      "file": "VCL2FMXConverter_v7_0_Atlas_Source_2026-10-18_183014.zip",
+      "bytes": 12935498,
+      "sha256": "c2716b18fe04f2a81462afd6e17eb8c96756f43484fe242a834aa13f112122fe"
+    }
+  ]
+}

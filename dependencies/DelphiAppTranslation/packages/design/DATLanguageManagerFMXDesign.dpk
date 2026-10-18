@@ -1,0 +1,17 @@
+package DATLanguageManagerFMXDesign;
+
+{$DESCRIPTION 'DAT Language Manager FireMonkey design-time package'}
+{$DESIGNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  fmx,
+  designide,
+  DATLanguageManagerCoreRuntime,
+  DATLanguageManagerFMXRuntime;
+
+contains
+  DAT.Design.FMX.Register in '..\..\source\design\DAT.Design.FMX.Register.pas';
+
+end.

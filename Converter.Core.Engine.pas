@@ -1,6 +1,6 @@
-﻿{VCL2FMX © 2026 echurchsites.wixsite.com
+{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
- Version v6.0 Navigator
+ Version v7.0 Atlas
  Written and built in the USA}
 
 unit Converter.Core.Engine;
@@ -17,6 +17,7 @@ uses
   System.Generics.Collections,
   System.Generics.Defaults,
   System.RegularExpressions,
+  System.NetEncoding,
     FMX.Forms,
     System.Types,
   Converter.Core.Types,
@@ -26,6 +27,7 @@ uses
   Converter.Reporting.Html,
   Converter.Reporting.Json,
   Converter.Reporting.Model,
+  Converter.Reporting.Strings,
   Converter.Reporting.Text;
 
 type
@@ -46,6 +48,12 @@ type
     FStartTime: TDateTime;
     FEndTime: TDateTime;
     FLogCallback: TProc<string>;
+    FTextReportPath: string;
+    FHtmlReportPath: string;
+    FReportTextTranslator: TFunc<string, string>;
+    FReportHtmlTranslator: TFunc<string, string>;
+    FReportLanguageCode: string;
+    FReportTextDirection: string;
 
     procedure ProcessPasFile(const AFileName: string);
     procedure ProcessDfmFile(const AFileName: string);
@@ -82,14 +90,62 @@ type
     property FilesSkipped: Integer read FFilesSkipped;
     property StartTime: TDateTime read FStartTime;
     property EndTime: TDateTime read FEndTime;
+    property TextReportPath: string read FTextReportPath;
+    property HtmlReportPath: string read FHtmlReportPath;
+    property ReportTextTranslator: TFunc<string, string> read FReportTextTranslator write FReportTextTranslator;
+    property ReportHtmlTranslator: TFunc<string, string> read FReportHtmlTranslator write FReportHtmlTranslator;
+    property ReportLanguageCode: string read FReportLanguageCode write FReportLanguageCode;
+    property ReportTextDirection: string read FReportTextDirection write FReportTextDirection;
   end;
 
 implementation
 
+
+resourcestring
+  SDisplayReadingS = '  Reading %s...';
+  SDisplayEncodingS = '  Encoding: %s';
+  SDisplayFailedCouldNotReadFileWithSupported = '  FAILED: Could not read file with supported encodings';
+  SDisplayScreenMemoConnected = 'Screen memo connected';
+  SDisplayVclToFmxConversionStarted = 'VCL TO FMX CONVERSION STARTED';
+  SDisplaySourceS = 'Source: %s';
+  SDisplayOutputS = 'Output: %s';
+  SDisplayFoundDFilesToProcess = 'Found %d files to process';
+  SDisplayDDProcessingS = '[%d/%d] Processing: %s';
+  SDisplayFailedS = '  FAILED: %s';
+  SDisplayFailedSS = '  FAILED: %s - %s';
+  SDisplayDryRunPreviewConvertedSourceAndProject = 'Dry-run preview: converted source and project generation skipped';
+  SDisplayDryRunPreviewReportsAndMappingSuggestions = 'Dry-run preview reports and mapping suggestions will still be written for review';
+  SDisplayGeneratingProjectFiles = 'Generating project files...';
+  SDisplayProjectFilesGenerated = 'Project files generated';
+  SDisplayConversionCompletedWithBlockingIssuesOpenThe = 'Conversion completed with blocking issues. Open the report, fix blocking items first, then review the generated output in the IDE.';
+  SDisplayConversionCompletedWithManualReviewRequiredOpen = 'Conversion completed with manual review required. Open the report, review the grouped manual-review items, and verify the generated code in the IDE.';
+  SDisplayConversionCompletedCleanlyOpenTheReportFor = 'Conversion completed cleanly. Open the report for a final sanity check before using the output.';
+  SDisplayFatalErrorS = 'FATAL ERROR: %s';
+  SDisplayProcessingPascalFileS = 'Processing Pascal file: %s';
+  SDisplayProcessingPascalS = 'Processing Pascal: %s';
+  SDisplayFailedCouldNotReadFile = '  FAILED: Could not read file';
+  SDisplayConverted = '  Converted';
+  SDisplayFailed = '  FAILED';
+  SDisplayFailedConvertedPascalFileWasNotSaved = '  FAILED: Converted Pascal file was not saved';
+  SDisplaySkippedSavePascalConversionDidNotProduce = '  SKIPPED SAVE: Pascal conversion did not produce safe output';
+  SDisplayProcessingDfmFileS = 'Processing DFM file: %s';
+  SDisplayProcessingDfmS = 'Processing DFM: %s';
+  SDisplayFailedDfmFileIsTooLargeFor = '  FAILED: DFM file is too large for safe automatic parsing';
+  SDisplayFailedUnableToReadDfmSourceText = '  FAILED: unable to read DFM source text';
+  SDisplayDetectingDfmStreamFormat = '  Detecting DFM stream format...';
+  SDisplayFailedConvertedDfmFileWasNotSaved = '  FAILED: Converted DFM file was not saved';
+  SDisplaySkippedSaveDfmConversionDidNotProduce = '  SKIPPED SAVE: DFM conversion did not produce safe output';
+  SDisplayReportSavedToS = 'Report saved to: %s';
+  SDisplayHtmlReportSavedToS = 'HTML report saved to: %s';
+  SDisplayJsonReportSavedToS = 'JSON report saved to: %s';
+  SDisplayConversionCancelledByUser = 'Conversion cancelled by user';
+
 constructor TConverterEngine.Create(AContext: TConversionContext);
 begin
   inherited Create;
-  RebuildServicesForContext(AContext);
+  if not Assigned(AContext) then
+    raise EArgumentNilException.Create('Conversion context is not assigned');
+  FContext := AContext;
   FCancelled := False;
   FLogCallback := nil;
   FFilesProcessed := 0;
@@ -113,12 +169,9 @@ begin
   if not Assigned(AContext) then
     raise EArgumentNilException.Create('Conversion context is not assigned');
 
-  if AContext = FContext then
-    Exit;
-
-  FProjectGenerator.Free;
-  FOrchestrator.Free;
-  FFileManager.Free;
+  FreeAndNil(FProjectGenerator);
+  FreeAndNil(FOrchestrator);
+  FreeAndNil(FFileManager);
 
   FContext := AContext;
   FFileManager := TFileManager.Create(FContext);
@@ -163,12 +216,12 @@ function TConverterEngine.TryReadWithEncoding(const AFileName: string; out Code:
 var
   EncodingName: string;
 begin
-  UILog(Format('  Reading %s...', [ExtractFileName(AFileName)]));
+  UILog(Format(SDisplayReadingS, [ExtractFileName(AFileName)]));
   Result := VCL2FMXTryReadTextFile(AFileName, Code, EncodingName);
   if Result then
-    UILog(Format('  Encoding: %s', [EncodingName]))
+    UILog(Format(SDisplayEncodingS, [EncodingName]))
   else
-    UILog('  FAILED: Could not read file with supported encodings');
+    UILog(SDisplayFailedCouldNotReadFileWithSupported);
 end;
 procedure TConverterEngine.AuditGeneratedFile(const AFileName: string);
 var
@@ -939,9 +992,19 @@ var
   i: Integer;
   HasBlockingIssues: Boolean;
   HasManualReviewIssues: Boolean;
+  HasProjectInput: Boolean;
+  PreflightIssue: TConversionIssue;
 begin
   Result := False;
 
+  FTextReportPath := '';
+  FHtmlReportPath := '';
+  if not Assigned(AContext) then
+    raise EArgumentNilException.Create('Conversion context is not assigned');
+  AContext.ClearIssues;
+  AContext.CurrentFile := '';
+  AContext.LoadedMappingPacks.Clear;
+  AContext.MappingPackUsages.Clear;
   RebuildServicesForContext(AContext);
   FCancelled := False;
   FFilesProcessed := 0;
@@ -949,24 +1012,32 @@ begin
   FFilesErrors := 0;
   FFilesSkipped := 0;
   FStartTime := Now;
+  FEndTime := 0;
   FContext.StartTime := FStartTime;
-  FContext.ClearIssues;
   FConversionLog.Clear;
 
   if not Assigned(FLogCallback) then
     LogToFile('WARNING: Log callback not assigned - UI updates disabled')
   else
-    UILog('Screen memo connected');
+    UILog(SDisplayScreenMemoConnected);
 
   UILog('');
-  UILog('VCL TO FMX CONVERSION STARTED');
+  UILog(SDisplayVclToFmxConversionStarted);
   UILog(StringOfChar('=', 40));
-  UILog(Format('Source: %s', [FContext.Options.SourcePath]));
-  UILog(Format('Output: %s', [FContext.Options.OutputPath]));
+  UILog(Format(SDisplaySourceS, [FContext.Options.SourcePath]));
+  UILog(Format(SDisplayOutputS, [FContext.Options.OutputPath]));
   UILog('');
 
   try
+  try
     FFileManager.Reset;
+    if FContext.HasBlockingIssues then Exit;
+    HasProjectInput := FProjectGenerator.ValidateProjectSelection;
+    if (FFileManager.FileCount = 0) and not HasProjectInput then
+    begin
+      FContext.AddIssue(csError, 'No eligible source files were found. Check the source folder and selected file types.');
+      Exit;
+    end;
     BuildCrossUnitSemanticIndex;
 
     if not FFileManager.PrepareOutput then
@@ -976,7 +1047,7 @@ begin
 
     TotalFiles := FFileManager.FileCount;
 
-    UILog(Format('Found %d files to process', [TotalFiles]));
+    UILog(Format(SDisplayFoundDFilesToProcess, [TotalFiles]));
     UILog('');
 
     i := 0;
@@ -987,7 +1058,7 @@ begin
       Inc(i);
 
 
-      UILog(Format('[%d/%d] Processing: %s', [i, TotalFiles, ExtractFileName(FileName)]));
+      UILog(Format(SDisplayDDProcessingS, [i, TotalFiles, ExtractFileName(FileName)]));
 
       try
         if SameText(ExtractFileExt(FileName), '.pas') then
@@ -1002,8 +1073,8 @@ begin
         on E: Exception do
         begin
           Inc(FFilesErrors);
-          UILog(Format('  FAILED: %s', [ExtractFileName(FileName)]),
-            Format('  FAILED: %s - %s', [ExtractFileName(FileName), E.Message]));
+          UILog(Format(SDisplayFailedS, [ExtractFileName(FileName)]),
+            Format(SDisplayFailedSS, [ExtractFileName(FileName), E.Message]));
           FContext.AddIssue(csError,
             'File conversion failed: ' + E.Message,
             'File conversion failure',
@@ -1018,8 +1089,8 @@ begin
     UILog('');
     if FContext.Options.DryRunPreview then
     begin
-      UILog('Dry-run preview: converted source and project generation skipped');
-      UILog('Dry-run preview reports and mapping suggestions will still be written for review');
+      UILog(SDisplayDryRunPreviewConvertedSourceAndProject);
+      UILog(SDisplayDryRunPreviewReportsAndMappingSuggestions);
       FContext.AddIssue(csInfo,
         'Dry-run preview skipped converted source and project file generation; reports and mapping suggestions remain enabled.',
         'Dry-run preview',
@@ -1030,12 +1101,12 @@ begin
     end
     else
     begin
-      UILog('Generating project files...');
+      UILog(SDisplayGeneratingProjectFiles);
 
       FProjectGenerator.GenerateProject;
       AuditGeneratedOutput;
 
-      UILog('Project files generated');
+      UILog(SDisplayProjectFilesGenerated);
     end;
 
     ExportMappingPackAuthoringSuggestions;
@@ -1048,17 +1119,17 @@ begin
 
     if HasBlockingIssues then
     begin
-      UILog('Conversion completed with blocking issues. Open the report, fix blocking items first, then review the generated output in the IDE.');
+      UILog(SDisplayConversionCompletedWithBlockingIssuesOpenThe);
       Result := False;
     end
     else if HasManualReviewIssues then
     begin
-      UILog('Conversion completed with manual review required. Open the report, review the grouped manual-review items, and verify the generated code in the IDE.');
+      UILog(SDisplayConversionCompletedWithManualReviewRequiredOpen);
       Result := True;
     end
     else
     begin
-      UILog('Conversion completed cleanly. Open the report for a final sanity check before using the output.');
+      UILog(SDisplayConversionCompletedCleanlyOpenTheReportFor);
       Result := True;
     end;
 
@@ -1066,7 +1137,7 @@ begin
     on E: Exception do
     begin
       FEndTime := Now;
-      UILog(Format('FATAL ERROR: %s', [E.Message]));
+      UILog(Format(SDisplayFatalErrorS, [E.Message]));
       FContext.AddIssue(csError,
         'Fatal conversion error: ' + E.Message,
         'Conversion session failed',
@@ -1074,6 +1145,15 @@ begin
         'Review the fatal error text, correct the blocking condition, and rerun the converter.',
         -1,
         True);
+    end;
+  end;
+  finally
+    if FEndTime = 0 then
+    begin
+      FEndTime := Now;
+      for PreflightIssue in FContext.Issues do
+        if PreflightIssue.IsBlocking or (PreflightIssue.Severity in [csError, csCritical]) then
+          UILog(Format(SDisplayFatalErrorS, [PreflightIssue.Message]));
     end;
   end;
 end;
@@ -1665,15 +1745,21 @@ var
     end;
   end;
 begin
-  UILog(Format('Processing Pascal file: %s', [ExtractFileName(AFileName)]),
-    Format('Processing Pascal: %s', [ExtractFileName(AFileName)]));
+  UILog(Format(SDisplayProcessingPascalFileS, [ExtractFileName(AFileName)]),
+    Format(SDisplayProcessingPascalS, [ExtractFileName(AFileName)]));
   ConvertedOK := False;
   FContext.CurrentFile := AFileName;
 
   if not TryReadWithEncoding(AFileName, Code) then
   begin
     Inc(FFilesSkipped);
-    UILog('  FAILED: Could not read file');
+    Inc(FFilesErrors);
+    FContext.AddIssue(csError,
+      'Pascal source could not be read: ' + ExtractFileName(AFileName),
+      'Pascal source read failure', '',
+      'Ensure the source file is accessible and not locked, then rerun the conversion.',
+      -1, True);
+    UILog(SDisplayFailedCouldNotReadFile);
     Exit;
   end;
   OriginalCode := Code;
@@ -1684,12 +1770,12 @@ begin
     RestoreFinalEndDotIfLost;
     Inc(FFilesConverted);
     ConvertedOK := True;
-    UILog('  Converted');
+    UILog(SDisplayConverted);
   except
     on E: Exception do
     begin
       Inc(FFilesErrors);
-      UILog('  FAILED', Format('  FAILED: %s', [E.Message]));
+      UILog(SDisplayFailed, Format(SDisplayFailedS, [E.Message]));
       FContext.AddIssue(csError,
         'Pascal conversion could not complete: ' + E.Message,
         'Pascal conversion failure',
@@ -1705,12 +1791,12 @@ begin
     if not FFileManager.SaveConvertedFile(AFileName, Code) then
     begin
       Inc(FFilesErrors);
-      UILog('  FAILED: Converted Pascal file was not saved');
+      UILog(SDisplayFailedConvertedPascalFileWasNotSaved);
     end;
   end
   else
   begin
-    UILog('  SKIPPED SAVE: Pascal conversion did not produce safe output');
+    UILog(SDisplaySkippedSavePascalConversionDidNotProduce);
     FContext.AddIssue(csError,
       'Pascal file was not saved because conversion did not complete safely: ' +
         ExtractFileName(AFileName),
@@ -1900,8 +1986,8 @@ var
   EncodingName: string;
   ConvertedOK: Boolean;
 begin
-  UILog(Format('Processing DFM file: %s', [ExtractFileName(AFileName)]),
-    Format('Processing DFM: %s', [ExtractFileName(AFileName)]));
+  UILog(Format(SDisplayProcessingDfmFileS, [ExtractFileName(AFileName)]),
+    Format(SDisplayProcessingDfmS, [ExtractFileName(AFileName)]));
   ConvertedOK := False;
   SourceDfm := '';
   EncodingName := '';
@@ -1912,7 +1998,7 @@ begin
   begin
     Inc(FFilesSkipped);
     Inc(FFilesErrors);
-    UILog('  FAILED: DFM file is too large for safe automatic parsing');
+    UILog(SDisplayFailedDfmFileIsTooLargeFor);
     FContext.AddIssue(csError,
       'DFM file is too large for safe automatic parsing: ' +
         ExtractFileName(AFileName),
@@ -1929,7 +2015,7 @@ begin
   begin
     Inc(FFilesSkipped);
     Inc(FFilesErrors);
-    UILog('  FAILED: unable to read DFM source text');
+    UILog(SDisplayFailedUnableToReadDfmSourceText);
     FContext.AddIssue(csError,
       'DFM source could not be read with a supported encoding: ' +
         ExtractFileName(AFileName),
@@ -1940,7 +2026,7 @@ begin
       True);
     Exit;
   end;
-  UILog('  Detecting DFM stream format...');
+  UILog(SDisplayDetectingDfmStreamFormat);
   try
     FOrchestrator.ConvertDFM(AFileName, Code);
     if Trim(Code) = '' then
@@ -1948,13 +2034,13 @@ begin
     AuditDfmFmxFidelity(AFileName, SourceDfm, Code);
     Inc(FFilesConverted);
     ConvertedOK := True;
-    UILog('  Converted');
+    UILog(SDisplayConverted);
   except
     on E: Exception do
     begin
       Inc(FFilesSkipped);
       Inc(FFilesErrors);
-      UILog('  FAILED', Format('  FAILED: %s', [E.Message]));
+      UILog(SDisplayFailed, Format(SDisplayFailedS, [E.Message]));
       FContext.AddIssue(csError,
         'DFM conversion could not complete: ' + E.Message,
         'DFM conversion failure',
@@ -1970,12 +2056,12 @@ begin
     if not FFileManager.SaveConvertedFile(AFileName, Code) then
     begin
       Inc(FFilesErrors);
-      UILog('  FAILED: Converted DFM file was not saved');
+      UILog(SDisplayFailedConvertedDfmFileWasNotSaved);
     end;
   end
   else
   begin
-    UILog('  SKIPPED SAVE: DFM conversion did not produce safe output');
+    UILog(SDisplaySkippedSaveDfmConversionDidNotProduce);
     FContext.AddIssue(csError,
       'DFM file was not saved because conversion did not complete safely: ' +
         ExtractFileName(AFileName),
@@ -2357,6 +2443,35 @@ var
   HasBlockingOutcome: Boolean;
   IssueIndex: Integer;
   ReportModel: TConversionReportModel;
+  ProtectedValues: TArray<string>;
+  ProtectedData: TStringList;
+  ReportLine: Integer;
+
+  function TranslateReportPresentation(const Source: string; const IsHtml: Boolean): string;
+  var
+    Value, Token: string;
+    Index: Integer;
+  begin
+    Result := Source;
+    // Protect data before translating presentation; JSON and the report model stay unchanged.
+    for Index := 0 to High(ProtectedValues) do
+    begin
+      Value := ProtectedValues[Index];
+      if (Length(Value) < 3) or not TRegEx.IsMatch(Value, '[A-Za-z\x{0080}-\x{FFFF}]') then Continue;
+      if IsHtml then Value := TNetEncoding.HTML.Encode(Value);
+      Token := #$E000 + IntToStr(Index) + #$E001;
+      if Pos(Value, Result) > 0 then
+        Result := StringReplace(Result, Value, Token, [rfReplaceAll]);
+    end;
+    if IsHtml then Result := FReportHtmlTranslator(Result)
+    else Result := FReportTextTranslator(Result);
+    for Index := 0 to High(ProtectedValues) do
+    begin
+      Value := ProtectedValues[Index];
+      if IsHtml then Value := TNetEncoding.HTML.Encode(Value);
+      Result := StringReplace(Result, #$E000 + IntToStr(Index) + #$E001, Value, [rfReplaceAll]);
+    end;
+  end;
 
   function IssueGroupKey(const AIssue: TConversionIssue): string;
   begin
@@ -2868,20 +2983,55 @@ begin
     for ManualIndex := 0 to FConversionLog.Count - 1 do
       ReportModel.ConversionLogLines[ManualIndex] := FConversionLog[ManualIndex];
 
+    if Assigned(FReportTextTranslator) or Assigned(FReportHtmlTranslator) then
+    begin
+      ProtectedData := TStringList.Create;
+      try
+        ProtectedData.CaseSensitive := True;
+        ProtectedData.Sorted := True;
+        ProtectedData.Duplicates := dupIgnore;
+        ProtectedData.AddStrings([ReportModel.SourcePath, ReportModel.OutputPath,
+          ReportModel.TextReportFile, ReportModel.HtmlReportFile, ReportModel.JsonReportFile]);
+        for Issue in FContext.Issues do
+        begin
+          ProtectedData.AddStrings([Issue.FileName, ExtractFileName(Issue.FileName), Issue.OriginalCode]);
+          ProtectedData.AddStrings(Issue.OriginalCode.Split([sLineBreak]));
+        end;
+        for ManualIndex := 0 to High(ReportModel.MappingUsages) do
+          with ReportModel.MappingUsages[ManualIndex] do
+            ProtectedData.AddStrings([ComponentName, VCLClassName, FMXClassName, SourceFile, PackName, Vendor]);
+        ProtectedValues := ProtectedData.ToStringArray;
+      finally ProtectedData.Free; end;
+      TArray.Sort<string>(ProtectedValues, TComparer<string>.Construct(
+        function(const Left, Right: string): Integer
+        begin Result := Length(Right) - Length(Left); end));
+    end;
     TConversionTextReportRenderer.Render(ReportModel, Report);
+    if Assigned(FReportTextTranslator) then
+      for ReportLine := 0 to Report.Count - 1 do
+        Report[ReportLine] := TranslateReportPresentation(Report[ReportLine], False);
     Report.SaveToFile(ReportModel.TextReportFile, TEncoding.UTF8);
+    FTextReportPath := ReportModel.TextReportFile;
 
-    UILog(Format('Report saved to: %s', [ReportModel.TextReportFile]));
+    UILog(Format(SDisplayReportSavedToS, [ReportModel.TextReportFile]));
     SetLength(ReportModel.ConversionLogLines, FConversionLog.Count);
     for ManualIndex := 0 to FConversionLog.Count - 1 do
       ReportModel.ConversionLogLines[ManualIndex] := FConversionLog[ManualIndex];
 
     AddHtmlReportDocumentHead(Html);
     TConversionHtmlReportRenderer.RenderBody(ReportModel, Html);
+    if Assigned(FReportHtmlTranslator) then
+    begin
+      Html.Text := StringReplace(Html.Text, '<html lang="en">',
+        '<html lang="' + TNetEncoding.HTML.Encode(FReportLanguageCode) +
+        '" dir="' + TNetEncoding.HTML.Encode(FReportTextDirection) + '">', []);
+      Html.Text := TranslateReportPresentation(Html.Text, True);
+    end;
     Html.SaveToFile(ReportModel.HtmlReportFile, TEncoding.UTF8);
-    UILog(Format('HTML report saved to: %s', [ReportModel.HtmlReportFile]));
+    FHtmlReportPath := ReportModel.HtmlReportFile;
+    UILog(Format(SDisplayHtmlReportSavedToS, [ReportModel.HtmlReportFile]));
     TConversionJsonReportRenderer.Save(ReportModel);
-    UILog(Format('JSON report saved to: %s', [ReportModel.JsonReportFile]));
+    UILog(Format(SDisplayJsonReportSavedToS, [ReportModel.JsonReportFile]));
 
   finally
     AffectedFiles.Free;
@@ -2896,7 +3046,7 @@ end;
 procedure TConverterEngine.Cancel;
 begin
   FCancelled := True;
-  UILog('Conversion cancelled by user');
+  UILog(SDisplayConversionCancelledByUser);
 end;
 
 end.

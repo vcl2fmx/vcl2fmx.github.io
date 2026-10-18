@@ -5,18 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Understand which Delphi versions are verified for VCL2FMXConverter, how older VCL projects can be analyzed, and which Delphi releases should compile the generated FireMonkey output.">
   <meta name="theme-color" content="#0757b8">
-  <link rel="canonical" href="https://vcl2fmx.github.io/Compatibility.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="VCL2FMXConverter">
-  <meta property="og:title" content="Delphi Compatibility | VCL2FMXConverter">
+  <meta property="og:title" content="V7 Atlas Compatibility | VCL2FMXConverter">
   <meta property="og:description" content="A plain explanation of converter, source-project, and generated-output compatibility across Delphi generations.">
-  <meta property="og:url" content="https://vcl2fmx.github.io/Compatibility.html">
-  <meta property="og:image" content="https://vcl2fmx.github.io/assets/vcl2fmx-v6-screen.png">
+  <meta property="og:image" content="assets/vcl2fmx-logo.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Delphi Compatibility | VCL2FMXConverter">
+  <meta name="twitter:title" content="V7 Atlas Compatibility | VCL2FMXConverter">
   <meta name="twitter:description" content="Learn what is verified, what may work, and what older Delphi projects may require before conversion.">
-  <meta name="twitter:image" content="https://vcl2fmx.github.io/assets/vcl2fmx-v6-screen.png">
-  <title translate="no">Delphi Compatibility | VCL2FMXConverter</title>
+  <meta name="twitter:image" content="assets/vcl2fmx-logo.png">
+  <title translate="no">V7 Atlas Compatibility | VCL2FMXConverter</title>
   <link rel="icon" href="assets/vcl2fmx-icon.png" type="image/png">
   <link rel="stylesheet" href="assets/site.css">
   <link rel="preconnect" href="https://cdn.gtranslate.net">
@@ -171,18 +169,13 @@
       .summary-card, .compatibility-table, .compatibility-list li { break-inside: avoid; box-shadow: none; }
     }
   </style>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R67HW0Z3L"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-3R67HW0Z3L');
-  </script>
+  <meta name="robots" content="index, follow">
+<style id="v7-release-styles">
+    .v7-legacy-divider { border-top: 1px solid #d9e3ee; border-bottom: 1px solid #d9e3ee; padding: 16px 20px; text-align: center; color: #52657a; background: #fff; font-size: .88rem; }</style>
 </head>
 <body>
   <div class="gtranslate_wrapper notranslate" translate="no"></div>
-  <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"detect_browser_language":true,"wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right"}</script>
+  <script>window.gtranslateSettings = {"default_language":"en","languages":["ar","bg","bn","cs","de","el","en","es","fa","fi","tl","fr","he","hi","hr","hu","id","it","ja","ko","pl","ps","pt","ro","ru","sk","sr","sv","th","tr","uk","ur","vi","zh-CN","zh-TW"],"native_language_names":true,"detect_browser_language":true,"wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right"}</script>
   <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
   <script src="assets/translation-selector.js" defer></script>
   <script>
@@ -202,6 +195,7 @@
         <a href="index.html#features">Features</a>
         <a href="Compatibility.html" aria-current="page">Compatibility</a>
         <a href="BeforeYouPay.html">Before You Buy a Converter</a>
+        <a href="index.html#v7-languages">Languages</a>
         <a href="ChangeLog.html">Change Log</a>
         <a href="downloads.html">Downloads</a>
         <a class="nav-cta" href="index.html#contact">Contact</a>
@@ -214,7 +208,7 @@
       <div class="shell compatibility-hero-inner">
         <p class="eyebrow">Delphi compatibility</p>
         <h1 id="compatibility-title">Older VCL source can still have a modern FireMonkey future.</h1>
-        <p class="lede"><span class="notranslate" translate="no">VCL2FMXConverter v6.0 Navigator</span> is built and validated with Delphi 12 and Delphi 13/13.1. It can also analyze many projects created with earlier Delphi releases because it works directly with Pascal source, form definitions, project files, and related resources.</p>
+        <p class="lede"><span class="notranslate" translate="no">VCL2FMXConverter v7.0 Atlas</span> targets Delphi 12 or later; the current V7 Win32 and Win64 builds were validated with Delphi 13.1. It can also analyze many projects created with earlier Delphi releases because it works directly with Pascal source, form definitions, project files, and related resources.</p>
         <div class="actions">
           <a class="button orange" href="#build-compatibility">See the compatibility details</a>
           <a class="button secondary" href="downloads.html">View downloads</a>
@@ -222,11 +216,12 @@
       </div>
     </section>
 
+    <section class="section"><div class="shell"><h2>Language support does not change project compatibility.</h2><p>V7 adds 35 interface language packs. Choosing a language changes the converter's presentation; it does not translate your generated application or add framework compatibility.</p><p>Bundled app translations work offline. Help translation uses an online service; English Help remains available offline. <a href="ChangeLog.html#v7">Read the language and report details.</a></p></div></section>
     <section class="plain-summary" aria-label="Compatibility at a glance">
       <div class="shell summary-grid">
         <article class="summary-card">
           <h2>Build the converter</h2>
-          <p>Delphi 12 and Delphi 13/13.1 are the officially verified development environments.</p>
+          <p>The supported baseline is Delphi 12 or later. Current V7 build evidence uses Delphi 13.1.</p>
         </article>
         <article class="summary-card">
           <h2>Analyze older projects</h2>
@@ -250,11 +245,11 @@
           <tbody>
             <tr>
               <th scope="row">Delphi 12 Athens</th>
-              <td>Officially supported and validated.<br><span class="verification">Verified</span></td>
+              <td>Supported baseline. The current V7 validation record uses Delphi 13.1.<br><span class="verification possible">V7 build not verified here</span></td>
             </tr>
             <tr>
               <th scope="row">Delphi 13 and 13.1</th>
-              <td>Officially supported and validated. The current release is built with Delphi 13.1.<br><span class="verification">Verified</span></td>
+              <td>The V7 Win32 and Win64 Release builds were validated with Delphi 13.1.<br><span class="verification">Verified</span></td>
             </tr>
             <tr>
               <th scope="row">Delphi 11 Alexandria</th>
@@ -282,7 +277,7 @@
         <div>
           <p class="eyebrow">Original VCL project compatibility</p>
           <h2 id="source-project-title">The source project does not need to have started in Delphi 12 or 13.</h2>
-          <p><span class="notranslate" translate="no">Navigator</span> examines Pascal units, form definitions, project files, include files, resources, and component declarations. This makes many projects from earlier Delphi generations possible candidates for analysis.</p>
+          <p><span class="notranslate" translate="no">Atlas</span> examines Pascal units, form definitions, project files, include files, resources, and component declarations. This makes many projects from earlier Delphi generations possible candidates for analysis.</p>
           <p>What the application contains matters more than its original version number. A conventional older application using standard VCL controls may be easier to convert than a newer project built around unsupported libraries or Windows-specific behavior.</p>
         </div>
         <aside class="callout">
@@ -326,7 +321,7 @@
         <div>
           <p class="eyebrow">Recommended legacy-project workflow</p>
           <h2 id="legacy-workflow-title">Evaluate before you commit to a full conversion.</h2>
-          <p>Navigator keeps the original source separate from the generated output and provides a dry-run path for understanding the likely work first.</p>
+          <p>Atlas keeps the original source separate from the generated output and provides a dry-run path for understanding the likely work first.</p>
         </div>
         <ol class="workflow-list">
           <li>Preserve a complete backup of the original project.</li>

@@ -1,6 +1,6 @@
 ﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
- Version v6.0 Navigator
+ Version v7.0 Atlas
  Written and built in the USA}
 
 unit Converter.Mapper.Component;
@@ -206,6 +206,40 @@ var
 {$ENDIF}
 
 { TComponentResearch }
+
+
+resourcestring
+  SDisplayAutoMatchedSimilarity = 'Auto-matched based on %d%% similarity';
+  SDisplayMappingTypePreserved = 'Preserved';
+  SDisplayMappingTypeUnmapped = 'Unmapped';
+  SDisplayMappingTypeResearched = 'Researched';
+
+resourcestring
+  SDisplayNoExplicitOrInventoryDerivedFmxProperty = 'No explicit or inventory-derived FMX property target was identified.';
+  SDisplayNoComponentMappingRowIsAvailableFor = 'No component mapping row is available for this VCL class.';
+  SDisplayExplicitMapperRowOmitsThisVclOnly = 'Explicit mapper row omits this VCL-only or designer-only property from FMX output.';
+  SDisplayExplicitMapperRowLeavesThisPropertyFor = 'Explicit mapper row leaves this property for manual review.';
+  SDisplayExplicitMapperRowApplies = 'Explicit mapper row applies ';
+  SDisplayExplicitDirectPropertyRule = 'Explicit direct property rule.';
+  SDisplayExplicitRenamedPropertyRule = 'Explicit renamed property rule.';
+  SDisplayNoFmxTargetClassIsDefinedFor = 'No FMX target class is defined for this component.';
+  SDisplayDerivedFromMatchingPublishedPropertyNamesIn = 'Derived from matching published property names in the RTTI inventory.';
+  SDisplayCaptionMapsToTextOnTheFmx = 'Caption maps to Text on the FMX target.';
+  SDisplayColorMapsDirectlyToAnFmxColor = 'Color maps directly to an FMX Color property with TransformColor.';
+  SDisplayColorMapsToFillColorOnThe = 'Color maps to Fill.Color on the FMX target with TransformColor.';
+  SDisplayKnownVclOnlyOrDesignerOnlyProperty = 'Known VCL-only or designer-only property omitted from FMX output.';
+  SDisplayNoExplicitOrRttiDerivedFmxEvent = 'No explicit or RTTI-derived FMX event target was identified.';
+  SDisplayExplicitMapperRowLeavesThisEventFor = 'Explicit mapper row leaves this event for manual review.';
+  SDisplayExplicitEventRuleFromTheBuiltIn = 'Explicit event rule from the built-in mapper.';
+  SDisplayExplicitEventRuleExistsButTheEvent = 'Explicit event rule exists, but the event signatures still require manual review.';
+  SDisplayDerivedFromMatchingPublishedEventNamesIn = 'Derived from matching published event names in the RTTI inventory.';
+  SDisplayTheSameEventNameExistsOnThe = 'The same event name exists on the FMX target, but the signatures differ.';
+  SDisplayFmxRoutesTextInputNotificationsThroughOntyping = 'FMX routes text-input notifications through OnTyping/OnKeyDown instead of VCL OnKeyPress.';
+  SDisplayPreservedAsASharedDataAccessComponent = 'Preserved as a shared data-access component that can remain in an FMX project';
+  SDisplayPreservedAsAFiredacDataAccessComponent = 'Preserved as a FireDAC data-access component that can remain in an FMX project';
+  SDisplayPreservedAsAnIndyNetworkingComponentThat = 'Preserved as an Indy networking component that can remain in an FMX project';
+  SDisplayPreservedAsACrossPlatformComponentThat = 'Preserved as a cross-platform component that can remain in an FMX project';
+  SDisplayNoSuitableFmxComponentFound = 'No suitable FMX component found';
 
 constructor TComponentResearch.Create;
 begin
@@ -742,12 +776,12 @@ begin
   PropMap.TransformerFunc := '';
   Classification := 'manual_review';
   RuleSource := 'unresolved';
-  Notes := 'No explicit or inventory-derived FMX property target was identified.';
+  Notes := SDisplayNoExplicitOrInventoryDerivedFmxProperty;
 
   if not Assigned(Mapping) then
   begin
     RuleSource := 'unmapped_class';
-    Notes := 'No component mapping row is available for this VCL class.';
+    Notes := SDisplayNoComponentMappingRowIsAvailableFor;
     Exit;
   end;
 
@@ -759,12 +793,12 @@ begin
       if IsKnownOmittedProperty then
       begin
         Classification := 'omit';
-        Notes := 'Explicit mapper row omits this VCL-only or designer-only property from FMX output.';
+        Notes := SDisplayExplicitMapperRowOmitsThisVclOnly;
       end
       else
       begin
         Classification := 'manual_review';
-        Notes := 'Explicit mapper row leaves this property for manual review.';
+        Notes := SDisplayExplicitMapperRowLeavesThisPropertyFor;
       end;
       Exit;
     end;
@@ -772,17 +806,17 @@ begin
     if PropMap.NeedsTransformation then
     begin
       Classification := 'transform';
-      Notes := 'Explicit mapper row applies ' + PropMap.TransformerFunc + '.';
+      Notes := SDisplayExplicitMapperRowApplies + PropMap.TransformerFunc + '.';
     end
     else if SameText(PropMap.VCLProp, PropMap.FMXProp) then
     begin
       Classification := 'direct';
-      Notes := 'Explicit direct property rule.';
+      Notes := SDisplayExplicitDirectPropertyRule;
     end
     else
     begin
       Classification := 'rename';
-      Notes := 'Explicit renamed property rule.';
+      Notes := SDisplayExplicitRenamedPropertyRule;
     end;
     Exit;
   end;
@@ -790,7 +824,7 @@ begin
   if Trim(Mapping.FMXClassName) = '' then
   begin
     RuleSource := 'unmapped_class';
-    Notes := 'No FMX target class is defined for this component.';
+    Notes := SDisplayNoFmxTargetClassIsDefinedFor;
     Exit;
   end;
 
@@ -799,7 +833,7 @@ begin
     PropMap.FMXProp := PropName;
     Classification := 'direct';
     RuleSource := 'inventory';
-    Notes := 'Derived from matching published property names in the RTTI inventory.';
+    Notes := SDisplayDerivedFromMatchingPublishedPropertyNamesIn;
     Exit;
   end;
 
@@ -809,7 +843,7 @@ begin
     PropMap.FMXProp := 'Text';
     Classification := 'rename';
     RuleSource := 'heuristic';
-    Notes := 'Caption maps to Text on the FMX target.';
+    Notes := SDisplayCaptionMapsToTextOnTheFmx;
     Exit;
   end;
 
@@ -821,7 +855,7 @@ begin
     PropMap.TransformerFunc := 'TransformColor';
     Classification := 'transform';
     RuleSource := 'heuristic';
-    Notes := 'Color maps directly to an FMX Color property with TransformColor.';
+    Notes := SDisplayColorMapsDirectlyToAnFmxColor;
     Exit;
   end;
 
@@ -833,7 +867,7 @@ begin
     PropMap.TransformerFunc := 'TransformColor';
     Classification := 'transform';
     RuleSource := 'heuristic';
-    Notes := 'Color maps to Fill.Color on the FMX target with TransformColor.';
+    Notes := SDisplayColorMapsToFillColorOnThe;
     Exit;
   end;
 
@@ -841,7 +875,7 @@ begin
   begin
     Classification := 'omit';
     RuleSource := 'known_vcl_only';
-    Notes := 'Known VCL-only or designer-only property omitted from FMX output.';
+    Notes := SDisplayKnownVclOnlyOrDesignerOnlyProperty;
   end;
 end;
 
@@ -919,7 +953,7 @@ begin
   EventMap.SignatureMatch := False;
   Classification := 'manual_review';
   RuleSource := 'unresolved';
-  Notes := 'No explicit or RTTI-derived FMX event target was identified.';
+  Notes := SDisplayNoExplicitOrRttiDerivedFmxEvent;
   VCLSignature := '';
   FMXSignature := '';
 
@@ -930,7 +964,7 @@ begin
   if not Assigned(Mapping) then
   begin
     RuleSource := 'unmapped_class';
-    Notes := 'No component mapping row is available for this VCL class.';
+    Notes := SDisplayNoComponentMappingRowIsAvailableFor;
     Exit;
   end;
 
@@ -940,7 +974,7 @@ begin
     if Trim(EventMap.FMXEvent) = '' then
     begin
       Classification := 'manual_review';
-      Notes := 'Explicit mapper row leaves this event for manual review.';
+      Notes := SDisplayExplicitMapperRowLeavesThisEventFor;
       Exit;
     end;
 
@@ -954,12 +988,12 @@ begin
         Classification := 'direct'
       else
         Classification := 'rename';
-      Notes := 'Explicit event rule from the built-in mapper.';
+      Notes := SDisplayExplicitEventRuleFromTheBuiltIn;
     end
     else
     begin
       Classification := 'incompatible_signature';
-      Notes := 'Explicit event rule exists, but the event signatures still require manual review.';
+      Notes := SDisplayExplicitEventRuleExistsButTheEvent;
     end;
     Exit;
   end;
@@ -968,7 +1002,7 @@ begin
   begin
     Classification := 'unsupported';
     RuleSource := 'unmapped_class';
-    Notes := 'No FMX target class is defined for this component.';
+    Notes := SDisplayNoFmxTargetClassIsDefinedFor;
     Exit;
   end;
 
@@ -985,12 +1019,12 @@ begin
     if EventMap.SignatureMatch then
     begin
       Classification := 'direct';
-      Notes := 'Derived from matching published event names in the RTTI inventory.';
+      Notes := SDisplayDerivedFromMatchingPublishedEventNamesIn;
     end
     else
     begin
       Classification := 'incompatible_signature';
-      Notes := 'The same event name exists on the FMX target, but the signatures differ.';
+      Notes := SDisplayTheSameEventNameExistsOnThe;
     end;
     Exit;
   end;
@@ -1022,7 +1056,7 @@ begin
     FMXInfo := GetFMXInventory(Mapping.FMXClassName);
     if Assigned(FMXInfo) then
       FMXInfo.Events.TryGetValue('OnTyping', FMXSignature);
-    Notes := 'FMX routes text-input notifications through OnTyping/OnKeyDown instead of VCL OnKeyPress.';
+    Notes := SDisplayFmxRoutesTextInputNotificationsThroughOntyping;
   end;
 end;
 
@@ -2325,17 +2359,17 @@ begin
   Result := TComponentMapping.Create;
   Result.VCLClassName := VCLClassName;
   Result.FMXClassName := VCLClassName;
-  Result.MappingType := 'Preserved';
+  Result.MappingType := SDisplayMappingTypePreserved;
   Result.Confidence := 85;
 
   if SameText(VCLClassName, 'TDataSource') then
-    Result.Notes := 'Preserved as a shared data-access component that can remain in an FMX project'
+    Result.Notes := SDisplayPreservedAsASharedDataAccessComponent
   else if VCLClassName.StartsWith('TFD') then
-    Result.Notes := 'Preserved as a FireDAC data-access component that can remain in an FMX project'
+    Result.Notes := SDisplayPreservedAsAFiredacDataAccessComponent
   else if VCLClassName.StartsWith('TId') then
-    Result.Notes := 'Preserved as an Indy networking component that can remain in an FMX project'
+    Result.Notes := SDisplayPreservedAsAnIndyNetworkingComponentThat
   else
-    Result.Notes := 'Preserved as a cross-platform component that can remain in an FMX project';
+    Result.Notes := SDisplayPreservedAsACrossPlatformComponentThat;
 end;
 
 function TComponentMapper.BuildBestMatch(const VCLClassName: string;
@@ -2379,9 +2413,9 @@ begin
       Result := TComponentMapping.Create;
       Result.VCLClassName := NormalizedClassName;
       Result.FMXClassName := '';
-      Result.MappingType := 'Unmapped';
+      Result.MappingType := SDisplayMappingTypeUnmapped;
       Result.Confidence := 0;
-      Result.Notes := 'No suitable FMX component found';
+      Result.Notes := SDisplayNoSuitableFmxComponentFound;
     end;
   finally
     Research.Free;
@@ -2514,9 +2548,9 @@ begin
     Mapping := TComponentMapping.Create;
     Mapping.VCLClassName := Research.VCLClassName;
     Mapping.FMXClassName := BestMatch.FMXClassName;
-    Mapping.MappingType := 'Researched';
+    Mapping.MappingType := SDisplayMappingTypeResearched;
     Mapping.Confidence := BestScore;
-    Mapping.Notes := Format('Auto-matched based on %d%% similarity', [BestScore]);
+    Mapping.Notes := Format(SDisplayAutoMatchedSimilarity, [BestScore]);
 
     ResearchPropertyMapping(Research.VCLClassName, BestMatch.FMXClassName, Mapping,
       ReportIssues);

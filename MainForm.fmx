@@ -1,8 +1,8 @@
-﻿object frmMain: TfrmMain
+object frmMain: TfrmMain
   Left = 0
   Top = 0
   ActiveControl = edtSource
-  Caption = 'VCL to FMX Converter v6.0 Navigator - Build 027'
+  Caption = 'VCL to FMX Converter v7.0 Atlas - Build 001'
   ClientHeight = 820
   ClientWidth = 1345
   Constraints.MinHeight = 700.000000000000000000
@@ -272,7 +272,32 @@
           Size.Height = 146.000000000000000000
           Size.PlatformDefault = False
         end
-      end
+        object HeroAtlasLayout: TLayout
+          Position.X = 930
+          Position.Y = -12
+          Size.Width = 700
+          Size.Height = 150
+          Size.PlatformDefault = False
+          HitTest = False
+          object HeroAtlasGhost: TLabel
+          Align = Client
+          AutoSize = False
+          StyledSettings = []
+          Opacity = 0.140000000596046400
+          Position.X = 0
+          Position.Y = 0
+          Size.Width = 700
+          Size.Height = 150
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 112
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.FontColor = claWhite
+          TextSettings.HorzAlign = Center
+          Text = 'ATLAS'
+          Visible = True
+        end
+        end
+        end
       object HeroAccentRibbonLarge: TRectangle
         Fill.Color = claWhite
         HitTest = False
@@ -318,33 +343,19 @@
         XRadius = 18.000000000000000000
         YRadius = 18.000000000000000000
       end
-      object HeroNavigatorGhost: TLabel
-        StyledSettings = []
-        Opacity = 0.140000000596046400
-        Position.X = 600.000000000000000000
-        Position.Y = -12.000000000000000000
-        Size.Width = 700.000000000000000000
-        Size.Height = 150.000000000000000000
-        Size.PlatformDefault = False
-        TextSettings.Font.Size = 112.000000000000000000
-        TextSettings.Font.StyleExt = {00070000000000000004000000}
-        TextSettings.FontColor = xFFFF8800
-        TextSettings.HorzAlign = Center
-        Text = 'NAVIGATOR'
-        Visible = True
-      end
       object lblHeader: TLabel
-        AutoSize = True
+        AutoSize = False
         StyledSettings = []
         Position.X = 32.000000000000000000
         Position.Y = 26.000000000000000000
-        Size.Width = 345.000000000000000000
+        Size.Width = 412.000000000000000000
         Size.Height = 42.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.Size = 31.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
         Text = 'VCL to FMX Converter'
+        TextSettings.WordWrap = False
       end
       object lblSubHeader: TLabel
         StyledSettings = []
@@ -382,13 +393,13 @@
         TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
         TextSettings.HorzAlign = Center
-        Text = 'Navigator Release v6.0  Build 027  9/2/26 2:59 PM'
+        Text = 'Atlas v7.0  Build 001'
       end
       object lblStatusCaption: TLabel
         StyledSettings = []
         Position.X = 748.000000000000000000
         Position.Y = 28.000000000000000000
-        Size.Width = 91.000000000000000000
+        Size.Width = 210.000000000000000000
         Size.Height = 20.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.Size = 13.000000000000000000
@@ -407,12 +418,35 @@
         TextSettings.FontColor = claWhite
         Text = 'Ready to convert'
       end
+      object lblLanguage: TLabel
+        StyledSettings = []
+        Position.X = 40.000000000000000000
+        Position.Y = 130.000000000000000000
+        Size.Width = 92.000000000000000000
+        Size.Height = 24.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 14.000000000000000000
+        TextSettings.FontColor = claWhite
+        Text = 'Language: '
+      end
+      object cmbLanguage: TDATFMXLanguageComboBox
+        Position.X = 140.000000000000000000
+        Position.Y = 124.000000000000000000
+        Size.Width = 280.000000000000000000
+        Size.Height = 36.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        LanguageManager = DATLanguageManager
+        AutoPopulate = True
+        ShowLanguageCode = True
+      end
       object btnConvert: TButton
+        TextSettings.WordWrap = True
         StyledSettings = []
         Position.X = 600.000000000000000000
         Position.Y = 120.000000000000000000
         Size.Width = 172.000000000000000000
-        Size.Height = 42.000000000000000000
+        Size.Height = 42
         Size.PlatformDefault = False
         Text = 'Convert Project'
         TextSettings.Font.Size = 14.000000000000000000
@@ -420,44 +454,48 @@
         OnClick = btnConvertClick
       end
       object btnReset: TButton
+        TextSettings.WordWrap = True
         StyledSettings = []
         Position.X = 784.000000000000000000
         Position.Y = 120.000000000000000000
         Size.Width = 112.000000000000000000
-        Size.Height = 42.000000000000000000
+        Size.Height = 42
         Size.PlatformDefault = False
         Text = 'Reset'
         TextSettings.Font.Size = 13.000000000000000000
         OnClick = btnResetClick
       end
       object btnOpenReport: TButton
+        TextSettings.WordWrap = True
         StyledSettings = []
         Position.X = 908.000000000000000000
         Position.Y = 120.000000000000000000
         Size.Width = 112.000000000000000000
-        Size.Height = 42.000000000000000000
+        Size.Height = 42
         Size.PlatformDefault = False
         Text = 'Open Report'
         TextSettings.Font.Size = 13.000000000000000000
         OnClick = btnOpenReportClick
       end
       object btnPrintReport: TButton
+        TextSettings.WordWrap = True
         StyledSettings = []
         Position.X = 1032.000000000000000000
         Position.Y = 120.000000000000000000
         Size.Width = 112.000000000000000000
-        Size.Height = 42.000000000000000000
+        Size.Height = 42
         Size.PlatformDefault = False
         Text = 'Print Report'
         TextSettings.Font.Size = 13.000000000000000000
         OnClick = btnPrintReportClick
       end
       object btnHelp: TButton
+        TextSettings.WordWrap = True
         StyledSettings = []
         Position.X = 1156.000000000000000000
         Position.Y = 120.000000000000000000
         Size.Width = 112.000000000000000000
-        Size.Height = 42.000000000000000000
+        Size.Height = 42
         Size.PlatformDefault = False
         Text = 'Help'
         TextSettings.Font.Size = 13.000000000000000000
@@ -470,7 +508,7 @@
       Position.X = 28.000000000000000000
       Position.Y = 218.000000000000000000
       Size.Width = 1289.000000000000000000
-      Size.Height = 48.000000000000000000
+      Size.Height = 56.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
       object TabButtonDashboard: TRectangle
@@ -478,7 +516,7 @@
         Fill.Color = xFF5A93E8
         Margins.Right = 8.000000000000000000
         Size.Width = 130.000000000000000000
-        Size.Height = 48.000000000000000000
+        Size.Height = 56.000000000000000000
         Size.PlatformDefault = False
         Stroke.Color = xFFB7D3FF
         XRadius = 14.000000000000000000
@@ -488,7 +526,7 @@
           Align = Client
           StyledSettings = []
           Size.Width = 130.000000000000000000
-          Size.Height = 48.000000000000000000
+          Size.Height = 56.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Size = 13.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -504,7 +542,7 @@
         Margins.Right = 8.000000000000000000
         Position.X = 138.000000000000000000
         Size.Width = 144.000000000000000000
-        Size.Height = 48.000000000000000000
+        Size.Height = 56.000000000000000000
         Size.PlatformDefault = False
         Stroke.Color = xFF6F9BDA
         XRadius = 14.000000000000000000
@@ -514,7 +552,7 @@
           Align = Client
           StyledSettings = []
           Size.Width = 144.000000000000000000
-          Size.Height = 48.000000000000000000
+          Size.Height = 56.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Size = 13.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -530,7 +568,7 @@
         Margins.Right = 8.000000000000000000
         Position.X = 290.000000000000000000
         Size.Width = 156.000000000000000000
-        Size.Height = 48.000000000000000000
+        Size.Height = 56.000000000000000000
         Size.PlatformDefault = False
         Stroke.Color = xFF6F9BDA
         XRadius = 14.000000000000000000
@@ -540,7 +578,7 @@
           Align = Client
           StyledSettings = []
           Size.Width = 156.000000000000000000
-          Size.Height = 48.000000000000000000
+          Size.Height = 56.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Size = 13.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -556,7 +594,7 @@
         Margins.Right = 8.000000000000000000
         Position.X = 454.000000000000000000
         Size.Width = 144.000000000000000000
-        Size.Height = 48.000000000000000000
+        Size.Height = 56.000000000000000000
         Size.PlatformDefault = False
         Stroke.Color = xFF6F9BDA
         XRadius = 14.000000000000000000
@@ -566,7 +604,7 @@
           Align = Client
           StyledSettings = []
           Size.Width = 144.000000000000000000
-          Size.Height = 48.000000000000000000
+          Size.Height = 56.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Size = 13.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -582,7 +620,7 @@
         Margins.Right = 8.000000000000000000
         Position.X = 606.000000000000000000
         Size.Width = 130.000000000000000000
-        Size.Height = 48.000000000000000000
+        Size.Height = 56.000000000000000000
         Size.PlatformDefault = False
         Stroke.Color = xFF6F9BDA
         XRadius = 14.000000000000000000
@@ -592,7 +630,7 @@
           Align = Client
           StyledSettings = []
           Size.Width = 130.000000000000000000
-          Size.Height = 48.000000000000000000
+          Size.Height = 56.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Size = 13.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -608,7 +646,7 @@
         Margins.Right = 8.000000000000000000
         Position.X = 744.000000000000000000
         Size.Width = 126.000000000000000000
-        Size.Height = 48.000000000000000000
+        Size.Height = 56.000000000000000000
         Size.PlatformDefault = False
         Stroke.Color = xFF6F9BDA
         XRadius = 14.000000000000000000
@@ -618,7 +656,7 @@
           Align = Client
           StyledSettings = []
           Size.Width = 126.000000000000000000
-          Size.Height = 48.000000000000000000
+          Size.Height = 56.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Size = 13.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -633,7 +671,7 @@
         Fill.Color = xFF3C6CB5
         Position.X = 878.000000000000000000
         Size.Width = 88.000000000000000000
-        Size.Height = 48.000000000000000000
+        Size.Height = 56.000000000000000000
         Size.PlatformDefault = False
         Stroke.Color = xFF6F9BDA
         XRadius = 14.000000000000000000
@@ -643,7 +681,7 @@
           Align = Client
           StyledSettings = []
           Size.Width = 88.000000000000000000
-          Size.Height = 48.000000000000000000
+          Size.Height = 56.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Size = 13.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -659,7 +697,7 @@
         Margins.Right = 8.000000000000000000
         Position.X = 1173.000000000000000000
         Size.Width = 108.000000000000000000
-        Size.Height = 48.000000000000000000
+        Size.Height = 56.000000000000000000
         Size.PlatformDefault = False
         Stroke.Color = xFF6F9BDA
         XRadius = 14.000000000000000000
@@ -669,7 +707,7 @@
           Align = Client
           StyledSettings = []
           Size.Width = 108.000000000000000000
-          Size.Height = 48.000000000000000000
+          Size.Height = 56.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Size = 13.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -719,16 +757,8 @@
         Text = 'Dashboard'
         ExplicitSize.cx = 50.000000000000000000
         ExplicitSize.cy = 50.000000000000000000
-        object DashboardScrollBox: TVertScrollBox
-          Align = Client
-          Padding.Bottom = 18.000000000000000000
-          ShowScrollBars = True
-          Size.Width = 1289.000000000000000000
-          Size.Height = 522.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 0
         object DashboardSheetBackground: TRectangle
-          Align = Client
+          Align = Contents
           Fill.Color = xFF234C80
           HitTest = False
           Size.Width = 1289.000000000000000000
@@ -738,6 +768,17 @@
           XRadius = 26.000000000000000000
           YRadius = 26.000000000000000000
         end
+        object DashboardScrollBox: TVertScrollBox
+          Align = Client
+          ClipChildren = True
+          Margins.Top = 12
+          Margins.Bottom = 12
+          Padding.Bottom = 18.000000000000000000
+          ShowScrollBars = True
+          Size.Width = 1289.000000000000000000
+          Size.Height = 522.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
         object DashboardStatusCard: TRectangle
           Fill.Color = claWhite
           Position.X = 12.000000000000000000
@@ -845,19 +886,24 @@
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 62.000000000000000000
-            Size.Width = 240.000000000000000000
-            Size.Height = 114.000000000000000000
+            Size.Width = 590.000000000000000000
+            Size.Height = 186.000000000000000000
             Size.PlatformDefault = False
-            TextSettings.Font.Size = 18.000000000000000000
+            TextSettings.Font.Size = 16.000000000000000000
+            TextSettings.VertAlign = Leading
             TextSettings.FontColor = xFF365674
             Text = 'Critical Areas: On'#13#10'Data Aware: On'#13#10'3rd Party: On'#13#10'WinAPI: On'
           end
         end
         object DashboardNextCard: TRectangle
+          Align = Top
+          Margins.Left = 12
+          Margins.Right = 12
+          Margins.Top = 290
           Fill.Color = xFFF8FBFF
           Position.X = 12.000000000000000000
           Position.Y = 290.000000000000000000
-          Size.Width = 1278.000000000000000000
+          Size.Width = 1265.000000000000000000
           Size.Height = 266.000000000000000000
           Size.PlatformDefault = False
           Stroke.Color = xFFD7E5F6
@@ -876,10 +922,15 @@
             Text = 'Operator workflow'
           end
           object lblDashboardNextBody: TLabel
+            Align = Client
+            Margins.Left = 72
+            Margins.Right = 24
+            Margins.Top = 76
+            Margins.Bottom = 20
             StyledSettings = []
             Position.X = 72.000000000000000000
             Position.Y = 76.000000000000000000
-            Size.Width = 1180.000000000000000000
+            Size.Width = 1169.000000000000000000
             Size.Height = 170.000000000000000000
             Size.PlatformDefault = False
             TextSettings.Font.Size = 15.000000000000000000
@@ -909,16 +960,8 @@
         Text = 'Project Scan'
         ExplicitSize.cx = 50.000000000000000000
         ExplicitSize.cy = 50.000000000000000000
-        object ProjectScanScrollBox: TVertScrollBox
-          Align = Client
-          Padding.Bottom = 18.000000000000000000
-          ShowScrollBars = True
-          Size.Width = 1289.000000000000000000
-          Size.Height = 522.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 0
         object ProjectScanSheetBackground: TRectangle
-          Align = Client
+          Align = Contents
           Fill.Color = xFF234C80
           HitTest = False
           Size.Width = 1289.000000000000000000
@@ -928,17 +971,38 @@
           XRadius = 26.000000000000000000
           YRadius = 26.000000000000000000
         end
+        object ProjectScanScrollBox: TVertScrollBox
+          Align = Client
+          ClipChildren = True
+          Margins.Top = 12
+          Margins.Bottom = 12
+          Padding.Bottom = 18.000000000000000000
+          ShowScrollBars = True
+          Size.Width = 1289.000000000000000000
+          Size.Height = 522.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
         object ProjectCard: TRectangle
           Fill.Color = claWhite
           Position.X = 12.000000000000000000
           Position.Y = 18.000000000000000000
           Size.Width = 816.000000000000000000
-          Size.Height = 334.000000000000000000
+          Size.Height = 500
           Size.PlatformDefault = False
           Stroke.Color = xFFD7E5F6
           XRadius = 24.000000000000000000
           YRadius = 24.000000000000000000
           object lblProjectTitle: TLabel
+            TextSettings.HorzAlign = Leading
+            TextSettings.VertAlign = Leading
+            TextSettings.Trimming = None
+            TextSettings.WordWrap = True
+            Margins.Bottom = 12
+            Margins.Top = 18
+            Margins.Right = 24
+            Margins.Left = 24
+            AutoSize = True
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 18.000000000000000000
@@ -951,6 +1015,16 @@
             Text = 'Project selection'
           end
           object lblProjectHint: TLabel
+            TextSettings.HorzAlign = Leading
+            TextSettings.VertAlign = Leading
+            TextSettings.Trimming = None
+            TextSettings.WordWrap = True
+            Margins.Bottom = 12
+            Margins.Top = 0
+            Margins.Right = 24
+            Margins.Left = 24
+            AutoSize = True
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 50.000000000000000000
@@ -964,6 +1038,16 @@
               ' separate folder.'
           end
           object lblSourceCaption: TLabel
+            TextSettings.HorzAlign = Leading
+            TextSettings.VertAlign = Leading
+            TextSettings.Trimming = None
+            TextSettings.WordWrap = True
+            Margins.Bottom = 6
+            Margins.Top = 0
+            Margins.Right = 24
+            Margins.Left = 24
+            AutoSize = True
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 92.000000000000000000
@@ -975,29 +1059,56 @@
             TextSettings.FontColor = xFF365674
             Text = 'Source project'
           end
-          object edtSource: TEdit
-            Touch.InteractiveGestures = [LongTap, DoubleTap]
-            TextSettings.Font.Size = 14.000000000000000000
-            Position.X = 24.000000000000000000
-            Position.Y = 116.000000000000000000
-            Size.Width = 606.000000000000000000
-            Size.Height = 38.000000000000000000
+
+          object SourcePathRow: TLayout
+            Align = Top
+            Margins.Left = 24
+            Margins.Right = 24
+            Margins.Bottom = 16
+            Position.Y = 116
+            Size.Width = 768
+            Size.Height = 48
             Size.PlatformDefault = False
-            TextPrompt = 'Choose the original VCL project folder'
-            StyledSettings = [Family, Style, FontColor]
+            object edtSource: TEdit
+              Margins.Right = 12
+              Align = Client
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              TextSettings.Font.Size = 14.000000000000000000
+              Position.X = 24.000000000000000000
+              Position.Y = 116.000000000000000000
+              Size.Width = 606.000000000000000000
+              Size.Height = 48
+              Size.PlatformDefault = False
+              TextPrompt = 'Choose the original VCL project folder'
+              StyledSettings = [Family, Style, FontColor]
+            end
+            object btnBrowseSource: TButton
+              TextSettings.WordWrap = True
+              Align = Right
+              StyledSettings = []
+              Position.X = 530
+              Position.Y = 116.000000000000000000
+              Size.Width = 238
+              Size.Height = 48
+              Size.PlatformDefault = False
+              Text = 'Browse Source'
+              TextSettings.Font.Size = 14
+              OnClick = btnBrowseSourceClick
+            end
           end
-          object btnBrowseSource: TButton
-            StyledSettings = []
-            Position.X = 650.000000000000000000
-            Position.Y = 116.000000000000000000
-            Size.Width = 142.000000000000000000
-            Size.Height = 38.000000000000000000
-            Size.PlatformDefault = False
-            Text = 'Browse Source'
-            TextSettings.Font.Size = 14.000000000000000000
-            OnClick = btnBrowseSourceClick
-          end
+
+
           object lblTargetCaption: TLabel
+            TextSettings.HorzAlign = Leading
+            TextSettings.VertAlign = Leading
+            TextSettings.Trimming = None
+            TextSettings.WordWrap = True
+            Margins.Bottom = 6
+            Margins.Top = 0
+            Margins.Right = 24
+            Margins.Left = 24
+            AutoSize = True
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 176.000000000000000000
@@ -1009,29 +1120,56 @@
             TextSettings.FontColor = xFF365674
             Text = 'Output folder'
           end
-          object edtTarget: TEdit
-            Touch.InteractiveGestures = [LongTap, DoubleTap]
-            TextSettings.Font.Size = 14.000000000000000000
-            Position.X = 24.000000000000000000
-            Position.Y = 200.000000000000000000
-            Size.Width = 606.000000000000000000
-            Size.Height = 38.000000000000000000
+
+          object TargetPathRow: TLayout
+            Align = Top
+            Margins.Left = 24
+            Margins.Right = 24
+            Margins.Bottom = 16
+            Position.Y = 200
+            Size.Width = 768
+            Size.Height = 48
             Size.PlatformDefault = False
-            TextPrompt = 'Choose where the converted FMX project should be written'
-            StyledSettings = [Family, Style, FontColor]
+            object edtTarget: TEdit
+              Margins.Right = 12
+              Align = Client
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              TextSettings.Font.Size = 14.000000000000000000
+              Position.X = 24.000000000000000000
+              Position.Y = 200.000000000000000000
+              Size.Width = 606.000000000000000000
+              Size.Height = 48
+              Size.PlatformDefault = False
+              TextPrompt = 'Choose where the converted FMX project should be written'
+              StyledSettings = [Family, Style, FontColor]
+            end
+            object btnBrowseTarget: TButton
+              TextSettings.WordWrap = True
+              Align = Right
+              StyledSettings = []
+              Position.X = 530
+              Position.Y = 200.000000000000000000
+              Size.Width = 238
+              Size.Height = 48
+              Size.PlatformDefault = False
+              Text = 'Browse Target'
+              TextSettings.Font.Size = 14
+              OnClick = btnBrowseTargetClick
+            end
           end
-          object btnBrowseTarget: TButton
-            StyledSettings = []
-            Position.X = 650.000000000000000000
-            Position.Y = 200.000000000000000000
-            Size.Width = 142.000000000000000000
-            Size.Height = 38.000000000000000000
-            Size.PlatformDefault = False
-            Text = 'Browse Target'
-            TextSettings.Font.Size = 14.000000000000000000
-            OnClick = btnBrowseTargetClick
-          end
+
+
           object lblFileTypeCaption: TLabel
+            TextSettings.HorzAlign = Leading
+            TextSettings.VertAlign = Leading
+            TextSettings.Trimming = None
+            TextSettings.WordWrap = True
+            Margins.Bottom = 6
+            Margins.Top = 0
+            Margins.Right = 24
+            Margins.Left = 24
+            AutoSize = True
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 262.000000000000000000
@@ -1043,53 +1181,87 @@
             TextSettings.FontColor = xFF365674
             Text = 'Files to convert'
           end
-          object cmbFileTypes: TComboBox
-            Items.Strings = (
-              'PAS files only'
-              'DFM files only'
-              'Both PAS and DFM')
-            ItemIndex = 2
-            Position.X = 24.000000000000000000
-            Position.Y = 286.000000000000000000
-            Size.Width = 196.000000000000000000
-            Size.Height = 32.000000000000000000
+
+          object ProjectOptionsRow: TLayout
+            Align = Top
+            Margins.Left = 24
+            Margins.Right = 24
+            Margins.Bottom = 16
+            Position.Y = 286
+            Size.Width = 768
+            Size.Height = 64
             Size.PlatformDefault = False
+            object cmbFileTypes: TComboBox
+              Margins.Bottom = 12
+              Margins.Top = 12
+              Margins.Right = 16
+              Align = Left
+              Items.Strings = (
+                'PAS files only'
+                'DFM files only'
+                'Both PAS and DFM')
+              ItemIndex = 2
+              Position.X = 24.000000000000000000
+              Position.Y = 286.000000000000000000
+              Size.Width = 196
+              Size.Height = 32.000000000000000000
+              Size.PlatformDefault = False
+            end
+            object chkRecursive: TCheckBox
+              TextSettings.HorzAlign = Leading
+              TextSettings.WordWrap = True
+              Margins.Right = 16
+              Align = Left
+              StyledSettings = [Family, Style, FontColor]
+              IsChecked = True
+              Position.X = 246.000000000000000000
+              Position.Y = 285.000000000000000000
+              Size.Width = 220
+              Size.Height = 32.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Include subfolders'
+              TextSettings.Font.Size = 14.000000000000000000
+            end
+            object chkDryRunPreview: TCheckBox
+              TextSettings.HorzAlign = Leading
+              TextSettings.WordWrap = True
+              Align = Client
+              StyledSettings = [Family, Style, FontColor]
+              Hint = 'Create reports without writing converted source, form, or project files.'
+              Position.X = 442.000000000000000000
+              Position.Y = 285.000000000000000000
+              Size.Width = 180.000000000000000000
+              Size.Height = 32.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Dry-run preview'
+              TextSettings.Font.Size = 14.000000000000000000
+              OnChange = RuleOptionChanged
+            end
           end
-          object chkRecursive: TCheckBox
-            StyledSettings = [Family, Style, FontColor]
-            IsChecked = True
-            Position.X = 246.000000000000000000
-            Position.Y = 285.000000000000000000
-            Size.Width = 172.000000000000000000
-            Size.Height = 32.000000000000000000
-            Size.PlatformDefault = False
-            Text = 'Include subfolders'
-            TextSettings.Font.Size = 14.000000000000000000
-          end
-          object chkDryRunPreview: TCheckBox
-            StyledSettings = [Family, Style, FontColor]
-            Hint = 'Create reports without writing converted source, form, or project files.'
-            Position.X = 442.000000000000000000
-            Position.Y = 285.000000000000000000
-            Size.Width = 180.000000000000000000
-            Size.Height = 32.000000000000000000
-            Size.PlatformDefault = False
-            Text = 'Dry-run preview'
-            TextSettings.Font.Size = 14.000000000000000000
-            OnChange = RuleOptionChanged
-          end
+
+
+
         end
         object ProjectActionCard: TRectangle
           Fill.Color = xFFF8FBFF
           Position.X = 850.000000000000000000
           Position.Y = 18.000000000000000000
           Size.Width = 440.000000000000000000
-          Size.Height = 334.000000000000000000
+          Size.Height = 500
           Size.PlatformDefault = False
           Stroke.Color = xFFD7E5F6
           XRadius = 24.000000000000000000
           YRadius = 24.000000000000000000
           object lblProjectActionTitle: TLabel
+            TextSettings.VertAlign = Leading
+            TextSettings.Trimming = None
+            TextSettings.WordWrap = True
+            Margins.Bottom = 20
+            Margins.Top = 18
+            Margins.Right = 24
+            Margins.Left = 24
+            AutoSize = True
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 18.000000000000000000
@@ -1102,6 +1274,15 @@
             Text = 'Conversion actions'
           end
           object lblProjectActionBody: TLabel
+            TextSettings.VertAlign = Leading
+            TextSettings.Trimming = None
+            TextSettings.WordWrap = True
+            Margins.Bottom = 20
+            Margins.Top = 0
+            Margins.Right = 24
+            Margins.Left = 24
+            AutoSize = True
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 62.000000000000000000
@@ -1117,11 +1298,15 @@
               'Conversion Output during the run to watch the live log.'
           end
           object btnOpenOutput: TButton
+            TextSettings.WordWrap = True
+            Margins.Right = 24
+            Margins.Left = 24
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 274.000000000000000000
             Size.Width = 172.000000000000000000
-            Size.Height = 38.000000000000000000
+            Size.Height = 48
             Size.PlatformDefault = False
             Text = 'Open Output Folder'
             TextSettings.Font.Size = 14.000000000000000000
@@ -1143,16 +1328,8 @@
         Text = 'Component Map'
         ExplicitSize.cx = 50.000000000000000000
         ExplicitSize.cy = 50.000000000000000000
-        object ComponentMapScrollBox: TVertScrollBox
-          Align = Client
-          Padding.Bottom = 18.000000000000000000
-          ShowScrollBars = True
-          Size.Width = 1289.000000000000000000
-          Size.Height = 522.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 0
         object ComponentMapSheetBackground: TRectangle
-          Align = Client
+          Align = Contents
           Fill.Color = xFF234C80
           HitTest = False
           Size.Width = 1289.000000000000000000
@@ -1162,7 +1339,22 @@
           XRadius = 26.000000000000000000
           YRadius = 26.000000000000000000
         end
+        object ComponentMapScrollBox: TVertScrollBox
+          Align = Client
+          ClipChildren = True
+          Margins.Top = 12
+          Margins.Bottom = 12
+          Padding.Bottom = 18.000000000000000000
+          ShowScrollBars = True
+          Size.Width = 1289.000000000000000000
+          Size.Height = 522.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
         object ComponentCard: TRectangle
+          Align = Top
+          Margins.Left = 12
+          Margins.Right = 12
+          Margins.Top = 18
           Fill.Color = claWhite
           Position.X = 12.000000000000000000
           Position.Y = 18.000000000000000000
@@ -1173,6 +1365,15 @@
           XRadius = 24.000000000000000000
           YRadius = 24.000000000000000000
           object lblComponentTitle: TLabel
+            TextSettings.VertAlign = Leading
+            TextSettings.Trimming = None
+            TextSettings.WordWrap = True
+            Margins.Bottom = 12
+            Margins.Top = 18
+            Margins.Right = 24
+            Margins.Left = 24
+            AutoSize = True
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 18.000000000000000000
@@ -1185,6 +1386,15 @@
             Text = 'Component mapping'
           end
           object lblComponentHint: TLabel
+            TextSettings.VertAlign = Leading
+            TextSettings.Trimming = None
+            TextSettings.WordWrap = True
+            Margins.Bottom = 12
+            Margins.Top = 0
+            Margins.Right = 24
+            Margins.Left = 24
+            AutoSize = True
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 50.000000000000000000
@@ -1198,6 +1408,11 @@
               'pect real conversion coverage.'
           end
           object MemoComponentMap: TMemo
+            Margins.Bottom = 20
+            Margins.Right = 20
+            Margins.Left = 20
+            Align = Client
+            Anchors = [akLeft, akTop, akRight]
             Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
             DataDetectorTypes = []
             ReadOnly = True
@@ -1213,6 +1428,11 @@
             Viewport.Height = 426.000000000000000000
           end
           object ComponentMapBrowser: TWebBrowser
+            Margins.Bottom = 20
+            Margins.Right = 20
+            Margins.Left = 20
+            Align = Client
+            Anchors = [akLeft, akTop, akRight]
             Position.X = 20.000000000000000000
             Position.Y = 84.000000000000000000
             Size.Width = 1236.000000000000000000
@@ -1237,16 +1457,8 @@
         Text = 'Property Map'
         ExplicitSize.cx = 50.000000000000000000
         ExplicitSize.cy = 50.000000000000000000
-        object PropertyMapScrollBox: TVertScrollBox
-          Align = Client
-          Padding.Bottom = 18.000000000000000000
-          ShowScrollBars = True
-          Size.Width = 1289.000000000000000000
-          Size.Height = 522.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 0
         object PropertyMapSheetBackground: TRectangle
-          Align = Client
+          Align = Contents
           Fill.Color = xFF234C80
           HitTest = False
           Size.Width = 1289.000000000000000000
@@ -1256,7 +1468,22 @@
           XRadius = 26.000000000000000000
           YRadius = 26.000000000000000000
         end
+        object PropertyMapScrollBox: TVertScrollBox
+          Align = Client
+          ClipChildren = True
+          Margins.Top = 12
+          Margins.Bottom = 12
+          Padding.Bottom = 18.000000000000000000
+          ShowScrollBars = True
+          Size.Width = 1289.000000000000000000
+          Size.Height = 522.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
         object PropertyCard: TRectangle
+          Align = Top
+          Margins.Left = 12
+          Margins.Right = 12
+          Margins.Top = 18
           Fill.Color = claWhite
           Position.X = 12.000000000000000000
           Position.Y = 18.000000000000000000
@@ -1267,6 +1494,15 @@
           XRadius = 24.000000000000000000
           YRadius = 24.000000000000000000
           object lblPropertyTitle: TLabel
+            TextSettings.VertAlign = Leading
+            TextSettings.Trimming = None
+            TextSettings.WordWrap = True
+            Margins.Bottom = 12
+            Margins.Top = 18
+            Margins.Right = 24
+            Margins.Left = 24
+            AutoSize = True
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 18.000000000000000000
@@ -1279,6 +1515,15 @@
             Text = 'Property mapping'
           end
           object lblPropertyHint: TLabel
+            TextSettings.VertAlign = Leading
+            TextSettings.Trimming = None
+            TextSettings.WordWrap = True
+            Margins.Bottom = 12
+            Margins.Top = 0
+            Margins.Right = 24
+            Margins.Left = 24
+            AutoSize = True
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 50.000000000000000000
@@ -1292,6 +1537,11 @@
               'nspect actual rename and transform behavior.'
           end
           object MemoPropertyMap: TMemo
+            Margins.Bottom = 20
+            Margins.Right = 20
+            Margins.Left = 20
+            Align = Client
+            Anchors = [akLeft, akTop, akRight]
             Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
             DataDetectorTypes = []
             ReadOnly = True
@@ -1307,6 +1557,11 @@
             Viewport.Height = 426.000000000000000000
           end
           object PropertyMapBrowser: TWebBrowser
+            Margins.Bottom = 20
+            Margins.Right = 20
+            Margins.Left = 20
+            Align = Client
+            Anchors = [akLeft, akTop, akRight]
             Position.X = 20.000000000000000000
             Position.Y = 84.000000000000000000
             Size.Width = 1236.000000000000000000
@@ -1331,16 +1586,8 @@
         Text = 'Event Map'
         ExplicitSize.cx = 50.000000000000000000
         ExplicitSize.cy = 50.000000000000000000
-        object EventMapScrollBox: TVertScrollBox
-          Align = Client
-          Padding.Bottom = 18.000000000000000000
-          ShowScrollBars = True
-          Size.Width = 1289.000000000000000000
-          Size.Height = 522.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 0
         object EventMapSheetBackground: TRectangle
-          Align = Client
+          Align = Contents
           Fill.Color = xFF234C80
           HitTest = False
           Size.Width = 1289.000000000000000000
@@ -1350,7 +1597,22 @@
           XRadius = 26.000000000000000000
           YRadius = 26.000000000000000000
         end
+        object EventMapScrollBox: TVertScrollBox
+          Align = Client
+          ClipChildren = True
+          Margins.Top = 12
+          Margins.Bottom = 12
+          Padding.Bottom = 18.000000000000000000
+          ShowScrollBars = True
+          Size.Width = 1289.000000000000000000
+          Size.Height = 522.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
         object EventCard: TRectangle
+          Align = Top
+          Margins.Left = 12
+          Margins.Right = 12
+          Margins.Top = 18
           Fill.Color = claWhite
           Position.X = 12.000000000000000000
           Position.Y = 18.000000000000000000
@@ -1361,6 +1623,15 @@
           XRadius = 24.000000000000000000
           YRadius = 24.000000000000000000
           object lblEventTitle: TLabel
+            TextSettings.VertAlign = Leading
+            TextSettings.Trimming = None
+            TextSettings.WordWrap = True
+            Margins.Bottom = 12
+            Margins.Top = 18
+            Margins.Right = 24
+            Margins.Left = 24
+            AutoSize = True
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 18.000000000000000000
@@ -1373,6 +1644,15 @@
             Text = 'Event mapping'
           end
           object lblEventHint: TLabel
+            TextSettings.VertAlign = Leading
+            TextSettings.Trimming = None
+            TextSettings.WordWrap = True
+            Margins.Bottom = 12
+            Margins.Top = 0
+            Margins.Right = 24
+            Margins.Left = 24
+            AutoSize = True
+            Align = Top
             StyledSettings = []
             Position.X = 24.000000000000000000
             Position.Y = 50.000000000000000000
@@ -1386,6 +1666,11 @@
               'ct mapped handlers and signature compatibility.'
           end
           object MemoEventMap: TMemo
+            Margins.Bottom = 20
+            Margins.Right = 20
+            Margins.Left = 20
+            Align = Client
+            Anchors = [akLeft, akTop, akRight]
             Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
             DataDetectorTypes = []
             ReadOnly = True
@@ -1401,6 +1686,11 @@
             Viewport.Height = 426.000000000000000000
           end
           object EventMapBrowser: TWebBrowser
+            Margins.Bottom = 20
+            Margins.Right = 20
+            Margins.Left = 20
+            Align = Client
+            Anchors = [akLeft, akTop, akRight]
             Position.X = 20.000000000000000000
             Position.Y = 84.000000000000000000
             Size.Width = 1236.000000000000000000
@@ -1425,16 +1715,8 @@
         Text = 'Conversion Output'
         ExplicitSize.cx = 50.000000000000000000
         ExplicitSize.cy = 50.000000000000000000
-        object IssuesScrollBox: TVertScrollBox
-          Align = Client
-          Padding.Bottom = 18.000000000000000000
-          ShowScrollBars = True
-          Size.Width = 1289.000000000000000000
-          Size.Height = 522.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 0
         object IssuesSheetBackground: TRectangle
-          Align = Client
+          Align = Contents
           Fill.Color = xFF234C80
           HitTest = False
           Size.Width = 1289.000000000000000000
@@ -1444,7 +1726,22 @@
           XRadius = 26.000000000000000000
           YRadius = 26.000000000000000000
         end
+        object IssuesScrollBox: TVertScrollBox
+          Align = Client
+          ClipChildren = True
+          Margins.Top = 12
+          Margins.Bottom = 12
+          Padding.Bottom = 18.000000000000000000
+          ShowScrollBars = True
+          Size.Width = 1289.000000000000000000
+          Size.Height = 522.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
         object IssuesSummaryCard: TRectangle
+          Align = Top
+          Margins.Left = 12
+          Margins.Right = 12
+          Margins.Top = 18
           Fill.Color = claWhite
           Position.X = 12.000000000000000000
           Position.Y = 18.000000000000000000
@@ -1527,6 +1824,10 @@
           end
         end
         object IssuesLogCard: TRectangle
+          Align = Top
+          Margins.Left = 12
+          Margins.Right = 12
+          Margins.Top = 18
           Fill.Color = claWhite
           Position.X = 12.000000000000000000
           Position.Y = 194.000000000000000000
@@ -1562,6 +1863,7 @@
               '.'
           end
           object MemoLog: TMemo
+            Anchors = [akLeft, akTop, akRight]
             Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
             DataDetectorTypes = []
             Lines.Strings = (
@@ -1596,16 +1898,8 @@
         Text = 'Rules'
         ExplicitSize.cx = 50.000000000000000000
         ExplicitSize.cy = 50.000000000000000000
-        object RulesScrollBox: TVertScrollBox
-          Align = Client
-          Padding.Bottom = 18.000000000000000000
-          ShowScrollBars = True
-          Size.Width = 1289.000000000000000000
-          Size.Height = 522.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 0
         object RulesSheetBackground: TRectangle
-          Align = Client
+          Align = Contents
           Fill.Color = xFF234C80
           HitTest = False
           Size.Width = 1289.000000000000000000
@@ -1616,202 +1910,368 @@
           YRadius = 26.000000000000000000
         end
         object RulesCard: TRectangle
+          Align = Left
+          Margins.Left = 12
+          Margins.Right = 10
+          Margins.Top = 18
+          Margins.Bottom = 18
           Fill.Color = claWhite
           Position.X = 12.000000000000000000
           Position.Y = 18.000000000000000000
           Size.Width = 820.000000000000000000
-          Size.Height = 538.000000000000000000
+          Size.Height = 486
           Size.PlatformDefault = False
           Stroke.Color = xFFD7E5F6
           XRadius = 24.000000000000000000
           YRadius = 24.000000000000000000
-          object lblRulesTitle: TLabel
-            StyledSettings = []
-            Position.X = 24.000000000000000000
-            Position.Y = 18.000000000000000000
-            Size.Width = 166.000000000000000000
-            Size.Height = 27.000000000000000000
+          object RulesScrollBox: TVertScrollBox
+            Align = Client
+            Margins.Left = 2
+            Margins.Right = 12
+            Margins.Top = 12
+            Margins.Bottom = 12
+            Padding.Bottom = 18
+            ShowScrollBars = True
+            Size.Width = 400
+            Size.Height = 482
             Size.PlatformDefault = False
-            TextSettings.Font.Size = 22.000000000000000000
-            TextSettings.Font.StyleExt = {00070000000000000004000000}
-            TextSettings.FontColor = xFF163A63
-            Text = 'Run rules'
-          end
-          object lblRulesHint: TLabel
-            StyledSettings = []
-            Position.X = 24.000000000000000000
-            Position.Y = 50.000000000000000000
-            Size.Width = 680.000000000000000000
-            Size.Height = 36.000000000000000000
-            Size.PlatformDefault = False
-            TextSettings.Font.Size = 13.000000000000000000
-            TextSettings.FontColor = xFF5D7693
-            Text = 
-              'These four controls continue the established screen set, and they' +
-              ' no' +
-              'w map to real engine behavior so the UI, manuals, and conversion' +
-              ' run stay aligned.'
-          end
-          object chkCritical: TCheckBox
-            StyledSettings = [Family, Style, FontColor]
-            IsChecked = True
-            Position.X = 24.000000000000000000
-            Position.Y = 112.000000000000000000
-            Size.Width = 160.000000000000000000
-            Size.Height = 28.000000000000000000
-            Size.PlatformDefault = False
-            Text = 'Critical Areas'
-            TextSettings.Font.Size = 16.000000000000000000
-            OnChange = RuleOptionChanged
-          end
-          object lblCriticalHint: TLabel
-            StyledSettings = []
-            Position.X = 48.000000000000000000
-            Position.Y = 144.000000000000000000
-            Size.Width = 700.000000000000000000
-            Size.Height = 40.000000000000000000
-            Size.PlatformDefault = False
-            TextSettings.Font.Size = 13.000000000000000000
-            TextSettings.FontColor = xFF365674
-            Text = 
-              'Handles high-risk areas such as custom drawing, message patterns' +
-              ', owner-draw controls, action lists, thread sync, DPI assumption' +
-              's, and related critical rewrites.'
-          end
-          object chkDataAware: TCheckBox
-            StyledSettings = [Family, Style, FontColor]
-            IsChecked = True
-            Position.X = 24.000000000000000000
-            Position.Y = 208.000000000000000000
-            Size.Width = 160.000000000000000000
-            Size.Height = 28.000000000000000000
-            Size.PlatformDefault = False
-            Text = 'Data Aware'
-            TextSettings.Font.Size = 16.000000000000000000
-            OnChange = RuleOptionChanged
-          end
-          object lblDataAwareHint: TLabel
-            StyledSettings = []
-            Position.X = 48.000000000000000000
-            Position.Y = 240.000000000000000000
-            Size.Width = 700.000000000000000000
-            Size.Height = 40.000000000000000000
-            Size.PlatformDefault = False
-            TextSettings.Font.Size = 13.000000000000000000
-            TextSettings.FontColor = xFF365674
-            Text = 
-              'Controls whether data-aware form analysis, binding preparation, ' +
-              'and LiveBindings-oriented rewriting are enabled for this convers' +
-              'ion run.'
-          end
-          object chkThirdParty: TCheckBox
-            StyledSettings = [Family, Style, FontColor]
-            IsChecked = True
-            Position.X = 24.000000000000000000
-            Position.Y = 304.000000000000000000
-            Size.Width = 160.000000000000000000
-            Size.Height = 28.000000000000000000
-            Size.PlatformDefault = False
-            Text = '3rd Party'
-            TextSettings.Font.Size = 16.000000000000000000
-            OnChange = RuleOptionChanged
-          end
-          object lblThirdPartyHint: TLabel
-            StyledSettings = []
-            Position.X = 48.000000000000000000
-            Position.Y = 336.000000000000000000
-            Size.Width = 700.000000000000000000
-            Size.Height = 40.000000000000000000
-            Size.PlatformDefault = False
-            TextSettings.Font.Size = 13.000000000000000000
-            TextSettings.FontColor = xFF365674
-            Text = 
-              'Controls whether third-party and catalog-based component analysi' +
-              's runs while the converter inspects DFM component trees.'
-          end
-          object chkWinAPI: TCheckBox
-            StyledSettings = [Family, Style, FontColor]
-            IsChecked = True
-            Position.X = 24.000000000000000000
-            Position.Y = 400.000000000000000000
-            Size.Width = 160.000000000000000000
-            Size.Height = 28.000000000000000000
-            Size.PlatformDefault = False
-            Text = 'WinAPI'
-            TextSettings.Font.Size = 16.000000000000000000
-            OnChange = RuleOptionChanged
-          end
-          object lblWinAPIHint: TLabel
-            StyledSettings = []
-            Position.X = 48.000000000000000000
-            Position.Y = 432.000000000000000000
-            Size.Width = 700.000000000000000000
-            Size.Height = 40.000000000000000000
-            Size.PlatformDefault = False
-            TextSettings.Font.Size = 13.000000000000000000
-            TextSettings.FontColor = xFF365674
-            Text = 
-              'Controls whether Windows-message and WinAPI conversion patterns ' +
-              'run before platform conditionals are injected into the Pascal ou' +
-              'tput.'
+            TabOrder = 0
+            object lblRulesTitle: TLabel
+              TextSettings.VertAlign = Leading
+              TextSettings.Trimming = None
+              TextSettings.WordWrap = True
+              Margins.Bottom = 12
+              Margins.Top = 8
+              Margins.Right = 24
+              Margins.Left = 24
+              AutoSize = True
+              Align = Top
+              StyledSettings = []
+              Position.X = 24.000000000000000000
+              Position.Y = 18.000000000000000000
+              Size.Width = 166.000000000000000000
+              Size.Height = 27.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.Size = 22.000000000000000000
+              TextSettings.Font.StyleExt = {00070000000000000004000000}
+              TextSettings.FontColor = xFF163A63
+              Text = 'Run rules'
+            end
+            object lblRulesHint: TLabel
+              TextSettings.VertAlign = Leading
+              TextSettings.Trimming = None
+              TextSettings.WordWrap = True
+              Margins.Bottom = 12
+              Margins.Top = 0
+              Margins.Right = 24
+              Margins.Left = 24
+              AutoSize = True
+              Align = Top
+              StyledSettings = []
+              Position.X = 24.000000000000000000
+              Position.Y = 50.000000000000000000
+              Size.Width = 680.000000000000000000
+              Size.Height = 36.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.Size = 13.000000000000000000
+              TextSettings.FontColor = xFF5D7693
+              Text =
+                'Choose which rule families to use for this conversion. Turn an option off to exclude that family.'
+            end
+            object chkCritical: TCheckBox
+              TextSettings.HorzAlign = Leading
+              TextSettings.WordWrap = True
+              Margins.Bottom = 6
+              Margins.Right = 24
+              Margins.Left = 24
+              Align = Top
+              StyledSettings = [Family, Style, FontColor]
+              IsChecked = True
+              Position.X = 24.000000000000000000
+              Position.Y = 112.000000000000000000
+              Size.Width = 160.000000000000000000
+              Size.Height = 40
+              Size.PlatformDefault = False
+              Text = 'Critical Areas'
+              TextSettings.Font.Size = 16.000000000000000000
+              OnChange = RuleOptionChanged
+            end
+            object lblCriticalHint: TLabel
+              TextSettings.VertAlign = Leading
+              TextSettings.Trimming = None
+              TextSettings.WordWrap = True
+              Margins.Bottom = 18
+              Margins.Top = 0
+              Margins.Right = 48
+              Margins.Left = 48
+              AutoSize = True
+              Align = Top
+              StyledSettings = []
+              Position.X = 48.000000000000000000
+              Position.Y = 144.000000000000000000
+              Size.Width = 700.000000000000000000
+              Size.Height = 40.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.Size = 13.000000000000000000
+              TextSettings.FontColor = xFF365674
+              Text =
+                'Handles high-risk areas such as custom drawing, message patterns' +
+                ', owner-draw controls, action lists, thread sync, DPI assumption' +
+                's, and related critical rewrites.'
+            end
+            object chkDataAware: TCheckBox
+              TextSettings.HorzAlign = Leading
+              TextSettings.WordWrap = True
+              Margins.Bottom = 6
+              Margins.Right = 24
+              Margins.Left = 24
+              Align = Top
+              StyledSettings = [Family, Style, FontColor]
+              IsChecked = True
+              Position.X = 24.000000000000000000
+              Position.Y = 208.000000000000000000
+              Size.Width = 160.000000000000000000
+              Size.Height = 40
+              Size.PlatformDefault = False
+              Text = 'Data Aware'
+              TextSettings.Font.Size = 16.000000000000000000
+              OnChange = RuleOptionChanged
+            end
+            object lblDataAwareHint: TLabel
+              TextSettings.VertAlign = Leading
+              TextSettings.Trimming = None
+              TextSettings.WordWrap = True
+              Margins.Bottom = 18
+              Margins.Top = 0
+              Margins.Right = 48
+              Margins.Left = 48
+              AutoSize = True
+              Align = Top
+              StyledSettings = []
+              Position.X = 48.000000000000000000
+              Position.Y = 240.000000000000000000
+              Size.Width = 700.000000000000000000
+              Size.Height = 40.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.Size = 13.000000000000000000
+              TextSettings.FontColor = xFF365674
+              Text =
+                'Controls whether data-aware form analysis, binding preparation, ' +
+                'and LiveBindings-oriented rewriting are enabled for this convers' +
+                'ion run.'
+            end
+            object chkThirdParty: TCheckBox
+              TextSettings.HorzAlign = Leading
+              TextSettings.WordWrap = True
+              Margins.Bottom = 6
+              Margins.Right = 24
+              Margins.Left = 24
+              Align = Top
+              StyledSettings = [Family, Style, FontColor]
+              IsChecked = True
+              Position.X = 24.000000000000000000
+              Position.Y = 304.000000000000000000
+              Size.Width = 160.000000000000000000
+              Size.Height = 40
+              Size.PlatformDefault = False
+              Text = '3rd Party'
+              TextSettings.Font.Size = 16.000000000000000000
+              OnChange = RuleOptionChanged
+            end
+            object lblThirdPartyHint: TLabel
+              TextSettings.VertAlign = Leading
+              TextSettings.Trimming = None
+              TextSettings.WordWrap = True
+              Margins.Bottom = 18
+              Margins.Top = 0
+              Margins.Right = 48
+              Margins.Left = 48
+              AutoSize = True
+              Align = Top
+              StyledSettings = []
+              Position.X = 48.000000000000000000
+              Position.Y = 336.000000000000000000
+              Size.Width = 700.000000000000000000
+              Size.Height = 40.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.Size = 13.000000000000000000
+              TextSettings.FontColor = xFF365674
+              Text =
+                'Controls whether third-party and catalog-based component analysi' +
+                's runs while the converter inspects DFM component trees.'
+            end
+            object chkWinAPI: TCheckBox
+              TextSettings.HorzAlign = Leading
+              TextSettings.WordWrap = True
+              Margins.Bottom = 6
+              Margins.Right = 24
+              Margins.Left = 24
+              Align = Top
+              StyledSettings = [Family, Style, FontColor]
+              IsChecked = True
+              Position.X = 24.000000000000000000
+              Position.Y = 400.000000000000000000
+              Size.Width = 160.000000000000000000
+              Size.Height = 40
+              Size.PlatformDefault = False
+              Text = 'WinAPI'
+              TextSettings.Font.Size = 16.000000000000000000
+              OnChange = RuleOptionChanged
+            end
+            object lblWinAPIHint: TLabel
+              TextSettings.VertAlign = Leading
+              TextSettings.Trimming = None
+              TextSettings.WordWrap = True
+              Margins.Bottom = 18
+              Margins.Top = 0
+              Margins.Right = 48
+              Margins.Left = 48
+              AutoSize = True
+              Align = Top
+              StyledSettings = []
+              Position.X = 48.000000000000000000
+              Position.Y = 432.000000000000000000
+              Size.Width = 700.000000000000000000
+              Size.Height = 40.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.Size = 13.000000000000000000
+              TextSettings.FontColor = xFF365674
+              Text =
+                'Controls whether Windows-message and WinAPI conversion patterns ' +
+                'run before platform conditionals are injected into the Pascal ou' +
+                'tput.'
+            end
           end
         end
         object RulesSummaryCard: TRectangle
+          Align = Client
+          Margins.Left = 10
+          Margins.Right = 12
+          Margins.Top = 18
+          Margins.Bottom = 18
           Fill.Color = xFFF8FBFF
           Position.X = 852.000000000000000000
           Position.Y = 18.000000000000000000
           Size.Width = 438.000000000000000000
-          Size.Height = 538.000000000000000000
+          Size.Height = 486
           Size.PlatformDefault = False
           Stroke.Color = xFFD7E5F6
           XRadius = 24.000000000000000000
           YRadius = 24.000000000000000000
-          object lblRulesSummaryTitle: TLabel
-            StyledSettings = []
-            Position.X = 24.000000000000000000
-            Position.Y = 18.000000000000000000
-            Size.Width = 236.000000000000000000
-            Size.Height = 27.000000000000000000
+          object RulesSummaryScrollBox: TVertScrollBox
+            Align = Client
+            Margins.Left = 2
+            Margins.Right = 12
+            Margins.Top = 12
+            Margins.Bottom = 12
+            Padding.Bottom = 18
+            ShowScrollBars = True
+            Size.Width = 400
+            Size.Height = 482
             Size.PlatformDefault = False
-            TextSettings.Font.Size = 22.000000000000000000
-            TextSettings.Font.StyleExt = {00070000000000000004000000}
-            TextSettings.FontColor = xFF163A63
-            Text = 'Current rule state'
+            TabOrder = 0
+            object lblRulesSummaryTitle: TLabel
+              TextSettings.VertAlign = Leading
+              TextSettings.Trimming = None
+              TextSettings.WordWrap = True
+              Margins.Bottom = 12
+              Margins.Top = 8
+              Margins.Right = 24
+              Margins.Left = 24
+              AutoSize = True
+              Align = Top
+              StyledSettings = []
+              Position.X = 24.000000000000000000
+              Position.Y = 18.000000000000000000
+              Size.Width = 236.000000000000000000
+              Size.Height = 27.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.Size = 22.000000000000000000
+              TextSettings.Font.StyleExt = {00070000000000000004000000}
+              TextSettings.FontColor = xFF163A63
+              Text = 'Current rule state'
+            end
+            object lblRulesSummaryValue: TLabel
+              TextSettings.Trimming = None
+              TextSettings.WordWrap = True
+              Margins.Bottom = 20
+              Margins.Top = 0
+              Margins.Right = 24
+              Margins.Left = 24
+              AutoSize = True
+              Align = Top
+              StyledSettings = []
+              Position.X = 24.000000000000000000
+              Position.Y = 66.000000000000000000
+              Size.Width = 390.000000000000000000
+              Size.Height = 240.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.Size = 16.000000000000000000
+              TextSettings.VertAlign = Leading
+              TextSettings.FontColor = xFF365674
+              Text =
+                'Critical Areas = On'#13#10'Data Aware = On'#13#10'3rd Party = On'#13#10'WinAPI = O' +
+                'n'
+            end
+            object lblRulesSummaryNote: TLabel
+              TextSettings.Trimming = None
+              TextSettings.WordWrap = True
+              Margins.Bottom = 12
+              Margins.Top = 0
+              Margins.Right = 24
+              Margins.Left = 24
+              AutoSize = True
+              Align = Top
+              StyledSettings = []
+              Position.X = 24.000000000000000000
+              Position.Y = 330.000000000000000000
+              Size.Width = 390.000000000000000000
+              Size.Height = 306.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.Size = 14.000000000000000000
+              TextSettings.VertAlign = Leading
+              TextSettings.FontColor = xFF365674
+              Text =
+                'The selected rule families apply to the next conversion. Review the conversion report, then compile and test the generated project.'
+            end
           end
-          object lblRulesSummaryValue: TLabel
-            StyledSettings = []
-            Position.X = 24.000000000000000000
-            Position.Y = 66.000000000000000000
-            Size.Width = 220.000000000000000000
-            Size.Height = 120.000000000000000000
-            Size.PlatformDefault = False
-            TextSettings.Font.Size = 18.000000000000000000
-            TextSettings.FontColor = xFF365674
-            Text = 
-              'Critical Areas = On'#13#10'Data Aware = On'#13#10'3rd Party = On'#13#10'WinAPI = O' +
-              'n'
-          end
-          object lblRulesSummaryNote: TLabel
-            StyledSettings = []
-            Position.X = 24.000000000000000000
-            Position.Y = 220.000000000000000000
-            Size.Width = 374.000000000000000000
-            Size.Height = 206.000000000000000000
-            Size.PlatformDefault = False
-            TextSettings.Font.Size = 14.000000000000000000
-            TextSettings.FontColor = xFF365674
-            Text = 
-              'These defaults are all On so the standard behavior matches ' +
-              'the practical intent of the product.'#13#10#13#10'The difference now is th' +
-              'at the controls are no longer decorative. Each run passes explic' +
-              'it rule options into the engine so the conversion reflects the o' +
-              'perator choice.'#13#10#13#10'The next safeguard is an option-by-option aud' +
-              'it so nothing user-facing ships without a verified code path beh' +
-              'ind it.'
-          end
-        end
         end
       end
     end
+  end
+  object DATLanguageManager: TDATFMXLanguageManager
+    ApplicationId = 'VCL2FMXConverter'
+    LanguagesFolder = 'Localization\Languages'
+    SourceLanguage = 'en-US'
+    AutoLoadPreferred = True
+    FirstRunUsesSystemLanguage = True
+    AutoTranslateOwner = True
+    AutoTranslateNewForms = True
+    ReapplyOpenForms = True
+    TranslateHiddenForms = False
+    PreserveControlState = True
+    PreferenceLocation = plLocalAppData
+    PreferenceFileName = 'language.ini'
+    MissingPackBehavior = mpUseSourceLanguage
+    ErrorBehavior = ebNotifyAndContinue
+    AutoRefreshDynamicText = True
+    DynamicRefreshInterval = 1000
+    TranslateBrowserContent = True
+    Left = 472
+    Top = 144
+  end
+  object HelpServer: TIdHTTPServer
+    Bindings = <
+      item
+        IP = '127.0.0.1'
+        Port = 0
+      end>
+    DefaultPort = 0
+    MaxConnections = 16
+    KeepAlive = False
+    OnCommandGet = HelpServerCommandGet
+    OnCommandOther = HelpServerCommandGet
+    Left = 544
+    Top = 144
   end
 end

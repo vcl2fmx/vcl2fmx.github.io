@@ -1,6 +1,6 @@
 ﻿{VCL2FMX © 2026 echurchsites.wixsite.com
  Delphi VCL to FMX Converter and assistant
- Version v6.0 Navigator
+ Version v7.0 Atlas
  Written and built in the USA}
 
 unit Converter.Advanced.ThirdParty;
@@ -80,6 +80,21 @@ type
 implementation
 
 { TThirdPartyInfo }
+
+
+resourcestring
+  SDisplaySubComponentOf = 'Sub-component of ';
+  SDisplayGenericCollectionItem = 'Generic collection item';
+  SDisplayGenericItemsCollection = 'Generic items collection';
+  SDisplayRaizeComponentsNotAvailableForFmx = 'Raize Components not available for FMX';
+  SDisplayDevexpressHasFmxVersionsCheckLicense = 'DevExpress has FMX versions - check license';
+  SDisplayTmsHasFmxVersionsCheckTmsFmx = 'TMS has FMX versions - check TMS FMX Pack';
+  SDisplayJvclNotAvailableForFmx = 'JVCL not available for FMX';
+  SDisplayGnosticeSupportsFmxCheckVersion = 'Gnostice supports FMX - check version';
+  SDisplayFastreportsHasFmxVersionFastreportFmx = 'FastReports has FMX version - FastReport FMX';
+  SDisplayEhlibPrimarilyVclFmxSupportLimited = 'EhLib primarily VCL - FMX support limited';
+  SDisplayBibliotecagdHasFmxVersionsFmxEditionAvailable = 'BibliotecaGD has FMX versions - FMX edition available';
+  SDisplaySpecificallyDesignedForVclToFmxMigration = 'Specifically designed for VCL to FMX migration';
 
 constructor TThirdPartyInfo.Create;
 begin
@@ -302,7 +317,7 @@ var
     Info.IsCommercial := False;
     Info.HasFMXVersion := True;
     Info.IsSubComponent := True;
-    Info.Notes := 'Sub-component of ' + ParentType + '. ' + Notes;
+    Info.Notes := SDisplaySubComponentOf + ParentType + '. ' + Notes;
     Info.ReplacementSuggestion := 'Handled automatically during DFM conversion';
     FThirdPartyDB.Add(Info);
   end;
@@ -328,7 +343,7 @@ begin
   Info.IsCommercial := False;
   Info.HasFMXVersion := True;
   Info.IsSubComponent := True;
-  Info.Notes := 'Generic collection item';
+  Info.Notes := SDisplayGenericCollectionItem;
   Info.ReplacementSuggestion := 'Handled automatically during DFM conversion';
   FThirdPartyDB.Add(Info);
 
@@ -338,7 +353,7 @@ begin
   Info.IsCommercial := False;
   Info.HasFMXVersion := True;
   Info.IsSubComponent := True;
-  Info.Notes := 'Generic items collection';
+  Info.Notes := SDisplayGenericItemsCollection;
   Info.ReplacementSuggestion := 'Handled automatically during DFM conversion';
   FThirdPartyDB.Add(Info);
 end;
@@ -352,7 +367,7 @@ begin
   Info.Vendor := 'Raize';
   Info.IsCommercial := True;
   Info.HasFMXVersion := False;
-  Info.Notes := 'Raize Components not available for FMX';
+  Info.Notes := SDisplayRaizeComponentsNotAvailableForFmx;
   Info.ReplacementSuggestion := 'Use standard TButton or TBitBtn with custom styling';
   FThirdPartyDB.Add(Info);
 
@@ -455,7 +470,7 @@ begin
   Info.IsCommercial := True;
   Info.HasFMXVersion := True;
   Info.FMXComponentName := 'TcxButton';
-  Info.Notes := 'DevExpress has FMX versions - check license';
+  Info.Notes := SDisplayDevexpressHasFmxVersionsCheckLicense;
   FThirdPartyDB.Add(Info);
 
   Info := TThirdPartyInfo.Create;
@@ -525,7 +540,7 @@ begin
   Info.IsCommercial := True;
   Info.HasFMXVersion := True;
   Info.FMXComponentName := 'TAdvEdit';
-  Info.Notes := 'TMS has FMX versions - check TMS FMX Pack';
+  Info.Notes := SDisplayTmsHasFmxVersionsCheckTmsFmx;
   FThirdPartyDB.Add(Info);
 
   Info := TThirdPartyInfo.Create;
@@ -602,7 +617,7 @@ begin
   Info.Vendor := 'JVCL';
   Info.IsCommercial := False;
   Info.HasFMXVersion := False;
-  Info.Notes := 'JVCL not available for FMX';
+  Info.Notes := SDisplayJvclNotAvailableForFmx;
   Info.ReplacementSuggestion := 'Use standard TButton';
   FThirdPartyDB.Add(Info);
 
@@ -713,7 +728,7 @@ begin
   Info.IsCommercial := True;
   Info.HasFMXVersion := True;
   Info.FMXComponentName := 'TgtPDFEngine';
-  Info.Notes := 'Gnostice supports FMX - check version';
+  Info.Notes := SDisplayGnosticeSupportsFmxCheckVersion;
   FThirdPartyDB.Add(Info);
 
   Info := TThirdPartyInfo.Create;
@@ -751,7 +766,7 @@ begin
   Info.IsCommercial := True;
   Info.HasFMXVersion := True;
   Info.FMXComponentName := 'TfrxReport';
-  Info.Notes := 'FastReports has FMX version - FastReport FMX';
+  Info.Notes := SDisplayFastreportsHasFmxVersionFastreportFmx;
   FThirdPartyDB.Add(Info);
 
   Info := TThirdPartyInfo.Create;
@@ -788,7 +803,7 @@ begin
   Info.Vendor := 'EhLib';
   Info.IsCommercial := True;
   Info.HasFMXVersion := False;
-  Info.Notes := 'EhLib primarily VCL - FMX support limited';
+  Info.Notes := SDisplayEhlibPrimarilyVclFmxSupportLimited;
   Info.ReplacementSuggestion := 'Use TGrid with LiveBindings or TMS FMX Grid';
   FThirdPartyDB.Add(Info);
 
@@ -827,7 +842,7 @@ begin
   Info.IsCommercial := False;
   Info.HasFMXVersion := True;
   Info.FMXComponentName := 'TGDEdit';
-  Info.Notes := 'BibliotecaGD has FMX versions - FMX edition available';
+  Info.Notes := SDisplayBibliotecagdHasFmxVersionsFmxEditionAvailable;
   FThirdPartyDB.Add(Info);
 
   Info := TThirdPartyInfo.Create;
@@ -852,7 +867,7 @@ begin
   Info.IsCommercial := False;
   Info.HasFMXVersion := True;
   Info.FMXComponentName := 'TGDDBEdit';
-  Info.Notes := 'Specifically designed for VCL to FMX migration';
+  Info.Notes := SDisplaySpecificallyDesignedForVclToFmxMigration;
   FThirdPartyDB.Add(Info);
 end;
 

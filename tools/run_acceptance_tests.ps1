@@ -197,10 +197,10 @@ Add-Check -Condition (($engineText -match 'procedure\s+TConverterEngine\.Rebuild
   -PassDetails 'Engine rebuilds services if a new context is supplied.' `
   -FailDetails 'Engine context reassignment is not safely guarded.'
 
-Add-Check -Condition (($engineConstructorText -match 'RebuildServicesForContext\(AContext\);') -and (-not ($engineConstructorText -match 'FOrchestrator\s*:=\s*TConversionOrchestrator\.Create\(FContext\);'))) `
+Add-Check -Condition (($engineConstructorText -notmatch 'RebuildServicesForContext\(AContext\);') -and ($engineText -match '(?s)AContext.ClearIssues;.*?RebuildServicesForContext\(AContext\);') -and (-not ($engineConstructorText -match 'FOrchestrator\s*:=\s*TConversionOrchestrator\.Create\(FContext\);'))) `
   -Area Context `
   -Check 'Engine services are not double-created' `
-  -PassDetails 'Engine constructor relies on RebuildServicesForContext for service construction.' `
+  -PassDetails 'Engine constructs services once per run after clearing old diagnostics.' `
   -FailDetails 'Engine constructor creates conversion services after RebuildServicesForContext, which can double-load mapping packs.'
 
 Add-Check -Condition (-not ($engineText -match "UILog\([^`r`n]*'\s*\?")) `
@@ -335,7 +335,7 @@ Add-Check -Condition (-not (($autoFixText -match "ContainsText\(L, 'ScaleBy\('")
 
 Add-Check -Condition (($mainFormText -match 'procedure\s+TfrmMain\.Log') -and
   ($mainFormText -match 'TThread\.Synchronize') -and
-  ($mainFormText -match 'MemoLog\.Lines\.Add\(LogMessage\)')) `
+  ($mainFormText -match 'MemoLog\.Lines\.Add\(DATTranslateDynamicText\(LogMessage\)\)')) `
   -Area Threading `
   -Check 'Worker thread log output is routed safely to the UI memo' `
   -PassDetails 'ConversionThreadProc connects MemoLog and engine UI updates are synchronized.' `
@@ -528,7 +528,8 @@ Add-Check -Condition (($integrationText -match 'DFM parser found no root compone
 Add-Check -Condition (($dfmText -match 'TestStreamFormat\(FileStream\) = sofBinary') -and
   ($dfmText -match 'ObjectResourceToText\(InputStream, OutputStream\)') -and
   ($dfmText -match 'ObjectBinaryToText\(InputStream, OutputStream\)') -and
-  ($engineText -match "UILog\('  Detecting DFM stream format\.\.\.'\)")) `
+  ($engineText -match 'UILog\(SDisplayDetectingDfmStreamFormat\)') -and
+  ($engineText -match "SDisplayDetectingDfmStreamFormat = '  Detecting DFM stream format\.\.\.'")) `
   -Area DFM `
   -Check 'Delphi binary DFM streams are detected and converted' `
   -PassDetails 'DFM loading uses Delphi stream-format detection, resource conversion, and raw-binary fallback without pre-decoding binary data as text.' `
@@ -651,10 +652,14 @@ $guard = Invoke-Process -FilePath 'powershell.exe' `
 
 $mappingSmokeScript = Join-Path $ProjectRoot 'tests\mapping_pack_smoke\run_mapping_pack_smoke_guard.ps1'
 if (Test-Path -LiteralPath $mappingSmokeScript) {
+  $smokeOutput = Join-Path $env:TEMP ('VCL2FMXSmoke_' + [Guid]::NewGuid().ToString('N'))
+  $smokeConversion = Invoke-Process -FilePath (Join-Path $ProjectRoot 'tools\RunConversionEngine.exe') `
+    -Arguments ('"{0}" "{1}"' -f (Join-Path $ProjectRoot 'tests\mapping_pack_smoke\source'), $smokeOutput) `
+    -WorkingDirectory $ProjectRoot
   $mappingSmoke = Invoke-Process -FilePath 'powershell.exe' `
-    -Arguments ('-ExecutionPolicy Bypass -File "{0}"' -f $mappingSmokeScript) `
+    -Arguments ('-ExecutionPolicy Bypass -File "{0}" -OutputRoot "{1}"' -f $mappingSmokeScript, $smokeOutput) `
     -WorkingDirectory (Split-Path -Parent $mappingSmokeScript)
-  Add-Check -Condition ($mappingSmoke.ExitCode -eq 0) `
+  Add-Check -Condition (($smokeConversion.ExitCode -in @(0, 2)) -and ($mappingSmoke.ExitCode -eq 0)) `
     -Area Guards `
     -Check 'Mapping-pack smoke output guard passes' `
     -PassDetails 'Mapping-pack smoke output contains expected conversions, detect-only omissions, and report entries.' `

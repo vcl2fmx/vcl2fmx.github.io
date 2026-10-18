@@ -211,7 +211,7 @@ $warningCount = @($Findings | Where-Object { $_.Severity -eq 'Warning' }).Count
 $infoCount = @($Findings | Where-Object { $_.Severity -eq 'Info' }).Count
 
 $sb = New-Object System.Text.StringBuilder
-[void]$sb.AppendLine('VCL2FMXConverter v6.0 Navigator Release Readiness Audit')
+[void]$sb.AppendLine('VCL2FMXConverter v7.0 Atlas Release Readiness Audit')
 [void]$sb.AppendLine('===========================================')
 [void]$sb.AppendLine('')
 [void]$sb.AppendLine('Generated: ' + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'))
